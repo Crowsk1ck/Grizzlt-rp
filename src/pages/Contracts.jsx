@@ -1,6 +1,157 @@
+import { useEffect, useState } from 'react'
+
+import {
+db,
+collection,
+addDoc,
+getDocs,
+query,
+deleteDoc,
+doc
+} from '../services/firebase'
+
+export default function Contracts(){
+
+const [title,setTitle] = useState('')
+const [amount,setAmount] = useState('')
+const [startedBy,setStartedBy] = useState('')
+const [members,setMembers] = useState('')
+const [contracts,setContracts] = useState([])
+
+const loadContracts = async()=>{
+
+try{
+
+const q = query(
+collection(db,'contracts')
+)
+
+const snapshot = await getDocs(q)
+
+const arr=[]
+
+snapshot.forEach(d=>{
+arr.push({
+id:d.id,
+...d.data()
+})
+})
+
+setContracts(
+arr.sort((a,b)=>b.created-a.created)
+)
+
+}catch(err){
+
+console.log(err)
+
+}
+
+}
+
+useEffect(()=>{
+loadContracts()
+},[])
+
+const sendContract = async()=>{
+
+try{
+
+if(!title || !amount || !startedBy || !members){
+alert('Заповни всі поля')
+return
+}
+
+const membersCount =
+members
+.split('.')
+.filter(x=>x.trim()!=='')
+.length
+
+await addDoc(collection(db,'contracts'),{
+
+title,
+amount:Number(amount.replace(/\D/g,'')),
+members,
+startedBy,
+membersCount,
+created:Date.now()
+
+})
+
+await fetch(
+'https://discord.com/api/webhooks/1506424883737788619/yATAISypU22ZWVvhRKMsSeSZT1l7bghWRvPSoLaERM8tdj1Wx70JXq4QU2DjYwiHC72F',
+{
+method:'POST',
+headers:{
+'Content-Type':'application/json'
+},
+body:JSON.stringify({
+content:
+`🔥 НОВИЙ КОНТРАКТ
+
+📄 ${title}
+
+💰 ${amount}
+
+👑 ${startedBy}
+
+👥 ${members}`
+})
+}
+)
+
+setTitle('')
+setAmount('')
+setStartedBy('')
+setMembers('')
+
+setTimeout(()=>{
+loadContracts()
+},500)
+
+alert('КОНТРАКТ ДОДАНО')
+
+}catch(err){
+
+console.log(err)
+
+alert('ПОМИЛКА CONTRACTS')
+
+}
+
+}
+
+const clearPanel = async()=>{
+
+try{
+
+const password = prompt('Введи пароль')
+
+if(password !== 'grizzlyadmin'){
+alert('Невірний пароль')
+return
+}
+
+for(const c of contracts){
+await deleteDoc(doc(db,'contracts',c.id))
+}
+
+loadContracts()
+
+}catch(err){
+
+console.log(err)
+
+}
+
+}
+
+const totalIncome =
+contracts.reduce((a,b)=>a+b.amount,0)
+
 return(
 <>
-
 <h1 className="title">
 GRIZZLY PANEL
 </h1>
@@ -84,8 +235,6 @@ onClick={clearPanel}
 
 </div>
 
-<div style={{flex:1}}>
-
 <div className="panel">
 
 <div
@@ -117,12 +266,12 @@ ${Math.floor(totalIncome*0.84).toLocaleString()}
 <div className="stat">
 <h2>
 {
-contracts.length > 0
+contracts.length>0
 ? Math.floor(
 contracts.reduce((a,b)=>a+b.membersCount,0)
 / contracts.length
 )
-: 0
+:0
 }
 </h2>
 
@@ -134,10 +283,66 @@ contracts.reduce((a,b)=>a+b.membersCount,0)
 
 </div>
 
+<div className="row rowHeader">
+
+<div>
+КОНТРАКТ
+</div>
+
+<div>
+УЧАСНИКИ
+</div>
+
+<div>
+ДОХІД
+</div>
+
+</div>
+
+{contracts.map(c=>(
+<div
+className="row"
+key={c.id}
+>
+
+<div>
+
+{c.title}
+
+<br/><br/>
+
+<span style={{
+color:'#999',
+fontSize:'14px',
+lineHeight:'1.7'
+}}>
+
+👑 {c.startedBy}
+
+<br/>
+
+👥 {c.members}
+
+</span>
+
+</div>
+
+<div>
+{c.membersCount}
+</div>
+
+<div className="green">
+${c.amount}
+</div>
+
+</div>
+))}
+
 </div>
 
 </div>
 
 </>
-
 )
+
+}
