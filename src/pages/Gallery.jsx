@@ -1,0 +1,1 @@
+export default function Gallery(){return(<><h1 className='title'>Галерея</h1><div className='card'>📸 GTA RP MOMENTS</div></>)}

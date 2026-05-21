@@ -1,0 +1,1 @@
+export default function Team(){return(<><h1 className='title'>Команда</h1><div className='card'>👑 OWNER</div></>)}

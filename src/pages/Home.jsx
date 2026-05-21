@@ -1,0 +1,1 @@
+export default function Home(){return(<><h1 className='title'>Інфо</h1><div className='card'>⚡ GRIZZLY FAMILY</div></>)}
