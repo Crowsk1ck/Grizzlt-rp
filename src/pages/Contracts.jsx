@@ -152,6 +152,7 @@ contracts.reduce((a,b)=>a+b.amount,0)
 
 return(
 <>
+
 <h1 className="title">
 GRIZZLY PANEL
 </h1>
@@ -234,7 +235,9 @@ onClick={clearPanel}
 </div>
 
 </div>
-  
+
+<div style={{flex:1}}>
+
 <div className="panel">
 
 <div
@@ -283,7 +286,15 @@ contracts.reduce((a,b)=>a+b.membersCount,0)
 
 </div>
 
-<div className="panel" style={{marginTop:'25px'}}>
+</div>
+
+<div
+className="panel"
+style={{
+marginTop:'25px',
+width:'100%'
+}}
+>
 
 <div
 className="title"
@@ -413,8 +424,6 @@ a.click()
 >
 СКАЧАТИ ЛІДЕРІВ
 </button>
-
-</div>
 
 </div>
 
