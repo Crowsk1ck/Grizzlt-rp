@@ -5,30 +5,22 @@ export default function Dashboard(){
         GTA 6 RP
       </h1>
 
-      <p className="text-2xl text-zinc-300 mb-12 max-w-3xl">
-        Premium cinematic GTA RP ecosystem with modern gaming UI.
-      </p>
-
       <div className="grid lg:grid-cols-4 gap-6 mb-10">
 
         <div className="glass rounded-[32px] p-6">
-          <div className="text-zinc-400 mb-2">ONLINE</div>
-          <div className="text-5xl font-black text-red-500">147</div>
+          ONLINE: 147
         </div>
 
         <div className="glass rounded-[32px] p-6">
-          <div className="text-zinc-400 mb-2">BALANCE</div>
-          <div className="text-4xl font-black text-red-500">$52M</div>
+          BALANCE: $52M
         </div>
 
         <div className="glass rounded-[32px] p-6">
-          <div className="text-zinc-400 mb-2">WARS</div>
-          <div className="text-5xl font-black text-red-500">6</div>
+          ACTIVE WARS: 6
         </div>
 
         <div className="glass rounded-[32px] p-6">
-          <div className="text-zinc-400 mb-2">RANK</div>
-          <div className="text-4xl font-black text-red-500">TOP 3</div>
+          TOP 3 FAMILY
         </div>
 
       </div>

@@ -23,19 +23,19 @@ body{
 .overlay{
   position:fixed;
   inset:0;
-  background:linear-gradient(to bottom,rgba(0,0,0,.2),rgba(0,0,0,.92));
+  background:linear-gradient(to bottom,rgba(0,0,0,.25),rgba(0,0,0,.92));
   z-index:-2;
 }
 
 .glass{
   background:rgba(10,10,10,.65);
-  backdrop-filter:blur(20px);
+  backdrop-filter:blur(18px);
   border:1px solid rgba(255,0,0,.18);
   box-shadow:0 0 40px rgba(255,0,0,.14);
 }
 
 .hero{
   text-shadow:
-    0 0 15px rgba(255,0,0,.8),
+    0 0 15px rgba(255,0,0,.7),
     0 0 35px rgba(255,0,0,.5);
 }

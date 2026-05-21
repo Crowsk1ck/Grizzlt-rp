@@ -1,10 +1,3 @@
-const members = [
-  'OWNER',
-  'DEPUTY',
-  'FIGHTER',
-  'MANAGER'
-]
-
 export default function Team(){
   return(
     <>
@@ -12,20 +5,20 @@ export default function Team(){
         TEAM
       </h1>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-        {members.map((member,index)=>(
-          <div key={index} className="glass rounded-[32px] p-8 text-center">
+      <div className="grid md:grid-cols-3 gap-8">
 
-            <div className="w-32 h-32 rounded-full bg-red-500/20 mx-auto mb-6 border border-red-500/20"></div>
+        <div className="glass rounded-[32px] p-8 text-center">
+          OWNER
+        </div>
 
-            <h2 className="text-2xl font-black">{member}</h2>
+        <div className="glass rounded-[32px] p-8 text-center">
+          DEPUTY
+        </div>
 
-            <div className="text-zinc-400 mt-2">
-              GRIZZLY FAMILY
-            </div>
+        <div className="glass rounded-[32px] p-8 text-center">
+          FIGHTER
+        </div>
 
-          </div>
-        ))}
       </div>
     </>
   )

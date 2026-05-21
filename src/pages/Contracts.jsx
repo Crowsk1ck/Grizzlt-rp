@@ -1,10 +1,3 @@
-const contracts = [
-  'Bank Heist',
-  'Weapon Delivery',
-  'Gang Elimination',
-  'Territory Control'
-]
-
 export default function Contracts(){
   return(
     <>
@@ -13,15 +6,15 @@ export default function Contracts(){
       </h1>
 
       <div className="grid md:grid-cols-2 gap-8">
-        {contracts.map((item,index)=>(
-          <div key={index} className="glass rounded-[32px] p-8">
-            <h2 className="text-3xl font-black mb-4">{item}</h2>
 
-            <div className="bg-black/40 rounded-2xl p-4">
-              ACTIVE MISSION
-            </div>
-          </div>
-        ))}
+        <div className="glass rounded-[32px] p-8">
+          Bank Heist
+        </div>
+
+        <div className="glass rounded-[32px] p-8">
+          Weapon Delivery
+        </div>
+
       </div>
     </>
   )
