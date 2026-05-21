@@ -6,6 +6,58 @@ color:white;
 overflow-x:hidden;
 padding-top:90px;
 }
+.galleryGrid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+gap:25px;
+margin-top:40px;
+}
+
+.galleryCard{
+position:relative;
+overflow:hidden;
+border-radius:24px;
+height:260px;
+cursor:pointer;
+border:1px solid rgba(255,255,255,.08);
+transition:.4s;
+}
+
+.galleryCard:hover{
+transform:translateY(-8px) scale(1.02);
+box-shadow:0 0 40px rgba(255,0,85,.35);
+}
+
+.galleryImage{
+width:100%;
+height:100%;
+object-fit:cover;
+transition:.5s;
+}
+
+.galleryCard:hover .galleryImage{
+transform:scale(1.1);
+}
+
+.galleryOverlay{
+position:absolute;
+inset:0;
+background:linear-gradient(
+to top,
+rgba(0,0,0,.85),
+rgba(0,0,0,.1)
+);
+display:flex;
+align-items:flex-end;
+padding:25px;
+}
+
+.galleryText{
+font-size:28px;
+font-weight:900;
+color:white;
+text-shadow:0 0 20px black;
+}
 .teamGrid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
