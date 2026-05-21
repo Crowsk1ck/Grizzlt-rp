@@ -156,7 +156,14 @@ return(
 GRIZZLY PANEL
 </h1>
 
-<div className="dashboard">
+<div
+className="dashboard"
+style={{
+display:'grid',
+gridTemplateColumns:'1fr 1.2fr',
+gap:'25px',
+alignItems:'start'
+}}
 
 <div className="panel">
 
@@ -235,7 +242,16 @@ onClick={clearPanel}
 
 </div>
 
-<div className="panel">
+<div
+className="panel"
+style={{
+background:'rgba(255,255,255,.05)',
+backdropFilter:'blur(20px)',
+border:'1px solid rgba(255,255,255,.08)',
+borderRadius:'24px',
+padding:'30px',
+boxShadow:'0 0 40px rgba(0,0,0,.3)'
+}}
 
 <div
 className="title"
