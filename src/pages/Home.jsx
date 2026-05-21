@@ -19,18 +19,11 @@ ELITE GTA 5 ROLEPLAY FAMILY
 <div className="heroButtons">
 
 <a
-href="https://discord.gg/"
+href="https://discord.gg/APPf3Rq3dF"
 target="_blank"
 className="heroBtn"
 >
 JOIN DISCORD
-</a>
-
-<a
-href="/contracts"
-className="heroBtn secondary"
->
-CONTRACTS
 </a>
 
 </div>
