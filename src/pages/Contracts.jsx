@@ -1,44 +1,40 @@
 import { useEffect, useState } from 'react'
-
 import {
 db,
 collection,
 addDoc,
 getDocs,
-query,
-where,
-orderBy,
 deleteDoc,
 doc
 } from '../services/firebase'
 
 export default function Contracts(){
 
+const [contracts,setContracts] = useState([])
 const [title,setTitle] = useState('')
 const [amount,setAmount] = useState('')
 const [startedBy,setStartedBy] = useState('')
 const [members,setMembers] = useState('')
-const [contracts,setContracts] = useState([])
 
 const loadContracts = async()=>{
 
-const q = query(
-collection(db,'contracts'),
-where('month','==',new Date().getMonth()),
-where('year','==',new Date().getFullYear()),
-orderBy('created','desc')
-)
+const snapshot = await getDocs(collection(db,'contracts'))
 
-const snapshot = await getDocs(q)
+let arr=[]
 
-const arr=[]
-
-snapshot.forEach(d=>{
+snapshot.forEach(item=>{
 arr.push({
-id:d.id,
-...d.data()
+id:item.id,
+...item.data()
 })
 })
+
+arr = arr
+.filter(c=>
+c.month===new Date().getMonth() &&
+c.year===new Date().getFullYear()
+)
+.sort((a,b)=>b.created-a.created)
 
 setContracts(arr)
 
@@ -48,7 +44,7 @@ useEffect(()=>{
 loadContracts()
 },[])
 
-const sendContract = async()=>{
+const addContract = async()=>{
 
 const membersCount =
 members.split('.').filter(x=>x.trim()!=='').length
@@ -56,8 +52,8 @@ members.split('.').filter(x=>x.trim()!=='').length
 await addDoc(collection(db,'contracts'),{
 title,
 amount:Number(amount.replace(/\D/g,'')),
-members,
 startedBy,
+members,
 membersCount,
 created:Date.now(),
 month:new Date().getMonth(),
@@ -73,11 +69,11 @@ loadContracts()
 
 }
 
-const clearPanel = async()=>{
+const clearAll = async()=>{
 
-const password = prompt('Введи пароль')
+const pass = prompt('Пароль')
 
-if(password !== 'grizzlyadmin'){
+if(pass !== 'grizzlyadmin'){
 alert('Невірний пароль')
 return
 }
@@ -90,52 +86,59 @@ loadContracts()
 
 }
 
-const totalIncome =
-contracts.reduce((a,b)=>a+b.amount,0)
+const total = contracts.reduce((a,b)=>a+b.amount,0)
 
 return(
 <>
-<h1 className="title">GRIZZLY PANEL</h1>
+<h1 className="title">GRIZZLY CONTRACTS</h1>
 
 <div className="dashboard">
 
 <div className="panel">
 
-<div className="title" style={{fontSize:'30px'}}>
-ДОДАТИ КОНТРАКТ
-</div>
-
-<input className="input" placeholder="📄 Назва контракту" value={title} onChange={e=>setTitle(e.target.value)} />
+<input
+className="input"
+placeholder="Назва контракту"
+value={title}
+onChange={e=>setTitle(e.target.value)}
+/>
 
 <div className="double">
 
-<input className="input" placeholder="💰 Сума" value={amount} onChange={e=>setAmount(e.target.value)} />
+<input
+className="input"
+placeholder="Сума"
+value={amount}
+onChange={e=>setAmount(e.target.value)}
+/>
 
-<input className="input" placeholder="👑 Хто почав контракт" value={startedBy} onChange={e=>setStartedBy(e.target.value)} />
+<input
+className="input"
+placeholder="Хто почав"
+value={startedBy}
+onChange={e=>setStartedBy(e.target.value)}
+/>
 
 </div>
 
-<input className="input" placeholder="👥 Учасники через крапку" value={members} onChange={e=>setMembers(e.target.value)} />
+<input
+className="input"
+placeholder="Учасники через крапку"
+value={members}
+onChange={e=>setMembers(e.target.value)}
+/>
 
-<div className="infoBox">
-Учасників розділяй крапкою.
-</div>
-
-<button className="btn" onClick={sendContract}>
+<button className="btn" onClick={addContract}>
 ДОДАТИ КОНТРАКТ
 </button>
 
-<button className="btn" style={{background:'#222'}} onClick={clearPanel}>
-ОЧИСТИТИ ПАНЕЛЬ
+<button className="btn" style={{background:'#222'}} onClick={clearAll}>
+ОЧИСТИТИ
 </button>
 
 </div>
 
 <div className="panel">
-
-<div className="title" style={{fontSize:'30px'}}>
-СТАТИСТИКА
-</div>
 
 <div className="statGrid">
 
@@ -145,18 +148,22 @@ return(
 </div>
 
 <div className="stat">
-<h2>${totalIncome.toLocaleString()}</h2>
-<p>ЗАГАЛЬНИЙ ДОХІД</p>
+<h2>${total.toLocaleString()}</h2>
+<p>ДОХІД</p>
 </div>
 
 <div className="stat">
-<h2>${Math.floor(totalIncome*0.84).toLocaleString()}</h2>
+<h2>${Math.floor(total*0.84).toLocaleString()}</h2>
 <p>ЧИСТИЙ ДОХІД</p>
 </div>
 
 <div className="stat">
-<h2>{contracts.length>0?Math.floor(contracts.reduce((a,b)=>a+b.membersCount,0)/contracts.length):0}</h2>
-<p>СЕРЕДНЯ КІЛЬКІСТЬ УЧАСНИКІВ</p>
+<h2>{
+contracts.length
+? Math.floor(contracts.reduce((a,b)=>a+b.membersCount,0)/contracts.length)
+:0
+}</h2>
+<p>СЕРЕДНЯ КІЛЬКІСТЬ</p>
 </div>
 
 </div>
@@ -172,15 +179,12 @@ return(
 
 <div>
 {c.title}
-
 <br/><br/>
-
-<span style={{color:'#999',fontSize:'14px',lineHeight:'1.7'}}>
+<span style={{color:'#999'}}>
 👑 {c.startedBy}
 <br/>
 👥 {c.members}
 </span>
-
 </div>
 
 <div>{c.membersCount}</div>
