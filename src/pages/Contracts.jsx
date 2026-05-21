@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react'
 
 import {
@@ -6,8 +7,6 @@ collection,
 addDoc,
 getDocs,
 query,
-where,
-orderBy,
 deleteDoc,
 doc
 } from '../services/firebase'
@@ -23,10 +22,7 @@ const [contracts,setContracts] = useState([])
 const loadContracts = async()=>{
 
 const q = query(
-collection(db,'contracts'),
-where('month','==',new Date().getMonth()),
-where('year','==',new Date().getFullYear()),
-orderBy('created','desc')
+collection(db,'contracts')
 )
 
 const snapshot = await getDocs(q)
@@ -40,7 +36,9 @@ id:d.id,
 })
 })
 
-setContracts(arr)
+setContracts(
+arr.sort((a,b)=>b.created-a.created)
+)
 
 }
 
