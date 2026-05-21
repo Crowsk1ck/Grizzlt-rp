@@ -1,0 +1,25 @@
+{
+  "name": "grizzly-rp-enterprise",
+  "private": true,
+  "version": "5.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "firebase": "^11.9.0",
+    "framer-motion": "^11.2.0",
+    "socket.io-client": "^4.8.1",
+    "axios": "^1.7.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.30.0",
+    "leaflet": "^1.9.4",
+    "react-leaflet": "^4.2.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.1",
+    "vite": "^5.4.0",
+    "tailwindcss": "^3.4.13"
+  }
+}

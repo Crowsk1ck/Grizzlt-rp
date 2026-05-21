@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body{
+  margin:0;
+  background:#050505;
+  color:white;
+  font-family:Arial;
+}
+
+.bg{
+  position:fixed;
+  inset:0;
+  background:
+    radial-gradient(circle at top,#2a0000,#000);
+  z-index:-2;
+}
+
+.card{
+  background:#111;
+  border:1px solid rgba(255,0,0,.15);
+  border-radius:24px;
+  padding:24px;
+  box-shadow:0 0 30px rgba(255,0,0,.15);
+}
