@@ -1,6 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 import { Routes, Route, Link } from 'react-router-dom'
+
 import Home from './pages/Home'
+import Team from './pages/Team'
+import Gallery from './pages/Gallery'
+import Contracts from './pages/Contracts'
+import Apply from './pages/Apply'
 
 export default function App(){
 
@@ -116,16 +121,28 @@ LOGOUT
 
 <nav>
 <Link to="/">Інфо</Link>
-<Link to="/">Команда</Link>
-<Link to="/">Галерея</Link>
-<Link to="/">Контракти</Link>
-<Link to="/">Заявка</Link>
+<Link to="/team">Команда</Link>
+<Link to="/gallery">Галерея</Link>
+<Link to="/contracts">Контракти</Link>
+<Link to="/apply">Заявка</Link>
 </nav>
 
 <div className="container">
+
 <Routes>
+
 <Route path="/" element={<Home />} />
+
+<Route path="/team" element={<Team />} />
+
+<Route path="/gallery" element={<Gallery />} />
+
+<Route path="/contracts" element={<Contracts />} />
+
+<Route path="/apply" element={<Apply />} />
+
 </Routes>
+
 </div>
 </>
 )
