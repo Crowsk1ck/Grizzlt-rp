@@ -234,112 +234,6 @@ onClick={clearPanel}
 </div>
 
 </div>
-
-<div className="panel" style={{marginTop:'20px'}}>
-
-<div
-className="title"
-style={{fontSize:'28px'}}
->
-ЛІДЕРИ МІСЯЦЯ
-</div>
-
-<div className="statGrid">
-
-{
-[...contracts]
-.sort((a,b)=>b.amount-a.amount)
-.slice(0,5)
-.map((c,index)=>(
-
-<div
-key={index}
-className="stat"
-style={{
-padding:'20px',
-textAlign:'left'
-}}
->
-
-<h2 style={{
-marginBottom:'10px'
-}}>
-#{index+1}
-</h2>
-
-<p style={{
-color:'#ff0055',
-fontWeight:'700',
-marginBottom:'10px'
-}}>
-{c.startedBy}
-</p>
-
-<div style={{
-color:'#999',
-fontSize:'14px',
-lineHeight:'1.7'
-}}>
-📄 {c.title}
-
-<br/>
-
-💰 ${c.amount}
-
-<br/>
-
-👥 {c.membersCount} учасників
-</div>
-
-</div>
-
-))
-}
-
-</div>
-
-<button
-className="btn"
-style={{
-marginTop:'20px',
-width:'100%'
-}}
-onClick={()=>{
-
-const password = prompt('Введіть пароль')
-
-if(password !== 'grizzlytop'){
-alert('Невірний пароль')
-return
-}
-
-const text =
-[...contracts]
-.sort((a,b)=>b.amount-a.amount)
-.slice(0,10)
-.map((c,index)=>
-`${index+1}. ${c.startedBy} — $${c.amount}`
-)
-.join('\\n')
-
-const blob = new Blob([text],{
-type:'text/plain'
-})
-
-const a = document.createElement('a')
-
-a.href = URL.createObjectURL(blob)
-
-a.download = 'leaders.txt'
-
-a.click()
-
-}}
->
-СКАЧАТИ ЛІДЕРІВ
-</button>
-
-</div>
   
 <div className="panel">
 
@@ -447,7 +341,118 @@ ${c.amount}
 </div>
 
 </div>
+<div className="panel" style={{marginTop:'25px'}}>
 
+<div
+className="title"
+style={{fontSize:'30px'}}
+>
+ЛІДЕРИ МІСЯЦЯ
+</div>
+
+<div
+style={{
+display:'grid',
+gridTemplateColumns:'repeat(auto-fit,minmax(220px,1fr))',
+gap:'15px',
+marginTop:'20px'
+}}
+>
+
+{
+[...contracts]
+.sort((a,b)=>b.amount-a.amount)
+.slice(0,5)
+.map((c,index)=>(
+
+<div
+key={index}
+className="stat"
+style={{
+padding:'20px'
+}}
+>
+
+<h2 style={{
+marginBottom:'10px'
+}}>
+#{index+1}
+</h2>
+
+<div style={{
+color:'#ff0055',
+fontWeight:'700',
+fontSize:'20px',
+marginBottom:'10px'
+}}>
+{c.startedBy}
+</div>
+
+<div style={{
+color:'#999',
+lineHeight:'1.8'
+}}>
+📄 {c.title}
+
+<br/>
+
+💰 ${c.amount}
+
+<br/>
+
+👥 {c.membersCount} учасників
+</div>
+
+</div>
+
+))
+}
+
+</div>
+
+<button
+className="btn"
+style={{
+marginTop:'20px',
+width:'100%'
+}}
+onClick={()=>{
+
+const password = prompt('Введіть пароль')
+
+if(password !== 'grizzlytop'){
+alert('Невірний пароль')
+return
+}
+
+const text =
+[...contracts]
+.sort((a,b)=>b.amount-a.amount)
+.slice(0,10)
+.map((c,index)=>
+`${index+1}. ${c.startedBy} — $${c.amount}`
+)
+.join('\n')
+
+const blob = new Blob([text],{
+type:'text/plain'
+})
+
+const a = document.createElement('a')
+
+a.href = URL.createObjectURL(blob)
+
+a.download = 'leaders.txt'
+
+a.click()
+
+}}
+>
+СКАЧАТИ ЛІДЕРІВ
+</button>
+
+</div>
+  
 </>
 )
 
