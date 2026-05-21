@@ -6,10 +6,13 @@ import Team from './pages/Team'
 import Gallery from './pages/Gallery'
 import Contracts from './pages/Contracts'
 import Apply from './pages/Apply'
+import Admin from './pages/Admin'
+import LoadingScreen from './components/LoadingScreen'
 
 export default function App(){
 
 const [user,setUser] = useState(null)
+const [loading,setLoading] = useState(true)
 const applicationSent = localStorage.getItem('application_sent')
 
 useEffect(()=>{
@@ -42,6 +45,10 @@ setUser(JSON.parse(saved))
 
 },[])
 
+if(loading){
+return <LoadingScreen onFinish={()=>setLoading(false)} />
+}
+
 if(!user){
 return(
 <>
@@ -64,6 +71,7 @@ LOGIN WITH DISCORD
 
 </div>
 </div>
+<audio autoPlay loop controls className='musicPlayer'><source src='/assets/music/phonk.mp3' type='audio/mp3'/></audio>
 </>
 )
 }
@@ -117,9 +125,11 @@ LOGOUT
 <Route path="/gallery" element={<Gallery />} />
 <Route path="/contracts" element={<Contracts />} />
 <Route path="/apply" element={<Apply />} />
+<Route path="/admin" element={<Admin />} />
 </Routes>
 
 </div>
+<audio autoPlay loop controls className='musicPlayer'><source src='/assets/music/phonk.mp3' type='audio/mp3'/></audio>
 </>
 )
 }
