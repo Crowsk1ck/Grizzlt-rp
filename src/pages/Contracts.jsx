@@ -117,12 +117,12 @@ ${Math.floor(totalIncome*0.84).toLocaleString()}
 <div className="stat">
 <h2>
 {
-contracts.length>0
+contracts.length > 0
 ? Math.floor(
 contracts.reduce((a,b)=>a+b.membersCount,0)
 / contracts.length
 )
-:0
+: 0
 }
 </h2>
 
@@ -282,4 +282,3 @@ a.click()
 </>
 
 )
-}
