@@ -194,13 +194,12 @@ onChange={e=>setStartedBy(e.target.value)}
 
 <input
 className="input"
-placeholder="👥 Учасники через крапку"
+placeholder="👥 Учасники"
 value={members}
 onChange={e=>setMembers(e.target.value)}
 />
 
 <div className="infoBox">
-Учасників розділяй крапкою.
 </div>
 
 <div
