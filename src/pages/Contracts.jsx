@@ -164,6 +164,7 @@ gridTemplateColumns:'1fr 1.2fr',
 gap:'25px',
 alignItems:'start'
 }}
+>
 
 <div className="panel">
 
