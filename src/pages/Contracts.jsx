@@ -48,6 +48,8 @@ loadContracts()
 
 const sendContract = async()=>{
 
+try{
+
 const membersCount =
 members.split('.').filter(x=>x.trim()!=='').length
 
@@ -57,12 +59,10 @@ amount:Number(amount.replace(/\D/g,'')),
 members,
 startedBy,
 membersCount,
-created:Date.now(),
-month:new Date().getMonth(),
-year:new Date().getFullYear()
+created:Date.now()
 })
 
-await fetch('https://discord.com/api/webhooks/1506424883737788619/yATAISypU22ZWVvhRKMsSeSZT1l7bghWRvPSoLaERM8tdj1Wx70JXq4QU2DjYwiHC72F',{
+await fetch('https://discord.com/api/webhooks/1505926641015328859/qqxDO6ncDEcjOu-2TfuA5VfRIq4V4VkBIaMGh5o51RM33RI0CUVDPZZ8pykQ_cnhNsj0',{
 method:'POST',
 headers:{
 'Content-Type':'application/json'
@@ -89,6 +89,16 @@ setMembers('')
 setTimeout(()=>{
 loadContracts()
 },500)
+
+alert('Контракт додано')
+
+}catch(err){
+
+console.log(err)
+
+alert('ПОМИЛКА CONTRACTS')
+
+}
 
 }
 
