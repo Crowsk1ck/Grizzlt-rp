@@ -5,37 +5,43 @@ const members = [
 {
 name:'CrowsKick',
 role:'OWNER',
-avatar:'https://i.imgur.com/8Km9tLL.png'
+id:'DISCORD_ID',
+avatar:'DISCORD_AVATAR_HASH'
 },
 
 {
 name:'Maryana',
 role:'CO-OWNER',
-avatar:'https://i.imgur.com/8Km9tLL.png'
+id:'DISCORD_ID',
+avatar:'DISCORD_AVATAR_HASH'
 },
 
 {
 name:'Zim',
 role:'LEADER',
-avatar:'https://i.imgur.com/8Km9tLL.png'
+id:'DISCORD_ID',
+avatar:'DISCORD_AVATAR_HASH'
 },
 
 {
 name:'Neffiltrovanuyi',
 role:'WAR MANAGER',
-avatar:'https://i.imgur.com/8Km9tLL.png'
+id:'DISCORD_ID',
+avatar:'DISCORD_AVATAR_HASH'
 },
 
 {
 name:'BlackWolf',
 role:'BUSINESS',
-avatar:'https://i.imgur.com/8Km9tLL.png'
+id:'DISCORD_ID',
+avatar:'DISCORD_AVATAR_HASH'
 },
 
 {
 name:'Ghost',
 role:'EVENTS',
-avatar:'https://i.imgur.com/8Km9tLL.png'
+id:'DISCORD_ID',
+avatar:'DISCORD_AVATAR_HASH'
 }
 
 ]
