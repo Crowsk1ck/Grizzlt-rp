@@ -44,7 +44,6 @@ arr.sort((a,b)=>b.created-a.created)
 }catch(err){
 
 console.log(err)
-alert('ПОМИЛКА ЗАГРУЗКИ CONTRACTS')
 
 }
 
@@ -57,8 +56,6 @@ loadContracts()
 const sendContract = async()=>{
 
 try{
-
-console.log('SEND START')
 
 if(!title || !amount || !startedBy || !members){
 alert('Заповни всі поля')
@@ -208,10 +205,7 @@ onChange={e=>setMembers(e.target.value)}
 
 <button
 className="btn"
-onClick={()=>{
-alert('BUTTON WORK')
-sendContract()
-}}
+onClick={sendContract}
 >
 ДОДАТИ КОНТРАКТ
 </button>
@@ -333,7 +327,6 @@ ${c.amount}
 
 </div>
 
-</div>
 </>
 )
 
