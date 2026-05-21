@@ -62,7 +62,7 @@ month:new Date().getMonth(),
 year:new Date().getFullYear()
 })
 
-await fetch(import.meta.env.VITE_DISCORD_WEBHOOK,{
+await fetch('https://discord.com/api/webhooks/1506424883737788619/yATAISypU22ZWVvhRKMsSeSZT1l7bghWRvPSoLaERM8tdj1Wx70JXq4QU2DjYwiHC72F',{
 method:'POST',
 headers:{
 'Content-Type':'application/json'
