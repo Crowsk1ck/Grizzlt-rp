@@ -253,6 +253,7 @@ borderRadius:'24px',
 padding:'30px',
 boxShadow:'0 0 40px rgba(0,0,0,.3)'
 }}
+>
 
 <div
 className="title"
