@@ -1,108 +1,170 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Routes, Route, Link } from 'react-router-dom'
 import Dashboard from './pages/Dashboard'
 
 export default function App(){
 
-  const [loading,setLoading] = useState(true)
-  const audioRef = useRef(null)
+const [loading,setLoading] = useState(true)
+const [user,setUser] = useState(null)
+const audioRef = useRef(null)
 
-  useEffect(()=>{
-    setTimeout(()=>{
-      setLoading(false)
-    },3000)
-  },[])
+useEffect(()=>{
+setTimeout(()=>setLoading(false),3000)
+},[])
 
-  const playMusic = ()=>{
-    audioRef.current.play()
-  }
+useEffect(()=>{
+const token = new URLSearchParams(window.location.hash.substring(1)).get('access_token')
 
-  if(loading){
-    return(
-      <div className="loading-screen">
-        <h1 className="text-7xl font-black text-red-500 hero">
-          GRIZZLY
-        </h1>
+if(token){
+fetch('https://discord.com/api/users/@me',{
+headers:{authorization:`Bearer ${token}`}
+})
+.then(r=>r.json())
+.then(data=>{
+localStorage.setItem('discord_user',JSON.stringify(data))
+setUser(data)
+window.location.hash=''
+})
+}
 
-        <div className="loading-bar">
-          <div className="loading-progress"></div>
-        </div>
-      </div>
-    )
-  }
+const saved = localStorage.getItem('discord_user')
 
-  return(
-    <>
-      <video
-        className="video-bg"
-        autoPlay
-        muted
-        loop
-        playsInline
-      >
-        <source src="/assets/background.mp4" type="video/mp4"/>
-      </video>
+if(saved){
+setUser(JSON.parse(saved))
+}
+},[])
 
-      <div className="overlay"></div>
-      <div className="smoke"></div>
+useEffect(()=>{
+if(!loading){
+audioRef.current?.play().catch(()=>{})
+}
+},[loading])
 
-      <div className="particles">
-        {[...Array(40)].map((_,i)=>(
-          <div
-            key={i}
-            className="particle"
-            style={{
-              left:`${Math.random()*100}%`,
-              animationDelay:`${Math.random()*8}s`,
-              animationDuration:`${5+Math.random()*8}s`
-            }}
-          />
-        ))}
-      </div>
+const particles = useMemo(()=>{
+return [...Array(45)].map((_,i)=>({
+left:Math.random()*100,
+duration:5+Math.random()*8,
+delay:Math.random()*5
+}))
+},[])
 
-      <audio ref={audioRef} loop>
-        <source src="/assets/music.mp3" type="audio/mp3"/>
-      </audio>
+if(loading){
+return(
+<div className="loading">
+<h1>GRIZZLY</h1>
+<div className="loadingBar">
+<div className="loadingProgress"></div>
+</div>
+</div>
+)
+}
 
-      <nav className="fixed top-0 left-0 right-0 z-50 glass">
-        <div className="max-w-7xl mx-auto flex justify-between items-center p-5 flex-wrap gap-4">
+if(!user){
+return(
+<>
+<video className="bgvideo" autoPlay muted loop playsInline>
+<source src="/assets/media/background.mp4" type="video/mp4"/>
+</video>
 
-          <h1 className="text-4xl font-black text-red-500 hero">
-            GRIZZLY
-          </h1>
+<div className="overlay"></div>
 
-          <div className="flex flex-wrap gap-3">
-            <Link className="px-5 py-2 rounded-2xl glass hover:bg-red-500 transition neon" to="/">Dashboard</Link>
+<div className="authOverlay">
+<div className="authBox">
+<h1 style={{fontSize:'82px',color:'#ff004c'}}>GRIZZLY</h1>
 
-            <button
-              onClick={playMusic}
-              className="px-5 py-2 rounded-2xl bg-red-500 neon hover:scale-105 transition"
-            >
-              PLAY MUSIC
-            </button>
-          </div>
+<p style={{fontSize:'22px',color:'#d0d0d0',lineHeight:'1.8'}}>
+Premium GTA 6 RP ecosystem with cinematic atmosphere.
+</p>
 
-        </div>
-      </nav>
+<a
+className="loginBtn"
+href="https://discord.com/oauth2/authorize?client_id=1506029366008610856&response_type=token&redirect_uri=https%3A%2F%2Fwww.grizzly-family.online%2F&scope=identify%20email"
+>
+LOGIN WITH DISCORD
+</a>
+</div>
+</div>
+</>
+)
+}
 
-      <div className="hud glass rounded-3xl p-4">
-        <div>💰 $52,000,000</div>
-        <div>👥 ONLINE 147</div>
-        <div>⚔ WARS 6</div>
-      </div>
+return(
+<>
+<video className="bgvideo" autoPlay muted loop playsInline>
+<source src="/assets/media/background.mp4" type="video/mp4"/>
+</video>
 
-      <div className="minimap glass">
-        <img
-          src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop"
-          style={{width:'100%',height:'100%',objectFit:'cover'}}
-        />
-      </div>
+<div className="overlay"></div>
+<div className="smoke"></div>
 
-      <div className="max-w-7xl mx-auto px-4 pt-36 pb-10 overflow-y-auto h-screen">
-        <Routes>
-          <Route path="/" element={<Dashboard />} />
-        </Routes>
-      </div>
-    </>
-  )
+<div className="particles">
+{particles.map((p,i)=>(
+<div
+key={i}
+className="particle"
+style={{
+left:p.left+'%',
+animationDuration:p.duration+'s',
+animationDelay:p.delay+'s'
+}}
+></div>
+))}
+</div>
+
+<audio autoPlay loop ref={audioRef}>
+<source src="/assets/media/music.mp3" type="audio/mp3"/>
+</audio>
+
+<nav>
+<Link to="/">Dashboard</Link>
+<Link to="/">Contracts</Link>
+<Link to="/">Team</Link>
+<Link to="/">Wars</Link>
+<Link to="/">Marketplace</Link>
+<Link to="/">Garage</Link>
+</nav>
+
+<div className="profile">
+<img src={`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`} />
+<div>
+<div>{user.username}</div>
+<button
+style={{marginTop:'8px',padding:'8px 14px',background:'#ff004c',border:'none',borderRadius:'12px',color:'white'}}
+onClick={()=>{
+localStorage.clear()
+location.reload()
+}}
+>
+LOGOUT
+</button>
+</div>
+</div>
+
+<button
+className="musicBtn"
+onClick={()=>{
+if(audioRef.current.paused){
+audioRef.current.play()
+}else{
+audioRef.current.pause()
+}
+}}
+>
+MUSIC
+</button>
+
+<div className="hud">
+<div>💰 MONEY: $52,000,000</div>
+<div>👥 ONLINE: 147</div>
+<div>⚔ WARS: 6</div>
+<div>🏆 LEVEL: TOP RP</div>
+</div>
+
+<div className="container">
+<Routes>
+<Route path="/" element={<Dashboard />} />
+</Routes>
+</div>
+</>
+)
 }
