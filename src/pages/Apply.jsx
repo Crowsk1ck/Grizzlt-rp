@@ -9,45 +9,106 @@ const [reason,setReason] = useState('')
 
 const sendApplication = async()=>{
 
-await fetch(import.meta.env.VITE_DISCORD_WEBHOOK,{
+if(!nick || !discord || !telegram || !reason){
+alert('Заповни всі поля')
+return
+}
+
+await fetch(
+'https://discord.com/api/webhooks/ТВОЙ_WEBHOOK',
+{
 method:'POST',
-headers:{'Content-Type':'application/json'},
+headers:{
+'Content-Type':'application/json'
+},
 body:JSON.stringify({
 content:
-`Nick: ${nick}
-Discord: ${discord}
-Telegram: ${telegram}
+`🔥 НОВА ЗАЯВКА
 
-Причина:
+👤 Nick:
+${nick}
+
+🎮 Discord:
+${discord}
+
+📱 Telegram:
+${telegram}
+
+📝 Причина:
 ${reason}`
 })
-})
+}
+)
 
 localStorage.setItem('application_sent','true')
 
-alert('Заявка отправлена')
+alert('Заявка відправлена')
 
 window.location.href='/'
 
 }
 
 return(
+
 <>
-<h1 className="title">Заявка</h1>
 
-<div className="card">
+<div className="applyHero">
 
-<input placeholder="Nick" value={nick} onChange={e=>setNick(e.target.value)} />
-<input placeholder="Discord" value={discord} onChange={e=>setDiscord(e.target.value)} />
-<input placeholder="Telegram" value={telegram} onChange={e=>setTelegram(e.target.value)} />
+<h1 className="applyTitle">
+JOIN GRIZZLY FAMILY
+</h1>
 
-<textarea placeholder="Причина" value={reason} onChange={e=>setReason(e.target.value)}></textarea>
+<p className="applyText">
+ELITE GTA 5 ROLEPLAY ORGANIZATION
+</p>
 
-<button className="btn" style={{marginTop:'16px'}} onClick={sendApplication}>
-ОТПРАВИТЬ ЗАЯВКУ
+</div>
+
+<div className="applyCard">
+
+<div className="sectionTitle">
+ЗАЯВКА В СІМʼЮ
+</div>
+
+<input
+className="input"
+placeholder="👤 Nick Name"
+value={nick}
+onChange={e=>setNick(e.target.value)}
+/>
+
+<input
+className="input"
+placeholder="🎮 Discord"
+value={discord}
+onChange={e=>setDiscord(e.target.value)}
+/>
+
+<input
+className="input"
+placeholder="📱 Telegram"
+value={telegram}
+onChange={e=>setTelegram(e.target.value)}
+/>
+
+<textarea
+className="input applyTextarea"
+placeholder="📝 Чому хочеш вступити?"
+value={reason}
+onChange={e=>setReason(e.target.value)}
+></textarea>
+
+<button
+className="applyBtn"
+onClick={sendApplication}
+>
+ВІДПРАВИТИ ЗАЯВКУ
 </button>
 
 </div>
+
 </>
+
 )
+
 }
