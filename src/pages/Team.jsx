@@ -65,7 +65,7 @@ className="teamCard"
 >
 
 <img
-src={m.avatar}
+src={`https://cdn.discordapp.com/avatars/${m.id}/${m.avatar}.png`}
 className="teamAvatar"
 />
 
