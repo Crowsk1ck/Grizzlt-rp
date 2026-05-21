@@ -6,19 +6,12 @@ const [nick,setNick] = useState('')
 const [discord,setDiscord] = useState('')
 const [telegram,setTelegram] = useState('')
 const [reason,setReason] = useState('')
-const [loading,setLoading] = useState(false)
 
-const sendApplication = async () => {
-
-try{
-
-setLoading(true)
+const sendApplication = async()=>{
 
 await fetch(import.meta.env.VITE_DISCORD_WEBHOOK,{
 method:'POST',
-headers:{
-'Content-Type':'application/json'
-},
+headers:{'Content-Type':'application/json'},
 body:JSON.stringify({
 content:
 `Nick: ${nick}
@@ -36,16 +29,6 @@ alert('Заявка отправлена')
 
 window.location.href='/'
 
-}catch(e){
-
-alert('Webhook error')
-
-}finally{
-
-setLoading(false)
-
-}
-
 }
 
 return(
@@ -54,37 +37,14 @@ return(
 
 <div className="card">
 
-<input
-placeholder="Nick"
-value={nick}
-onChange={e=>setNick(e.target.value)}
-/>
+<input placeholder="Nick" value={nick} onChange={e=>setNick(e.target.value)} />
+<input placeholder="Discord" value={discord} onChange={e=>setDiscord(e.target.value)} />
+<input placeholder="Telegram" value={telegram} onChange={e=>setTelegram(e.target.value)} />
 
-<input
-placeholder="Discord"
-value={discord}
-onChange={e=>setDiscord(e.target.value)}
-/>
+<textarea placeholder="Причина" value={reason} onChange={e=>setReason(e.target.value)}></textarea>
 
-<input
-placeholder="Telegram"
-value={telegram}
-onChange={e=>setTelegram(e.target.value)}
-/>
-
-<textarea
-placeholder="Причина"
-value={reason}
-onChange={e=>setReason(e.target.value)}
-></textarea>
-
-<button
-className="btn"
-onClick={sendApplication}
-disabled={loading}
-style={{marginTop:'16px'}}
->
-{loading ? 'Отправка...' : 'ОТПРАВИТЬ ЗАЯВКУ'}
+<button className="btn" style={{marginTop:'16px'}} onClick={sendApplication}>
+ОТПРАВИТЬ ЗАЯВКУ
 </button>
 
 </div>

@@ -18,29 +18,25 @@ const [title,setTitle] = useState('')
 const [amount,setAmount] = useState('')
 const [startedBy,setStartedBy] = useState('')
 const [members,setMembers] = useState('')
-
 const [contracts,setContracts] = useState([])
 
 const loadContracts = async()=>{
 
-const currentMonth = new Date().getMonth()
-const currentYear = new Date().getFullYear()
-
 const q = query(
 collection(db,'contracts'),
-where('month','==',currentMonth),
-where('year','==',currentYear),
+where('month','==',new Date().getMonth()),
+where('year','==',new Date().getFullYear()),
 orderBy('created','desc')
 )
 
 const snapshot = await getDocs(q)
 
-const arr = []
+const arr=[]
 
-snapshot.forEach(docu=>{
+snapshot.forEach(d=>{
 arr.push({
-id:docu.id,
-...docu.data()
+id:d.id,
+...d.data()
 })
 })
 
@@ -54,33 +50,19 @@ loadContracts()
 
 const sendContract = async()=>{
 
-if(!title || !amount || !members || !startedBy){
-alert('Заповни всі поля')
-return
-}
-
 const membersCount =
-members
-.split('.')
-.filter(x=>x.trim()!=='')
-.length
+members.split('.').filter(x=>x.trim()!=='').length
 
 await addDoc(collection(db,'contracts'),{
-
 title,
 amount:Number(amount.replace(/\D/g,'')),
 members,
 startedBy,
 membersCount,
-
 created:Date.now(),
-
 month:new Date().getMonth(),
 year:new Date().getFullYear()
-
 })
-
-alert('Контракт додано')
 
 setTitle('')
 setAmount('')
@@ -108,84 +90,42 @@ loadContracts()
 
 }
 
-const contractsCount = contracts.length
-
-const membersAverage =
-contractsCount > 0
-? Math.floor(
-contracts.reduce((a,b)=>a+b.membersCount,0)
-/ contractsCount
-)
-: 0
-
 const totalIncome =
 contracts.reduce((a,b)=>a+b.amount,0)
 
-const netIncome =
-Math.floor(totalIncome * 0.84)
-
 return(
-<div className="wrapper">
-
-<div className="title">
-GRIZZLY PANEL
-</div>
+<>
+<h1 className="title">GRIZZLY PANEL</h1>
 
 <div className="dashboard">
 
 <div className="panel">
 
-<div className="panelTitle">
+<div className="title" style={{fontSize:'30px'}}>
 ДОДАТИ КОНТРАКТ
 </div>
 
-<input
-className="input"
-placeholder="📄 Назва контракту"
-value={title}
-onChange={e=>setTitle(e.target.value)}
-/>
+<input className="input" placeholder="📄 Назва контракту" value={title} onChange={e=>setTitle(e.target.value)} />
 
 <div className="double">
 
-<input
-className="input"
-placeholder="💰 Сума"
-value={amount}
-onChange={e=>setAmount(e.target.value)}
-/>
+<input className="input" placeholder="💰 Сума" value={amount} onChange={e=>setAmount(e.target.value)} />
 
-<input
-className="input"
-placeholder="👑 Хто почав контракт"
-value={startedBy}
-onChange={e=>setStartedBy(e.target.value)}
-/>
+<input className="input" placeholder="👑 Хто почав контракт" value={startedBy} onChange={e=>setStartedBy(e.target.value)} />
 
 </div>
 
-<input
-className="input"
-placeholder="👥 Учасники через крапку"
-value={members}
-onChange={e=>setMembers(e.target.value)}
-/>
+<input className="input" placeholder="👥 Учасники через крапку" value={members} onChange={e=>setMembers(e.target.value)} />
 
-<div className="infoBlock">
+<div className="infoBox">
 Учасників розділяй крапкою.
 </div>
 
-<button
-className="btn"
-onClick={sendContract}
->
+<button className="btn" onClick={sendContract}>
 ДОДАТИ КОНТРАКТ
 </button>
 
-<button
-className="btn btnDark"
-onClick={clearPanel}
->
+<button className="btn" style={{background:'#222'}} onClick={clearPanel}>
 ОЧИСТИТИ ПАНЕЛЬ
 </button>
 
@@ -193,20 +133,15 @@ onClick={clearPanel}
 
 <div className="panel">
 
-<div className="panelTitle">
+<div className="title" style={{fontSize:'30px'}}>
 СТАТИСТИКА
 </div>
 
 <div className="statGrid">
 
 <div className="stat">
-<h2>{contractsCount}</h2>
+<h2>{contracts.length}</h2>
 <p>КОНТРАКТІВ</p>
-</div>
-
-<div className="stat">
-<h2>{membersAverage}</h2>
-<p>СЕРЕДНЯ КІЛЬКІСТЬ УЧАСНИКІВ</p>
 </div>
 
 <div className="stat">
@@ -215,78 +150,51 @@ onClick={clearPanel}
 </div>
 
 <div className="stat">
-<h2>${netIncome.toLocaleString()}</h2>
+<h2>${Math.floor(totalIncome*0.84).toLocaleString()}</h2>
 <p>ЧИСТИЙ ДОХІД</p>
 </div>
 
+<div className="stat">
+<h2>{contracts.length>0?Math.floor(contracts.reduce((a,b)=>a+b.membersCount,0)/contracts.length):0}</h2>
+<p>СЕРЕДНЯ КІЛЬКІСТЬ УЧАСНИКІВ</p>
 </div>
 
-<div className="table">
+</div>
 
 <div className="row rowHeader">
-
-<div>
-КОНТРАКТ
-</div>
-
-<div>
-УЧАСНИКИ
-</div>
-
-<div>
-ДОХІД
-</div>
-
+<div>КОНТРАКТ</div>
+<div>УЧАСНИКИ</div>
+<div>ДОХІД</div>
 </div>
 
 {contracts.map(c=>(
-
-<div
-className="row"
-key={c.id}
->
+<div className="row" key={c.id}>
 
 <div>
-
 {c.title}
 
 <br/><br/>
 
-<span style={{
-color:'#999',
-fontSize:'14px',
-lineHeight:'1.7'
-}}>
-
+<span style={{color:'#999',fontSize:'14px',lineHeight:'1.7'}}>
 👑 {c.startedBy}
-
 <br/>
-
 👥 {c.members}
-
 </span>
 
 </div>
 
-<div>
-{c.membersCount}
-</div>
+<div>{c.membersCount}</div>
 
 <div className="green">
 ${c.amount}
 </div>
 
 </div>
-
 ))}
 
 </div>
 
 </div>
-
-</div>
-
-</div>
+</>
 )
-
 }
