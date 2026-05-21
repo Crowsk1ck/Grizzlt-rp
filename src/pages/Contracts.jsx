@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react'
 
 import {
@@ -21,6 +20,8 @@ const [contracts,setContracts] = useState([])
 
 const loadContracts = async()=>{
 
+try{
+
 const q = query(
 collection(db,'contracts')
 )
@@ -40,6 +41,13 @@ setContracts(
 arr.sort((a,b)=>b.created-a.created)
 )
 
+}catch(err){
+
+console.log(err)
+alert('ПОМИЛКА ЗАГРУЗКИ CONTRACTS')
+
+}
+
 }
 
 useEffect(()=>{
@@ -50,19 +58,33 @@ const sendContract = async()=>{
 
 try{
 
+console.log('SEND START')
+
+if(!title || !amount || !startedBy || !members){
+alert('Заповни всі поля')
+return
+}
+
 const membersCount =
-members.split('.').filter(x=>x.trim()!=='').length
+members
+.split('.')
+.filter(x=>x.trim()!=='')
+.length
 
 await addDoc(collection(db,'contracts'),{
+
 title,
 amount:Number(amount.replace(/\D/g,'')),
 members,
 startedBy,
 membersCount,
 created:Date.now()
+
 })
 
-await fetch('https://discord.com/api/webhooks/1505926641015328859/qqxDO6ncDEcjOu-2TfuA5VfRIq4V4VkBIaMGh5o51RM33RI0CUVDPZZ8pykQ_cnhNsj0',{
+await fetch(
+'https://discord.com/api/webhooks/1506424883737788619/yATAISypU22ZWVvhRKMsSeSZT1l7bghWRvPSoLaERM8tdj1Wx70JXq4QU2DjYwiHC72F',
+{
 method:'POST',
 headers:{
 'Content-Type':'application/json'
@@ -79,7 +101,8 @@ content:
 
 👥 ${members}`
 })
-})
+}
+)
 
 setTitle('')
 setAmount('')
@@ -90,7 +113,7 @@ setTimeout(()=>{
 loadContracts()
 },500)
 
-alert('Контракт додано')
+alert('КОНТРАКТ ДОДАНО')
 
 }catch(err){
 
@@ -103,6 +126,8 @@ alert('ПОМИЛКА CONTRACTS')
 }
 
 const clearPanel = async()=>{
+
+try{
 
 const password = prompt('Введи пароль')
 
@@ -117,6 +142,12 @@ await deleteDoc(doc(db,'contracts',c.id))
 
 loadContracts()
 
+}catch(err){
+
+console.log(err)
+
+}
+
 }
 
 const totalIncome =
@@ -124,13 +155,18 @@ contracts.reduce((a,b)=>a+b.amount,0)
 
 return(
 <>
-<h1 className="title">GRIZZLY PANEL</h1>
+<h1 className="title">
+GRIZZLY PANEL
+</h1>
 
 <div className="dashboard">
 
 <div className="panel">
 
-<div className="title" style={{fontSize:'30px'}}>
+<div
+className="title"
+style={{fontSize:'30px'}}
+>
 ДОДАТИ КОНТРАКТ
 </div>
 
@@ -170,7 +206,13 @@ onChange={e=>setMembers(e.target.value)}
 Учасників розділяй крапкою.
 </div>
 
-<button className="btn" onClick={sendContract}>
+<button
+className="btn"
+onClick={()=>{
+alert('BUTTON WORK')
+sendContract()
+}}
+>
 ДОДАТИ КОНТРАКТ
 </button>
 
@@ -186,7 +228,10 @@ onClick={clearPanel}
 
 <div className="panel">
 
-<div className="title" style={{fontSize:'30px'}}>
+<div
+className="title"
+style={{fontSize:'30px'}}
+>
 СТАТИСТИКА
 </div>
 
@@ -203,37 +248,53 @@ onClick={clearPanel}
 </div>
 
 <div className="stat">
-<h2>${Math.floor(totalIncome*0.84).toLocaleString()}</h2>
+<h2>
+${Math.floor(totalIncome*0.84).toLocaleString()}
+</h2>
 <p>ЧИСТИЙ ДОХІД</p>
 </div>
 
 <div className="stat">
-<h2>{
+<h2>
+{
 contracts.length>0
 ? Math.floor(
 contracts.reduce((a,b)=>a+b.membersCount,0)
 / contracts.length
 )
 :0
-}</h2>
+}
+</h2>
 
-<p>СЕРЕДНЯ КІЛЬКІСТЬ УЧАСНИКІВ</p>
+<p>
+СЕРЕДНЯ КІЛЬКІСТЬ УЧАСНИКІВ
+</p>
+
 </div>
 
 </div>
 
 <div className="row rowHeader">
 
-<div>КОНТРАКТ</div>
+<div>
+КОНТРАКТ
+</div>
 
-<div>УЧАСНИКИ</div>
+<div>
+УЧАСНИКИ
+</div>
 
-<div>ДОХІД</div>
+<div>
+ДОХІД
+</div>
 
 </div>
 
 {contracts.map(c=>(
-<div className="row" key={c.id}>
+<div
+className="row"
+key={c.id}
+>
 
 <div>
 
