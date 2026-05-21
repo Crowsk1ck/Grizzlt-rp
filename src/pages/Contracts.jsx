@@ -62,12 +62,33 @@ month:new Date().getMonth(),
 year:new Date().getFullYear()
 })
 
+await fetch(import.meta.env.VITE_DISCORD_WEBHOOK,{
+method:'POST',
+headers:{
+'Content-Type':'application/json'
+},
+body:JSON.stringify({
+content:
+`🔥 НОВИЙ КОНТРАКТ
+
+📄 ${title}
+
+💰 ${amount}
+
+👑 ${startedBy}
+
+👥 ${members}`
+})
+})
+
 setTitle('')
 setAmount('')
 setStartedBy('')
 setMembers('')
 
+setTimeout(()=>{
 loadContracts()
+},500)
 
 }
 
@@ -103,17 +124,37 @@ return(
 ДОДАТИ КОНТРАКТ
 </div>
 
-<input className="input" placeholder="📄 Назва контракту" value={title} onChange={e=>setTitle(e.target.value)} />
+<input
+className="input"
+placeholder="📄 Назва контракту"
+value={title}
+onChange={e=>setTitle(e.target.value)}
+/>
 
 <div className="double">
 
-<input className="input" placeholder="💰 Сума" value={amount} onChange={e=>setAmount(e.target.value)} />
+<input
+className="input"
+placeholder="💰 Сума"
+value={amount}
+onChange={e=>setAmount(e.target.value)}
+/>
 
-<input className="input" placeholder="👑 Хто почав контракт" value={startedBy} onChange={e=>setStartedBy(e.target.value)} />
+<input
+className="input"
+placeholder="👑 Хто почав контракт"
+value={startedBy}
+onChange={e=>setStartedBy(e.target.value)}
+/>
 
 </div>
 
-<input className="input" placeholder="👥 Учасники через крапку" value={members} onChange={e=>setMembers(e.target.value)} />
+<input
+className="input"
+placeholder="👥 Учасники через крапку"
+value={members}
+onChange={e=>setMembers(e.target.value)}
+/>
 
 <div className="infoBox">
 Учасників розділяй крапкою.
@@ -123,7 +164,11 @@ return(
 ДОДАТИ КОНТРАКТ
 </button>
 
-<button className="btn" style={{background:'#222'}} onClick={clearPanel}>
+<button
+className="btn"
+style={{background:'#222'}}
+onClick={clearPanel}
+>
 ОЧИСТИТИ ПАНЕЛЬ
 </button>
 
@@ -153,35 +198,58 @@ return(
 </div>
 
 <div className="stat">
-<h2>{contracts.length>0?Math.floor(contracts.reduce((a,b)=>a+b.membersCount,0)/contracts.length):0}</h2>
+<h2>{
+contracts.length>0
+? Math.floor(
+contracts.reduce((a,b)=>a+b.membersCount,0)
+/ contracts.length
+)
+:0
+}</h2>
+
 <p>СЕРЕДНЯ КІЛЬКІСТЬ УЧАСНИКІВ</p>
 </div>
 
 </div>
 
 <div className="row rowHeader">
+
 <div>КОНТРАКТ</div>
+
 <div>УЧАСНИКИ</div>
+
 <div>ДОХІД</div>
+
 </div>
 
 {contracts.map(c=>(
 <div className="row" key={c.id}>
 
 <div>
+
 {c.title}
 
 <br/><br/>
 
-<span style={{color:'#999',fontSize:'14px',lineHeight:'1.7'}}>
+<span style={{
+color:'#999',
+fontSize:'14px',
+lineHeight:'1.7'
+}}>
+
 👑 {c.startedBy}
+
 <br/>
+
 👥 {c.members}
+
 </span>
 
 </div>
 
-<div>{c.membersCount}</div>
+<div>
+{c.membersCount}
+</div>
 
 <div className="green">
 ${c.amount}
@@ -193,6 +261,9 @@ ${c.amount}
 </div>
 
 </div>
+
+</div>
 </>
 )
+
 }
