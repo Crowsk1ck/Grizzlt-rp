@@ -283,64 +283,6 @@ contracts.reduce((a,b)=>a+b.membersCount,0)
 
 </div>
 
-<div className="row rowHeader">
-
-<div>
-КОНТРАКТ
-</div>
-
-<div>
-УЧАСНИКИ
-</div>
-
-<div>
-ДОХІД
-</div>
-
-</div>
-
-{contracts.map(c=>(
-<div
-className="row"
-key={c.id}
->
-
-<div>
-
-{c.title}
-
-<br/><br/>
-
-<span style={{
-color:'#999',
-fontSize:'14px',
-lineHeight:'1.7'
-}}>
-
-👑 {c.startedBy}
-
-<br/>
-
-👥 {c.members}
-
-</span>
-
-</div>
-
-<div>
-{c.membersCount}
-</div>
-
-<div className="green">
-${c.amount}
-</div>
-
-</div>
-))}
-
-</div>
-
-</div>
 <div className="panel" style={{marginTop:'25px'}}>
 
 <div
@@ -360,21 +302,36 @@ marginTop:'20px'
 >
 
 {
-[...contracts]
-.sort((a,b)=>b.amount-a.amount)
-.slice(0,5)
-.map((c,index)=>(
+Object.entries(
+
+contracts.reduce((acc,c)=>{
+
+if(!acc[c.startedBy]){
+acc[c.startedBy]=0
+}
+
+acc[c.startedBy]+=1
+
+return acc
+
+},{})
+
+)
+.sort((a,b)=>b[1]-a[1])
+.slice(0,10)
+.map(([name,count],index)=>(
 
 <div
 key={index}
 className="stat"
 style={{
-padding:'20px'
+padding:'20px',
+textAlign:'center'
 }}
 >
 
 <h2 style={{
-marginBottom:'10px'
+marginBottom:'15px'
 }}>
 #{index+1}
 </h2>
@@ -382,25 +339,18 @@ marginBottom:'10px'
 <div style={{
 color:'#ff0055',
 fontWeight:'700',
-fontSize:'20px',
+fontSize:'22px',
 marginBottom:'10px'
 }}>
-{c.startedBy}
+{name}
 </div>
 
 <div style={{
-color:'#999',
-lineHeight:'1.8'
+color:'#00ff99',
+fontSize:'20px',
+fontWeight:'700'
 }}>
-📄 {c.title}
-
-<br/>
-
-💰 ${c.amount}
-
-<br/>
-
-👥 {c.membersCount} учасників
+{count} контрактів
 </div>
 
 </div>
@@ -426,11 +376,24 @@ return
 }
 
 const text =
-[...contracts]
-.sort((a,b)=>b.amount-a.amount)
-.slice(0,10)
-.map((c,index)=>
-`${index+1}. ${c.startedBy} — $${c.amount}`
+Object.entries(
+
+contracts.reduce((acc,c)=>{
+
+if(!acc[c.startedBy]){
+acc[c.startedBy]=0
+}
+
+acc[c.startedBy]+=1
+
+return acc
+
+},{})
+
+)
+.sort((a,b)=>b[1]-a[1])
+.map(([name,count],index)=>
+`${index+1}. ${name} — ${count} контрактів`
 )
 .join('\n')
 
