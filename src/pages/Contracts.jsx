@@ -203,8 +203,21 @@ onChange={e=>setMembers(e.target.value)}
 Учасників розділяй крапкою.
 </div>
 
+<div
+style={{
+display:'flex',
+gap:'10px',
+marginTop:'15px',
+flexWrap:'wrap'
+}}
+>
+
 <button
 className="btn"
+style={{
+flex:1,
+minWidth:'180px'
+}}
 onClick={sendContract}
 >
 ДОДАТИ КОНТРАКТ
@@ -212,11 +225,17 @@ onClick={sendContract}
 
 <button
 className="btn"
-style={{background:'#222'}}
+style={{
+background:'#222',
+flex:1,
+minWidth:'180px'
+}}
 onClick={clearPanel}
 >
 ОЧИСТИТИ ПАНЕЛЬ
 </button>
+
+</div>
 
 </div>
 
