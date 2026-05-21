@@ -199,9 +199,6 @@ value={members}
 onChange={e=>setMembers(e.target.value)}
 />
 
-<div className="infoBox">
-</div>
-
 <div
 style={{
 display:'flex',
