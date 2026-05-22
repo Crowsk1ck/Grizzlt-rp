@@ -562,29 +562,23 @@ margin-top:12px;
 
 position:fixed;
 
-top:18px;
+top:14px;
 right:18px;
 
 display:flex;
 align-items:center;
-gap:14px;
+gap:10px;
 
-padding:14px;
+padding:8px 12px;
 
-background:rgba(15,15,15,.92);
+background:#111;
 
-border:1px solid rgba(255,0,85,.18);
+border-radius:16px;
 
-border-radius:24px;
-
-backdrop-filter:blur(18px);
+border:1px solid rgba(255,0,85,.15);
 
 z-index:9999;
 
-box-shadow:
-0 0 30px rgba(0,0,0,.35);
-
-transition:.3s;
 }
 
 .userBox:hover{
@@ -600,8 +594,8 @@ box-shadow:
 
 .userAvatar{
 
-width:64px;
-height:64px;
+width:48px;
+height:48px;
 
 border-radius:50%;
 
@@ -609,54 +603,49 @@ object-fit:cover;
 
 border:2px solid #ff0055;
 
-box-shadow:
-0 0 20px rgba(255,0,85,.35);
-
 }
 
 .userInfo{
 
 display:flex;
-flex-direction:column;
-gap:8px;
+align-items:center;
+gap:12px;
 
 }
 
 .userName{
 
-font-size:22px;
-font-weight:800;
+font-size:15px;
+font-weight:700;
 
 color:white;
-
-white-space:nowrap;
 
 }
 
 .logoutBtn{
 
-height:42px;
+height:40px;
 
-padding:0 20px;
+padding:0 18px;
 
 border:none;
 
-border-radius:14px;
+border-radius:12px;
 
-background:linear-gradient(
-135deg,
-#ff0055,
-#ff3377
-);
+background:#ff0055;
 
 color:white;
 
-font-size:13px;
+font-size:12px;
 font-weight:800;
 
 cursor:pointer;
 
 transition:.25s;
+
+display:flex;
+align-items:center;
+justify-content:center;
 
 }
 
@@ -673,51 +662,103 @@ box-shadow:
 
 .userBox{
 
-top:10px;
-right:10px;
+position:fixed;
 
-padding:10px;
+top:14px;
+right:18px;
 
+display:flex;
+align-items:center;
 gap:10px;
+
+padding:8px 12px;
+
+background:#111;
+
+border-radius:16px;
+
+border:1px solid rgba(255,0,85,.15);
+
+z-index:9999;
 
 }
 
 .userAvatar{
 
-width:50px;
-height:50px;
+width:48px;
+height:48px;
+
+border-radius:50%;
+
+object-fit:cover;
+
+border:2px solid #ff0055;
 
 }
 
 .userName{
 
-font-size:16px;
+font-size:15px;
+font-weight:700;
 
-}
-
-.logoutBtn{
-
-height:36px;
-
-padding:0 14px;
-
-font-size:11px;
-
-}
-
-}
-
-.logoutBtn{
-height:42px;
-padding:0 20px;
-border:none;
-border-radius:14px;
-background:linear-gradient(135deg,#ff0055,#ff3377);
 color:white;
-font-size:13px;
+
+}
+
+.logoutBtn{
+
+height:40px;
+
+padding:0 18px;
+
+border:none;
+
+border-radius:12px;
+
+background:#ff0055;
+
+color:white;
+
+font-size:12px;
 font-weight:800;
+
 cursor:pointer;
+
 transition:.25s;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+}
+
+}
+
+.logoutBtn{
+
+height:40px;
+
+padding:0 18px;
+
+border:none;
+
+border-radius:12px;
+
+background:#ff0055;
+
+color:white;
+
+font-size:12px;
+font-weight:800;
+
+cursor:pointer;
+
+transition:.25s;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
 }
 
 .logoutBtn:hover{
