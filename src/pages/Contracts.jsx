@@ -516,19 +516,9 @@ ${c.amount}
 </div>
 
 <div
-style={{
-display:'grid',
-gridTemplateColumns:'1fr 1.2fr',
-gap:'25px',
-marginTop:'25px',
-alignItems:'start'
-}}
->
-
-<div
 className="panel"
 style={{
-width:'100%'
+marginTop:'25px'
 }}
 >
 
@@ -636,10 +626,6 @@ ${familyCut.toLocaleString()}
 
 })
 }
-
-</div>
-
-<div></div>
 
 </div>
 
