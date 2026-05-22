@@ -41,19 +41,8 @@ id:d.id,
 })
 })
 
-const resetTime =
-localStorage.getItem('contracts_reset')
-
-const filtered = arr.filter(c=>{
-
-if(!resetTime) return true
-
-return c.created > Number(resetTime)
-
-})
-
 setContracts(
-filtered.sort((a,b)=>b.created-a.created)
+arr.sort((a,b)=>b.created-a.created)
 )
 
 }catch(err){
@@ -114,13 +103,9 @@ description:'GRIZZLY FAMILY CONTRACT SYSTEM',
 color:0xff0055,
 
 author:{
-
-name:user?.username || startedBy,
-
-icon_url:user?.avatar
-? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`
-: 'https://cdn.discordapp.com/embed/avatars/0.png'
-
+name:user.username,
+icon_url:
+`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`
 },
 
 fields:[
@@ -155,7 +140,7 @@ footer:{
 text:'GRIZZLY FAMILY • CONTRACT LOGS'
 },
 
-timestamp:new Date().toISOString()
+timestamp:new Date()
 
 }
 
@@ -213,22 +198,6 @@ console.log(err)
 
 const totalIncome =
 contracts.reduce((a,b)=>a+b.amount,0)
-
-const hiddenIncome =
-Number(
-localStorage.getItem('hidden_income') || 0
-)
-
-const visibleIncome =
-Math.max(0,totalIncome - hiddenIncome)
-
-const cleanIncome =
-Math.floor(visibleIncome * 0.84)
-
-localStorage.setItem(
-'clean_income',
-cleanIncome
-)
 
 return(
 <>
@@ -289,46 +258,11 @@ onChange={e=>setMembers(e.target.value)}
 
 <div
 style={{
-marginTop:'14px',
-padding:'14px 16px',
-background:'rgba(255,255,255,.03)',
-border:'1px solid rgba(255,0,85,.12)',
-borderRadius:'14px',
-fontSize:'14px',
-color:'#aaa',
-lineHeight:'1.7'
+marginTop:'10px',
+color:'#999',
+fontSize:'14px'
 }}
 >
-
-<span style={{
-color:'#ff0055',
-fontWeight:'700'
-}}>
-ℹ Учасників пишемо через кому
-</span>
-
-<br/>
-
-<span style={{
-color:'#666'
-}}>
-Приклад:
-</span>
-
-<br/>
-
-<span style={{
-color:'#fff'
-}}>
-Andrii Grizzly, Maryana, Ghost
-</span>
-
-<br/><br/>
-
-<span style={{
-color:'#00ff99',
-fontWeight:'700'
-}}>
 Кількість учасників:
 {
 members
@@ -336,8 +270,6 @@ members
 .filter(x=>x.trim()!=='')
 .length
 }
-</span>
-
 </div>
 
 <div
@@ -403,7 +335,7 @@ style={{fontSize:'30px'}}
 </div>
 
 <div className="stat">
-<h2>${visibleIncome.toLocaleString()}</h2>
+<h2>${totalIncome.toLocaleString()}</h2>
 <p>ЗАГАЛЬНИЙ ДОХІД</p>
 </div>
 
