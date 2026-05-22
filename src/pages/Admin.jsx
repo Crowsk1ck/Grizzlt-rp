@@ -1,14 +1,14 @@
+import { ref, remove } from 'firebase/database'
+import { db } from '../firebase'
+
 export default function Admin(){
 
 const password = prompt('ADMIN PASSWORD')
   
-import { ref, remove } from 'firebase/database'
-import { db } from '../firebase'
-  
 if(password !== 'grizzlyadmin'){
 return <h1 className="title">ACCESS DENIED</h1>
 }
-
+  
 return(
 
 <>
