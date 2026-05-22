@@ -1,54 +1,44 @@
+import { useEffect, useState } from 'react'
+import {
+db,
+collection,
+getDocs
+} from '../services/firebase'
+
 export default function Team(){
 
-const discordUser = JSON.parse(
-localStorage.getItem('discord_user')
+const [members,setMembers] = useState([])
+
+const loadTeam = async()=>{
+
+try{
+
+const snapshot = await getDocs(
+collection(db,'team')
 )
 
-const members = [
+const arr=[]
 
-{
-name:'Andrii Grizzly',
-role:'OWNER',
-id: discordUser?.id || '511272056021581835',
-avatar: discordUser?.avatar || null
-},
+snapshot.forEach(doc=>{
+arr.push({
+id:doc.id,
+...doc.data()
+})
+})
 
-{
-name:'Maryana Grizzly',
-role:'CO-OWNER',
-id:'1053785420351148132',
-avatar:null
-},
+setMembers(arr)
 
-{
-name:'Oleg Grizzly',
-role:'LEADER',
-  id:'386594804722827265',
-avatar:null
-},
+}catch(err){
 
-{
-name:'Нету',
-role:'WAR MANAGER',
-id:'DISCORD_ID',
-avatar:null
-},
+console.log(err)
 
-{
-name:'Нету',
-role:'BUSINESS',
-id:'DISCORD_ID',
-avatar:null
-},
-
-{
-name:'Нету',
-role:'EVENTS',
-id:'DISCORD_ID',
-avatar:null
 }
 
-]
+}
+
+useEffect(()=>{
+loadTeam()
+},[])
 
 return(
 
@@ -71,10 +61,11 @@ className="teamCard"
 <img
 src={
 m.avatar
-? `https://cdn.discordapp.com/avatars/${m.id}/${m.avatar}.png`
+? `https://cdn.discordapp.com/avatars/${m.discordId}/${m.avatar}.png`
 : `https://ui-avatars.com/api/?name=${encodeURIComponent(m.name)}&background=111111&color=ff0066&size=256`
 }
 className="teamAvatar"
+alt={m.name}
 />
 
 <div className="teamName">
@@ -87,9 +78,13 @@ className="teamAvatar"
 
 <div className="teamButtons">
 
-<button className="teamBtn">
+<a
+href={`https://discord.com/users/${m.discordId}`}
+target="_blank"
+className="teamBtn"
+>
 Профіль
-</button>
+</a>
 
 </div>
 

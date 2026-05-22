@@ -3,7 +3,8 @@ db,
 collection,
 getDocs,
 deleteDoc,
-doc
+doc,
+addDoc
 } from '../services/firebase'
 
 export default function Admin(){
@@ -212,6 +213,47 @@ alert('ERROR WEEKLY REPORT')
 }
 
 }
+
+
+const addTeamMember = async()=>{
+
+try{
+
+const name = prompt('NICKNAME')
+if(!name) return
+
+const role = prompt('ROLE')
+if(!role) return
+
+const discordId = prompt('DISCORD ID')
+if(!discordId) return
+
+const avatar = prompt('DISCORD AVATAR HASH')
+
+await addDoc(
+collection(db,'team'),
+{
+name,
+role,
+discordId,
+avatar: avatar || '',
+created: Date.now()
+}
+)
+
+alert('TEAM MEMBER ADDED')
+
+}catch(err){
+
+console.log(err)
+
+alert('ERROR TEAM MEMBER')
+
+}
+
+}
+
+
 const password = prompt('ADMIN PASSWORD')
 
 if(password !== 'grizzlyadmin'){
@@ -262,6 +304,13 @@ className="adminBtn"
 onClick={sendWeeklyReport}
 >
 Тижневий звіт
+</button>
+
+<button
+className="adminBtn"
+onClick={addTeamMember}
+>
+ADD TEAM MEMBER
 </button>
 
 </div>
