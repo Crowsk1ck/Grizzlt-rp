@@ -371,7 +371,7 @@ cleanIncome - totalExpenses
 
 
 return(
-<>
+<div>
 <h1 className="title">
 GRIZZLY PANEL
 </h1>
@@ -855,7 +855,8 @@ ${c.amount}
 
 </div>
 
-</>
+</div>
 
 )
 }
+ 
