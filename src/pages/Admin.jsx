@@ -19,6 +19,23 @@ window.location.reload()
 
 }
 
+const resetIncome = ()=>{
+
+const income = prompt(
+'СКІЛЬКИ СКРИТИ ДОХОДУ?'
+)
+
+if(!income) return
+
+localStorage.setItem(
+'hidden_income',
+income
+)
+
+window.location.reload()
+
+}
+
 const clearDatabase = async()=>{
 
 const password = prompt(
@@ -79,8 +96,11 @@ onClick={resetContracts}
 RESET CONTRACTS
 </button>
 
-<button className="adminBtn">
-RESET LEADERBOARD
+<button
+className="adminBtn"
+onClick={resetIncome}
+>
+RESET TOTAL INCOME
 </button>
 
 <button
@@ -98,93 +118,6 @@ window.location.reload()
 >
 SERVER RESTART
 </button>
-
-</div>
-
-</div>
-
-<div className="adminCard">
-
-<div className="adminCardTitle">
-CONTENT
-</div>
-
-<div className="adminButtons">
-
-<button
-className="adminBtn"
-onClick={()=>{
-
-const news = prompt('NEWS TEXT')
-
-if(!news) return
-
-localStorage.setItem(
-'grizzly_news',
-news
-)
-
-alert('News uploaded')
-
-}}
->
-UPLOAD NEWS
-</button>
-
-<button className="adminBtn">
-UPLOAD GALLERY
-</button>
-
-<button
-className="adminBtn"
-onClick={()=>{
-
-const event = prompt('EVENT NAME')
-
-if(!event) return
-
-alert(`EVENT CREATED: ${event}`)
-
-}}
->
-SEND EVENT
-</button>
-
-<button className="adminBtn">
-CREATE POST
-</button>
-
-</div>
-
-</div>
-
-<div className="adminCard">
-
-<div className="adminCardTitle">
-STATISTICS
-</div>
-
-<div className="adminStats">
-
-<div className="adminStat">
-<h2>247</h2>
-<p>MEMBERS</p>
-</div>
-
-<div className="adminStat">
-<h2>19</h2>
-<p>ONLINE</p>
-</div>
-
-<div className="adminStat">
-<h2>152</h2>
-<p>CONTRACTS</p>
-</div>
-
-<div className="adminStat">
-<h2>$8.4M</h2>
-<p>INCOME</p>
-</div>
 
 </div>
 

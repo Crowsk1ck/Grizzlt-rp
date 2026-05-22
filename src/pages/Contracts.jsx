@@ -214,6 +214,14 @@ console.log(err)
 const totalIncome =
 contracts.reduce((a,b)=>a+b.amount,0)
 
+const hiddenIncome =
+Number(
+localStorage.getItem('hidden_income') || 0
+)
+
+const visibleIncome =
+Math.max(0,totalIncome - hiddenIncome)
+
 return(
 <>
 <h1 className="title">
@@ -387,7 +395,7 @@ style={{fontSize:'30px'}}
 </div>
 
 <div className="stat">
-<h2>${totalIncome.toLocaleString()}</h2>
+<h2>${visibleIncome.toLocaleString()}</h2>
 <p>ЗАГАЛЬНИЙ ДОХІД</p>
 </div>
 
