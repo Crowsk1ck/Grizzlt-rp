@@ -249,6 +249,7 @@ return(
 GRIZZLY PANEL
 </h1>
 
+
 <div
 className="dashboard"
 style={{
@@ -259,6 +260,15 @@ alignItems:'start'
 }}
 >
 
+<div
+style={{
+display:'flex',
+flexDirection:'column',
+gap:'25px'
+}}
+>
+
+<div className="panel">
 <div className="panel">
 
 <div
@@ -389,6 +399,9 @@ onClick={clearPanel}
 
 </div>
 
+
+</div>
+
 <div
 className="panel"
 style={{
@@ -516,9 +529,19 @@ ${c.amount}
 </div>
 
 <div
+style={{
+display:'grid',
+gridTemplateColumns:'1fr 1.2fr',
+gap:'25px',
+marginTop:'25px',
+alignItems:'start'
+}}
+>
+
+<div
 className="panel"
 style={{
-marginTop:'25px'
+width:'100%'
 }}
 >
 
@@ -629,6 +652,15 @@ ${familyCut.toLocaleString()}
 
 </div>
 
+<div></div>
+
+</div>
+
+</>
+
+)
+}
+</div>
 </>
 
 )
