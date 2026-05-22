@@ -199,6 +199,38 @@ console.log(err)
 const totalIncome =
 contracts.reduce((a,b)=>a+b.amount,0)
 
+const hiddenIncome =
+Number(
+localStorage.getItem('hidden_income') || 0
+)
+
+const visibleIncome =
+Math.max(0,totalIncome - hiddenIncome)
+
+const cleanIncome =
+Math.floor(visibleIncome * 0.84)
+
+localStorage.setItem(
+'clean_income',
+cleanIncome
+)
+
+const weekIncome =
+contracts
+.filter(c=>{
+
+const weekAgo =
+Date.now() - 7*24*60*60*1000
+
+return c.created > weekAgo
+
+})
+.reduce((a,b)=>a+b.amount,0)
+
+const cleanWeekIncome =
+Math.floor(weekIncome * 0.84)
+
+
 return(
 <>
 <h1 className="title">
@@ -372,15 +404,22 @@ style={{fontSize:'30px'}}
 </div>
 
 <div className="stat">
-<h2>${totalIncome.toLocaleString()}</h2>
+<h2>${visibleIncome.toLocaleString()}</h2>
 <p>ЗАГАЛЬНИЙ ДОХІД</p>
 </div>
 
 <div className="stat">
 <h2>
-${Math.floor(totalIncome*0.84).toLocaleString()}
+${cleanIncome.toLocaleString()}
 </h2>
 <p>ЧИСТИЙ ДОХІД</p>
+</div>
+
+<div className="stat">
+<h2>
+${cleanWeekIncome.toLocaleString()}
+</h2>
+<p>ДОХІД ЗА 7 ДНІВ</p>
 </div>
 
 <div className="stat">
@@ -453,6 +492,104 @@ lineHeight:'1.7'
 
 <div className="green">
 ${c.amount}
+</div>
+
+<div
+style={{
+marginTop:'14px',
+padding:'14px',
+background:'rgba(255,255,255,.03)',
+borderRadius:'14px',
+border:'1px solid rgba(255,0,85,.1)'
+}}
+>
+
+<div
+style={{
+color:'#ff0055',
+fontWeight:'700',
+marginBottom:'10px'
+}}
+>
+💸 CONTRACT PAYOUT
+</div>
+
+{
+c.members
+.split(',')
+.filter(x=>x.trim()!=='')
+.map((member,index)=>{
+
+const membersArray =
+c.members
+.split(',')
+.filter(x=>x.trim()!=='')
+
+const familyCut =
+Math.floor(c.amount * 0.20)
+
+const membersMoney =
+Math.floor(
+(c.amount - familyCut)
+/ membersArray.length
+)
+
+return(
+
+<div
+key={index}
+style={{
+display:'flex',
+justifyContent:'space-between',
+marginBottom:'8px',
+color:'#ccc'
+}}
+>
+
+<span>
+{member}
+</span>
+
+<span style={{
+color:'#00ff99',
+fontWeight:'700'
+}}>
+${membersMoney.toLocaleString()}
+</span>
+
+</div>
+
+)
+
+})
+}
+
+<div
+style={{
+marginTop:'12px',
+paddingTop:'12px',
+borderTop:'1px solid rgba(255,255,255,.08)',
+display:'flex',
+justifyContent:'space-between'
+}}
+>
+
+<span style={{
+color:'#ff0055',
+fontWeight:'700'
+}}>
+GRIZZLY FAMILY
+</span>
+
+<span style={{
+color:'#ff0055',
+fontWeight:'700'
+}}>
+${Math.floor(c.amount*0.20).toLocaleString()}
+</span>
+
+</div>
+
 </div>
 
 </div>
