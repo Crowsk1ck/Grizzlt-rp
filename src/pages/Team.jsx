@@ -65,7 +65,11 @@ className="teamCard"
 >
 
 <img
-src={`https://cdn.discordapp.com/avatars/${m.id}/${m.avatar}.png`}
+src={
+m.avatar !== 'DISCORD_AVATAR_HASH'
+? `https://cdn.discordapp.com/avatars/${m.id}/${m.avatar}.png`
+: `https://ui-avatars.com/api/?name=${encodeURIComponent(m.name)}&background=111111&color=ff0066&size=256`
+}
 className="teamAvatar"
 />
 
