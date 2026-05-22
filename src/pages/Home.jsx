@@ -1,4 +1,39 @@
+import { useEffect, useState } from 'react'
+import {
+db,
+collection,
+getDocs
+} from '../services/firebase'
+
 export default function Home(){
+
+const [contractsCount,setContractsCount] = useState(0)
+const [totalIncome,setTotalIncome] = useState(0)
+
+useEffect(()=>{
+
+const loadStats = async()=>{
+
+const snapshot = await getDocs(
+collection(db,'contracts')
+)
+
+let income = 0
+
+snapshot.forEach(doc=>{
+
+income += doc.data().amount || 0
+
+})
+
+setContractsCount(snapshot.size)
+setTotalIncome(income)
+
+}
+
+loadStats()
+
+},[])
 
 return(
 
@@ -40,12 +75,12 @@ className="heroBtn"
 </div>
 
 <div className="statCard">
-<h2>0</h2>
-<p>Контракти</p>
+<h2>{contractsCount}</h2>
+<p>КОНТРАКТИ</p>
 </div>
 
 <div className="statCard">
-<h2>$0M</h2>
+<h2>${Math.floor(totalIncome/1000000)}M</h2>
 <p>ЗАГАЛЬНИЙ ДОХІД</p>
 </div>
 
