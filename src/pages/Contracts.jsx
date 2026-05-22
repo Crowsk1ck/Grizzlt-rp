@@ -1,934 +1,418 @@
-import { useEffect, useState } from 'react'
- 
-import {
-db,
-collection,
-addDoc,
-getDocs,
-query,
-deleteDoc,
-doc
-} from '../services/firebase'
-
-export default function Contracts(){
-
-const [title,setTitle] = useState('')
-const [amount,setAmount] = useState('')
-const [startedBy,setStartedBy] = useState('')
-const [members,setMembers] = useState('')
-const [contracts,setContracts] = useState([])
-const [expenseTitle,setExpenseTitle] = useState('')
-const [expenseAmount,setExpenseAmount] = useState('')
-const [expenses,setExpenses] = useState([])
-
-const user = JSON.parse(
-localStorage.getItem('user')
-)
-
-const loadContracts = async()=>{
-  
-try{
-
-const q = query(
-collection(db,'contracts')
-)
-
-const snapshot = await getDocs(q)
-
-const arr=[]
-
-snapshot.forEach(d=>{
-arr.push({
-id:d.id,
-...d.data()
-})
-})
-
-setContracts(
-arr.sort((a,b)=>b.created-a.created)
-)
-
-}catch(err){
-
-console.log(err)
-
-}
-
-}
-
-useEffect(()=>{
-loadContracts()
-},[])
-const loadExpenses = async()=>{
-
-try{
-
-const q = query(
-collection(db,'expenses')
-)
-
-const snapshot = await getDocs(q)
-
-const arr=[]
-
-snapshot.forEach(d=>{
-arr.push({
-id:d.id,
-...d.data()
-})
-})
-
-setExpenses(
-arr.sort((a,b)=>b.created-a.created)
-)
-
-}catch(err){
-
-console.log(err)
-
-}
-
-}
-
-useEffect(()=>{
-loadExpenses()
-},[])
-
-const sendExpense = async()=>{
-
-try{
-
-if(!expenseTitle || !expenseAmount){
-alert('Заповни всі поля')
-return
-}
-
-await addDoc(collection(db,'expenses'),{
-
-title:expenseTitle,
-amount:Number(
-String(expenseAmount).replace(/\D/g,'')
-),
-created:Date.now()
-
-})
-
-await fetch(
-'https://discord.com/api/webhooks/1507308549443817484/nosjieOUPp73UTdrGjvMZWjfYCVu6bNsI4JckXSvEkoi0QR20VxnLicnAdTVL17ZWAQe',
-{
-method:'POST',
-headers:{
-'Content-Type':'application/json'
-},
-body:JSON.stringify({
-
-embeds:[{
-
-title:'💸 FAMILY EXPENSE',
-
-color:0xff0055,
-
-fields:[
-
-{
-name:'📄 Назва',
-value:expenseTitle,
-inline:true
-},
-
-{
-name:'💰 Сума',
-value:`$${expenseAmount}`,
-inline:true
-}
-
-],
-
-footer:{
-text:'GRIZZLY FAMILY • EXPENSES'
-},
-
-timestamp:new Date().toISOString()
-
-}]
-
-})
-}
-)
-
-setExpenseTitle('')
-setExpenseAmount('')
-
-setTimeout(()=>{
-loadExpenses()
-},500)
-
-}catch(err){
-
-console.log(err)
-
-}
-
-}
-
-
-const sendContract = async()=>{
-
-try{
-
-if(!title || !amount || !startedBy || !members){
-alert('Заповни всі поля')
-return
-}
-
-const membersCount =
-members
-.split(',')
-.filter(x=>x.trim()!=='')
-.length
-
-await addDoc(collection(db,'contracts'),{
-
-title,
-amount:Number(amount.replace(/\D/g,'')),
-members,
-startedBy,
-membersCount,
-created:Date.now()
-
-})
-
-await fetch(
-'https://discord.com/api/webhooks/1506424883737788619/yATAISypU22ZWVvhRKMsSeSZT1l7bghWRvPSoLaERM8tdj1Wx70JXq4QU2DjYwiHC72F',
-{
-method:'POST',
-headers:{
-'Content-Type':'application/json'
-},
-body:JSON.stringify({
-
-embeds:[
-
-{
-
-title:'💰 NEW CONTRACT',
-
-description:'GRIZZLY FAMILY CONTRACT SYSTEM',
-
-color:0xff0055,
-
-author:{
-name:user?.username || startedBy,
-icon_url:
-user?.avatar ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png` : 'https://cdn.discordapp.com/embed/avatars/0.png'
-},
-
-fields:[
-
-{
-name:'📄 Контракт',
-value:`${title}`,
-inline:false
-},
-
-{
-name:'👑 Почав',
-value:`${startedBy}`,
-inline:true
-},
-
-{
-name:'💵 Сума',
-value:`$${amount}`,
-inline:true
-},
-
-{
-name:'👥 Учасники',
-value:`${members}`,
-inline:false
-}
-
-],
-
-footer:{
-text:'GRIZZLY FAMILY • CONTRACT LOGS'
-},
-
-timestamp:new Date().toISOString()
-
-}
-
-]
-
-})
-}
-)
-
-setTitle('')
-setAmount('')
-setStartedBy('')
-setMembers('')
-
-setTimeout(()=>{
-loadContracts()
-},500)
-
-alert('КОНТРАКТ ДОДАНО')
-
-}catch(err){
-
-console.log(err)
-
-alert('ПОМИЛКА CONTRACTS')
-
-}
-
-}
-
-const clearPanel = async()=>{
-
-try{
-
-const password = prompt('Введи пароль')
-
-if(password !== 'grizzlyadmin'){
-alert('Невірний пароль')
-return
-}
-
-for(const c of contracts){
-await deleteDoc(doc(db,'contracts',c.id))
-}
-
-loadContracts()
-
-}catch(err){
-
-console.log(err)
-
-}
-
-}
-
-const totalIncome =
-contracts.reduce(
-(a,b)=>a + Number(b.amount || 0),
-0
-)
-
-const hiddenIncome =
-Number(
-localStorage.getItem('hidden_income') || 0
-)
-
-const visibleIncome =
-Math.max(
-0,
-Number(totalIncome || 0) -
-Number(hiddenIncome || 0)
-)
-
-const cleanIncome =
-Math.floor(
-Number(visibleIncome || 0) * 0.84
-)
-
-localStorage.setItem(
-'clean_income',
-cleanIncome
-)
-
-const weekIncome =
-contracts
-.filter(c=>{
-
-const weekAgo =
-Date.now() - 7*24*60*60*1000
-
-return c.created > weekAgo
-
-})
-.reduce(
-(a,b)=>a + Number(b.amount || 0),
-0
-)
-
-const cleanWeekIncome =
-Math.floor(weekIncome * 0.84)
-
-const totalExpenses =
-expenses.reduce(
-(a,b)=>a + Number(b.amount || 0),
-0
-)
-
-const finalIncome =
-Math.max(
-0,
-cleanIncome - totalExpenses
-)
-
-
-return(
+import React from "react";
+
+export default function Contracts() {
+
+const weekly = [
+  { name: "Andrii Grizzly", contracts: 12, money: 420000 },
+  { name: "Ghost", contracts: 8, money: 310000 },
+];
+
+const expenses = [
+  { name: "Війна", amount: 120000 },
+  { name: "Машини", amount: 50000 },
+];
+
+const contracts = [
+  {
+    name: "FIB CONTRACT",
+    owner: "Andrii",
+    members: "Ghost, Maryana",
+    count: 3,
+    income: 120000,
+  },
+  {
+    name: "NG CONTRACT",
+    owner: "Ghost",
+    members: "Andrii, Maryana",
+    count: 2,
+    income: 90000,
+  },
+];
+
+return (
 <>
-<h1 className="title">
-GRIZZLY PANEL
-</h1>
-
-
 <div
-className="dashboard"
 style={{
-display:'grid',
-gridTemplateColumns:'1fr 1.2fr',
-gap:'25px',
-alignItems:'start'
+display: "grid",
+gridTemplateColumns: "1fr 1.2fr",
+gap: "20px",
+alignItems: "start",
+padding: "20px",
+background: "#050505",
+minHeight: "100vh",
+color: "white",
 }}
 >
 
+{/* LEFT COLUMN */}
 <div
 style={{
-display:'flex',
-flexDirection:'column',
-gap:'25px'
+display: "flex",
+flexDirection: "column",
+gap: "20px",
 }}
 >
 
-<div className="panel">
-
+{/* ADD CONTRACT */}
 <div
-className="title"
-style={{fontSize:'30px'}}
+className="panel"
+style={{
+background: "rgba(255,255,255,.05)",
+border: "1px solid rgba(255,0,80,.2)",
+borderRadius: "20px",
+padding: "20px",
+}}
 >
+
+<h2 style={{ color: "#ff0055", marginBottom: "20px" }}>
 ДОДАТИ КОНТРАКТ
-</div>
+</h2>
 
 <input
-className="input"
 placeholder="📄 Назва контракту"
-value={title}
-onChange={e=>setTitle(e.target.value)}
+style={inputStyle}
 />
 
-<div className="double">
-
-<input
-className="input"
-placeholder="💰 Сума"
-value={amount}
-onChange={e=>setAmount(e.target.value)}
-/>
-
-<input
-className="input"
-placeholder="👑 Хто почав контракт"
-value={startedBy}
-onChange={e=>setStartedBy(e.target.value)}
-/>
-
+<div
+style={{
+display: "grid",
+gridTemplateColumns: "1fr 1fr",
+gap: "10px",
+}}
+>
+<input placeholder="💰 Сума" style={inputStyle} />
+<input placeholder="👑 Хто почав" style={inputStyle} />
 </div>
 
 <input
-className="input"
 placeholder="👥 Учасники"
-value={members}
-onChange={e=>setMembers(e.target.value)}
+style={inputStyle}
 />
 
 <div
 style={{
-marginTop:'14px',
-padding:'14px 16px',
-background:'rgba(255,255,255,.03)',
-border:'1px solid rgba(255,0,85,.12)',
-borderRadius:'14px',
-fontSize:'14px',
-color:'#aaa',
-lineHeight:'1.7'
+marginTop: "15px",
+padding: "15px",
+background: "#151515",
+borderRadius: "12px",
+fontSize: "14px",
 }}
 >
-
-<span style={{
-color:'#ff0055',
-fontWeight:'700'
-}}>
+<div style={{ color: "#ff0055", marginBottom: "10px" }}>
 ℹ Учасників пишемо через кому
-</span>
+</div>
 
-<br/>
-
-<span style={{
-color:'#666'
-}}>
+<div style={{ color: "#999" }}>
 Приклад:
-</span>
+</div>
 
-<br/>
-
-<span style={{
-color:'#fff'
-}}>
-Andrii Grizzly, Maryana, Ghost
-</span>
-
-<br/><br/>
-
-<span style={{
-color:'#00ff99',
-fontWeight:'700'
-}}>
-Кількість учасників:
-{
-members
-.split(',')
-.filter(x=>x.trim()!=='')
-.length
-}
-</span>
-
+<div style={{ marginTop: "5px" }}>
+Andrii Grizzly, Ghost, Maryana
 </div>
 
 <div
 style={{
-display:'flex',
-gap:'10px',
-marginTop:'15px',
-flexWrap:'wrap'
+marginTop: "15px",
+color: "#00ff99",
+fontWeight: "700",
 }}
 >
+Кількість учасників: 3
+</div>
+</div>
 
-<button
-className="btn"
-style={{
-flex:1,
-minWidth:'180px'
-}}
-onClick={sendContract}
->
+<button style={buttonStyle}>
 ДОДАТИ КОНТРАКТ
 </button>
 
 <button
-className="btn"
 style={{
-background:'#222',
-flex:1,
-minWidth:'180px'
+...buttonStyle,
+background: "#222",
 }}
-onClick={clearPanel}
 >
 ОЧИСТИТИ ПАНЕЛЬ
 </button>
 
 </div>
 
-</div>
-
+{/* WEEKLY */}
 <div
 className="panel"
 style={{
-marginTop:'0px'
+background: "rgba(255,255,255,.05)",
+border: "1px solid rgba(255,0,80,.2)",
+borderRadius: "20px",
+padding: "20px",
 }}
 >
 
-<div
-className="title"
-style={{fontSize:'28px'}}
->
+<h2 style={{ color: "#ff0055", marginBottom: "20px" }}>
 СУМА ЗА ТИЖДЕНЬ
-</div>
+</h2>
 
-
-{
-Object.entries(
-
-contracts.reduce((acc,c)=>{
-
-const membersArray =
-c.members
-.split(',')
-.filter(x=>x.trim()!=='')
-
-const familyCut =
-Math.floor(
-Number(c.amount || 0) * 0.20
-)
-
-const membersMoney =
-Math.floor(
-(Number(c.amount || 0) - familyCut)
-/ Math.max(membersArray.length,1)
-)
-
-membersArray.forEach(member=>{
-
-if(!acc[member]){
-
-acc[member]={
-money:0,
-contracts:0
-}
-
-}
-
-acc[member].money += membersMoney
-acc[member].contracts += 1
-
-})
-
-return acc
-
-},{})
-
-)
-
-.sort((a,b)=>b[1].money-a[1].money)
-
-.map(([name,data],index)=>(
-
+{weekly.map((item, index) => (
 <div
 key={index}
 style={{
-padding:'18px',
-marginTop:'15px',
-background:'rgba(255,255,255,.03)',
-borderRadius:'18px',
-border:'1px solid rgba(255,0,85,.1)'
-}}
->
-
-<div
-style={{
-display:'flex',
-justifyContent:'space-between',
-alignItems:'center'
+background: "#151515",
+padding: "16px",
+borderRadius: "14px",
+marginBottom: "12px",
+display: "flex",
+justifyContent: "space-between",
+alignItems: "center",
 }}
 >
 
 <div>
-
-<div
-style={{
-color:'#fff',
-fontSize:'18px',
-fontWeight:'700'
-}}
->
-{index+1}. {name}
+<div style={{ fontWeight: "700" }}>
+{index + 1}. {item.name}
 </div>
 
 <div
 style={{
-color:'#888',
-marginTop:'8px',
-fontSize:'14px'
+marginTop: "6px",
+color: "#777",
+fontSize: "13px",
 }}
 >
-Контрактів: {data.contracts}
+Контрактів: {item.contracts}
 </div>
-
 </div>
 
 <div
 style={{
-color:'#00ff99',
-fontSize:'24px',
-fontWeight:'700'
+color: "#00ff99",
+fontWeight: "700",
+fontSize: "22px",
 }}
 >
-${data.money.toLocaleString()}
+${item.money.toLocaleString()}
 </div>
-
-</div>
-
-</div>
-
-))
-}
-
-</div>
-
-<div
-className="panel"
-style={{
-marginTop:'0px'
-}}
->
-
-<div
-className="title"
-style={{fontSize:'28px'}}
->
-РОЗХОДИ СІМʼЇ
-</div>
-
-<input
-className="input"
-placeholder="📄 Назва розходу"
-value={expenseTitle}
-onChange={e=>setExpenseTitle(e.target.value)}
-/>
-
-<input
-className="input"
-placeholder="💰 Сума"
-value={expenseAmount}
-onChange={e=>setExpenseAmount(e.target.value)}
-style={{marginTop:'12px'}}
-/>
-
-<button
-className="btn"
-style={{
-marginTop:'15px',
-width:'100%'
-}}
-onClick={sendExpense}
->
-ДОДАТИ РОЗХІД
-</button>
-
-{
-expenses.slice(0,5).map((e,index)=>(
-
-<div
-key={index}
-style={{
-marginTop:'14px',
-padding:'14px',
-background:'rgba(255,255,255,.03)',
-borderRadius:'14px',
-display:'flex',
-justifyContent:'space-between'
-}}
->
-
-<div style={{color:'#fff'}}>
-{e.title}
-</div>
-
-<div style={{
-color:'#ff0055',
-fontWeight:'700'
-}}>
--${Number(e.amount).toLocaleString()}
-</div>
-
-</div>
-
-))
-}
-
-</div>
-
-
-</div>
-
-<div
-className="panel"
-style={{
-marginTop:'0px'
-}}
->
-
-<div
-className="title"
-style={{fontSize:'28px'}}
->
-РОЗХОДИ СІМʼЇ
-</div>
-
-<input
-className="input"
-placeholder="📄 Назва розходу"
-value={expenseTitle}
-onChange={e=>setExpenseTitle(e.target.value)}
-/>
-
-<input
-className="input"
-placeholder="💰 Сума"
-value={expenseAmount}
-onChange={e=>setExpenseAmount(e.target.value)}
-style={{marginTop:'12px'}}
-/>
-
-<button
-className="btn"
-style={{
-marginTop:'15px',
-width:'100%'
-}}
-onClick={sendExpense}
->
-ДОДАТИ РОЗХІД
-</button>
-
-{
-expenses.slice(0,5).map((e,index)=>(
-
-<div
-key={index}
-style={{
-marginTop:'14px',
-padding:'14px',
-background:'rgba(255,255,255,.03)',
-borderRadius:'14px',
-display:'flex',
-justifyContent:'space-between'
-}}
->
-
-<div style={{color:'#fff'}}>
-{e.title}
-</div>
-
-<div style={{
-color:'#ff0055',
-fontWeight:'700'
-}}>
--${Number(e.amount).toLocaleString()}
-</div>
-
-</div>
-
-))
-}
-
-</div>
-
-
-</div>
-
-</div>
-
-<div
-className="panel"
-style={{
-background:'rgba(255,255,255,.05)',
-backdropFilter:'blur(20px)',
-border:'1px solid rgba(255,255,255,.08)',
-borderRadius:'24px',
-padding:'30px',
-boxShadow:'0 0 40px rgba(0,0,0,.3)'
-}}
->
-
-<div
-className="title"
-style={{fontSize:'30px'}}
->
-СТАТИСТИКА
-</div>
-
-<div className="statGrid">
-
-<div className="stat">
-<h2>{contracts.length}</h2>
-<p>КОНТРАКТІВ</p>
-</div>
-
-<div className="stat">
-<h2>${visibleIncome.toLocaleString()}</h2>
-<p>ЗАГАЛЬНИЙ ДОХІД</p>
-</div>
-
-<div className="stat">
-<h2>
-${finalIncome.toLocaleString()}
-</h2>
-<p>ЧИСТИЙ ДОХІД ПІСЛЯ РОЗХОДІВ</p>
-</div>
-
-<div className="stat">
-<h2>
-${cleanWeekIncome.toLocaleString()}
-</h2>
-<p>ДОХІД ЗА 7 ДНІВ</p>
-</div>
-
-<div className="stat">
-<h2>
-{
-contracts.length>0
-? Math.floor(
-contracts.reduce((a,b)=>a+b.membersCount,0)
-/ contracts.length
-)
-:0
-}
-</h2>
-
-<p>
-СЕРЕДНЯ КІЛЬКІСТЬ УЧАСНИКІВ
-</p>
-
-</div>
-
-</div>
-
-<div className="row rowHeader">
-
-<div>
-КОНТРАКТ
-</div>
-
-<div>
-УЧАСНИКИ
-</div>
-
-<div>
-ДОХІД
-</div>
-
-</div>
-
-{contracts.map(c=>(
-<div
-className="row"
-key={c.id}
->
-
-<div>
-
-{c.title}
-
-<br/><br/>
-
-<span style={{
-color:'#999',
-fontSize:'14px',
-lineHeight:'1.7'
-}}>
-
-👑 {c.startedBy}
-
-<br/>
-
-👥 {c.members}
-
-</span>
-
-</div>
-
-<div>
-{c.membersCount}
-</div>
-
-<div className="green">
-${c.amount}
-</div>
-
-
 
 </div>
 ))}
 
+</div>
+
+{/* EXPENSES */}
+<div
+className="panel"
+style={{
+background: "rgba(255,255,255,.05)",
+border: "1px solid rgba(255,0,80,.2)",
+borderRadius: "20px",
+padding: "20px",
+}}
+>
+
+<h2 style={{ color: "#ff0055", marginBottom: "20px" }}>
+РОЗХОДИ СІМʼЇ
+</h2>
+
+<input
+placeholder="📄 Назва розходу"
+style={inputStyle}
+/>
+
+<input
+placeholder="💰 Сума"
+style={inputStyle}
+/>
+
+<button style={buttonStyle}>
+ДОДАТИ РОЗХІД
+</button>
+
+{expenses.map((item, index) => (
+<div
+key={index}
+style={{
+marginTop: "10px",
+background: "#151515",
+padding: "14px",
+borderRadius: "12px",
+display: "flex",
+justifyContent: "space-between",
+}}
+>
+<div>{item.name}</div>
+
+<div
+style={{
+color: "#ff0055",
+fontWeight: "700",
+}}
+>
+-${item.amount.toLocaleString()}
+</div>
+
+</div>
+))}
 
 </div>
 
-</>
+</div>
 
-)
+{/* RIGHT COLUMN */}
+<div
+className="panel"
+style={{
+background: "rgba(255,255,255,.05)",
+border: "1px solid rgba(255,0,80,.2)",
+borderRadius: "20px",
+padding: "20px",
+height: "fit-content",
+}}
+>
+
+<h2 style={{ color: "#ff0055", marginBottom: "20px" }}>
+СТАТИСТИКА
+</h2>
+
+<div
+style={{
+display: "grid",
+gridTemplateColumns: "1fr 1fr",
+gap: "15px",
+marginBottom: "20px",
+}}
+>
+
+{[
+["42", "КОНТРАКТІВ"],
+["$5,200,000", "ЗАГАЛЬНИЙ ДОХІД"],
+["$4,100,000", "ЧИСТИЙ ДОХІД"],
+["$1,200,000", "ДОХІД ЗА 7 ДНІВ"],
+].map((item, index) => (
+<div
+key={index}
+style={{
+background: "#151515",
+padding: "18px",
+borderRadius: "14px",
+}}
+>
+<div
+style={{
+color: "#00ff99",
+fontWeight: "700",
+fontSize: "24px",
+}}
+>
+{item[0]}
+</div>
+
+<div
+style={{
+marginTop: "8px",
+fontSize: "13px",
+color: "#bbb",
+}}
+>
+{item[1]}
+</div>
+</div>
+))}
+
+</div>
+
+<div
+style={{
+display: "grid",
+gridTemplateColumns: "2fr 1fr 1fr",
+padding: "10px",
+color: "#ff0055",
+fontWeight: "700",
+marginBottom: "10px",
+}}
+>
+<div>КОНТРАКТ</div>
+<div>УЧАСНИКИ</div>
+<div>ДОХІД</div>
+</div>
+
+{contracts.map((item, index) => (
+<div
+key={index}
+style={{
+background: "#151515",
+padding: "16px",
+borderRadius: "14px",
+marginBottom: "12px",
+display: "grid",
+gridTemplateColumns: "2fr 1fr 1fr",
+alignItems: "center",
+}}
+>
+
+<div>
+<div style={{ fontWeight: "700" }}>
+{item.name}
+</div>
+
+<div
+style={{
+marginTop: "10px",
+fontSize: "13px",
+color: "#777",
+}}
+>
+👑 {item.owner}
+</div>
+
+<div
+style={{
+marginTop: "4px",
+fontSize: "13px",
+color: "#777",
+}}
+>
+👥 {item.members}
+</div>
+</div>
+
+<div>{item.count}</div>
+
+<div
+style={{
+color: "#00ff99",
+fontWeight: "700",
+}}
+>
+${item.income.toLocaleString()}
+</div>
+
+</div>
+))}
+
+</div>
+
+</div>
+</>
+);
+
 }
+
+const inputStyle = {
+width: "100%",
+padding: "14px",
+marginBottom: "12px",
+borderRadius: "12px",
+border: "none",
+background: "#151515",
+color: "white",
+};
+
+const buttonStyle = {
+width: "100%",
+padding: "14px",
+borderRadius: "12px",
+border: "none",
+background: "#ff0055",
+color: "white",
+fontWeight: "700",
+cursor: "pointer",
+marginTop: "10px",
+};
