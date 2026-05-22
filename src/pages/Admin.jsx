@@ -148,11 +148,9 @@ STATISTICS
 </div>
 
 </div>
-
+  
 </div>
-
-</div>
-
+  
 </>
 
 )
