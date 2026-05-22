@@ -626,7 +626,7 @@ ${familyCut.toLocaleString()}
 }
 
 </div>
-
+</div>
 </>
 
 )
