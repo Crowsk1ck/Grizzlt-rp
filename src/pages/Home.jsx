@@ -1,66 +1,8 @@
-import {
-db,
-collection,
-getDocs,
-addDoc
-} from '../services/firebase'
-
-const syncDiscordUserToTeam = async()=>{
-
-try{
-
-const discordUser = JSON.parse(
-localStorage.getItem('discord_user')
-)
-
-if(!discordUser) return
-
-const snapshot = await getDocs(
-collection(db,'team')
-)
-
-let exists = false
-
-snapshot.forEach(doc=>{
-
-const data = doc.data()
-
-if(data.discordId === discordUser.id){
-exists = true
-}
-
-})
-
-if(!exists){
-
-await addDoc(
-collection(db,'team'),
-{
-name:discordUser.username,
-role:'MEMBER',
-discordId:discordUser.id,
-avatar:discordUser.avatar,
-created:Date.now()
-}
-)
-
-}
-
-}catch(err){
-
-console.log(err)
-
-}
-
-}
-
-
 import { useEffect, useState } from 'react'
 import {
 db,
 collection,
-getDocs,
-addDoc
+getDocs
 } from '../services/firebase'
 
 export default function Home(){
@@ -93,8 +35,6 @@ setContractsCount(snapshot.size)
 }
 
 loadStats()
-
-syncDiscordUserToTeam()
 
 },[])
 
