@@ -208,10 +208,16 @@ localStorage.getItem('hidden_income') || 0
 )
 
 const visibleIncome =
-Math.max(0,totalIncome - hiddenIncome)
+Math.max(
+0,
+Number(totalIncome || 0) -
+Number(hiddenIncome || 0)
+)
 
 const cleanIncome =
-Math.floor(visibleIncome * 0.84)
+Math.floor(
+Number(visibleIncome || 0) * 0.84
+)
 
 localStorage.setItem(
 'clean_income',
@@ -504,8 +510,6 @@ ${c.amount}
 
 </div>
 ))}
-
-</div>
 
 </div>
 
