@@ -523,14 +523,10 @@ ${c.amount}
 </div>
 ))}
 
-</div>
-
-</div>
-
 <div
 className="panel"
 style={{
-marginTop:'25px'
+marginTop:'0px'
 }}
 >
 
@@ -650,6 +646,8 @@ ${data.money.toLocaleString()}
 }
 
 
+
+</div>
 
 </div>
 
