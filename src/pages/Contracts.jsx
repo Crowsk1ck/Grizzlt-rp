@@ -653,9 +653,6 @@ ${data.money.toLocaleString()}
 
 </div>
 
-
-</div>
-
 </>
 
 )
