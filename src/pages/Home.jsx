@@ -13,7 +13,7 @@ GRIZZLY FAMILY
 </h1>
 
 <p className="heroText">
-ELITE GTA 5 ROLEPLAY FAMILY
+ЕЛІТНА СІМ'Я GTA 5 ROLEPLAY
 </p>
 
 <div className="heroButtons">
@@ -23,7 +23,7 @@ href="https://discord.gg/APPf3Rq3dF"
 target="_blank"
 className="heroBtn"
 >
-JOIN DISCORD
+ПРИЄДНАТИСЯ
 </a>
 
 </div>
@@ -35,23 +35,23 @@ JOIN DISCORD
 <div className="stats">
 
 <div className="statCard">
-<h2>250+</h2>
-<p>FAMILY MEMBERS</p>
+<h2>20+</h2>
+<p>ЧЛЕНИ СІМ'Ї</p>
 </div>
 
 <div className="statCard">
-<h2>1200+</h2>
-<p>CONTRACTS</p>
+<h2>0</h2>
+<p>Контракти</p>
 </div>
 
 <div className="statCard">
-<h2>$45M</h2>
-<p>TOTAL INCOME</p>
+<h2>$0M</h2>
+<p>ЗАГАЛЬНИЙ ДОХІД</p>
 </div>
 
 <div className="statCard">
 <h2>24/7</h2>
-<p>RP ONLINE</p>
+<p>ОНЛАЙН</p>
 </div>
 
 </div>
@@ -59,14 +59,14 @@ JOIN DISCORD
 <div className="about">
 
 <div className="sectionTitle">
-ABOUT FAMILY
+ПРО СІМ’Ю
 </div>
 
 <div className="aboutCard">
 
-GRIZZLY FAMILY — one of the strongest GTA 5 RP organizations.
-We dominate contracts, events, businesses and family wars.
-Professional RP players, active community and premium ecosystem.
+Grizzly Family — сильна та амбітна сім’я в світі GTA 5 RP. 
+Відомі своїм характером, вірністю один одному та любов’ю до адреналіну, швидких авто й небезпечних пригод. 
+Учасники сім’ї тримаються разом у будь-яких ситуаціях, поважають свої правила та завжди готові захищати своїх людей.
 
 </div>
 
@@ -75,33 +75,29 @@ Professional RP players, active community and premium ecosystem.
 <div className="features">
 
 <div className="sectionTitle">
-OUR FEATURES
+НАШІ ОСОБЛИВОСТІ
 </div>
 
 <div className="featureGrid">
 
 <div className="featureCard">
-🔥 LIVE CONTRACTS
+🔥 Скоро
 </div>
 
 <div className="featureCard">
-💰 BUSINESS EMPIRE
+💰 Скоро
 </div>
 
 <div className="featureCard">
-⚔ FAMILY WARS
+⚔ Скоро
 </div>
 
 <div className="featureCard">
-🎭 ELITE ROLEPLAY
+🎭 Скоро
 </div>
 
 <div className="featureCard">
-🌐 DISCORD ECOSYSTEM
-</div>
-
-<div className="featureCard">
-🚀 GTA 6 STYLE UI
+🌐 Скоро
 </div>
 
 </div>
