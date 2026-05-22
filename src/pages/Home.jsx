@@ -1,3 +1,9 @@
+import {
+db,
+collection,
+getDocs,
+addDoc
+} from '../services/firebase'
 
 const syncDiscordUserToTeam = async()=>{
 
@@ -78,8 +84,7 @@ useEffect(()=>{
 
 const loadStats = async()=>{
 
-const snapshot = await getDocs,
-addDoc(
+const snapshot = await getDocs(
 collection(db,'contracts')
 )
 
