@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-  
+ 
 import {
 db,
 collection,
@@ -728,10 +728,6 @@ fontWeight:'700'
 
 </div>
 
-
-
-</div>
-
 <div
 className="panel"
 style={{
@@ -863,4 +859,3 @@ ${c.amount}
 
 )
 }
- 
