@@ -74,7 +74,7 @@ className="heroBtn"
 </div>
 
 <div className="statCard">
-<h2>${Math.floor(cleanIncome/1000000)}M</h2>
+<h2>${cleanIncome.toLocaleString()}</h2>
 <p>ЗАГАЛЬНИЙ ДОХІД</p>
 </div>
 
