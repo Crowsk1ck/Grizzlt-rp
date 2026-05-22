@@ -103,9 +103,13 @@ description:'GRIZZLY FAMILY CONTRACT SYSTEM',
 color:0xff0055,
 
 author:{
-name:user.username,
-icon_url:
-`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`
+
+name:user?.username || startedBy,
+
+icon_url:user?.avatar
+? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`
+: 'https://cdn.discordapp.com/embed/avatars/0.png'
+
 },
 
 fields:[
@@ -140,7 +144,7 @@ footer:{
 text:'GRIZZLY FAMILY • CONTRACT LOGS'
 },
 
-timestamp:new Date()
+timestamp:new Date().toISOString()
 
 }
 
