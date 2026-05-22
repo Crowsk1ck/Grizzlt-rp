@@ -197,7 +197,10 @@ console.log(err)
 }
 
 const totalIncome =
-contracts.reduce((a,b)=>a+b.amount,0)
+contracts.reduce(
+(a,b)=>a + Number(b.amount || 0),
+0
+)
 
 const hiddenIncome =
 Number(
@@ -225,7 +228,10 @@ Date.now() - 7*24*60*60*1000
 return c.created > weekAgo
 
 })
-.reduce((a,b)=>a+b.amount,0)
+.reduce(
+(a,b)=>a + Number(b.amount || 0),
+0
+)
 
 const cleanWeekIncome =
 Math.floor(weekIncome * 0.84)
