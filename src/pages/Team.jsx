@@ -16,15 +16,15 @@ avatar: discordUser?.avatar || null
 {
 name:'Maryana Grizzly',
 role:'CO-OWNER',
-id: discordUser?.id || '1053785420351148132',
-avatar: discordUser?.avatar || null
+id:'1053785420351148132',
+avatar:null
 },
 
 {
 name:'Oleg Grizzly',
 role:'LEADER',
-id: discordUser?.id || '386594804722827265',
-avatar: discordUser?.avatar || null
+  id:'386594804722827265',
+avatar:null
 },
 
 {
