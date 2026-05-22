@@ -368,7 +368,20 @@ Math.max(
 0,
 cleanIncome - totalExpenses
 )
+localStorage.setItem(
+'total_income',
+visibleIncome
+)
 
+localStorage.setItem(
+'total_expenses',
+totalExpenses
+)
+
+localStorage.setItem(
+'clean_income',
+finalIncome
+)
 
 return(
 <div>
