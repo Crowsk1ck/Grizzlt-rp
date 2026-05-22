@@ -772,7 +772,7 @@ ${data.money.toLocaleString()}
 ))
 }
 
-
+</div>
 
 <div
 className="panel"
@@ -856,4 +856,3 @@ fontWeight:'700'
 
 )
 }
- 
