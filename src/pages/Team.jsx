@@ -1,47 +1,51 @@
 export default function Team(){
 
+const discordUser = JSON.parse(
+localStorage.getItem('discord_user')
+)
+
 const members = [
 
 {
 name:'CrowsKick',
 role:'OWNER',
-id:'511272056021581835',
-avatar:'DISCORD_AVATAR_HASH'
+id: discordUser?.id || '511272056021581835',
+avatar: discordUser?.avatar || null
 },
 
 {
 name:'Maryana',
 role:'CO-OWNER',
 id:'1053785420351148132',
-avatar:'DISCORD_AVATAR_HASH'
+avatar:null
 },
 
 {
 name:'Нету',
 role:'LEADER',
 id:'DISCORD_ID',
-avatar:'DISCORD_AVATAR_HASH'
+avatar:null
 },
 
 {
 name:'Нету',
 role:'WAR MANAGER',
 id:'DISCORD_ID',
-avatar:'DISCORD_AVATAR_HASH'
+avatar:null
 },
 
 {
 name:'Нету',
 role:'BUSINESS',
 id:'DISCORD_ID',
-avatar:'DISCORD_AVATAR_HASH'
+avatar:null
 },
 
 {
 name:'Нету',
 role:'EVENTS',
 id:'DISCORD_ID',
-avatar:'DISCORD_AVATAR_HASH'
+avatar:null
 }
 
 ]
@@ -66,7 +70,7 @@ className="teamCard"
 
 <img
 src={
-m.avatar !== 'DISCORD_AVATAR_HASH'
+m.avatar
 ? `https://cdn.discordapp.com/avatars/${m.id}/${m.avatar}.png`
 : `https://ui-avatars.com/api/?name=${encodeURIComponent(m.name)}&background=111111&color=ff0066&size=256`
 }
