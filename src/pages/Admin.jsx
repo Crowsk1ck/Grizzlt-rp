@@ -1,6 +1,3 @@
-import { ref, remove } from 'firebase/database'
-import { db } from '../firebase'
-
 export default function Admin(){
 
 const password = prompt('ADMIN PASSWORD')
@@ -25,16 +22,15 @@ GRIZZLY ADMIN
 SYSTEM
 </div>
 
-<div className="adminButtons">
 <button
 className="adminBtn"
-onClick={async()=>{
+onClick={()=>{
 const confirmReset = confirm(
-'DELETE ALL CONTRACTS?'
+'RESET CONTRACTS ON SITE?'
 )
 if(!confirmReset) return
-await remove(ref(db,'contracts'))
-alert('Contracts deleted')
+localStorage.removeItem('contracts')
+window.location.reload()
 }}
 >
 RESET CONTRACTS
