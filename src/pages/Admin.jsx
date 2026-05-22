@@ -1,7 +1,10 @@
 export default function Admin(){
 
 const password = prompt('ADMIN PASSWORD')
-
+  
+import { ref, remove } from 'firebase/database'
+import { db } from '../firebase'
+  
 if(password !== 'grizzlyadmin'){
 return <h1 className="title">ACCESS DENIED</h1>
 }
@@ -23,8 +26,17 @@ SYSTEM
 </div>
 
 <div className="adminButtons">
-
-<button className="adminBtn">
+<button
+className="adminBtn"
+onClick={async()=>{
+const confirmReset = confirm(
+'DELETE ALL CONTRACTS?'
+)
+if(!confirmReset) return
+await remove(ref(db,'contracts'))
+alert('Contracts deleted')
+}}
+>
 RESET CONTRACTS
 </button>
 
@@ -32,7 +44,17 @@ RESET CONTRACTS
 RESET LEADERBOARD
 </button>
 
-<button className="adminBtn">
+<button
+className="adminBtn"
+onClick={async()=>{
+const confirmReset = confirm(
+'DELETE ENTIRE DATABASE?'
+)
+if(!confirmReset) return
+await remove(ref(db))
+alert('Database cleared')
+}}
+>
 CLEAR DATABASE
 </button>
 
@@ -52,7 +74,23 @@ CONTENT
 
 <div className="adminButtons">
 
-<button className="adminBtn">
+<button
+className="adminBtn"
+onClick={()=>{
+
+const news = prompt('NEWS TEXT')
+
+if(!news) return
+
+localStorage.setItem(
+'grizzly_news',
+news
+)
+
+alert('News uploaded')
+
+}}
+>
 UPLOAD NEWS
 </button>
 
@@ -60,7 +98,20 @@ UPLOAD NEWS
 UPLOAD GALLERY
 </button>
 
-<button className="adminBtn">
+<button
+className="adminBtn"
+onClick={()=>{
+
+const event = prompt('EVENT NAME')
+
+if(!event) return
+
+alert(
+`EVENT CREATED: ${event}`
+)
+
+}}
+>
 SEND EVENT
 </button>
 
