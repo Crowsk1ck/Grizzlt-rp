@@ -549,11 +549,14 @@ width:'100%'
 className="title"
 style={{fontSize:'28px'}}
 >
-CONTRACT PAYOUT
+СУМА ЗА ТИЖДЕНЬ
 </div>
 
+
 {
-contracts.slice(0,5).map((c,index)=>{
+Object.entries(
+
+contracts.reduce((acc,c)=>{
 
 const membersArray =
 c.members
@@ -561,7 +564,9 @@ c.members
 .filter(x=>x.trim()!=='')
 
 const familyCut =
-Math.floor(Number(c.amount || 0) * 0.20)
+Math.floor(
+Number(c.amount || 0) * 0.20
+)
 
 const membersMoney =
 Math.floor(
@@ -569,86 +574,93 @@ Math.floor(
 / Math.max(membersArray.length,1)
 )
 
-return(
+membersArray.forEach(member=>{
+
+if(!acc[member]){
+
+acc[member]={
+money:0,
+contracts:0
+}
+
+}
+
+acc[member].money += membersMoney
+acc[member].contracts += 1
+
+})
+
+return acc
+
+},{})
+
+)
+
+.sort((a,b)=>b[1].money-a[1].money)
+
+.map(([name,data],index)=>(
 
 <div
 key={index}
 style={{
-marginTop:'16px',
 padding:'18px',
+marginTop:'15px',
 background:'rgba(255,255,255,.03)',
 borderRadius:'18px',
 border:'1px solid rgba(255,0,85,.1)'
 }}
 >
 
-<div style={{
-color:'#ff0055',
-fontWeight:'700',
-marginBottom:'14px'
-}}>
-💸 {c.title}
-</div>
-
-{
-membersArray.map((member,i)=>(
-
 <div
-key={i}
 style={{
 display:'flex',
 justifyContent:'space-between',
-marginBottom:'8px',
-color:'#ccc'
+alignItems:'center'
 }}
 >
 
-<span>{member}</span>
+<div>
 
-<span style={{
-color:'#00ff99',
+<div
+style={{
+color:'#fff',
+fontSize:'18px',
 fontWeight:'700'
-}}>
-${membersMoney.toLocaleString()}
-</span>
+}}
+>
+{index+1}. {name}
+</div>
+
+<div
+style={{
+color:'#888',
+marginTop:'8px',
+fontSize:'14px'
+}}
+>
+Контрактів: {data.contracts}
+</div>
+
+</div>
+
+<div
+style={{
+color:'#00ff99',
+fontSize:'24px',
+fontWeight:'700'
+}}
+>
+${data.money.toLocaleString()}
+</div>
+
+</div>
 
 </div>
 
 ))
 }
 
-<div
-style={{
-marginTop:'12px',
-paddingTop:'12px',
-borderTop:'1px solid rgba(255,255,255,.08)',
-display:'flex',
-justifyContent:'space-between'
-}}
->
 
-<span style={{
-color:'#ff0055',
-fontWeight:'700'
-}}>
-GRIZZLY FAMILY
-</span>
-
-<span style={{
-color:'#ff0055',
-fontWeight:'700'
-}}>
-${familyCut.toLocaleString()}
-</span>
-
-</div>
-
-</div>
-
-)
-
-})
-}
 
 </div>
 
@@ -661,7 +673,6 @@ ${familyCut.toLocaleString()}
 )
 }
 </div>
- </div>
 </>
 
 )
