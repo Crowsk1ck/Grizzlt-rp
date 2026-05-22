@@ -68,13 +68,83 @@ const sendWeeklyReport = async()=>{
 
 try{
 
-const response = await fetch(
+const contractsSnapshot = await getDocs(
+collection(db,'contracts')
+)
+
+const contracts = []
+
+contractsSnapshot.forEach(docu=>{
+contracts.push(docu.data())
+})
+
+const stats = {}
+
+let totalIncome = 0
+
+contracts.forEach(c=>{
+
+const amount =
+Number(c.amount || 0)
+
+totalIncome += amount
+
+const membersArray =
+(c.members || '')
+.split(',')
+.filter(x=>x.trim()!=='')
+
+const familyCut =
+Math.floor(amount * 0.20)
+
+const memberMoney =
+Math.floor(
+(amount - familyCut)
+/ Math.max(membersArray.length,1)
+)
+
+membersArray.forEach(member=>{
+
+const cleanName = member.trim()
+
+if(!stats[cleanName]){
+
+stats[cleanName]={
+money:0,
+contracts:0
+}
+
+}
+
+stats[cleanName].money += memberMoney
+stats[cleanName].contracts += 1
+
+})
+
+})
+
+const topText = Object.entries(stats)
+
+.sort((a,b)=>b[1].money-a[1].money)
+
+.map((item,index)=>
+
+`${index+1}. ${item[0]}
+📦 Контрактів: ${item[1].contracts}
+💰 $${item[1].money.toLocaleString()}`
+)
+
+.join('\\n\\n')
+
+await fetch(
 'https://discord.com/api/webhooks/1507275442657296386/utT-89112eXBwIL7ijrwlYz-ob4H9-bQh79PEbGR0XhWxuZpE7IShP8YSJCwkPyNVsnZ',
 {
 method:'POST',
+
 headers:{
 'Content-Type':'application/json'
 },
+
 body:JSON.stringify({
 
 embeds:[{
@@ -82,7 +152,12 @@ embeds:[{
 title:'📊 СУМА ЗА ТИЖДЕНЬ',
 
 description:
-'Тижневий звіт успішно відправлений.',
+`💵 ЗАГАЛЬНИЙ ДОХІД:
+$${totalIncome.toLocaleString()}
+
+👥 УЧАСНИКИ:
+
+${topText}`,
 
 color:0xff0055,
 
@@ -98,21 +173,13 @@ timestamp:new Date().toISOString()
 }
 )
 
-if(response.ok){
-
 alert('WEEKLY REPORT SENT')
-
-}else{
-
-alert('DISCORD WEBHOOK ERROR')
-
-}
 
 }catch(err){
 
 console.log(err)
 
-alert('ERROR')
+alert('ERROR WEEKLY REPORT')
 
 }
 
