@@ -7,24 +7,24 @@ localStorage.getItem('discord_user')
 const members = [
 
 {
-name:'CrowsKick',
+name:'Andrii Grizzly',
 role:'OWNER',
 id: discordUser?.id || '511272056021581835',
 avatar: discordUser?.avatar || null
 },
 
 {
-name:'Maryana',
+name:'Maryana Grizzly',
 role:'CO-OWNER',
-id:'1053785420351148132',
-avatar:null
+id: discordUser?.id || '1053785420351148132',
+avatar: discordUser?.avatar || null
 },
 
 {
-name:'Нету',
+name:'Oleg Grizzly',
 role:'LEADER',
-id:'DISCORD_ID',
-avatar:null
+id: discordUser?.id || '386594804722827265',
+avatar: discordUser?.avatar || null
 },
 
 {
