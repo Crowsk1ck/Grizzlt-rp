@@ -1,16 +1,15 @@
 {
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/"
-    }
-  ]
+"rewrites": [
+{
+"source": "/(.*)",
+"destination": "/"
 }
+],
+
+"crons": [
 {
-"crons":[
-{
-"path":"/src/api/weekly-report",
-"schedule":"0 18 * * 0"
+"path": "/api/weekly-report",
+"schedule": "0 18 * * 0"
 }
 ]
 }
