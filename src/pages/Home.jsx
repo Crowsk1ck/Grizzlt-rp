@@ -8,7 +8,10 @@ getDocs
 export default function Home(){
 
 const [contractsCount,setContractsCount] = useState(0)
-const [totalIncome,setTotalIncome] = useState(0)
+const cleanIncome =
+Number(
+localStorage.getItem('clean_income') || 0
+)
 
 useEffect(()=>{
 
@@ -18,16 +21,7 @@ const snapshot = await getDocs(
 collection(db,'contracts')
 )
 
-let income = 0
-
-snapshot.forEach(doc=>{
-
-income += doc.data().amount || 0
-
-})
-
 setContractsCount(snapshot.size)
-setTotalIncome(income)
 
 }
 
@@ -80,7 +74,7 @@ className="heroBtn"
 </div>
 
 <div className="statCard">
-<h2>${Math.floor(totalIncome/1000000)}M</h2>
+<h2>${Math.floor(cleanIncome/1000000)}M</h2>
 <p>ЗАГАЛЬНИЙ ДОХІД</p>
 </div>
 
