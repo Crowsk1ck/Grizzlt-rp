@@ -66,7 +66,55 @@ window.location.reload()
 }
 const sendWeeklyReport = async()=>{
 
+try{
+
+const response = await fetch(
+'https://discord.com/api/webhooks/1507275442657296386/utT-89112eXBwIL7ijrwlYz-ob4H9-bQh79PEbGR0XhWxuZpE7IShP8YSJCwkPyNVsnZ',
+{
+method:'POST',
+headers:{
+'Content-Type':'application/json'
+},
+body:JSON.stringify({
+
+embeds:[{
+
+title:'📊 СУМА ЗА ТИЖДЕНЬ',
+
+description:
+'Тижневий звіт успішно відправлений.',
+
+color:0xff0055,
+
+footer:{
+text:'GRIZZLY FAMILY'
+},
+
+timestamp:new Date().toISOString()
+
+}]
+
+})
+}
+)
+
+if(response.ok){
+
 alert('WEEKLY REPORT SENT')
+
+}else{
+
+alert('DISCORD WEBHOOK ERROR')
+
+}
+
+}catch(err){
+
+console.log(err)
+
+alert('ERROR')
+
+}
 
 }
 const password = prompt('ADMIN PASSWORD')
