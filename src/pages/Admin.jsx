@@ -49,11 +49,11 @@ window.location.reload()
 }
 
 const password = prompt('ADMIN PASSWORD')
-  
+
 if(password !== 'grizzlyadmin'){
 return <h1 className="title">ACCESS DENIED</h1>
 }
-  
+
 return(
 
 <>
@@ -70,16 +70,11 @@ GRIZZLY ADMIN
 SYSTEM
 </div>
 
+<div className="adminButtons">
+
 <button
 className="adminBtn"
-onClick={()=>{
-const confirmReset = confirm(
-'RESET CONTRACTS ON SITE?'
-)
-if(!confirmReset) return
-localStorage.removeItem('contracts')
-window.location.reload()
-}}
+onClick={resetContracts}
 >
 RESET CONTRACTS
 </button>
@@ -90,19 +85,17 @@ RESET LEADERBOARD
 
 <button
 className="adminBtn"
-onClick={async()=>{
-const confirmReset = confirm(
-'DELETE ENTIRE DATABASE?'
-)
-if(!confirmReset) return
-await remove(ref(db))
-alert('Database cleared')
-}}
+onClick={clearDatabase}
 >
 CLEAR DATABASE
 </button>
 
-<button className="adminBtn">
+<button
+className="adminBtn"
+onClick={()=>{
+window.location.reload()
+}}
+>
 SERVER RESTART
 </button>
 
@@ -150,9 +143,7 @@ const event = prompt('EVENT NAME')
 
 if(!event) return
 
-alert(
-`EVENT CREATED: ${event}`
-)
+alert(`EVENT CREATED: ${event}`)
 
 }}
 >
@@ -196,9 +187,11 @@ STATISTICS
 </div>
 
 </div>
-  
+
 </div>
-  
+
+</div>
+
 </>
 
 )
