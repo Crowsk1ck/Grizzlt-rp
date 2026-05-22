@@ -87,16 +87,59 @@ headers:{
 'Content-Type':'application/json'
 },
 body:JSON.stringify({
-content:
-`🔥 НОВИЙ КОНТРАКТ
 
-📄 ${title}
+embeds:[
 
-💰 ${amount}
+{
 
-👑 ${startedBy}
+title:'💰 NEW CONTRACT',
 
-👥 ${members}`
+description:'GRIZZLY FAMILY CONTRACT SYSTEM',
+
+color:0xff0055,
+
+thumbnail:{
+url:'https://i.imgur.com/8Km9tLL.png'
+},
+
+fields:[
+
+{
+name:'📄 Контракт',
+value:`${title}`,
+inline:false
+},
+
+{
+name:'👑 Почав',
+value:`${startedBy}`,
+inline:true
+},
+
+{
+name:'💵 Сума',
+value:`$${amount}`,
+inline:true
+},
+
+{
+name:'👥 Учасники',
+value:`${members}`,
+inline:false
+}
+
+],
+
+footer:{
+text:'GRIZZLY FAMILY • CONTRACT LOGS'
+},
+
+timestamp:new Date()
+
+}
+
+]
+
 })
 }
 )
