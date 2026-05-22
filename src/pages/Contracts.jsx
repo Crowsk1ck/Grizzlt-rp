@@ -856,7 +856,7 @@ ${c.amount}
 </div>
 
 </div>
-
+</div>
 )
 }
  
