@@ -99,10 +99,7 @@ className="userAvatar"
 
 <button
 className="logoutBtn"
-onClick={()=>{
-localStorage.clear()
-location.reload()
-}}
+onClick={logout}
 >
 LOGOUT
 </button>
