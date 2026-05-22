@@ -1,3 +1,51 @@
+
+
+// AUTO TEAM SYNC
+const syncDiscordUserToTeam = async(user)=>{
+
+try{
+
+if(!user) return
+
+const snapshot = await getDocs(
+collection(db,'team')
+)
+
+let exists = false
+
+snapshot.forEach(docu=>{
+
+const data = docu.data()
+
+if(data.discordId === user.id){
+exists = true
+}
+
+})
+
+if(!exists){
+
+await addDoc(
+collection(db,'team'),
+{
+name:user.username,
+role:'MEMBER',
+discordId:user.id,
+avatar:user.avatar || '',
+created:Date.now()
+}
+)
+
+}
+
+}catch(err){
+
+console.log(err)
+
+}
+
+}
+
 import { useEffect, useState } from 'react'
 import { Routes, Route, Link } from 'react-router-dom'
 
@@ -144,4 +192,23 @@ LOGOUT
 <audio autoPlay loop controls className='musicPlayer'><source src='/assets/music/phonk.mp3' type='audio/mp3'/></audio>
 </>
 )
+}
+
+
+try{
+
+const discordUser = JSON.parse(
+localStorage.getItem('discord_user')
+)
+
+if(discordUser){
+
+syncDiscordUserToTeam(discordUser)
+
+}
+
+}catch(err){
+
+console.log(err)
+
 }
