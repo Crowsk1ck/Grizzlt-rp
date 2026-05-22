@@ -84,16 +84,21 @@ return(
 
 <div className="overlay"></div>
 
-<div className="profile">
+<div className="userBox">
 
-<img src={`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`} />
+<img
+src={`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`}
+className="userAvatar"
+/>
 
-<div>
-<div>{user.username}</div>
+<div className="userInfo">
+
+<div className="userName">
+{user.username}
+</div>
 
 <button
-className="btn"
-style={{marginTop:'8px'}}
+className="logoutBtn"
 onClick={()=>{
 localStorage.clear()
 location.reload()
@@ -103,6 +108,7 @@ LOGOUT
 </button>
 
 </div>
+
 </div>
 
 <nav>
