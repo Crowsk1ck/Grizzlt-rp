@@ -1,109 +1,276 @@
-import { useState } from 'react'
+import {
+db,
+collection,
+getDocs,
+deleteDoc,
+doc
+} from '../services/firebase'
 
-export default function Apply(){
+export default function Admin(){
 
-const [nick,setNick] = useState('')
-const [discord,setDiscord] = useState('')
-const [telegram,setTelegram] = useState('')
-const [reason,setReason] = useState('')
+const resetContracts = ()=>{
 
-const sendApplication = async()=>{
+localStorage.setItem(
+'contracts_reset',
+Date.now()
+)
 
-if(!nick || !discord || !telegram || !reason){
-alert('Заповни всі поля')
+window.location.reload()
+
+}
+
+const resetIncome = ()=>{
+
+const income = prompt(
+'СКІЛЬКИ СКРИТИ ДОХОДУ?'
+)
+
+if(!income) return
+
+localStorage.setItem(
+'hidden_income',
+income
+)
+
+window.location.reload()
+
+}
+
+const clearDatabase = async()=>{
+
+const password = prompt(
+'DELETE DATABASE ?'
+)
+
+if(password !== 'grizzlyadmin'){
+alert('WRONG PASSWORD')
 return
 }
 
+const snapshot = await getDocs(
+collection(db,'contracts')
+)
+
+for(const item of snapshot.docs){
+
+await deleteDoc(
+doc(db,'contracts',item.id)
+)
+
+}
+
+alert('DATABASE CLEARED')
+
+window.location.reload()
+
+}
+
+
+const clearExpenses = async()=>{
+
+const password = prompt(
+'DELETE EXPENSES ?'
+)
+
+if(password !== 'grizzlyadmin'){
+alert('WRONG PASSWORD')
+return
+}
+
+const snapshot = await getDocs(
+collection(db,'expenses')
+)
+
+for(const item of snapshot.docs){
+
+await deleteDoc(
+doc(db,'expenses',item.id)
+)
+
+}
+
+localStorage.setItem(
+'total_expenses',
+0
+)
+
+alert('EXPENSES CLEARED')
+
+window.location.reload()
+
+}
+
+
+
+const sendWeeklyReport = async()=>{
+
+try{
+
+const contractsSnapshot = await getDocs(
+collection(db,'contracts')
+)
+
+const contracts = []
+
+contractsSnapshot.forEach(docu=>{
+contracts.push(docu.data())
+})
+
+const stats = {}
+
+contracts.forEach(c=>{
+
+const membersArray =
+(c.members || '')
+.split(',')
+.filter(x=>x.trim()!=='')
+
+const familyCut =
+Math.floor(Number(c.amount || 0) * 0.20)
+
+const membersMoney =
+Math.floor(
+(Number(c.amount || 0) - familyCut)
+/ Math.max(membersArray.length,1)
+)
+
+membersArray.forEach(member=>{
+
+if(!stats[member]){
+stats[member]={
+money:0,
+contracts:0
+}
+}
+
+stats[member].money += membersMoney
+stats[member].contracts += 1
+
+})
+
+})
+
+const topText = Object.entries(stats)
+.sort((a,b)=>b[1].money-a[1].money)
+.slice(0,10)
+.map((item,index)=>
+`${index+1}. ${item[0]} — ${item[1].contracts} контрактів — $${item[1].money.toLocaleString()}`
+)
+.join('\n')
+
 await fetch(
-'https://discord.com/api/webhooks/ТВОЙ_WEBHOOK',
+'https://discord.com/api/webhooks/1507275442657296386/utT-89112eXBwIL7ijrwlYz-ob4H9-bQh79PEbGR0XhWxuZpE7IShP8YSJCwkPyNVsnZ',
 {
 method:'POST',
 headers:{
 'Content-Type':'application/json'
 },
 body:JSON.stringify({
-content:
-`🔥 НОВА ЗАЯВКА
 
-👤 Nick:
-${nick}
+embeds:[{
 
-🎮 Discord:
-${discord}
+title:'📊 СУМА ЗА ТИЖДЕНЬ',
 
-📱 Telegram:
-${telegram}
+description: topText || 'Немає даних',
 
-📝 Причина:
-${reason}`
+color:0xff0055,
+
+footer:{
+text:'GRIZZLY FAMILY • WEEKLY REPORT'
+},
+
+timestamp:new Date().toISOString()
+
+}]
+
 })
 }
 )
 
-localStorage.setItem('application_sent','true')
+alert('WEEKLY REPORT SENT')
 
-alert('Заявка відправлена')
+}catch(err){
 
-window.location.href='/'
+console.log(err)
 
+alert('ERROR WEEKLY REPORT')
+
+}
+
+}
+
+
+const password = prompt('ADMIN PASSWORD')
+
+if(password !== 'grizzlyadmin'){
+return <h1 className="title">ACCESS DENIED</h1>
 }
 
 return(
 
 <>
 
-<div className="applyHero">
-
-<h1 className="applyTitle">
-JOIN GRIZZLY FAMILY
+<h1 className="title">
+GRIZZLY ADMIN
 </h1>
 
-<p className="applyText">
-ELITE GTA 5 ROLEPLAY ORGANIZATION
-</p>
+<div className="adminLayout">
 
+<div className="adminCard">
+
+<div className="adminCardTitle">
+SYSTEM
 </div>
 
-<div className="applyCard">
-
-<div className="sectionTitle">
-ЗАЯВКА В СІМʼЮ
-</div>
-
-<input
-className="input"
-placeholder="👤 Nick Name"
-value={nick}
-onChange={e=>setNick(e.target.value)}
-/>
-
-<input
-className="input"
-placeholder="🎮 Discord"
-value={discord}
-onChange={e=>setDiscord(e.target.value)}
-/>
-
-<input
-className="input"
-placeholder="📱 Telegram"
-value={telegram}
-onChange={e=>setTelegram(e.target.value)}
-/>
-
-<textarea
-className="input applyTextarea"
-placeholder="📝 Чому хочеш вступити?"
-value={reason}
-onChange={e=>setReason(e.target.value)}
-></textarea>
+<div className="adminButtons">
 
 <button
-className="applyBtn"
-onClick={sendApplication}
+className="adminBtn"
+onClick={resetContracts}
 >
-ВІДПРАВИТИ ЗАЯВКУ
+RESET CONTRACTS
 </button>
+
+<button
+className="adminBtn"
+onClick={resetIncome}
+>
+RESET TOTAL INCOME
+</button>
+
+<button
+className="adminBtn"
+onClick={clearDatabase}
+>
+CLEAR DATABASE
+</button>
+
+<button
+className="adminBtn"
+onClick={clearExpenses}
+>
+CLEAR EXPENSES
+</button>
+
+<button
+className="adminBtn"
+onClick={sendWeeklyReport}
+>
+SEND WEEKLY REPORT
+</button>
+
+<button
+className="adminBtn"
+onClick={()=>{
+window.location.reload()
+}}
+>
+SERVER RESTART
+</button>
+
+</div>
+
+</div>
 
 </div>
 
