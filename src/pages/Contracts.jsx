@@ -34,13 +34,16 @@ return (
 <div
 style={{
 display: "grid",
-gridTemplateColumns: "1fr 1.2fr",
-gap: "20px",
+gridTemplateColumns: "0.95fr 1.35fr",
+gap: "24px",
 alignItems: "start",
 padding: "20px",
 background: "#050505",
 minHeight: "100vh",
 color: "white",
+maxWidth: "1700px",
+margin: "0 auto",
+width: "100%",
 }}
 >
 
@@ -264,6 +267,8 @@ border: "1px solid rgba(255,0,80,.2)",
 borderRadius: "20px",
 padding: "20px",
 height: "fit-content",
+position: "sticky",
+top: "20px",
 }}
 >
 
