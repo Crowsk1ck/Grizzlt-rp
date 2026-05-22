@@ -68,7 +68,7 @@ return
 
 const membersCount =
 members
-.split('.')
+.split(',')
 .filter(x=>x.trim()!=='')
 .length
 
@@ -102,8 +102,10 @@ description:'GRIZZLY FAMILY CONTRACT SYSTEM',
 
 color:0xff0055,
 
-thumbnail:{
-url:'https://i.imgur.com/8Km9tLL.png'
+author:{
+name:user.username,
+icon_url:
+`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`
 },
 
 fields:[
@@ -253,6 +255,22 @@ placeholder="👥 Учасники"
 value={members}
 onChange={e=>setMembers(e.target.value)}
 />
+
+<div
+style={{
+marginTop:'10px',
+color:'#999',
+fontSize:'14px'
+}}
+>
+Кількість учасників:
+{
+members
+.split(',')
+.filter(x=>x.trim()!=='')
+.length
+}
+</div>
 
 <div
 style={{
