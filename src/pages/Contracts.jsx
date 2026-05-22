@@ -18,6 +18,10 @@ const [startedBy,setStartedBy] = useState('')
 const [members,setMembers] = useState('')
 const [contracts,setContracts] = useState([])
 
+const user = JSON.parse(
+localStorage.getItem('user')
+)
+
 const loadContracts = async()=>{
 
 try{
