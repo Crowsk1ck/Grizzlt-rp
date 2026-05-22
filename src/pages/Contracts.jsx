@@ -41,8 +41,19 @@ id:d.id,
 })
 })
 
+const resetTime =
+localStorage.getItem('contracts_reset')
+
+const filtered = arr.filter(c=>{
+
+if(!resetTime) return true
+
+return c.created > Number(resetTime)
+
+})
+
 setContracts(
-arr.sort((a,b)=>b.created-a.created)
+filtered.sort((a,b)=>b.created-a.created)
 )
 
 }catch(err){

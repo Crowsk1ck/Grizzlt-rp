@@ -1,4 +1,52 @@
+import {
+db,
+collection,
+getDocs,
+deleteDoc,
+doc
+} from '../services/firebase'
+
 export default function Admin(){
+
+const resetContracts = ()=>{
+
+localStorage.setItem(
+'contracts_reset',
+Date.now()
+)
+
+window.location.reload()
+
+}
+
+const clearDatabase = async()=>{
+
+const password = prompt(
+'DELETE DATABASE ?'
+)
+
+if(password !== 'grizzlyadmin'){
+alert('WRONG PASSWORD')
+return
+}
+
+const snapshot = await getDocs(
+collection(db,'contracts')
+)
+
+for(const item of snapshot.docs){
+
+await deleteDoc(
+doc(db,'contracts',item.id)
+)
+
+}
+
+alert('DATABASE CLEARED')
+
+window.location.reload()
+
+}
 
 const password = prompt('ADMIN PASSWORD')
   
