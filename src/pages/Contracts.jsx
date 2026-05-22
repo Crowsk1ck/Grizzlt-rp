@@ -605,6 +605,120 @@ ${Math.floor(c.amount*0.20).toLocaleString()}
 
 </div>
 
+<div
+className="panel"
+style={{
+marginTop:'25px'
+}}
+>
+
+<div
+className="title"
+style={{fontSize:'28px'}}
+>
+CONTRACT PAYOUT
+</div>
+
+{
+contracts.slice(0,5).map((c,index)=>{
+
+const membersArray =
+c.members
+.split(',')
+.filter(x=>x.trim()!=='')
+
+const familyCut =
+Math.floor(Number(c.amount || 0) * 0.20)
+
+const membersMoney =
+Math.floor(
+(Number(c.amount || 0) - familyCut)
+/ Math.max(membersArray.length,1)
+)
+
+return(
+
+<div
+key={index}
+style={{
+marginTop:'16px',
+padding:'18px',
+background:'rgba(255,255,255,.03)',
+borderRadius:'18px',
+border:'1px solid rgba(255,0,85,.1)'
+}}
+>
+
+<div style={{
+color:'#ff0055',
+fontWeight:'700',
+marginBottom:'14px'
+}}>
+💸 {c.title}
+</div>
+
+{
+membersArray.map((member,i)=>(
+
+<div
+key={i}
+style={{
+display:'flex',
+justifyContent:'space-between',
+marginBottom:'8px',
+color:'#ccc'
+}}
+>
+
+<span>{member}</span>
+
+<span style={{
+color:'#00ff99',
+fontWeight:'700'
+}}>
+${membersMoney.toLocaleString()}
+</span>
+
+</div>
+
+))
+}
+
+<div
+style={{
+marginTop:'12px',
+paddingTop:'12px',
+borderTop:'1px solid rgba(255,255,255,.08)',
+display:'flex',
+justifyContent:'space-between'
+}}
+>
+
+<span style={{
+color:'#ff0055',
+fontWeight:'700'
+}}>
+GRIZZLY FAMILY
+</span>
+
+<span style={{
+color:'#ff0055',
+fontWeight:'700'
+}}>
+${familyCut.toLocaleString()}
+</span>
+
+</div>
+
+</div>
+
+)
+
+})
+}
+
+</div>
+
 </>
 
 )
