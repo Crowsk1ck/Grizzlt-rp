@@ -222,6 +222,14 @@ localStorage.getItem('hidden_income') || 0
 const visibleIncome =
 Math.max(0,totalIncome - hiddenIncome)
 
+const cleanIncome =
+Math.floor(visibleIncome * 0.84)
+
+localStorage.setItem(
+'clean_income',
+cleanIncome
+)
+
 return(
 <>
 <h1 className="title">
