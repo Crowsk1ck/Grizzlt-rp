@@ -17,6 +17,9 @@ const [amount,setAmount] = useState('')
 const [startedBy,setStartedBy] = useState('')
 const [members,setMembers] = useState('')
 const [contracts,setContracts] = useState([])
+const [expenseTitle,setExpenseTitle] = useState('')
+const [expenseAmount,setExpenseAmount] = useState('')
+const [expenses,setExpenses] = useState([])
 
 const user = JSON.parse(
 localStorage.getItem('user')
@@ -56,6 +59,118 @@ console.log(err)
 useEffect(()=>{
 loadContracts()
 },[])
+const loadExpenses = async()=>{
+
+try{
+
+const q = query(
+collection(db,'expenses')
+)
+
+const snapshot = await getDocs(q)
+
+const arr=[]
+
+snapshot.forEach(d=>{
+arr.push({
+id:d.id,
+...d.data()
+})
+})
+
+setExpenses(
+arr.sort((a,b)=>b.created-a.created)
+)
+
+}catch(err){
+
+console.log(err)
+
+}
+
+}
+
+useEffect(()=>{
+loadExpenses()
+},[])
+
+const sendExpense = async()=>{
+
+try{
+
+if(!expenseTitle || !expenseAmount){
+alert('Заповни всі поля')
+return
+}
+
+await addDoc(collection(db,'expenses'),{
+
+title:expenseTitle,
+amount:Number(
+String(expenseAmount).replace(/\D/g,'')
+),
+created:Date.now()
+
+})
+
+await fetch(
+'https://discord.com/api/webhooks/1507308549443817484/nosjieOUPp73UTdrGjvMZWjfYCVu6bNsI4JckXSvEkoi0QR20VxnLicnAdTVL17ZWAQe',
+{
+method:'POST',
+headers:{
+'Content-Type':'application/json'
+},
+body:JSON.stringify({
+
+embeds:[{
+
+title:'💸 FAMILY EXPENSE',
+
+color:0xff0055,
+
+fields:[
+
+{
+name:'📄 Назва',
+value:expenseTitle,
+inline:true
+},
+
+{
+name:'💰 Сума',
+value:`$${expenseAmount}`,
+inline:true
+}
+
+],
+
+footer:{
+text:'GRIZZLY FAMILY • EXPENSES'
+},
+
+timestamp:new Date().toISOString()
+
+}]
+
+})
+}
+)
+
+setExpenseTitle('')
+setExpenseAmount('')
+
+setTimeout(()=>{
+loadExpenses()
+},500)
+
+}catch(err){
+
+console.log(err)
+
+}
+
+}
+
 
 const sendContract = async()=>{
 
@@ -241,6 +356,18 @@ return c.created > weekAgo
 
 const cleanWeekIncome =
 Math.floor(weekIncome * 0.84)
+
+const totalExpenses =
+expenses.reduce(
+(a,b)=>a + Number(b.amount || 0),
+0
+)
+
+const finalIncome =
+Math.max(
+0,
+cleanIncome - totalExpenses
+)
 
 
 return(
@@ -434,9 +561,9 @@ style={{fontSize:'30px'}}
 
 <div className="stat">
 <h2>
-${cleanIncome.toLocaleString()}
+${finalIncome.toLocaleString()}
 </h2>
-<p>ЧИСТИЙ ДОХІД</p>
+<p>ЧИСТИЙ ДОХІД ПІСЛЯ РОЗХОДІВ</p>
 </div>
 
 <div className="stat">
@@ -645,6 +772,80 @@ ${data.money.toLocaleString()}
 ))
 }
 
+
+
+<div
+className="panel"
+style={{
+marginTop:'0px'
+}}
+>
+
+<div
+className="title"
+style={{fontSize:'28px'}}
+>
+РОЗХОДИ СІМʼЇ
+</div>
+
+<input
+className="input"
+placeholder="📄 Назва розходу"
+value={expenseTitle}
+onChange={e=>setExpenseTitle(e.target.value)}
+/>
+
+<input
+className="input"
+placeholder="💰 Сума"
+value={expenseAmount}
+onChange={e=>setExpenseAmount(e.target.value)}
+style={{marginTop:'12px'}}
+/>
+
+<button
+className="btn"
+style={{
+marginTop:'15px',
+width:'100%'
+}}
+onClick={sendExpense}
+>
+ДОДАТИ РОЗХІД
+</button>
+
+{
+expenses.slice(0,5).map((e,index)=>(
+
+<div
+key={index}
+style={{
+marginTop:'14px',
+padding:'14px',
+background:'rgba(255,255,255,.03)',
+borderRadius:'14px',
+display:'flex',
+justifyContent:'space-between'
+}}
+>
+
+<div style={{color:'#fff'}}>
+{e.title}
+</div>
+
+<div style={{
+color:'#ff0055',
+fontWeight:'700'
+}}>
+-${Number(e.amount).toLocaleString()}
+</div>
+
+</div>
+
+))
+}
+
+</div>
 
 
 </div>
