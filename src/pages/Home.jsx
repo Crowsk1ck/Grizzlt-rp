@@ -8,10 +8,19 @@ getDocs
 export default function Home(){
 
 const [contractsCount,setContractsCount] = useState(0)
-const cleanIncome =
+
+const totalIncome =
 Number(
-localStorage.getItem('clean_income') || 0
+localStorage.getItem('total_income') || 0
 )
+
+const totalExpenses =
+Number(
+localStorage.getItem('total_expenses') || 0
+)
+
+const cleanIncome =
+totalIncome - totalExpenses
 
 useEffect(()=>{
 
@@ -74,13 +83,13 @@ className="heroBtn"
 </div>
 
 <div className="statCard">
-<h2>${cleanIncome.toLocaleString()}</h2>
+<h2>${totalIncome.toLocaleString()}</h2>
 <p>ЗАГАЛЬНИЙ ДОХІД</p>
 </div>
 
 <div className="statCard">
-<h2>24/7</h2>
-<p>ОНЛАЙН</p>
+<h2>${cleanIncome.toLocaleString()}</h2>
+<p>ЧИСТИЙ ДОХІД</p>
 </div>
 
 </div>
