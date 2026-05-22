@@ -23,7 +23,7 @@ localStorage.getItem('user')
 )
 
 const loadContracts = async()=>{
- 
+  
 try{
 
 const q = query(
