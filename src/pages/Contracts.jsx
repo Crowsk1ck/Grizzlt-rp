@@ -525,131 +525,6 @@ onClick={clearPanel}
 
 </div>
 
-
-</div>
-
-<div
-className="panel"
-style={{
-background:'rgba(255,255,255,.05)',
-backdropFilter:'blur(20px)',
-border:'1px solid rgba(255,255,255,.08)',
-borderRadius:'24px',
-padding:'30px',
-boxShadow:'0 0 40px rgba(0,0,0,.3)'
-}}
->
-
-<div
-className="title"
-style={{fontSize:'30px'}}
->
-СТАТИСТИКА
-</div>
-
-<div className="statGrid">
-
-<div className="stat">
-<h2>{contracts.length}</h2>
-<p>КОНТРАКТІВ</p>
-</div>
-
-<div className="stat">
-<h2>${visibleIncome.toLocaleString()}</h2>
-<p>ЗАГАЛЬНИЙ ДОХІД</p>
-</div>
-
-<div className="stat">
-<h2>
-${finalIncome.toLocaleString()}
-</h2>
-<p>ЧИСТИЙ ДОХІД ПІСЛЯ РОЗХОДІВ</p>
-</div>
-
-<div className="stat">
-<h2>
-${cleanWeekIncome.toLocaleString()}
-</h2>
-<p>ДОХІД ЗА 7 ДНІВ</p>
-</div>
-
-<div className="stat">
-<h2>
-{
-contracts.length>0
-? Math.floor(
-contracts.reduce((a,b)=>a+b.membersCount,0)
-/ contracts.length
-)
-:0
-}
-</h2>
-
-<p>
-СЕРЕДНЯ КІЛЬКІСТЬ УЧАСНИКІВ
-</p>
-
-</div>
-
-</div>
-
-<div className="row rowHeader">
-
-<div>
-КОНТРАКТ
-</div>
-
-<div>
-УЧАСНИКИ
-</div>
-
-<div>
-ДОХІД
-</div>
-
-</div>
-
-{contracts.map(c=>(
-<div
-className="row"
-key={c.id}
->
-
-<div>
-
-{c.title}
-
-<br/><br/>
-
-<span style={{
-color:'#999',
-fontSize:'14px',
-lineHeight:'1.7'
-}}>
-
-👑 {c.startedBy}
-
-<br/>
-
-👥 {c.members}
-
-</span>
-
-</div>
-
-<div>
-{c.membersCount}
-</div>
-
-<div className="green">
-${c.amount}
-</div>
-
-
-
-</div>
-))}
-
 <div
 className="panel"
 style={{
@@ -849,6 +724,207 @@ fontWeight:'700'
 
 
 </div>
+
+<div
+className="panel"
+style={{
+marginTop:'0px'
+}}
+>
+
+<div
+className="title"
+style={{fontSize:'28px'}}
+>
+РОЗХОДИ СІМʼЇ
+</div>
+
+<input
+className="input"
+placeholder="📄 Назва розходу"
+value={expenseTitle}
+onChange={e=>setExpenseTitle(e.target.value)}
+/>
+
+<input
+className="input"
+placeholder="💰 Сума"
+value={expenseAmount}
+onChange={e=>setExpenseAmount(e.target.value)}
+style={{marginTop:'12px'}}
+/>
+
+<button
+className="btn"
+style={{
+marginTop:'15px',
+width:'100%'
+}}
+onClick={sendExpense}
+>
+ДОДАТИ РОЗХІД
+</button>
+
+{
+expenses.slice(0,5).map((e,index)=>(
+
+<div
+key={index}
+style={{
+marginTop:'14px',
+padding:'14px',
+background:'rgba(255,255,255,.03)',
+borderRadius:'14px',
+display:'flex',
+justifyContent:'space-between'
+}}
+>
+
+<div style={{color:'#fff'}}>
+{e.title}
+</div>
+
+<div style={{
+color:'#ff0055',
+fontWeight:'700'
+}}>
+-${Number(e.amount).toLocaleString()}
+</div>
+
+</div>
+
+))
+}
+
+</div>
+
+
+</div>
+
+</div>
+
+<div
+className="panel"
+style={{
+background:'rgba(255,255,255,.05)',
+backdropFilter:'blur(20px)',
+border:'1px solid rgba(255,255,255,.08)',
+borderRadius:'24px',
+padding:'30px',
+boxShadow:'0 0 40px rgba(0,0,0,.3)'
+}}
+>
+
+<div
+className="title"
+style={{fontSize:'30px'}}
+>
+СТАТИСТИКА
+</div>
+
+<div className="statGrid">
+
+<div className="stat">
+<h2>{contracts.length}</h2>
+<p>КОНТРАКТІВ</p>
+</div>
+
+<div className="stat">
+<h2>${visibleIncome.toLocaleString()}</h2>
+<p>ЗАГАЛЬНИЙ ДОХІД</p>
+</div>
+
+<div className="stat">
+<h2>
+${finalIncome.toLocaleString()}
+</h2>
+<p>ЧИСТИЙ ДОХІД ПІСЛЯ РОЗХОДІВ</p>
+</div>
+
+<div className="stat">
+<h2>
+${cleanWeekIncome.toLocaleString()}
+</h2>
+<p>ДОХІД ЗА 7 ДНІВ</p>
+</div>
+
+<div className="stat">
+<h2>
+{
+contracts.length>0
+? Math.floor(
+contracts.reduce((a,b)=>a+b.membersCount,0)
+/ contracts.length
+)
+:0
+}
+</h2>
+
+<p>
+СЕРЕДНЯ КІЛЬКІСТЬ УЧАСНИКІВ
+</p>
+
+</div>
+
+</div>
+
+<div className="row rowHeader">
+
+<div>
+КОНТРАКТ
+</div>
+
+<div>
+УЧАСНИКИ
+</div>
+
+<div>
+ДОХІД
+</div>
+
+</div>
+
+{contracts.map(c=>(
+<div
+className="row"
+key={c.id}
+>
+
+<div>
+
+{c.title}
+
+<br/><br/>
+
+<span style={{
+color:'#999',
+fontSize:'14px',
+lineHeight:'1.7'
+}}>
+
+👑 {c.startedBy}
+
+<br/>
+
+👥 {c.members}
+
+</span>
+
+</div>
+
+<div>
+{c.membersCount}
+</div>
+
+<div className="green">
+${c.amount}
+</div>
+
+
+
+</div>
+))}
+
 
 </div>
 
