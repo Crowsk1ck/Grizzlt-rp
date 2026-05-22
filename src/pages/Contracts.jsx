@@ -661,6 +661,7 @@ ${familyCut.toLocaleString()}
 )
 }
 </div>
+ </div>
 </>
 
 )
