@@ -228,15 +228,13 @@ if(!role) return
 const discordId = prompt('DISCORD ID')
 if(!discordId) return
 
-const avatar = prompt('DISCORD AVATAR HASH')
-
 await addDoc(
 collection(db,'team'),
 {
 name,
 role,
 discordId,
-avatar: avatar || '',
+avatar:'',
 created: Date.now()
 }
 )
