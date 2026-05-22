@@ -5,40 +5,40 @@ const members = [
 {
 name:'CrowsKick',
 role:'OWNER',
-id:'DISCORD_ID',
+id:'511272056021581835',
 avatar:'DISCORD_AVATAR_HASH'
 },
 
 {
 name:'Maryana',
 role:'CO-OWNER',
-id:'DISCORD_ID',
+id:'1053785420351148132',
 avatar:'DISCORD_AVATAR_HASH'
 },
 
 {
-name:'Zim',
+name:'Нету',
 role:'LEADER',
 id:'DISCORD_ID',
 avatar:'DISCORD_AVATAR_HASH'
 },
 
 {
-name:'Neffiltrovanuyi',
+name:'Нету',
 role:'WAR MANAGER',
 id:'DISCORD_ID',
 avatar:'DISCORD_AVATAR_HASH'
 },
 
 {
-name:'BlackWolf',
+name:'Нету',
 role:'BUSINESS',
 id:'DISCORD_ID',
 avatar:'DISCORD_AVATAR_HASH'
 },
 
 {
-name:'Ghost',
+name:'Нету',
 role:'EVENTS',
 id:'DISCORD_ID',
 avatar:'DISCORD_AVATAR_HASH'
@@ -80,11 +80,7 @@ className="teamAvatar"
 <div className="teamButtons">
 
 <button className="teamBtn">
-PROFILE
-</button>
-
-<button className="teamBtn secondary">
-MESSAGE
+Профіль
 </button>
 
 </div>
