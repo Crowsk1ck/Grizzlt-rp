@@ -672,8 +672,3 @@ ${data.money.toLocaleString()}
 
 )
 }
-</div>
-</>
-
-)
-}
