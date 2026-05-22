@@ -136,7 +136,7 @@ const topText = Object.entries(stats)
 💰 $${item[1].money.toLocaleString()}`
 )
 
-.join('\\n\\n-------------------\\n\\n')
+.join('\n\n━━━━━━━━━━━━\n\n')
 
 await fetch(
 'https://discord.com/api/webhooks/1507275442657296386/utT-89112eXBwIL7ijrwlYz-ob4H9-bQh79PEbGR0XhWxuZpE7IShP8YSJCwkPyNVsnZ',
