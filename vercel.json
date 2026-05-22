@@ -9,7 +9,7 @@
 {
 "crons":[
 {
-"path":"/api/weekly-report",
+"path":"/src/api/weekly-report",
 "schedule":"0 18 * * 0"
 }
 ]
