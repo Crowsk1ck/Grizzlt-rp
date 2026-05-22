@@ -262,18 +262,55 @@ onChange={e=>setMembers(e.target.value)}
 
 <div
 style={{
-marginTop:'10px',
-color:'#999',
-fontSize:'14px'
+marginTop:'14px',
+padding:'14px 16px',
+background:'rgba(255,255,255,.03)',
+border:'1px solid rgba(255,0,85,.12)',
+borderRadius:'14px',
+fontSize:'14px',
+color:'#aaa',
+lineHeight:'1.7'
 }}
 >
-Кількість учасників пишемо через , :
+
+<span style={{
+color:'#ff0055',
+fontWeight:'700'
+}}>
+ℹ Учасників пишемо через кому
+</span>
+
+<br/>
+
+<span style={{
+color:'#666'
+}}>
+Приклад:
+</span>
+
+<br/>
+
+<span style={{
+color:'#fff'
+}}>
+Andrii Grizzly, Maryana, Ghost
+</span>
+
+<br/><br/>
+
+<span style={{
+color:'#00ff99',
+fontWeight:'700'
+}}>
+Кількість учасників:
 {
 members
 .split(',')
 .filter(x=>x.trim()!=='')
 .length
 }
+</span>
+
 </div>
 
 <div
