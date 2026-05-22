@@ -21,6 +21,7 @@ padding:30px;
 backdrop-filter:blur(20px);
 box-shadow:0 0 35px rgba(0,0,0,.35);
 transition:.3s;
+height:auto;
 }
 
 .adminCard:hover{
@@ -37,9 +38,10 @@ text-shadow:0 0 15px rgba(255,0,85,.3);
 }
 
 .adminButtons{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:15px;
+display:flex;
+flex-direction:column;
+gap:14px;
+width:100%;
 }
 
 .adminBtn{
