@@ -64,7 +64,11 @@ alert('DATABASE CLEARED')
 window.location.reload()
 
 }
+const sendWeeklyReport = async()=>{
 
+alert('WEEKLY REPORT SENT')
+
+}
 const password = prompt('ADMIN PASSWORD')
 
 if(password !== 'grizzlyadmin'){
@@ -112,11 +116,9 @@ CLEAR DATABASE
 
 <button
 className="adminBtn"
-onClick={()=>{
-window.location.reload()
-}}
+onClick={sendWeeklyReport}
 >
-SERVER RESTART
+SEND WEEKLY REPORT
 </button>
 
 </div>
