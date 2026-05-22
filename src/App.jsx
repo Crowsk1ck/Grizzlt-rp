@@ -106,7 +106,7 @@ LOGOUT
 </div>
 
 <nav>
-<Link to="/">Інфо</Link>
+<Link to="/">Головна</Link>
 <Link to="/team">Команда</Link>
 <Link to="/gallery">Галерея</Link>
 <Link to="/contracts">Контракти</Link>
