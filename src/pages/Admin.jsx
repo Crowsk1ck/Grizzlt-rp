@@ -19,23 +19,49 @@ window.location.reload()
 
 }
 
-const resetIncome = ()=>{
+const resetIncome = async()=>{
 
-const income = prompt(
-'СКІЛЬКИ СКРИТИ ДОХОДУ?'
+const password = prompt(
+'RESET TOTAL INCOME ?'
 )
 
-if(!income) return
+if(password !== 'grizzlyadmin'){
+alert('WRONG PASSWORD')
+return
+}
 
 localStorage.setItem(
-'hidden_income',
-income
+'total_income',
+0
 )
+
+localStorage.setItem(
+'total_expenses',
+0
+)
+
+localStorage.setItem(
+'clean_income',
+0
+)
+
+const expensesSnapshot = await getDocs(
+collection(db,'expenses')
+)
+
+for(const item of expensesSnapshot.docs){
+
+await deleteDoc(
+doc(db,'expenses',item.id)
+)
+
+}
+
+alert('TOTAL INCOME RESETED')
 
 window.location.reload()
 
 }
-
 const clearDatabase = async()=>{
 
 const password = prompt(
@@ -214,28 +240,28 @@ SYSTEM
 className="adminBtn"
 onClick={resetContracts}
 >
-RESET CONTRACTS
+Перезапустити Конт.
 </button>
 
 <button
 className="adminBtn"
 onClick={resetIncome}
 >
-RESET TOTAL INCOME
+Очистити Розходи
 </button>
 
 <button
 className="adminBtn"
 onClick={clearDatabase}
 >
-CLEAR DATABASE
+Очистити базу
 </button>
 
 <button
 className="adminBtn"
 onClick={sendWeeklyReport}
 >
-SEND WEEKLY REPORT
+Тижневий звіт
 </button>
 
 </div>
