@@ -13,6 +13,15 @@ export default function App(){
 
 const [user,setUser] = useState(null)
 const [loading,setLoading] = useState(true)
+
+const logout = ()=>{
+
+localStorage.removeItem('discord_user')
+
+window.location.reload()
+
+}
+
 const applicationSent = localStorage.getItem('application_sent')
 
 useEffect(()=>{
