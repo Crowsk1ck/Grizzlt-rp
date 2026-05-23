@@ -83,13 +83,8 @@ className="heroBtn"
 </div>
 
 <div className="statCard">
-<h2>${totalIncome.toLocaleString()}</h2>
+<h2>${finalIncome.toLocaleString()}</h2>
 <p>ЗАГАЛЬНИЙ ДОХІД</p>
-</div>
-
-<div className="statCard">
-<h2>${cleanIncome.toLocaleString()}</h2>
-<p>ЧИСТИЙ ДОХІД</p>
 </div>
 
 </div>
