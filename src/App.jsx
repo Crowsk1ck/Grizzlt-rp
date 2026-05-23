@@ -78,38 +78,11 @@ console.log(err)
 
 useEffect(()=>{
 
-const token = new URLSearchParams(
-window.location.hash.substring(1)
-).get('access_token')
-
-if(token){
-
-fetch('https://discord.com/api/users/@me',{
-headers:{
-authorization:`Bearer ${token}`
-}
-})
-.then(r=>r.json())
-.then(async data=>{
-
-localStorage.setItem(
-'discord_user',
-JSON.stringify(data)
-)
-
-setUser(data)
-
-await syncDiscordUserToTeam(data)
-
-window.location.hash=''
-
-})
-
-}
-
 const saved = localStorage.getItem('discord_user')
 
 if(saved){
+
+try{
 
 const parsed = JSON.parse(saved)
 
@@ -117,7 +90,15 @@ setUser(parsed)
 
 syncDiscordUserToTeam(parsed)
 
+}catch(err){
+
+console.log(err)
+
 }
+
+}
+
+setLoading(false)
 
 },[])
 
