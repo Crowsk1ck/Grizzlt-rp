@@ -1,53 +1,12 @@
-
-
-// AUTO TEAM SYNC
-const syncDiscordUserToTeam = async(user)=>{
-
-try{
-
-if(!user) return
-
-const snapshot = await getDocs(
-collection(db,'team')
-)
-
-let exists = false
-
-snapshot.forEach(docu=>{
-
-const data = docu.data()
-
-if(data.discordId === user.id){
-exists = true
-}
-
-})
-
-if(!exists){
-
-await addDoc(
-collection(db,'team'),
-{
-name:user.username,
-role:'MEMBER',
-discordId:user.id,
-avatar:user.avatar || '',
-created:Date.now()
-}
-)
-
-}
-
-}catch(err){
-
-console.log(err)
-
-}
-
-}
-
 import { useEffect, useState } from 'react'
 import { Routes, Route, Link } from 'react-router-dom'
+
+import {
+db,
+collection,
+getDocs,
+addDoc
+} from './services/firebase'
 
 import Home from './pages/Home'
 import Team from './pages/Team'
@@ -72,6 +31,51 @@ window.location.reload()
 
 const applicationSent = localStorage.getItem('application_sent')
 
+const syncDiscordUserToTeam = async(discordUser)=>{
+
+try{
+
+if(!discordUser) return
+
+const snapshot = await getDocs(
+collection(db,'team')
+)
+
+let exists = false
+
+snapshot.forEach(docu=>{
+
+const data = docu.data()
+
+if(data.discordId === discordUser.id){
+exists = true
+}
+
+})
+
+if(!exists){
+
+await addDoc(
+collection(db,'team'),
+{
+name:discordUser.username,
+role:'MEMBER',
+discordId:discordUser.id,
+avatar:discordUser.avatar,
+created:Date.now()
+}
+)
+
+}
+
+}catch(err){
+
+console.log(err)
+
+}
+
+}
+
 useEffect(()=>{
 
 const token = new URLSearchParams(
@@ -86,10 +90,19 @@ authorization:`Bearer ${token}`
 }
 })
 .then(r=>r.json())
-.then(data=>{
-localStorage.setItem('discord_user',JSON.stringify(data))
+.then(async data=>{
+
+localStorage.setItem(
+'discord_user',
+JSON.stringify(data)
+)
+
 setUser(data)
+
+await syncDiscordUserToTeam(data)
+
 window.location.hash=''
+
 })
 
 }
@@ -97,7 +110,13 @@ window.location.hash=''
 const saved = localStorage.getItem('discord_user')
 
 if(saved){
-setUser(JSON.parse(saved))
+
+const parsed = JSON.parse(saved)
+
+setUser(parsed)
+
+syncDiscordUserToTeam(parsed)
+
 }
 
 },[])
@@ -128,7 +147,11 @@ LOGIN WITH DISCORD
 
 </div>
 </div>
-<audio autoPlay loop controls className='musicPlayer'><source src='/assets/music/phonk.mp3' type='audio/mp3'/></audio>
+
+<audio autoPlay loop controls className='musicPlayer'>
+<source src='/assets/music/phonk.mp3' type='audio/mp3'/>
+</audio>
+
 </>
 )
 }
@@ -144,7 +167,7 @@ return(
 <div className="userBox">
 
 <img
-src={`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`}
+src={`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.webp?size=512`}
 className="userAvatar"
 />
 
@@ -189,26 +212,11 @@ LOGOUT
 </Routes>
 
 </div>
-<audio autoPlay loop controls className='musicPlayer'><source src='/assets/music/phonk.mp3' type='audio/mp3'/></audio>
+
+<audio autoPlay loop controls className='musicPlayer'>
+<source src='/assets/music/phonk.mp3' type='audio/mp3'/>
+</audio>
+
 </>
 )
-}
-
-
-try{
-
-const discordUser = JSON.parse(
-localStorage.getItem('discord_user')
-)
-
-if(discordUser){
-
-syncDiscordUserToTeam(discordUser)
-
-}
-
-}catch(err){
-
-console.log(err)
-
 }
