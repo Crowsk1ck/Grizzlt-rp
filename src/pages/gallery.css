@@ -220,3 +220,70 @@ padding:20px;
 }
 
 }
+
+
+/* STAGE 3.5 PREMIUM DEPTH */
+body::before{
+content:'';
+position:fixed;
+inset:0;
+background:
+radial-gradient(circle at top left, rgba(255,0,90,.18), transparent 35%),
+radial-gradient(circle at top right, rgba(120,0,255,.14), transparent 35%),
+radial-gradient(circle at bottom center, rgba(255,0,120,.1), transparent 40%);
+pointer-events:none;
+z-index:-1;
+}
+
+.dashboard-card,
+.contract-card,
+.stats-card,
+.panel,
+.sidebar,
+.topbar{
+backdrop-filter: blur(18px);
+box-shadow:
+0 0 20px rgba(255,0,90,.15),
+0 10px 40px rgba(0,0,0,.55);
+border:1px solid rgba(255,0,120,.25);
+}
+
+.dashboard-card:hover,
+.contract-card:hover,
+.stats-card:hover{
+transform:translateY(-6px);
+transition:.35s ease;
+box-shadow:
+0 0 30px rgba(255,0,120,.35),
+0 0 80px rgba(140,0,255,.2);
+}
+
+table tr{
+transition:.25s ease;
+}
+
+table tr:hover{
+background:rgba(255,0,120,.08);
+}
+
+.stat-number{
+text-shadow:0 0 15px #ff0066;
+}
+
+.sidebar{
+background:linear-gradient(180deg, rgba(10,10,10,.95), rgba(18,18,18,.88));
+}
+
+.topbar{
+background:rgba(15,15,15,.72);
+border-bottom:1px solid rgba(255,0,90,.2);
+}
+
+button{
+transition:.25s ease;
+}
+
+button:hover{
+transform:translateY(-2px);
+box-shadow:0 0 24px rgba(255,0,120,.45);
+}
