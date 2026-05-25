@@ -1,5 +1,5 @@
 
-import { useEffect } from 'react'
+import { useRef, useEffect } from 'react'
 
 export default function CustomCursor(){
 
