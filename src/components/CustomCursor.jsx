@@ -1,43 +1,26 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef } from 'react'
 
 export default function CustomCursor(){
 
-const [clicked,setClicked] = useState(false)
+const ref = useRef(null)
 
 useEffect(()=>{
 
-const cursor = document.querySelector('.custom-cursor')
-
 const move = (e)=>{
 
-if(cursor){
-
-cursor.style.left = e.clientX + 'px'
-cursor.style.top = e.clientY + 'px'
-
+if(ref.current){
+ref.current.style.left = e.clientX + 'px'
+ref.current.style.top = e.clientY + 'px'
 }
 
 }
-
-const down = ()=>setClicked(true)
-const up = ()=>setClicked(false)
 
 window.addEventListener('mousemove',move)
-window.addEventListener('mousedown',down)
-window.addEventListener('mouseup',up)
 
-return ()=>{
-
-window.removeEventListener('mousemove',move)
-window.removeEventListener('mousedown',down)
-window.removeEventListener('mouseup',up)
-
-}
+return ()=>window.removeEventListener('mousemove',move)
 
 },[])
 
-return(
-<div className={`custom-cursor ${clicked ? 'cursor-clicked' : ''}`}></div>
-)
+return <div ref={ref} className="custom-cursor"></div>
 
 }

@@ -1741,3 +1741,22 @@ opacity:1;
 transform:translateY(0);
 }
 }
+
+
+*{
+cursor:none;
+}
+
+.custom-cursor{
+position:fixed;
+left:50%;
+top:50%;
+width:18px;
+height:18px;
+border-radius:50%;
+background:#ff0088;
+pointer-events:none;
+transform:translate(-50%,-50%);
+z-index:999999999;
+box-shadow:0 0 10px #ff0088,0 0 20px #ff0088,0 0 40px #ff0088;
+}

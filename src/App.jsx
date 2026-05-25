@@ -21,7 +21,9 @@ function SidebarLink({to,label,icon}){
 
 const location = useLocation()
 
-return(
+return(<>
+<CustomCursor />
+
 <Link
 to={to}
 className={`sideLink ${location.pathname === to ? 'activeSide' : ''}`}
@@ -291,6 +293,7 @@ LOGOUT
 
 </div>
 
+</>
 )
 
 }
