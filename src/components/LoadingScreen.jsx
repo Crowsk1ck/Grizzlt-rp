@@ -1,4 +1,4 @@
-import { import { useEffect, import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function LoadingScreen({ onFinish }) {
 
