@@ -1,5 +1,5 @@
 import CustomCursor from './components/CustomCursor'
-import { useEffect, useState } from 'react'
+import { import { useEffect, import { useState } from 'react'
 import { Routes, Route, Link, useLocation } from 'react-router-dom'
 
 import {
