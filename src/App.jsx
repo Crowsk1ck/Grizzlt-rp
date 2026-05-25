@@ -1,5 +1,5 @@
 import CustomCursor from './components/CustomCursor'
-import { import { useEffect, import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Routes, Route, Link, useLocation } from 'react-router-dom'
 
 import {
@@ -43,16 +43,44 @@ const hash = window.location.hash
 
 if(hash.includes('access_token')){
 
-localStorage.setItem('discord_token',hash)
+const token = hash.split('access_token=')[1]?.split('&')[0]
 
-window.history.replaceState({},document.title,'/')
+if(token){
 
-window.location.href='/'
+fetch(
+'https://discord.com/api/users/@me',
+{
+headers:{
+Authorization:`Bearer ${token}`
+}
+}
+)
+.then(res=>res.json())
+.then(data=>{
+
+localStorage.setItem(
+'discord_user',
+JSON.stringify(data)
+)
+
+window.history.replaceState(
+{},
+document.title,
+'/'
+)
+
+window.location.reload()
+
+})
+.catch(err=>{
+console.log(err)
+})
+
+}
 
 }
 
 },[])
-
 
 const [user,setUser] = useState(null)
 const [loading,setLoading] = useState(true)
@@ -68,7 +96,6 @@ return ()=>clearInterval(interval)
 
 },[])
 
-
 const logout = ()=>{
 
 localStorage.removeItem('discord_user')
@@ -76,7 +103,8 @@ window.location.reload()
 
 }
 
-const applicationSent = localStorage.getItem('application_sent')
+const applicationSent =
+localStorage.getItem('application_sent')
 
 const syncDiscordUserToTeam = async(discordUser)=>{
 
@@ -125,7 +153,8 @@ console.log(err)
 
 useEffect(()=>{
 
-const saved = localStorage.getItem('discord_user')
+const saved =
+localStorage.getItem('discord_user')
 
 if(saved){
 
@@ -159,8 +188,17 @@ return(
 
 <div className="loginPage">
 
-<video className="bgvideo" autoPlay muted loop playsInline>
-<source src="/assets/media/background.mp4" type="video/mp4"/>
+<video
+className="bgvideo"
+autoPlay
+muted
+loop
+playsInline
+>
+<source
+src="/assets/media/background.mp4"
+type="video/mp4"
+/>
 </video>
 
 <div className="overlay"></div>
@@ -177,7 +215,7 @@ PREMIUM GTA RP ORGANIZATION PANEL
 
 <a
 className="loginBtn"
-href="https://discord.com/oauth2/authorize?client_id=1506029366008610856&response_type=token&redirect_uri=https%3A%2F%2Fwww.grizzly-family.online%2F&scope=identify"
+href={`https://discord.com/oauth2/authorize?client_id=1506029366008610856&response_type=token&redirect_uri=${encodeURIComponent(window.location.origin + '/')}&scope=identify`}
 >
 LOGIN WITH DISCORD
 </a>
@@ -211,8 +249,17 @@ className="particle"
 }
 </div>
 
-<video className="bgvideo" autoPlay muted loop playsInline>
-<source src="/assets/media/background.mp4" type="video/mp4"/>
+<video
+className="bgvideo"
+autoPlay
+muted
+loop
+playsInline
+>
+<source
+src="/assets/media/background.mp4"
+type="video/mp4"
+/>
 </video>
 
 <div className="overlay"></div>
@@ -226,6 +273,7 @@ className="particle"
 </div>
 
 <div>
+
 <div className="logoTitle">
 GRIZZLY
 </div>
@@ -233,22 +281,52 @@ GRIZZLY
 <div className="logoSub">
 FAMILY
 </div>
+
 </div>
 
 </div>
 
 <div className="sidebarLinks">
 
-<SidebarLink to="/" label="Главная" icon="⌂" />
-<SidebarLink to="/team" label="Команда" icon="👥" />
-<SidebarLink to="/gallery" label="Галерея" icon="▣" />
-<SidebarLink to="/contracts" label="Контракты" icon="◈" />
+<SidebarLink
+to="/"
+label="Главная"
+icon="⌂"
+/>
 
-{!applicationSent && (
-<SidebarLink to="/apply" label="Заявка" icon="✦" />
-)}
+<SidebarLink
+to="/team"
+label="Команда"
+icon="👥"
+/>
 
-<SidebarLink to="/admin" label="Admin" icon="⚙" />
+<SidebarLink
+to="/gallery"
+label="Галерея"
+icon="▣"
+/>
+
+<SidebarLink
+to="/contracts"
+label="Контракты"
+icon="◈"
+/>
+
+{
+!applicationSent && (
+<SidebarLink
+to="/apply"
+label="Заявка"
+icon="✦"
+/>
+)
+}
+
+<SidebarLink
+to="/admin"
+label="Admin"
+icon="⚙"
+/>
 
 </div>
 
@@ -317,12 +395,37 @@ LOGOUT
 <div className="pageWrapper">
 
 <Routes>
-<Route path="/" element={<Home />} />
-<Route path="/team" element={<Team />} />
-<Route path="/gallery" element={<Gallery />} />
-<Route path="/contracts" element={<Contracts />} />
-<Route path="/apply" element={<Apply />} />
-<Route path="/admin" element={<Admin />} />
+
+<Route
+path="/"
+element={<Home />}
+/>
+
+<Route
+path="/team"
+element={<Team />}
+/>
+
+<Route
+path="/gallery"
+element={<Gallery />}
+/>
+
+<Route
+path="/contracts"
+element={<Contracts />}
+/>
+
+<Route
+path="/apply"
+element={<Apply />}
+/>
+
+<Route
+path="/admin"
+element={<Admin />}
+/>
+
 </Routes>
 
 </div>
