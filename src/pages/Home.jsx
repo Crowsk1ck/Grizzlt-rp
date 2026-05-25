@@ -1,20 +1,4 @@
-import {
-useEffect(()=>{
-
-const hash = window.location.hash
-
-if(hash.includes('access_token')){
-
-localStorage.setItem('discord_token',hash)
-
-window.history.replaceState({},document.title,'/')
-
-window.location.href='/'
-
-}
-
-},[])
- useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
 db,
 collection,
@@ -37,6 +21,22 @@ localStorage.getItem('total_expenses') || 0
 
 const cleanIncome =
 totalIncome - totalExpenses
+
+useEffect(()=>{
+
+const hash = window.location.hash
+
+if(hash.includes('access_token')){
+
+localStorage.setItem('discord_token',hash)
+
+window.history.replaceState({},document.title,'/')
+
+window.location.href='/'
+
+}
+
+},[])
 
 useEffect(()=>{
 
