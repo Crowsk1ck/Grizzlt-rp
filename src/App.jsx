@@ -230,7 +230,7 @@ GRIZZLY FAMILY
 </div>
 
 <div className="onlineCount">
-ONLINE: 48
+ONLINE: {onlineCount}
 </div>
 
 </div>
