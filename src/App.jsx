@@ -36,7 +36,7 @@ className={`sideLink ${location.pathname === to ? 'activeSide' : ''}`}
 }
 
 
-const particles = Array.from({length:35})
+const particles = Array.from({ length: 35 })
 
 
 export default function App(){

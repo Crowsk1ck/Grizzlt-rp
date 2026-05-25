@@ -1,16 +1,17 @@
+
 import { useEffect, useRef } from 'react'
 
 export default function CustomCursor(){
 
-const ref = useRef(null)
+const cursorRef = useRef(null)
 
 useEffect(()=>{
 
 const move = (e)=>{
 
-if(ref.current){
-ref.current.style.left = e.clientX + 'px'
-ref.current.style.top = e.clientY + 'px'
+if(cursorRef.current){
+cursorRef.current.style.left = e.clientX + 'px'
+cursorRef.current.style.top = e.clientY + 'px'
 }
 
 }
@@ -21,6 +22,6 @@ return ()=>window.removeEventListener('mousemove',move)
 
 },[])
 
-return <div ref={ref} className="custom-cursor"></div>
+return <div ref={cursorRef} className="custom-cursor"></div>
 
 }
