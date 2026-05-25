@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import {
 db,
 collection,
@@ -9,211 +10,79 @@ addDoc
 
 export default function Admin(){
 
+const [access,setAccess] = useState(false)
+
+const loginAdmin = ()=>{
+
+const password = prompt('ADMIN PASSWORD')
+
+if(password === 'grizzlyadmin'){
+setAccess(true)
+}else{
+alert('ACCESS DENIED')
+}
+
+}
+
 const resetContracts = ()=>{
 
-localStorage.setItem(
-'contracts_reset',
-Date.now()
-)
-
+localStorage.setItem('contracts_reset',Date.now())
 window.location.reload()
 
 }
 
 const resetIncome = async()=>{
 
-const password = prompt(
-'RESET TOTAL INCOME ?'
-)
+const password = prompt('RESET TOTAL INCOME ?')
 
 if(password !== 'grizzlyadmin'){
 alert('WRONG PASSWORD')
 return
 }
 
-localStorage.setItem(
-'total_income',
-0
-)
+localStorage.setItem('total_income',0)
+localStorage.setItem('total_expenses',0)
+localStorage.setItem('clean_income',0)
 
-localStorage.setItem(
-'total_expenses',
-0
-)
-
-localStorage.setItem(
-'clean_income',
-0
-)
-
-const expensesSnapshot = await getDocs(
-collection(db,'expenses')
-)
+const expensesSnapshot = await getDocs(collection(db,'expenses'))
 
 for(const item of expensesSnapshot.docs){
-
-await deleteDoc(
-doc(db,'expenses',item.id)
-)
-
+await deleteDoc(doc(db,'expenses',item.id))
 }
 
 alert('TOTAL INCOME RESETED')
-
 window.location.reload()
 
 }
+
 const clearDatabase = async()=>{
 
-const password = prompt(
-'DELETE DATABASE ?'
-)
+const password = prompt('DELETE DATABASE ?')
 
 if(password !== 'grizzlyadmin'){
 alert('WRONG PASSWORD')
 return
 }
 
-const snapshot = await getDocs(
-collection(db,'contracts')
-)
+const contracts = await getDocs(collection(db,'contracts'))
 
-for(const item of snapshot.docs){
-
-await deleteDoc(
-doc(db,'contracts',item.id)
-)
-
+for(const item of contracts.docs){
+await deleteDoc(doc(db,'contracts',item.id))
 }
+
+const expenses = await getDocs(collection(db,'expenses'))
+
+for(const item of expenses.docs){
+await deleteDoc(doc(db,'expenses',item.id))
+}
+
+localStorage.clear()
 
 alert('DATABASE CLEARED')
 
 window.location.reload()
 
 }
-const sendWeeklyReport = async()=>{
-
-try{
-
-const contractsSnapshot = await getDocs(
-collection(db,'contracts')
-)
-
-const contracts = []
-
-contractsSnapshot.forEach(docu=>{
-contracts.push(docu.data())
-})
-
-const stats = {}
-
-let totalIncome = 0
-
-contracts.forEach(c=>{
-
-const amount =
-Number(c.amount || 0)
-
-totalIncome += amount
-
-const membersArray =
-(c.members || '')
-.split(',')
-.filter(x=>x.trim()!=='')
-
-const familyCut =
-Math.floor(amount * 0.20)
-
-const memberMoney =
-Math.floor(
-(amount - familyCut)
-/ Math.max(membersArray.length,1)
-)
-
-membersArray.forEach(member=>{
-
-const cleanName = member.trim()
-
-if(!stats[cleanName]){
-
-stats[cleanName]={
-money:0,
-contracts:0
-}
-
-}
-
-stats[cleanName].money += memberMoney
-stats[cleanName].contracts += 1
-
-})
-
-})
-
-const topText = Object.entries(stats)
-
-.sort((a,b)=>b[1].money-a[1].money)
-
-.map((item,index)=>
-
-`${index+1}. ${item[0]}
-
-📦 Контрактів: ${item[1].contracts}
-
-💰 $${item[1].money.toLocaleString()}`
-)
-
-.join('\n\n━━━━━━━━━━━━\n\n')
-
-await fetch(
-'https://discord.com/api/webhooks/1507275442657296386/utT-89112eXBwIL7ijrwlYz-ob4H9-bQh79PEbGR0XhWxuZpE7IShP8YSJCwkPyNVsnZ',
-{
-method:'POST',
-
-headers:{
-'Content-Type':'application/json'
-},
-
-body:JSON.stringify({
-
-embeds:[{
-
-title:'📊 СУМА ЗА ТИЖДЕНЬ',
-
-description:
-`💵 ЗАГАЛЬНИЙ ДОХІД:
-$${totalIncome.toLocaleString()}
-
-👥 УЧАСНИКИ:
-
-${topText}`,
-
-color:0xff0055,
-
-footer:{
-text:'GRIZZLY FAMILY'
-},
-
-timestamp:new Date().toISOString()
-
-}]
-
-})
-}
-)
-
-alert('WEEKLY REPORT SENT')
-
-}catch(err){
-
-console.log(err)
-
-alert('ERROR WEEKLY REPORT')
-
-}
-
-}
-
 
 const addTeamMember = async()=>{
 
@@ -228,34 +97,44 @@ if(!role) return
 const discordId = prompt('DISCORD ID')
 if(!discordId) return
 
-await addDoc(
-collection(db,'team'),
-{
+await addDoc(collection(db,'team'),{
 name,
 role,
 discordId,
 avatar:'',
-created: Date.now()
-}
-)
+created:Date.now()
+})
 
 alert('TEAM MEMBER ADDED')
 
 }catch(err){
 
 console.log(err)
-
 alert('ERROR TEAM MEMBER')
 
 }
 
 }
 
+if(!access){
 
-const password = prompt('ADMIN PASSWORD')
+return(
 
-if(password !== 'grizzlyadmin'){
-return <h1 className="title">ACCESS DENIED</h1>
+<div className="adminLogin">
+
+<h1 className="title">ADMIN PANEL</h1>
+
+<button
+className="adminBtn"
+onClick={loginAdmin}
+>
+LOGIN
+</button>
+
+</div>
+
+)
+
 }
 
 return(
@@ -295,13 +174,6 @@ className="adminBtn"
 onClick={clearDatabase}
 >
 Очистити базу
-</button>
-
-<button
-className="adminBtn"
-onClick={sendWeeklyReport}
->
-Тижневий звіт
 </button>
 
 <button
