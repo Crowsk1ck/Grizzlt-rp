@@ -31,6 +31,7 @@ className={`sideLink ${location.pathname === to ? 'activeSide' : ''}`}
 <span>{icon}</span>
 {label}
 </Link>
+</>
 )
 
 }
