@@ -1,3 +1,4 @@
+import CustomCursor from './components/CustomCursor'
 import { useEffect, useState } from 'react'
 import { Routes, Route, Link, useLocation } from 'react-router-dom'
 
