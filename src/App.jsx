@@ -39,6 +39,18 @@ export default function App(){
 
 const [user,setUser] = useState(null)
 const [loading,setLoading] = useState(true)
+const [onlineCount,setOnlineCount] = useState(48)
+
+useEffect(()=>{
+
+const interval = setInterval(()=>{
+setOnlineCount(Math.floor(Math.random() * 30) + 35)
+},30000)
+
+return ()=>clearInterval(interval)
+
+},[])
+
 
 const logout = ()=>{
 
