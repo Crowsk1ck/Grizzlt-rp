@@ -1557,3 +1557,187 @@ font-size:26px;
 }
 
 }
+
+
+/* STAGE 5 POLISH */
+
+body::before{
+content:'';
+position:fixed;
+inset:0;
+background:
+radial-gradient(circle at top left,rgba(255,0,85,.18),transparent 35%),
+radial-gradient(circle at bottom right,rgba(106,0,255,.18),transparent 35%);
+pointer-events:none;
+z-index:-1;
+animation:ambientMove 12s ease-in-out infinite;
+}
+
+@keyframes ambientMove{
+0%{transform:scale(1) translate(0,0);}
+50%{transform:scale(1.08) translate(10px,-10px);}
+100%{transform:scale(1) translate(0,0);}
+}
+
+.particles{
+position:fixed;
+inset:0;
+overflow:hidden;
+pointer-events:none;
+z-index:-1;
+}
+
+.particles span{
+position:absolute;
+width:6px;
+height:6px;
+background:rgba(255,255,255,.25);
+border-radius:50%;
+animation:floatParticle linear infinite;
+}
+
+@keyframes floatParticle{
+from{
+transform:translateY(100vh);
+opacity:0;
+}
+20%{
+opacity:1;
+}
+to{
+transform:translateY(-10vh);
+opacity:0;
+}
+}
+
+.sidebar,
+.topbar,
+.panel,
+.galleryCard,
+.teamCard,
+.contractCard{
+transition:.35s ease;
+backdrop-filter:blur(18px);
+}
+
+.sidebar:hover{
+box-shadow:0 0 45px rgba(255,0,85,.18);
+}
+
+.panel:hover,
+.galleryCard:hover,
+.teamCard:hover,
+.contractCard:hover{
+transform:translateY(-6px);
+box-shadow:0 0 40px rgba(255,0,85,.25);
+}
+
+.gtaNotification{
+position:fixed;
+top:30px;
+right:30px;
+background:rgba(15,15,15,.92);
+border:1px solid rgba(255,0,85,.4);
+padding:18px 24px;
+border-radius:18px;
+color:white;
+font-weight:700;
+z-index:9999;
+box-shadow:0 0 35px rgba(255,0,85,.3);
+animation:notifyIn .4s ease;
+}
+
+@keyframes notifyIn{
+from{
+transform:translateX(120%);
+opacity:0;
+}
+to{
+transform:translateX(0);
+opacity:1;
+}
+}
+
+*{
+cursor:none !important;
+}
+
+.customCursor{
+width:18px;
+height:18px;
+border:2px solid #ff0055;
+border-radius:50%;
+position:fixed;
+pointer-events:none;
+z-index:99999;
+transform:translate(-50%,-50%);
+box-shadow:0 0 20px #ff0055;
+transition:transform .08s linear;
+}
+
+.loadingOverlay{
+position:fixed;
+inset:0;
+background:#050505;
+display:flex;
+align-items:center;
+justify-content:center;
+flex-direction:column;
+z-index:100000;
+animation:fadeLoader 1.5s forwards;
+animation-delay:1.8s;
+}
+
+.loadingLogo{
+font-size:72px;
+font-weight:900;
+color:#ff0055;
+text-shadow:0 0 35px #ff0055;
+letter-spacing:6px;
+}
+
+.loadingBar{
+margin-top:30px;
+width:260px;
+height:6px;
+background:#111;
+border-radius:20px;
+overflow:hidden;
+}
+
+.loadingBar::after{
+content:'';
+display:block;
+height:100%;
+width:0%;
+background:linear-gradient(90deg,#ff0055,#6a00ff);
+animation:loadBar 1.8s forwards;
+}
+
+@keyframes loadBar{
+to{
+width:100%;
+}
+}
+
+@keyframes fadeLoader{
+to{
+opacity:0;
+visibility:hidden;
+}
+}
+
+.pageTransition{
+animation:pageFade .5s ease;
+}
+
+@keyframes pageFade{
+from{
+opacity:0;
+transform:translateY(20px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}

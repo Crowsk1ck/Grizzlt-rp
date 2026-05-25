@@ -32,6 +32,10 @@ className={`sideLink ${location.pathname === to ? 'activeSide' : ''}`}
 
 }
 
+
+const particles = Array.from({length:35})
+
+
 export default function App(){
 
 const [user,setUser] = useState(null)
@@ -92,6 +96,10 @@ console.log(err)
 }
 
 useEffect(()=>{
+const cursor=document.getElementById('cursor')
+const move=(e)=>{if(cursor){cursor.style.left=e.clientX+'px';cursor.style.top=e.clientY+'px'}}
+window.addEventListener('mousemove',move)
+
 
 const saved = localStorage.getItem('discord_user')
 
