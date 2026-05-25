@@ -1,5 +1,21 @@
-import { useEffect, useState } from 'react'
+import {
+useEffect(()=>{
 
+const hash = window.location.hash
+
+if(hash.includes('access_token')){
+
+localStorage.setItem('discord_token',hash)
+
+window.history.replaceState({},document.title,'/')
+
+window.location.href='/'
+
+}
+
+},[])
+ useEffect, useState } from 'react'
+ 
 import {
 db,
 collection,
@@ -26,7 +42,7 @@ localStorage.getItem('user')
 )
 
 const loadContracts = async()=>{
-
+  
 try{
 
 const q = query(
@@ -59,7 +75,6 @@ console.log(err)
 useEffect(()=>{
 loadContracts()
 },[])
-
 const loadExpenses = async()=>{
 
 try{
@@ -114,6 +129,49 @@ created:Date.now()
 
 })
 
+await fetch(
+'https://discord.com/api/webhooks/1507308549443817484/nosjieOUPp73UTdrGjvMZWjfYCVu6bNsI4JckXSvEkoi0QR20VxnLicnAdTVL17ZWAQe',
+{
+method:'POST',
+headers:{
+'Content-Type':'application/json'
+},
+body:JSON.stringify({
+
+embeds:[{
+
+title:'💸 FAMILY EXPENSE',
+
+color:0xff0055,
+
+fields:[
+
+{
+name:'📄 Назва',
+value:expenseTitle,
+inline:true
+},
+
+{
+name:'💰 Сума',
+value:`$${expenseAmount}`,
+inline:true
+}
+
+],
+
+footer:{
+text:'GRIZZLY FAMILY • EXPENSES'
+},
+
+timestamp:new Date().toISOString()
+
+}]
+
+})
+}
+)
+
 setExpenseTitle('')
 setExpenseAmount('')
 
@@ -128,6 +186,7 @@ console.log(err)
 }
 
 }
+
 
 const sendContract = async()=>{
 
@@ -154,6 +213,73 @@ membersCount,
 created:Date.now()
 
 })
+
+await fetch(
+'https://discord.com/api/webhooks/1506424883737788619/yATAISypU22ZWVvhRKMsSeSZT1l7bghWRvPSoLaERM8tdj1Wx70JXq4QU2DjYwiHC72F',
+{
+method:'POST',
+headers:{
+'Content-Type':'application/json'
+},
+body:JSON.stringify({
+
+embeds:[
+
+{
+
+title:'💰 NEW CONTRACT',
+
+description:'GRIZZLY FAMILY CONTRACT SYSTEM',
+
+color:0xff0055,
+
+author:{
+name:user?.username || startedBy,
+icon_url:
+user?.avatar ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png` : 'https://cdn.discordapp.com/embed/avatars/0.png'
+},
+
+fields:[
+
+{
+name:'📄 Контракт',
+value:`${title}`,
+inline:false
+},
+
+{
+name:'👑 Почав',
+value:`${startedBy}`,
+inline:true
+},
+
+{
+name:'💵 Сума',
+value:`$${amount}`,
+inline:true
+},
+
+{
+name:'👥 Учасники',
+value:`${members}`,
+inline:false
+}
+
+],
+
+footer:{
+text:'GRIZZLY FAMILY • CONTRACT LOGS'
+},
+
+timestamp:new Date().toISOString()
+
+}
+
+]
+
+})
+}
+)
 
 setTitle('')
 setAmount('')
@@ -191,16 +317,7 @@ for(const c of contracts){
 await deleteDoc(doc(db,'contracts',c.id))
 }
 
-for(const e of expenses){
-await deleteDoc(doc(db,'expenses',e.id))
-}
-
-localStorage.clear()
-
-setContracts([])
-setExpenses([])
-
-alert('ПАНЕЛЬ ОЧИЩЕНО')
+loadContracts()
 
 }catch(err){
 
@@ -216,6 +333,46 @@ contracts.reduce(
 0
 )
 
+const hiddenIncome =
+Number(
+localStorage.getItem('hidden_income') || 0
+)
+
+const visibleIncome =
+Math.max(
+0,
+Number(totalIncome || 0) -
+Number(hiddenIncome || 0)
+)
+
+const cleanIncome =
+Math.floor(
+Number(visibleIncome || 0) * 0.84
+)
+
+localStorage.setItem(
+'clean_income',
+cleanIncome
+)
+
+const weekIncome =
+contracts
+.filter(c=>{
+
+const weekAgo =
+Date.now() - 7*24*60*60*1000
+
+return c.created > weekAgo
+
+})
+.reduce(
+(a,b)=>a + Number(b.amount || 0),
+0
+)
+
+const cleanWeekIncome =
+Math.floor(weekIncome * 0.84)
+
 const totalExpenses =
 expenses.reduce(
 (a,b)=>a + Number(b.amount || 0),
@@ -225,48 +382,134 @@ expenses.reduce(
 const finalIncome =
 Math.max(
 0,
-totalIncome - totalExpenses
+cleanIncome - totalExpenses
+)
+localStorage.setItem(
+'total_income',
+visibleIncome
+)
+
+localStorage.setItem(
+'total_expenses',
+totalExpenses
+)
+
+localStorage.setItem(
+'clean_income',
+finalIncome
 )
 
 return(
 <div>
-
 <h1 className="title">
 GRIZZLY PANEL
 </h1>
 
+
+<div
+className="dashboard"
+style={{
+display:'grid',
+gridTemplateColumns:'0.95fr 1.35fr',
+gap:'24px',
+alignItems:'start',
+maxWidth:'1700px',
+margin:'0 auto',
+width:'100%'
+}}
+>
+
+<div
+style={{
+display:'flex',
+flexDirection:'column',
+gap:'25px'
+}}
+>
+
 <div className="panel">
+
+<div
+className="title"
+style={{fontSize:'30px'}}
+>
+ДОДАТИ КОНТРАКТ
+</div>
 
 <input
 className="input"
-placeholder="Назва контракту"
+placeholder="📄 Назва контракту"
 value={title}
 onChange={e=>setTitle(e.target.value)}
 />
 
+<div className="double">
+
 <input
 className="input"
-placeholder="Сума"
+placeholder="💰 Сума"
 value={amount}
 onChange={e=>setAmount(e.target.value)}
 />
 
 <input
 className="input"
-placeholder="Хто почав"
+placeholder="👑 Хто почав контракт"
 value={startedBy}
 onChange={e=>setStartedBy(e.target.value)}
 />
 
+</div>
+
 <input
 className="input"
-placeholder="Учасники через кому"
+placeholder="👥 Учасники"
 value={members}
 onChange={e=>setMembers(e.target.value)}
 />
 
-<div style={{marginTop:'10px'}}>
+<div
+style={{
+marginTop:'14px',
+padding:'14px 16px',
+background:'rgba(255,255,255,.03)',
+border:'1px solid rgba(255,0,85,.12)',
+borderRadius:'14px',
+fontSize:'14px',
+color:'#aaa',
+lineHeight:'1.7'
+}}
+>
 
+<span style={{
+color:'#ff0055',
+fontWeight:'700'
+}}>
+ℹ Учасників пишемо через кому
+</span>
+
+<br/>
+
+<span style={{
+color:'#666'
+}}>
+Приклад:
+</span>
+
+<br/>
+
+<span style={{
+color:'#fff'
+}}>
+Andrii Grizzly, Maryana, Ghost
+</span>
+
+<br/><br/>
+
+<span style={{
+color:'#00ff99',
+fontWeight:'700'
+}}>
 Кількість учасників:
 {
 members
@@ -274,11 +517,25 @@ members
 .filter(x=>x.trim()!=='')
 .length
 }
+</span>
 
 </div>
 
+<div
+style={{
+display:'flex',
+gap:'10px',
+marginTop:'15px',
+flexWrap:'wrap'
+}}
+>
+
 <button
 className="btn"
+style={{
+flex:1,
+minWidth:'180px'
+}}
 onClick={sendContract}
 >
 ДОДАТИ КОНТРАКТ
@@ -286,6 +543,11 @@ onClick={sendContract}
 
 <button
 className="btn"
+style={{
+background:'#222',
+flex:1,
+minWidth:'180px'
+}}
 onClick={clearPanel}
 >
 ОЧИСТИТИ ПАНЕЛЬ
@@ -293,19 +555,337 @@ onClick={clearPanel}
 
 </div>
 
-<div className="panel">
-
-<h2>
-Контрактів: {contracts.length}
-</h2>
-
-<h2>
-Дохід: ${finalIncome}
-</h2>
-
 </div>
 
+<div
+className="panel"
+style={{
+marginTop:'0px'
+}}
+>
+
+<div
+className="title"
+style={{fontSize:'28px'}}
+>
+СУМА ЗА ТИЖДЕНЬ
 </div>
+
+
+{
+Object.entries(
+
+contracts.reduce((acc,c)=>{
+
+const membersArray =
+c.members
+.split(',')
+.filter(x=>x.trim()!=='')
+
+const familyCut =
+Math.floor(
+Number(c.amount || 0) * 0.20
 )
 
+const membersMoney =
+Math.floor(
+(Number(c.amount || 0) - familyCut)
+/ Math.max(membersArray.length,1)
+)
+
+membersArray.forEach(member=>{
+
+if(!acc[member]){
+
+acc[member]={
+money:0,
+contracts:0
 }
+
+}
+
+acc[member].money += membersMoney
+acc[member].contracts += 1
+
+})
+
+return acc
+
+},{})
+
+)
+
+.sort((a,b)=>b[1].money-a[1].money)
+
+.map(([name,data],index)=>(
+
+<div
+key={index}
+style={{
+padding:'18px',
+marginTop:'15px',
+background:'rgba(255,255,255,.03)',
+borderRadius:'18px',
+border:'1px solid rgba(255,0,85,.1)'
+}}
+>
+
+<div
+style={{
+display:'flex',
+justifyContent:'space-between',
+alignItems:'center'
+}}
+>
+
+<div>
+
+<div
+style={{
+color:'#fff',
+fontSize:'18px',
+fontWeight:'700'
+}}
+>
+{index+1}. {name}
+</div>
+
+<div
+style={{
+color:'#888',
+marginTop:'8px',
+fontSize:'14px'
+}}
+>
+Контрактів: {data.contracts}
+</div>
+
+</div>
+
+<div
+style={{
+color:'#00ff99',
+fontSize:'24px',
+fontWeight:'700'
+}}
+>
+${data.money.toLocaleString()}
+</div>
+
+</div>
+
+</div>
+
+))
+}
+
+</div>
+
+<div
+className="panel"
+style={{
+marginTop:'0px'
+}}
+>
+
+<div
+className="title"
+style={{fontSize:'28px'}}
+>
+РОЗХОДИ СІМʼЇ
+</div>
+
+<input
+className="input"
+placeholder="📄 Назва розходу"
+value={expenseTitle}
+onChange={e=>setExpenseTitle(e.target.value)}
+/>
+
+<input
+className="input"
+placeholder="💰 Сума"
+value={expenseAmount}
+onChange={e=>setExpenseAmount(e.target.value)}
+style={{marginTop:'12px'}}
+/>
+
+<button
+className="btn"
+style={{
+marginTop:'15px',
+width:'100%'
+}}
+onClick={sendExpense}
+>
+ДОДАТИ РОЗХІД
+</button>
+
+{
+expenses.slice(0,5).map((e,index)=>(
+
+<div
+key={index}
+style={{
+marginTop:'14px',
+padding:'14px',
+background:'rgba(255,255,255,.03)',
+borderRadius:'14px',
+display:'flex',
+justifyContent:'space-between'
+}}
+>
+
+<div style={{color:'#fff'}}>
+{e.title}
+</div>
+
+<div style={{
+color:'#ff0055',
+fontWeight:'700'
+}}>
+-${Number(e.amount).toLocaleString()}
+</div>
+
+</div>
+
+))
+}
+
+</div>
+
+
+</div>
+
+<div
+className="panel"
+style={{
+background:'rgba(255,255,255,.05)',
+backdropFilter:'blur(20px)',
+border:'1px solid rgba(255,255,255,.08)',
+borderRadius:'24px',
+padding:'30px',
+boxShadow:'0 0 40px rgba(0,0,0,.3)',
+position:'sticky',
+top:'20px'
+}}
+>
+
+<div
+className="title"
+style={{fontSize:'30px'}}
+>
+СТАТИСТИКА
+</div>
+
+<div className="statGrid">
+
+<div className="stat">
+<h2>{contracts.length}</h2>
+<p>КОНТРАКТІВ</p>
+</div>
+
+<div className="stat">
+<h2>${visibleIncome.toLocaleString()}</h2>
+<p>ЗАГАЛЬНИЙ ДОХІД</p>
+</div>
+
+<div className="stat">
+<h2>
+${finalIncome.toLocaleString()}
+</h2>
+<p>ЧИСТИЙ ДОХІД ПІСЛЯ РОЗХОДІВ</p>
+</div>
+
+<div className="stat">
+<h2>
+${cleanWeekIncome.toLocaleString()}
+</h2>
+<p>ДОХІД ЗА 7 ДНІВ</p>
+</div>
+
+<div className="stat">
+<h2>
+{
+contracts.length>0
+? Math.floor(
+contracts.reduce((a,b)=>a+b.membersCount,0)
+/ contracts.length
+)
+:0
+}
+</h2>
+
+<p>
+СЕРЕДНЯ КІЛЬКІСТЬ УЧАСНИКІВ
+</p>
+
+</div>
+
+</div>
+
+<div className="row rowHeader">
+
+<div>
+КОНТРАКТ
+</div>
+
+<div>
+УЧАСНИКИ
+</div>
+
+<div>
+ДОХІД
+</div>
+
+</div>
+
+{contracts.map(c=>(
+<div
+className="row"
+key={c.id}
+>
+
+<div>
+
+{c.title}
+
+<br/><br/>
+
+<span style={{
+color:'#999',
+fontSize:'14px',
+lineHeight:'1.7'
+}}>
+
+👑 {c.startedBy}
+
+<br/>
+
+👥 {c.members}
+
+</span>
+
+</div>
+
+<div>
+{c.membersCount}
+</div>
+
+<div className="green">
+${c.amount}
+</div>
+
+
+
+</div>
+))}
+
+
+</div>
+
+</div>
+</div>
+)
+}
+ 

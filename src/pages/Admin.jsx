@@ -1,20 +1,5 @@
-import {
-useEffect(()=>{
+import { useState } from 'react'
 
-const hash = window.location.hash
-
-if(hash.includes('access_token')){
-
-localStorage.setItem('discord_token',hash)
-
-window.history.replaceState({},document.title,'/')
-
-window.location.href='/'
-
-}
-
-},[])
- useState } from 'react'
 import {
 db,
 collection,
@@ -41,10 +26,8 @@ alert('ACCESS DENIED')
 }
 
 const resetContracts = ()=>{
-
 localStorage.setItem('contracts_reset',Date.now())
 window.location.reload()
-
 }
 
 const resetIncome = async()=>{

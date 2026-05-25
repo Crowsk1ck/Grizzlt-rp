@@ -1,20 +1,4 @@
-import {
-useEffect(()=>{
-
-const hash = window.location.hash
-
-if(hash.includes('access_token')){
-
-localStorage.setItem('discord_token',hash)
-
-window.history.replaceState({},document.title,'/')
-
-window.location.href='/'
-
-}
-
-},[])
- useState } from 'react'
+import { useState } from 'react'
 
 export default function Apply(){
 
@@ -31,7 +15,7 @@ return
 }
 
 await fetch(
-'https://discord.com/api/webhooks/1505926641015328859/qqxDO6ncDEcjOu-2TfuA5VfRIq4V4VkBIaMGh5o51RM33RI0CUVDPZZ8pykQ_cnhNsj0',
+'https://discord.com/api/webhooks/WEBHOOK',
 {
 method:'POST',
 headers:{
@@ -55,8 +39,6 @@ ${reason}`
 })
 }
 )
-
-localStorage.setItem('application_sent','true')
 
 alert('Заявка відправлена')
 
