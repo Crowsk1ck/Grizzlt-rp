@@ -363,14 +363,18 @@ GRIZZLY PANEL
 <div className="profileCard">
 
 <img
-src={`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.webp?size=512`}
+src={
+user?.avatar
+? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.webp?size=512`
+: 'https://cdn.discordapp.com/embed/avatars/0.png'
+}
 className="userAvatar"
 />
 
 <div>
 
 <div className="userName">
-{user.username}
+{user?.username || 'Guest'}
 </div>
 
 <div className="adminBadge">
