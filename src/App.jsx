@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Routes, Route, Link } from 'react-router-dom'
+import { Routes, Route, Link, useLocation } from 'react-router-dom'
 
 import {
 db,
@@ -16,6 +16,22 @@ import Apply from './pages/Apply'
 import Admin from './pages/Admin'
 import LoadingScreen from './components/LoadingScreen'
 
+function SidebarLink({to,label,icon}){
+
+const location = useLocation()
+
+return(
+<Link
+to={to}
+className={`sideLink ${location.pathname === to ? 'activeSide' : ''}`}
+>
+<span>{icon}</span>
+{label}
+</Link>
+)
+
+}
+
 export default function App(){
 
 const [user,setUser] = useState(null)
@@ -24,7 +40,6 @@ const [loading,setLoading] = useState(true)
 const logout = ()=>{
 
 localStorage.removeItem('discord_user')
-
 window.location.reload()
 
 }
@@ -107,17 +122,26 @@ return <LoadingScreen onFinish={()=>setLoading(false)} />
 }
 
 if(!user){
+
 return(
-<>
+
+<div className="loginPage">
+
 <video className="bgvideo" autoPlay muted loop playsInline>
 <source src="/assets/media/background.mp4" type="video/mp4"/>
 </video>
 
 <div className="overlay"></div>
 
-<div className="auth">
-<div style={{textAlign:'center'}}>
-<h1 style={{fontSize:'72px',color:'#ff004c'}}>GRIZZLY FAMILY</h1>
+<div className="loginCard">
+
+<h1 className="loginTitle">
+GRIZZLY FAMILY
+</h1>
+
+<p className="loginText">
+PREMIUM GTA RP ORGANIZATION PANEL
+</p>
 
 <a
 className="loginBtn"
@@ -127,35 +151,107 @@ LOGIN WITH DISCORD
 </a>
 
 </div>
+
 </div>
 
-<audio autoPlay loop controls className='musicPlayer'>
-<source src='/assets/music/phonk.mp3' type='audio/mp3'/>
-</audio>
-
-</>
 )
+
 }
 
 return(
-<>
+
+<div className="layoutRoot">
+
 <video className="bgvideo" autoPlay muted loop playsInline>
 <source src="/assets/media/background.mp4" type="video/mp4"/>
 </video>
 
 <div className="overlay"></div>
 
-<div className="userBox">
+<aside className="sidebar">
+
+<div className="logoBox">
+
+<div className="logoIcon">
+🐻
+</div>
+
+<div>
+<div className="logoTitle">
+GRIZZLY
+</div>
+
+<div className="logoSub">
+FAMILY
+</div>
+</div>
+
+</div>
+
+<div className="sidebarLinks">
+
+<SidebarLink to="/" label="Главная" icon="⌂" />
+<SidebarLink to="/team" label="Команда" icon="👥" />
+<SidebarLink to="/gallery" label="Галерея" icon="▣" />
+<SidebarLink to="/contracts" label="Контракты" icon="◈" />
+
+{!applicationSent && (
+<SidebarLink to="/apply" label="Заявка" icon="✦" />
+)}
+
+<SidebarLink to="/admin" label="Admin" icon="⚙" />
+
+</div>
+
+<div className="sidebarCard">
+
+<div className="onlineTitle">
+GRIZZLY FAMILY
+</div>
+
+<div className="onlineCount">
+ONLINE: 48
+</div>
+
+</div>
+
+</aside>
+
+<main className="mainContent">
+
+<div className="topbar">
+
+<div className="topbarGlow"></div>
+
+<div className="topbarLeft">
+
+<div className="pageLabel">
+GRIZZLY PANEL
+</div>
+
+</div>
+
+<div className="topbarRight">
+
+<div className="profileCard">
 
 <img
 src={`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.webp?size=512`}
 className="userAvatar"
 />
 
-<div className="userInfo">
+<div>
 
 <div className="userName">
 {user.username}
+</div>
+
+<div className="adminBadge">
+ADMIN
+</div>
+
+</div>
+
 </div>
 
 <button
@@ -169,19 +265,7 @@ LOGOUT
 
 </div>
 
-<nav>
-<Link to="/">Головна</Link>
-<Link to="/team">Команда</Link>
-<Link to="/gallery">Галерея</Link>
-<Link to="/contracts">Контракти</Link>
-
-{!applicationSent && (
-<Link to="/apply">Заявка</Link>
-)}
-
-</nav>
-
-<div className="container">
+<div className="pageWrapper">
 
 <Routes>
 <Route path="/" element={<Home />} />
@@ -194,10 +278,10 @@ LOGOUT
 
 </div>
 
-<audio autoPlay loop controls className='musicPlayer'>
-<source src='/assets/music/phonk.mp3' type='audio/mp3'/>
-</audio>
+</main>
 
-</>
+</div>
+
 )
+
 }
