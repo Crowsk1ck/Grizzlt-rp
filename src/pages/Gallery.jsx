@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import './gallery.css'
 
 export default function Gallery(){
 
@@ -16,6 +17,7 @@ const data = new FormData()
 
 data.append('file',image)
 data.append('upload_preset','grizzly_upload')
+data.append('folder','grizzly')
 
 try{
 
@@ -34,13 +36,9 @@ file.secure_url,
 ...prev
 ])
 
-alert('IMAGE UPLOADED')
-
 }catch(err){
 
 console.log(err)
-
-alert('UPLOAD ERROR')
 
 }
 
@@ -50,13 +48,36 @@ setLoading(false)
 
 return(
 
-<>
+<div className="galleryPage">
 
-<h1 className="title">
+<h1 className="galleryTitle">
 GRIZZLY GALLERY
 </h1>
 
-<div className="uploadBox">
+<p className="galleryText">
+Скриншоты семьи, контракты и лучшие GTA RP моменты.
+</p>
+
+<div className="statsRow">
+
+<div className="statCard">
+<h2>{uploaded.length}</h2>
+<span>IMAGES</span>
+</div>
+
+<div className="statCard">
+<h2>LIVE</h2>
+<span>CLOUD</span>
+</div>
+
+<div className="statCard">
+<h2>RP</h2>
+<span>MEDIA</span>
+</div>
+
+</div>
+
+<div className="uploadPanel">
 
 <input
 type="file"
@@ -65,7 +86,7 @@ onChange={(e)=>setImage(e.target.files[0])}
 />
 
 <button
-className="uploadBtn"
+className="uploadButton"
 onClick={uploadImage}
 >
 
@@ -80,19 +101,25 @@ onClick={uploadImage}
 {
 uploaded.map((img,index)=>(
 
-<img
+<div
 key={index}
+className="galleryCard"
+>
+
+<img
 src={img}
-className="galleryImage"
 alt=""
+className="galleryImage"
 />
+
+</div>
 
 ))
 }
 
 </div>
 
-</>
+</div>
 
 )
 
