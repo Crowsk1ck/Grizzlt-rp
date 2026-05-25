@@ -21,9 +21,7 @@ function SidebarLink({to,label,icon}){
 
 const location = useLocation()
 
-return(<>
-<CustomCursor />
-
+return(
 <Link
 to={to}
 className={`sideLink ${location.pathname === to ? 'activeSide' : ''}`}
@@ -31,14 +29,11 @@ className={`sideLink ${location.pathname === to ? 'activeSide' : ''}`}
 <span>{icon}</span>
 {label}
 </Link>
-</>
 )
 
 }
 
-
 const particles = Array.from({ length: 35 })
-
 
 export default function App(){
 
@@ -100,10 +95,6 @@ console.log(err)
 }
 
 useEffect(()=>{
-const cursor=document.getElementById('cursor')
-const move=(e)=>{if(cursor){cursor.style.left=e.clientX+'px';cursor.style.top=e.clientY+'px'}}
-window.addEventListener('mousemove',move)
-
 
 const saved = localStorage.getItem('discord_user')
 
@@ -172,7 +163,24 @@ LOGIN WITH DISCORD
 
 return(
 
+<>
+
+<CustomCursor />
+
 <div className="layoutRoot">
+
+<div className="particles">
+{
+particles.map((_,i)=>(
+
+<div
+key={i}
+className="particle"
+/>
+
+))
+}
+</div>
 
 <video className="bgvideo" autoPlay muted loop playsInline>
 <source src="/assets/media/background.mp4" type="video/mp4"/>
@@ -295,6 +303,7 @@ LOGOUT
 </div>
 
 </>
+
 )
 
 }
