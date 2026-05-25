@@ -1,8 +1,9 @@
-
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import './gallery.css'
 
 export default function Gallery(){
+
+const fileRef = useRef(null)
 
 const [image,setImage] = useState(null)
 const [loading,setLoading] = useState(false)
@@ -18,9 +19,16 @@ const categories = [
 'FAMILY'
 ]
 
+const openPicker = ()=>{
+fileRef.current?.click()
+}
+
 const uploadImage = async()=>{
 
-if(!image) return
+if(!image){
+alert('SELECT IMAGE')
+return
+}
 
 setLoading(true)
 
@@ -42,9 +50,15 @@ body:data
 
 const file = await res.json()
 
+if(!file.secure_url){
+alert('UPLOAD ERROR')
+setLoading(false)
+return
+}
+
 const newImage = {
 url:file.secure_url,
-category:'FAMILY',
+category:activeCategory === 'ALL' ? 'FAMILY' : activeCategory,
 created:Date.now()
 }
 
@@ -52,6 +66,8 @@ setUploaded(prev=>[
 newImage,
 ...prev
 ])
+
+setImage(null)
 
 }catch(err){
 
@@ -105,14 +121,15 @@ PREMIUM GTA RP MEDIA HUB
 
 <div className="uploadZone">
 
-<label className="uploadLabel">
-
 <input
+ref={fileRef}
 type="file"
 accept="image/*"
 onChange={(e)=>setImage(e.target.files[0])}
-hidden
+style={{display:'none'}}
 />
+
+<div className="uploadLabel" onClick={openPicker}>
 
 <div className="uploadInner">
 
@@ -125,14 +142,15 @@ DRAG & DROP MEDIA
 </h2>
 
 <p>
-UPLOAD GTA SCREENSHOTS
+{image ? image.name : 'UPLOAD GTA SCREENSHOTS'}
 </p>
 
 </div>
 
-</label>
+</div>
 
 <button
+type="button"
 className="uploadButton"
 onClick={uploadImage}
 >
@@ -149,6 +167,7 @@ onClick={uploadImage}
 categories.map(cat=>(
 
 <button
+type="button"
 key={cat}
 className={
 activeCategory === cat
@@ -211,6 +230,7 @@ onClick={()=>setSelected(null)}
 src={selected}
 className="modalImage"
 alt=""
+onClick={(e)=>e.stopPropagation()}
 />
 
 </div>
