@@ -1,21 +1,22 @@
+
 import { useState } from 'react'
 import './gallery.css'
-
-const categories = [
-'ALL',
-'WARS',
-'CONTRACTS',
-'TEAM',
-'EVENTS'
-]
 
 export default function Gallery(){
 
 const [image,setImage] = useState(null)
 const [loading,setLoading] = useState(false)
 const [uploaded,setUploaded] = useState([])
-const [selected,setSelected] = useState(null)
 const [activeCategory,setActiveCategory] = useState('ALL')
+const [selected,setSelected] = useState(null)
+
+const categories = [
+'ALL',
+'WAR',
+'CONTRACTS',
+'EVENTS',
+'FAMILY'
+]
 
 const uploadImage = async()=>{
 
@@ -41,17 +42,21 @@ body:data
 
 const file = await res.json()
 
-setUploaded(prev=>[
-{
+const newImage = {
 url:file.secure_url,
-category:'WARS'
-},
+category:'FAMILY',
+created:Date.now()
+}
+
+setUploaded(prev=>[
+newImage,
 ...prev
 ])
 
 }catch(err){
 
 console.log(err)
+alert('UPLOAD ERROR')
 
 }
 
@@ -62,47 +67,45 @@ setLoading(false)
 const filtered =
 activeCategory === 'ALL'
 ? uploaded
-: uploaded.filter(
-x=>x.category === activeCategory
-)
+: uploaded.filter(x=>x.category===activeCategory)
 
 return(
 
 <div className="galleryPage">
 
-<div className="galleryHero">
+<div className="galleryHeader">
 
 <div>
 
 <h1 className="galleryTitle">
-MEDIA HUB
+GRIZZLY GALLERY
 </h1>
 
-<p className="gallerySubtitle">
-GRIZZLY FAMILY • GTA RP GALLERY
+<p className="galleryText">
+PREMIUM GTA RP MEDIA HUB
 </p>
 
 </div>
 
 <div className="galleryStats">
 
-<div className="galleryStat">
+<div className="statCard">
 <h2>{uploaded.length}</h2>
 <span>UPLOADS</span>
 </div>
 
-<div className="galleryStat">
+<div className="statCard">
 <h2>LIVE</h2>
-<span>CLOUD</span>
+<span>CLOUDINARY</span>
 </div>
 
 </div>
 
 </div>
 
-<div className="uploadSection">
+<div className="uploadZone">
 
-<label className="uploadZone">
+<label className="uploadLabel">
 
 <input
 type="file"
@@ -114,17 +117,23 @@ hidden
 <div className="uploadInner">
 
 <div className="uploadIcon">
-⬆
++
 </div>
 
-<h2>DRAG & DROP MEDIA</h2>
+<h2>
+DRAG & DROP MEDIA
+</h2>
 
 <p>
-Upload screenshots, wars, contracts and GTA moments
+UPLOAD GTA SCREENSHOTS
 </p>
 
+</div>
+
+</label>
+
 <button
-className="uploadBtn"
+className="uploadButton"
 onClick={uploadImage}
 >
 
@@ -134,11 +143,7 @@ onClick={uploadImage}
 
 </div>
 
-</label>
-
-</div>
-
-<div className="categories">
+<div className="categoryRow">
 
 {
 categories.map(cat=>(
@@ -147,8 +152,8 @@ categories.map(cat=>(
 key={cat}
 className={
 activeCategory === cat
-? 'category activeCategory'
-: 'category'
+? 'categoryBtn active'
+: 'categoryBtn'
 }
 onClick={()=>setActiveCategory(cat)}
 >
@@ -165,33 +170,25 @@ onClick={()=>setActiveCategory(cat)}
 <div className="masonryGrid">
 
 {
-filtered.map((item,index)=>(
+filtered.map((img,index)=>(
 
 <div
 key={index}
-className="mediaCard"
-onClick={()=>setSelected(item.url)}
+className="galleryCard"
+onClick={()=>setSelected(img.url)}
 >
 
 <img
-src={item.url}
+src={img.url}
+className="galleryImage"
 alt=""
-className="mediaImage"
 />
 
-<div className="mediaOverlay">
+<div className="overlay">
 
-<div>
-
-<div className="mediaBadge">
-{item.category}
-</div>
-
-<h3 className="mediaTitle">
-GRIZZLY RP
-</h3>
-
-</div>
+<span className="badge">
+{img.category}
+</span>
 
 </div>
 
@@ -212,8 +209,8 @@ onClick={()=>setSelected(null)}
 
 <img
 src={selected}
-alt=""
 className="modalImage"
+alt=""
 />
 
 </div>
