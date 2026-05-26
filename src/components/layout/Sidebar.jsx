@@ -1,15 +1,17 @@
+import { NavLink } from 'react-router-dom'
+
 export default function Sidebar(){
   return(
     <aside className="sidebar">
       <h1>GRIZZLY</h1>
 
       <nav>
-        <button className="active">Dashboard</button>
-        <button>Contracts</button>
-        <button>Team</button>
-        <button>Gallery</button>
-        <button>Apply</button>
-        <button>Admin</button>
+        <NavLink to="/">Dashboard</NavLink>
+        <NavLink to="/contracts">Contracts</NavLink>
+        <NavLink to="/team">Team</NavLink>
+        <NavLink to="/gallery">Gallery</NavLink>
+        <NavLink to="/apply">Apply</NavLink>
+        <NavLink to="/admin">Admin</NavLink>
       </nav>
     </aside>
   )
