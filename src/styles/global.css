@@ -453,3 +453,163 @@ th,td{
     width:100%;
   }
 }
+
+
+
+.contracts-page{
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+}
+
+.contracts-header h1{
+  color:#ff005c;
+  font-size:42px;
+  margin-bottom:8px;
+}
+
+.contracts-header p{
+  color:#8b8b95;
+}
+
+.contracts-layout{
+  display:grid;
+  grid-template-columns:340px 1fr;
+  gap:18px;
+}
+
+.contract-form-panel,
+.contracts-table-panel{
+  background:#09090d;
+  border:1px solid rgba(255,0,92,.12);
+  border-radius:18px;
+  padding:22px;
+}
+
+.contract-form-panel h2,
+.contracts-table-panel h2{
+  color:#ff005c;
+  font-size:18px;
+  margin-bottom:20px;
+}
+
+.contract-form-panel{
+  display:flex;
+  flex-direction:column;
+}
+
+.contract-form-panel input,
+.contract-form-panel textarea{
+  width:100%;
+  background:#0f0f14;
+  border:1px solid rgba(255,255,255,.05);
+  border-radius:12px;
+  padding:14px 16px;
+  color:white;
+  margin-bottom:14px;
+}
+
+.contract-form-panel textarea{
+  min-height:120px;
+  resize:none;
+}
+
+.participants-count{
+  color:#8f8f99;
+  font-size:12px;
+  margin-bottom:16px;
+}
+
+.full-btn{
+  width:100%;
+}
+
+.table-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:18px;
+}
+
+.contracts-table-panel table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+.contracts-table-panel th{
+  color:#7f7f89;
+  font-size:12px;
+  font-weight:600;
+  padding:14px;
+}
+
+.contracts-table-panel td{
+  padding:16px 14px;
+  border-top:1px solid rgba(255,255,255,.05);
+  color:#d3d3db;
+  font-size:13px;
+}
+
+.delete-btn{
+  cursor:pointer;
+  color:#ff005c;
+}
+
+.contracts-stats{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:16px;
+}
+
+.contract-stat-card{
+  background:#09090d;
+  border:1px solid rgba(255,0,92,.12);
+  border-radius:18px;
+  padding:22px;
+}
+
+.contract-stat-card span{
+  display:block;
+  color:#8a8a94;
+  font-size:12px;
+  margin-bottom:10px;
+}
+
+.contract-stat-card h3{
+  font-size:42px;
+  color:#ff005c;
+}
+
+.contract-stat-card.green h3{
+  color:#00ff9d;
+}
+
+.contract-stat-card.pink h3{
+  color:#ff2e88;
+}
+
+@media(max-width:1200px){
+  .contracts-layout{
+    grid-template-columns:1fr;
+  }
+
+  .contracts-stats{
+    grid-template-columns:repeat(2,1fr);
+  }
+}
+
+@media(max-width:700px){
+  .contracts-stats{
+    grid-template-columns:1fr;
+  }
+
+  .table-top{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:12px;
+  }
+
+  .contracts-table-panel{
+    overflow:auto;
+  }
+}
