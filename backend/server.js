@@ -20,6 +20,12 @@ app.post('/api/check-role', async (req,res)=>{
 
     const { discordId } = req.body
 
+    if(!discordId){
+      return res.status(400).json({
+        success:false
+      })
+    }
+
     const response = await fetch(
       `https://discord.com/api/guilds/${SERVER_ID}/members/${discordId}`,
       {
@@ -40,6 +46,8 @@ app.post('/api/check-role', async (req,res)=>{
 
   }catch(error){
 
+    console.error(error)
+
     return res.status(500).json({
       success:false
     })
@@ -47,5 +55,5 @@ app.post('/api/check-role', async (req,res)=>{
 })
 
 app.listen(3001,()=>{
-  console.log('GRIZZLY AUTH BACKEND STARTED')
+  console.log('Grizzly auth backend running')
 })

@@ -1,45 +1,18 @@
-import { useAuth } from '../../context/AuthContext'
-import { DISCORD_LOGIN_URL } from '../../services/auth/discordAuth'
-
 export default function Topbar(){
-
-  const { user, logout } = useAuth()
-
   return(
-    <div className="topbar">
-
-      <div className="topbar-title">
-        <h2>GRIZZLY RP DASHBOARD</h2>
+    <header className="topbar">
+      <div>
+        <h2>GRIZZLY FAMILY SYSTEM</h2>
+        <p>Premium Cyberpunk GTA RP Platform</p>
       </div>
 
-      {
-        user ? (
-          <div className="auth-user">
+      <div className="topbar-actions">
+        <div className="notification-dot"></div>
 
-            <img
-              src={`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`}
-            />
-
-            <span>{user.username}</span>
-
-            <button
-              className="logout-btn"
-              onClick={logout}
-            >
-              ВЫЙТИ
-            </button>
-
-          </div>
-        ) : (
-          <a
-            href={DISCORD_LOGIN_URL}
-            className="login-btn"
-          >
-            ВОЙТИ DISCORD
-          </a>
-        )
-      }
-
-    </div>
+        <button className="neon-btn">
+          Discord Connected
+        </button>
+      </div>
+    </header>
   )
 }
