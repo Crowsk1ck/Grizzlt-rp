@@ -1,17 +1,19 @@
-import { initializeApp } from 'firebase/app'
-import { getAuth } from 'firebase/auth'
-import { getFirestore } from 'firebase/firestore'
+# GRIZZLY RP ENTERPRISE SYSTEM
 
-const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID
-}
+ULTIMATE GTA RP FAMILY WEBSITE
 
-const app = initializeApp(firebaseConfig)
-
-export const auth = getAuth(app)
-export const db = getFirestore(app)
+## INCLUDED SYSTEMS
+- Realtime Online Players API
+- Inventory System
+- Gang Wars Map
+- Territory Control
+- Websocket Sync
+- Live Notifications
+- GTA 6 Cinematic UI
+- Weapon Statistics
+- Contracts History
+- Admin Permissions
+- Discord Bot Integration
+- Family Ranking
+- RP Economy Database
+- Top Donor System
