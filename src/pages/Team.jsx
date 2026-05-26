@@ -3,7 +3,7 @@ const members = ['Ghost','Blade','Rico','Shadow','Venom','Reaper']
 export default function Team(){
   return(
     <section className="panel">
-      <h2>Team Profiles</h2>
+      <h2>Family Profiles</h2>
 
       <div className="team-grid">
         {members.map((member,index)=>(
