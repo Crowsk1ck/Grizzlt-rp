@@ -613,3 +613,109 @@ th,td{
     overflow:auto;
   }
 }
+
+
+/* ===== CONTRACTS TABLE FIX ===== */
+
+.contracts-table-panel{
+  overflow-x:auto;
+}
+
+.contracts-table-panel table{
+  width:100%;
+  min-width:1100px;
+  border-collapse:collapse;
+  table-layout:fixed;
+}
+
+.contracts-table-panel thead tr{
+  border-bottom:1px solid rgba(255,255,255,.05);
+}
+
+.contracts-table-panel th{
+  font-size:11px;
+  letter-spacing:.5px;
+  color:#7f7f89;
+  padding:12px 10px;
+  text-align:left;
+  white-space:nowrap;
+}
+
+.contracts-table-panel td{
+  padding:14px 10px;
+  font-size:12px;
+  color:#d7d7df;
+  border-bottom:1px solid rgba(255,255,255,.04);
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  vertical-align:middle;
+}
+
+.contracts-table-panel th:nth-child(1),
+.contracts-table-panel td:nth-child(1){
+  width:50px;
+}
+
+.contracts-table-panel th:nth-child(2),
+.contracts-table-panel td:nth-child(2){
+  width:220px;
+}
+
+.contracts-table-panel th:nth-child(3),
+.contracts-table-panel td:nth-child(3){
+  width:140px;
+}
+
+.contracts-table-panel th:nth-child(4),
+.contracts-table-panel td:nth-child(4){
+  width:170px;
+}
+
+.contracts-table-panel th:nth-child(5),
+.contracts-table-panel td:nth-child(5){
+  width:320px;
+}
+
+.contracts-table-panel th:nth-child(6),
+.contracts-table-panel td:nth-child(6){
+  width:140px;
+}
+
+.contracts-table-panel th:nth-child(7),
+.contracts-table-panel td:nth-child(7){
+  width:80px;
+  text-align:center;
+}
+
+.delete-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:32px;
+  height:32px;
+  border-radius:10px;
+  background:#111117;
+  border:1px solid rgba(255,0,92,.14);
+  transition:.2s;
+}
+
+.delete-btn:hover{
+  background:#190b13;
+  border-color:#ff005c;
+  box-shadow:0 0 14px rgba(255,0,92,.22);
+}
+
+.contracts-layout{
+  align-items:start;
+}
+
+.contracts-table-panel::-webkit-scrollbar{
+  height:8px;
+}
+
+.contracts-table-panel::-webkit-scrollbar-thumb{
+  background:#ff005c55;
+  border-radius:999px;
+}
+
