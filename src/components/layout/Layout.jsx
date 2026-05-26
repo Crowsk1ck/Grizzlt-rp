@@ -11,12 +11,12 @@ export default function Layout({ children }){
         </div>
 
         <nav className="sidebar-nav">
-          <a className="active">Главная</a>
-          <a>Команда</a>
-          <a>Контракты</a>
-          <a>Статистика</a>
-          <a>Галерея</a>
-          <a>Настройки</a>
+          <button className="active">Главная</button>
+          <button>Команда</button>
+          <button>Контракты</button>
+          <button>Статистика</button>
+          <button>Галерея</button>
+          <button>Настройки</button>
         </nav>
 
       </aside>
