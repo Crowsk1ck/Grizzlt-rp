@@ -1,23 +1,22 @@
-const members = ['Ghost','Blade','Rico','Shadow','Venom','Reaper']
-
 export default function Team(){
   return(
-    <section className="panel">
-      <h2>Family Profiles</h2>
+    <section className="team-grid">
+      <div className="member-card">
+        <div className="avatar"></div>
+        <h3>Ghost</h3>
+        <p>Leader • Online</p>
+      </div>
 
-      <div className="team-grid">
-        {members.map((member,index)=>(
-          <div className="member-card" key={index}>
-            <div className="avatar"></div>
+      <div className="member-card">
+        <div className="avatar"></div>
+        <h3>Blade</h3>
+        <p>Officer • Online</p>
+      </div>
 
-            <h3>{member}</h3>
-            <p>Officer • Online</p>
-
-            <button className="primary-btn">
-              Open Profile
-            </button>
-          </div>
-        ))}
+      <div className="member-card">
+        <div className="avatar"></div>
+        <h3>Venom</h3>
+        <p>Elite • Online</p>
       </div>
     </section>
   )

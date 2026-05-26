@@ -1,16 +1,10 @@
-const contracts = [
-  { name:'Business Raid', status:'Completed', reward:'$120,000' },
-  { name:'Weapon Delivery', status:'In Progress', reward:'$54,000' },
-  { name:'VIP Escort', status:'Pending', reward:'$22,000' }
-]
-
 export default function Contracts(){
   return(
-    <section className="panel">
-      <div className="section-header">
-        <h2>Contracts 4.0</h2>
+    <section className="glass-panel">
+      <div className="header-row">
+        <h2>Contracts 5.0</h2>
 
-        <button className="primary-btn">
+        <button className="neon-btn">
           Create Contract
         </button>
       </div>
@@ -25,13 +19,17 @@ export default function Contracts(){
         </thead>
 
         <tbody>
-          {contracts.map((contract,index)=>(
-            <tr key={index}>
-              <td>{contract.name}</td>
-              <td>{contract.status}</td>
-              <td>{contract.reward}</td>
-            </tr>
-          ))}
+          <tr>
+            <td>Weapon Delivery</td>
+            <td>Completed</td>
+            <td>$52,000</td>
+          </tr>
+
+          <tr>
+            <td>Business Raid</td>
+            <td>In Progress</td>
+            <td>$120,000</td>
+          </tr>
         </tbody>
       </table>
     </section>
