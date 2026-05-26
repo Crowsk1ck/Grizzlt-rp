@@ -1,6 +1,8 @@
 import { AuthProvider } from './context/AuthContext'
+
 import Layout from './components/layout/Layout'
 import Topbar from './components/layout/Topbar'
+
 import Dashboard from './pages/Dashboard'
 
 export default function App(){
@@ -10,9 +12,13 @@ export default function App(){
 
       <Layout>
 
-        <Topbar />
+        <div className="main-page">
 
-        <Dashboard />
+          <Topbar />
+
+          <Dashboard />
+
+        </div>
 
       </Layout>
 
