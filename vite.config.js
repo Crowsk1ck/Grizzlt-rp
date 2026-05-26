@@ -1,1 +1,9 @@
-import { defineConfig } from 'vite'; import react from '@vitejs/plugin-react'; export default defineConfig({plugins:[react()]})
+VITE_FIREBASE_API_KEY=AIzaSyBxi9jixmJPGWodjLaNlY3oXeHvOGzQtlc
+VITE_FIREBASE_AUTH_DOMAIN=grizzly-6c924.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=grizzly-6c924
+VITE_FIREBASE_STORAGE_BUCKET=grizzly-6c924.firebasestorage.app
+VITE_FIREBASE_MESSAGING_SENDER_ID=1098522296641
+VITE_FIREBASE_APP_ID=1:1098522296641:web:1fac71feda4e7ad9a8e1c0
+
+VITE_CLOUDINARY_CLOUD_NAME=dgykunfft
+VITE_CLOUDINARY_UPLOAD_PRESET=grizzly_upload
