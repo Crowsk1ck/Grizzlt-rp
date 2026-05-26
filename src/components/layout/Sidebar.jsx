@@ -4,19 +4,23 @@ export default function Sidebar(){
   return(
     <aside className="sidebar">
       <div className="brand">
-        <div className="brand-glow"></div>
         <h1>GRIZZLY</h1>
-        <p>Realtime RP Ecosystem</p>
+        <span>FAMILY</span>
       </div>
 
-      <nav>
-        <NavLink to="/">Dashboard</NavLink>
-        <NavLink to="/contracts">Contracts</NavLink>
-        <NavLink to="/team">Team</NavLink>
-        <NavLink to="/wars">Wars</NavLink>
-        <NavLink to="/economy">Economy</NavLink>
-        <NavLink to="/admin">Admin</NavLink>
+      <nav className="sidebar-nav">
+        <NavLink to="/">ГЛАВНАЯ</NavLink>
+        <NavLink to="/contracts">КОНТРАКТЫ</NavLink>
+        <NavLink to="/team">КОМАНДА</NavLink>
+        <NavLink to="/wars">ВОЙНЫ</NavLink>
+        <NavLink to="/economy">ЭКОНОМИКА</NavLink>
+        <NavLink to="/admin">АДМИН</NavLink>
       </nav>
+
+      <div className="family-status">
+        <div className="status-title">GRIZZLY FAMILY</div>
+        <div className="status-online">ONLINE: 48</div>
+      </div>
     </aside>
   )
 }

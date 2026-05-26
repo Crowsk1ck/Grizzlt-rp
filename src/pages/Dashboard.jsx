@@ -1,56 +1,96 @@
 export default function Dashboard(){
   return(
     <>
-      <section className="hero-panel">
-        <span className="live-badge">LIVE REALTIME SYSTEM</span>
+      <section className="hero-banner">
+        <div className="hero-gradient"></div>
 
-        <h1>Premium GTA RP Ecosystem</h1>
+        <div className="hero-left">
+          <span className="welcome">WELCOME TO</span>
 
-        <p>
-          Realtime contracts, war analytics, economy tracking and advanced family management.
-        </p>
-      </section>
+          <h1>
+            GRIZZLY <span>FAMILY</span>
+          </h1>
 
-      <section className="stats-grid">
-        <div className="stat-card">
-          <h3>Total Revenue</h3>
-          <span>$24.7M</span>
-        </div>
+          <p>
+            Мы не просто семья — мы сила, которая правит улицами.
+            Дисциплина. Хаос. Репутация.
+          </p>
 
-        <div className="stat-card">
-          <h3>Online Members</h3>
-          <span>73</span>
-        </div>
-
-        <div className="stat-card">
-          <h3>Family Rating</h3>
-          <span>#2</span>
-        </div>
-
-        <div className="stat-card">
-          <h3>Wars Won</h3>
-          <span>48</span>
+          <div className="hero-buttons">
+            <button className="primary-btn">НАШ DISCORD</button>
+            <button className="secondary-btn">ПРАВИЛА СЕМЬИ</button>
+          </div>
         </div>
       </section>
 
-      <section className="dashboard-panels">
-        <div className="glass-panel">
-          <h2>Realtime Activity</h2>
+      <section className="stats-row">
+        <div className="stat-box">
+          <h3>48</h3>
+          <span>ONLINE</span>
+        </div>
 
-          <div className="activity-list">
-            <div className="activity-item">Ghost completed raid contract</div>
-            <div className="activity-item">Blade uploaded war screenshots</div>
-            <div className="activity-item">Venom joined family battle</div>
-            <div className="activity-item">New member approved</div>
+        <div className="stat-box">
+          <h3>1247</h3>
+          <span>КОНТРАКТОВ</span>
+        </div>
+
+        <div className="stat-box">
+          <h3>$2.540.000</h3>
+          <span>ДОХОД</span>
+        </div>
+
+        <div className="stat-box">
+          <h3>86</h3>
+          <span>УЧАСТНИКОВ</span>
+        </div>
+
+        <div className="stat-box">
+          <h3>24</h3>
+          <span>МЕРОПРИЯТИЯ</span>
+        </div>
+      </section>
+
+      <section className="dashboard-layout">
+        <div className="panel">
+          <h2>О НАС</h2>
+
+          <p>
+            Grizzly Family — элитная организация GTA RP сервера.
+            Мы занимаемся контрактами, бизнесом, войнами и контролем территорий.
+          </p>
+
+          <button className="primary-btn small-btn">
+            УЗНАТЬ БОЛЬШЕ
+          </button>
+        </div>
+
+        <div className="panel">
+          <h2>ПОСЛЕДНИЕ НОВОСТИ</h2>
+
+          <div className="news-item">
+            Новый контракт Vinewood
+          </div>
+
+          <div className="news-item">
+            Захват территории completed
+          </div>
+
+          <div className="news-item">
+            Набор новых участников
+          </div>
+
+          <div className="news-item">
+            Обновление семейного склада
           </div>
         </div>
 
-        <div className="glass-panel">
-          <h2>Top Members</h2>
+        <div className="panel">
+          <h2>ТОП УЧАСТНИКОВ</h2>
 
-          <div className="top-member">Ghost — $2.4M</div>
-          <div className="top-member">Blade — $1.7M</div>
-          <div className="top-member">Venom — $1.3M</div>
+          <div className="top-user">Ghost — $540.000</div>
+          <div className="top-user">Shadow — $325.000</div>
+          <div className="top-user">Venom — $210.000</div>
+          <div className="top-user">Blade — $190.000</div>
         </div>
       </section>
     </>
