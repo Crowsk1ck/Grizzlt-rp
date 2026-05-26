@@ -1,9 +1,9 @@
-const members = ['Ghost','Blade','Rico','Viper']
+const members = ['Ghost','Blade','Rico','Viper','Shadow','Venom']
 
 export default function Team(){
   return(
     <section className="panel">
-      <h2>Team Members</h2>
+      <h2>Family Team</h2>
 
       <div className="team-grid">
         {members.map((member,index)=>(
@@ -11,7 +11,7 @@ export default function Team(){
             <div className="avatar"></div>
 
             <h3>{member}</h3>
-            <p>Online</p>
+            <p>Online • Officer</p>
 
             <button className="primary-btn">
               View Profile

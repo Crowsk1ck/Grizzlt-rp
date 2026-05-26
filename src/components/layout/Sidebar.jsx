@@ -3,9 +3,9 @@ import { NavLink } from 'react-router-dom'
 export default function Sidebar(){
   return(
     <aside className="sidebar">
-      <div>
+      <div className="brand">
         <h1>GRIZZLY</h1>
-        <p className="subtitle">Premium RP Panel</p>
+        <p>Premium GTA RP Platform</p>
       </div>
 
       <nav>

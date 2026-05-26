@@ -24,16 +24,16 @@ body{
   width:270px;
   padding:30px;
   background:rgba(18,10,28,.72);
-  border-right:1px solid rgba(255,0,110,.18);
   backdrop-filter:blur(18px);
+  border-right:1px solid rgba(255,0,110,.18);
 }
 
-.sidebar h1{
+.brand h1{
   color:#ff2ea6;
-  margin-bottom:4px;
+  margin-bottom:6px;
 }
 
-.subtitle{
+.brand p{
   color:#9ca3af;
   margin-bottom:40px;
 }
@@ -45,8 +45,8 @@ body{
 }
 
 .sidebar a{
-  color:white;
   text-decoration:none;
+  color:white;
   padding:16px;
   border-radius:16px;
   background:rgba(255,255,255,.03);
@@ -76,7 +76,6 @@ body{
   backdrop-filter:blur(18px);
 }
 
-.discord-btn,
 .primary-btn{
   border:none;
   color:white;
@@ -114,14 +113,14 @@ body{
   grid-column:span 2;
 }
 
-.activity{
+.activity-list{
   margin-top:20px;
   display:flex;
   flex-direction:column;
   gap:14px;
 }
 
-.activity p{
+.activity-item{
   padding:14px;
   border-radius:14px;
   background:rgba(255,255,255,.03);
@@ -132,6 +131,20 @@ body{
   justify-content:space-between;
   align-items:center;
   margin-bottom:20px;
+}
+
+.filters{
+  margin-bottom:20px;
+}
+
+.filters input{
+  width:100%;
+  padding:16px;
+  border:none;
+  outline:none;
+  border-radius:16px;
+  background:rgba(255,255,255,.04);
+  color:white;
 }
 
 table{
@@ -170,11 +183,11 @@ th,td{
 
 .member-card p{
   color:#9ca3af;
-  margin:10px 0 20px;
+  margin:12px 0 20px;
 }
 
 .gallery-item{
-  height:220px;
+  height:240px;
   background:linear-gradient(135deg,#ff006e33,#8b5cf633);
 }
 

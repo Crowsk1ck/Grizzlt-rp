@@ -6,8 +6,8 @@ export default function Topbar(){
         <p>Cyberpunk Management Platform</p>
       </div>
 
-      <div className="topbar-actions">
-        <button className="discord-btn">
+      <div className="top-actions">
+        <button className="primary-btn">
           Discord Login
         </button>
       </div>

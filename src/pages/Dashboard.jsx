@@ -3,27 +3,27 @@ export default function Dashboard(){
     <section className="dashboard-grid">
       <div className="card">
         <h3>Total Contracts</h3>
-        <span>248</span>
+        <span>412</span>
       </div>
 
       <div className="card">
-        <h3>Online Members</h3>
-        <span>34</span>
+        <h3>Family Online</h3>
+        <span>38</span>
       </div>
 
       <div className="card">
         <h3>Monthly Income</h3>
-        <span>$2.4M</span>
+        <span>$3.7M</span>
       </div>
 
       <div className="panel large-panel">
         <h2>Live Activity Feed</h2>
 
-        <div className="activity">
-          <p>Ghost completed a contract</p>
-          <p>Blade joined family war</p>
-          <p>Rico uploaded screenshots</p>
-          <p>New application received</p>
+        <div className="activity-list">
+          <div className="activity-item">Ghost completed Family Contract</div>
+          <div className="activity-item">Blade uploaded Gallery Media</div>
+          <div className="activity-item">New Family Application Submitted</div>
+          <div className="activity-item">Admin approved new member</div>
         </div>
       </div>
     </section>

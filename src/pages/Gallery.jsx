@@ -1,9 +1,17 @@
 export default function Gallery(){
   return(
     <section className="panel">
-      <h2>Gallery</h2>
+      <div className="section-header">
+        <h2>Family Gallery</h2>
+
+        <button className="primary-btn">
+          Upload Media
+        </button>
+      </div>
 
       <div className="gallery-grid">
+        <div className="gallery-item"></div>
+        <div className="gallery-item"></div>
         <div className="gallery-item"></div>
         <div className="gallery-item"></div>
         <div className="gallery-item"></div>
