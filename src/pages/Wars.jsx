@@ -1,19 +1,19 @@
-export default function Admin(){
+export default function Wars(){
   return(
     <section className="stats-grid">
       <div className="stat-card">
-        <h3>Applications</h3>
-        <span>21</span>
+        <h3>War Wins</h3>
+        <span>48</span>
       </div>
 
       <div className="stat-card">
-        <h3>Reports</h3>
-        <span>5</span>
+        <h3>War Losses</h3>
+        <span>11</span>
       </div>
 
       <div className="stat-card">
-        <h3>Open Tickets</h3>
-        <span>9</span>
+        <h3>Territories</h3>
+        <span>6</span>
       </div>
     </section>
   )

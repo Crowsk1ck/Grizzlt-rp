@@ -18,6 +18,12 @@ export default function Team(){
         <h3>Venom</h3>
         <p>Elite • Online</p>
       </div>
+
+      <div className="member-card">
+        <div className="avatar"></div>
+        <h3>Shadow</h3>
+        <p>Warrior • Online</p>
+      </div>
     </section>
   )
 }
