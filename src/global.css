@@ -105,3 +105,26 @@ body{
     width:100%;
   }
 }
+
+.user-box{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.avatar{
+  width:44px;
+  height:44px;
+  border-radius:50%;
+  border:2px solid #ff005c;
+}
+
+.logout-btn{
+  border:none;
+  background:#ff005c;
+  color:white;
+  padding:12px 16px;
+  border-radius:10px;
+  cursor:pointer;
+  font-weight:bold;
+}
