@@ -730,3 +730,29 @@ th,td{
   word-break:break-word;
   line-height:1.5;
 }
+
+
+.auth-user{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.auth-user img{
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  border:2px solid #ff005c;
+}
+
+.auth-user span{
+  color:white;
+  font-size:14px;
+}
+
+.auth-link{
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+}
