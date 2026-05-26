@@ -1,20 +1,23 @@
+const members = ['Ghost','Blade','Rico','Viper']
+
 export default function Team(){
   return(
     <section className="panel">
       <h2>Team Members</h2>
 
       <div className="team-grid">
-        <div className="member-card">
-          <div className="avatar"></div>
-          <h3>Ghost</h3>
-          <p>Leader</p>
-        </div>
+        {members.map((member,index)=>(
+          <div className="member-card" key={index}>
+            <div className="avatar"></div>
 
-        <div className="member-card">
-          <div className="avatar"></div>
-          <h3>Blade</h3>
-          <p>Officer</p>
-        </div>
+            <h3>{member}</h3>
+            <p>Online</p>
+
+            <button className="primary-btn">
+              View Profile
+            </button>
+          </div>
+        ))}
       </div>
     </section>
   )

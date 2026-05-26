@@ -3,11 +3,13 @@ export default function Topbar(){
     <header className="topbar">
       <div>
         <h2>GRIZZLY FAMILY</h2>
-        <p>Premium GTA RP Cyberpunk Dashboard</p>
+        <p>Cyberpunk Management Platform</p>
       </div>
 
-      <div className="discord-btn">
-        Discord Login
+      <div className="topbar-actions">
+        <button className="discord-btn">
+          Discord Login
+        </button>
       </div>
     </header>
   )

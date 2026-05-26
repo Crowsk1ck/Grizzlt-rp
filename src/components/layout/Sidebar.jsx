@@ -3,7 +3,10 @@ import { NavLink } from 'react-router-dom'
 export default function Sidebar(){
   return(
     <aside className="sidebar">
-      <h1>GRIZZLY</h1>
+      <div>
+        <h1>GRIZZLY</h1>
+        <p className="subtitle">Premium RP Panel</p>
+      </div>
 
       <nav>
         <NavLink to="/">Dashboard</NavLink>

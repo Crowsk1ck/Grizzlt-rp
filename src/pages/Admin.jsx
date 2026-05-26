@@ -3,15 +3,15 @@ export default function Admin(){
     <section className="panel">
       <h2>Admin Panel</h2>
 
-      <div className="grid">
+      <div className="dashboard-grid">
         <div className="card">
-          <h3>Total Income</h3>
-          <span>$1.2M</span>
+          <h3>Total Members</h3>
+          <span>92</span>
         </div>
 
         <div className="card">
-          <h3>Total Members</h3>
-          <span>89</span>
+          <h3>Applications</h3>
+          <span>16</span>
         </div>
       </div>
     </section>

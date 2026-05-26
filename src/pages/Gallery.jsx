@@ -7,6 +7,7 @@ export default function Gallery(){
         <div className="gallery-item"></div>
         <div className="gallery-item"></div>
         <div className="gallery-item"></div>
+        <div className="gallery-item"></div>
       </div>
     </section>
   )

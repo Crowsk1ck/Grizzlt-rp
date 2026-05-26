@@ -1,7 +1,19 @@
+const contracts = [
+  {name:'Weapon Delivery', status:'Completed', reward:'$42,000'},
+  {name:'VIP Escort', status:'In Progress', reward:'$18,000'},
+  {name:'Family Protection', status:'Pending', reward:'$27,000'}
+]
+
 export default function Contracts(){
   return(
     <section className="panel">
-      <h2>Contracts System</h2>
+      <div className="section-header">
+        <h2>Contracts System</h2>
+
+        <button className="primary-btn">
+          Create Contract
+        </button>
+      </div>
 
       <table>
         <thead>
@@ -13,17 +25,13 @@ export default function Contracts(){
         </thead>
 
         <tbody>
-          <tr>
-            <td>Weapon Delivery</td>
-            <td>Completed</td>
-            <td>$42,000</td>
-          </tr>
-
-          <tr>
-            <td>VIP Escort</td>
-            <td>In Progress</td>
-            <td>$18,000</td>
-          </tr>
+          {contracts.map((contract,index)=>(
+            <tr key={index}>
+              <td>{contract.name}</td>
+              <td>{contract.status}</td>
+              <td>{contract.reward}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </section>
