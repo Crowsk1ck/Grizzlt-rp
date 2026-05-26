@@ -1,22 +1,21 @@
 const contracts = [
-  {name:'Weapon Delivery', status:'Completed', reward:'$42,000'},
-  {name:'VIP Escort', status:'In Progress', reward:'$18,000'},
-  {name:'Family Protection', status:'Pending', reward:'$27,000'},
-  {name:'Business Raid', status:'Completed', reward:'$96,000'}
+  {name:'Weapon Delivery', status:'Completed', reward:'$52,000'},
+  {name:'Business Raid', status:'In Progress', reward:'$112,000'},
+  {name:'VIP Escort', status:'Pending', reward:'$24,000'}
 ]
 
 export default function Contracts(){
   return(
     <section className="panel">
       <div className="section-header">
-        <h2>Contracts Management</h2>
+        <h2>Contracts 3.0</h2>
 
         <button className="primary-btn">
-          Create Contract
+          New Contract
         </button>
       </div>
 
-      <div className="filters">
+      <div className="search-box">
         <input placeholder="Search contracts..." />
       </div>
 

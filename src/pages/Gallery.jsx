@@ -2,7 +2,7 @@ export default function Gallery(){
   return(
     <section className="panel">
       <div className="section-header">
-        <h2>Family Gallery</h2>
+        <h2>Gallery Storage</h2>
 
         <button className="primary-btn">
           Upload Media

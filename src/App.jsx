@@ -1,5 +1,4 @@
 import { Routes, Route } from 'react-router-dom'
-
 import Sidebar from './components/layout/Sidebar'
 import Topbar from './components/layout/Topbar'
 
@@ -12,10 +11,10 @@ import Admin from './pages/Admin'
 
 export default function App(){
   return(
-    <div className="app">
+    <div className="app-shell">
       <Sidebar />
 
-      <main className="content">
+      <main className="main-content">
         <Topbar />
 
         <Routes>

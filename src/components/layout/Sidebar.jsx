@@ -5,7 +5,7 @@ export default function Sidebar(){
     <aside className="sidebar">
       <div className="brand">
         <h1>GRIZZLY</h1>
-        <p>Premium GTA RP Platform</p>
+        <p>Cyberpunk RP Ecosystem</p>
       </div>
 
       <nav>
