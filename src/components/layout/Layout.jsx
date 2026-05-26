@@ -1,3 +1,5 @@
+import { NavLink } from 'react-router-dom'
+
 export default function Layout({ children }){
 
   return(
@@ -11,12 +13,19 @@ export default function Layout({ children }){
         </div>
 
         <nav className="sidebar-nav">
-          <button className="active">Главная</button>
-          <button>Команда</button>
-          <button>Контракты</button>
-          <button>Статистика</button>
-          <button>Галерея</button>
-          <button>Настройки</button>
+
+          <NavLink to="/">Главная</NavLink>
+
+          <NavLink to="/team">Команда</NavLink>
+
+          <NavLink to="/contracts">Контракты</NavLink>
+
+          <NavLink to="/stats">Статистика</NavLink>
+
+          <NavLink to="/gallery">Галерея</NavLink>
+
+          <NavLink to="/settings">Настройки</NavLink>
+
         </nav>
 
       </aside>

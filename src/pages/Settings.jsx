@@ -1,0 +1,1 @@
+export default function Settings(){return <div className='page-card'><h1>Настройки</h1><p>Настройки аккаунта.</p></div>}
