@@ -1,10 +1,12 @@
 import { AuthProvider } from './context/AuthContext'
-import AppRoutes from './routes'
+
+import Dashboard from './pages/Dashboard'
 
 export default function App(){
+
   return(
     <AuthProvider>
-      <AppRoutes />
+      <Dashboard />
     </AuthProvider>
   )
 }
