@@ -1,35 +1,165 @@
+import { useEffect, useMemo, useState } from 'react'
+
+import {
+  db,
+  collection,
+  addDoc,
+  getDocs,
+  deleteDoc,
+  doc,
+  query,
+  orderBy
+} from '../services/firebase/firebase'
+
+import {
+  sendWebhook,
+  contractsWebhook
+} from '../services/webhooks/discord'
+
 export default function Contracts(){
 
-  const contracts = [
-    {
-      name:'Поставка оружия',
-      price:'$250,000',
-      owner:'cr0wsk1ck',
-      members:'cr0wsk1ck, Shadow, Blaze',
-      date:'25.08.2025'
-    },
-    {
-      name:'Захват банка',
-      price:'$100,000',
-      owner:'Shadow',
-      members:'Shadow, Mugiwara, Hokage',
-      date:'24.08.2025'
-    },
-    {
-      name:'Ограбление бизнеса',
-      price:'$100,000',
-      owner:'Mugiwara',
-      members:'Mugiwara, Exotic',
-      date:'24.08.2025'
-    },
-    {
-      name:'Поставка материалов',
-      price:'$200,000',
-      owner:'Nightmare',
-      members:'Nightmare, Young, Killa',
-      date:'23.08.2025'
+  const [contracts,setContracts] = useState([])
+
+  const [form,setForm] = useState({
+    name:'',
+    price:'',
+    owner:'',
+    members:''
+  })
+
+  const [loading,setLoading] = useState(false)
+
+  async function loadContracts(){
+    try{
+      const q = query(
+        collection(db,'contracts'),
+        orderBy('createdAt','desc')
+      )
+
+      const snapshot = await getDocs(q)
+
+      const data = snapshot.docs.map(docItem=>({
+        id:docItem.id,
+        ...docItem.data()
+      }))
+
+      setContracts(data)
+    }catch(error){
+      console.error(error)
     }
-  ]
+  }
+
+  useEffect(()=>{
+    loadContracts()
+  },[])
+
+  async function handleCreateContract(){
+
+    if(
+      !form.name ||
+      !form.price ||
+      !form.owner
+    ){
+      return alert('Заполни все поля')
+    }
+
+    try{
+      setLoading(true)
+
+      const contractData = {
+        name:form.name,
+        price:form.price,
+        owner:form.owner,
+        members:form.members,
+        date:new Date().toLocaleDateString(),
+        createdAt:Date.now()
+      }
+
+      await addDoc(
+        collection(db,'contracts'),
+        contractData
+      )
+
+      await sendWebhook(
+        contractsWebhook,
+        {
+          embeds:[
+            {
+              title:'📦 Новый контракт',
+              color:0xff005c,
+              fields:[
+                {
+                  name:'Контракт',
+                  value:form.name
+                },
+                {
+                  name:'Сумма',
+                  value:form.price
+                },
+                {
+                  name:'Создатель',
+                  value:form.owner
+                },
+                {
+                  name:'Участники',
+                  value:form.members || 'Нет'
+                }
+              ]
+            }
+          ]
+        }
+      )
+
+      setForm({
+        name:'',
+        price:'',
+        owner:'',
+        members:''
+      })
+
+      await loadContracts()
+
+    }catch(error){
+      console.error(error)
+    }finally{
+      setLoading(false)
+    }
+  }
+
+  async function handleDelete(id){
+
+    try{
+
+      await deleteDoc(
+        doc(db,'contracts',id)
+      )
+
+      await loadContracts()
+
+    }catch(error){
+      console.error(error)
+    }
+  }
+
+  const participantsCount = useMemo(()=>{
+    if(!form.members) return 0
+
+    return form.members
+      .split(',')
+      .filter(Boolean)
+      .length
+  },[form.members])
+
+  const totalIncome = useMemo(()=>{
+    return contracts.reduce((acc,item)=>{
+      const value = Number(
+        String(item.price)
+          .replace(/[^0-9]/g,'')
+      )
+
+      return acc + value
+    },0)
+  },[contracts])
 
   return(
     <section className="contracts-page">
@@ -46,30 +176,71 @@ export default function Contracts(){
         <div className="contract-form-panel">
           <h2>ДОБАВИТЬ КОНТРАКТ</h2>
 
-          <input placeholder="Название контракта" />
-          <input placeholder="Сумма ($)" />
-          <input placeholder="Кто начал контракт" />
+          <input
+            placeholder="Название контракта"
+            value={form.name}
+            onChange={(e)=>
+              setForm({
+                ...form,
+                name:e.target.value
+              })
+            }
+          />
+
+          <input
+            placeholder="Сумма ($)"
+            value={form.price}
+            onChange={(e)=>
+              setForm({
+                ...form,
+                price:e.target.value
+              })
+            }
+          />
+
+          <input
+            placeholder="Кто начал контракт"
+            value={form.owner}
+            onChange={(e)=>
+              setForm({
+                ...form,
+                owner:e.target.value
+              })
+            }
+          />
 
           <textarea
             placeholder="Участники (через запятую)"
+            value={form.members}
+            onChange={(e)=>
+              setForm({
+                ...form,
+                members:e.target.value
+              })
+            }
           ></textarea>
 
           <span className="participants-count">
-            Количество участников: 0
+            Количество участников: {participantsCount}
           </span>
 
-          <button className="primary-btn full-btn">
-            ДОБАВИТЬ КОНТРАКТ
+          <button
+            className="primary-btn full-btn"
+            onClick={handleCreateContract}
+            disabled={loading}
+          >
+            {
+              loading
+              ? 'СОЗДАНИЕ...'
+              : 'ДОБАВИТЬ КОНТРАКТ'
+            }
           </button>
         </div>
 
         <div className="contracts-table-panel">
+
           <div className="table-top">
             <h2>СПИСОК КОНТРАКТОВ</h2>
-
-            <button className="secondary-btn">
-              ОЧИСТИТЬ ПАНЕЛЬ
-            </button>
           </div>
 
           <table>
@@ -86,21 +257,31 @@ export default function Contracts(){
             </thead>
 
             <tbody>
-              {contracts.map((contract,index)=>(
-                <tr key={index}>
-                  <td>{index + 1}</td>
-                  <td>{contract.name}</td>
-                  <td>{contract.price}</td>
-                  <td>{contract.owner}</td>
-                  <td>{contract.members}</td>
-                  <td>{contract.date}</td>
-                  <td>
-                    <span className="delete-btn">🗑</span>
-                  </td>
-                </tr>
-              ))}
+              {
+                contracts.map((contract,index)=>(
+                  <tr key={contract.id}>
+                    <td>{index + 1}</td>
+                    <td>{contract.name}</td>
+                    <td>{contract.price}</td>
+                    <td>{contract.owner}</td>
+                    <td>{contract.members}</td>
+                    <td>{contract.date}</td>
+                    <td>
+                      <span
+                        className="delete-btn"
+                        onClick={()=>
+                          handleDelete(contract.id)
+                        }
+                      >
+                        🗑
+                      </span>
+                    </td>
+                  </tr>
+                ))
+              }
             </tbody>
           </table>
+
         </div>
 
       </div>
@@ -109,22 +290,14 @@ export default function Contracts(){
 
         <div className="contract-stat-card">
           <span>КОНТРАКТОВ</span>
-          <h3>1247</h3>
+          <h3>{contracts.length}</h3>
         </div>
 
         <div className="contract-stat-card green">
           <span>ОБЩИЙ ДОХОД</span>
-          <h3>$2,540,000</h3>
-        </div>
-
-        <div className="contract-stat-card pink">
-          <span>РАСХОДЫ</span>
-          <h3>$720,000</h3>
-        </div>
-
-        <div className="contract-stat-card green">
-          <span>ЧИСТЫЙ ДОХОД</span>
-          <h3>$1,820,000</h3>
+          <h3>
+            ${totalIncome.toLocaleString()}
+          </h3>
         </div>
 
       </div>
