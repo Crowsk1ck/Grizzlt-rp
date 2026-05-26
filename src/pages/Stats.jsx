@@ -1,1 +1,0 @@
-export default function Stats(){return <div className='page-card'><h1>Статистика</h1><p>Финансовая аналитика.</p></div>}
