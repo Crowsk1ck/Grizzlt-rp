@@ -122,7 +122,7 @@ async function loadDiscordMembers(){
         </div>
 
         <div className="stat-box">
-          <h3>86</h3>
+          <h3>{members}</h3>
           <span>УЧАСТНИКОВ</span>
         </div>
 
