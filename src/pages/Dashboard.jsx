@@ -1,15 +1,16 @@
 import { useEffect, useState } from 'react'
 
 import {
-  db,
-  collection,
-  getDocs
+collection,
+getDocs,
+onSnapshot
 } from '../services/firebase/firebase'
 
 export default function Dashboard(){
 
   const [contracts,setContracts] = useState([])
   const [members,setMembers] = useState(0)
+  const [online,setOnline] = useState(0)
   
   async function loadContracts(){
 
@@ -34,17 +35,29 @@ async function loadDiscordMembers(){
 
   try{
 
-  const response = await fetch(
-  'https://grizzlt-rp.vercel.app/discord-members'
-)
+    const unsub = onSnapshot(
+      collection(db,'discord','members','users'),
+      (snapshot)=>{
 
-    const data = await response.json()
+        let onlineCount = 0
 
-    setMembers(data.members || 0)
+        snapshot.forEach((doc)=>{
+          const data = doc.data()
+
+          if(data.online){
+            onlineCount++
+          }
+        })
+
+        setMembers(snapshot.size)
+        setOnline(onlineCount)
+      }
+    )
+
+    return unsub
 
   }catch(error){
-
-    console.log(error)
+    console.error(error)
   }
 }
   
@@ -106,7 +119,7 @@ async function loadDiscordMembers(){
       
       <section className="stats-row">
         <div className="stat-box">
-          <h3>0</h3>
+          <h3>{online}</h3>
           <span>ONLINE</span>
         </div>
 
@@ -121,7 +134,7 @@ async function loadDiscordMembers(){
         </div>
 
         <div className="stat-box">
-          <h3>0</h3>
+          <h3>{members}</h3>
           <span>УЧАСТНИКОВ</span>
         </div>
 
