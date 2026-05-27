@@ -14,6 +14,7 @@ export default function Admin(){
   const [contracts,setContracts] = useState([])
   const [search,setSearch] = useState('')
   const [tab,setTab] = useState('contracts')
+  const [discordMembers,setDiscordMembers]
 
   const [editing,setEditing] = useState(null)
 
@@ -27,6 +28,7 @@ export default function Admin(){
   useEffect(()=>{
 
     loadContracts()
+    loadDiscordMembers()
 
   },[])
 
@@ -345,22 +347,22 @@ export default function Admin(){
 
         <div className="member-actions">
 
-          <button
-            className="profile-btn"
-          >
+          <button className="profile-btn">
+
             PROFILE
+
           </button>
 
-          <button
-            className="admin-btn"
-          >
+          <button className="admin-btn">
+
             GIVE ADMIN
+
           </button>
 
-          <button
-            className="ban-btn"
-          >
+          <button className="ban-btn">
+
             BAN
+
           </button>
 
         </div>
