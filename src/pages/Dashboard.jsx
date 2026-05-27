@@ -1,5 +1,4 @@
 export default function Dashboard(){
-  const [showRules,setShowRules] = useState(false)
   return(
     <>
       <section className="hero-banner">
@@ -38,12 +37,6 @@ export default function Dashboard(){
   <span>
     НАШ DISCORD
   </span>
-<button
-  className="secondary-btn"
-  onClick={() => setShowRules(!showRules)}
->
-  ПРАВИЛА СЕМЬИ
-</button>
 </a>
           </div>
         </div>
@@ -119,46 +112,6 @@ export default function Dashboard(){
           <div className="top-user">Blade — $190.000</div>
         </div>
       </section>
-      {
-  showRules && (
-
-    <div className="rules-panel">
-
-      <h2>
-        ПРАВИЛА СІМ'Ї
-      </h2>
-
-      <div className="rules-list">
-
-        <div className="rule-item">
-          Не зливати інформацію сімʼї
-        </div>
-
-        <div className="rule-item">
-          Discord обовʼязковий
-        </div>
-
-        <div className="rule-item">
-          Поважати старший склад
-        </div>
-
-        <div className="rule-item">
-          Не токсичити всередині сімʼї
-        </div>
-
-        <div className="rule-item">
-          AFK більше 7 днів = kick
-        </div>
-
-        <div className="rule-item">
-          Контракти через систему
-        </div>
-
-      </div>
-
-    </div>
-  )
-}
     </>
   )
 }
