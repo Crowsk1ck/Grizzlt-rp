@@ -1,15 +1,29 @@
 {
-"rewrites": [
-{
-"source": "/(.*)",
-"destination": "/"
-}
-],
+  "builds": [
+    {
+      "src": "backend/server.js",
+      "use": "@vercel/node"
+    }
+  ],
 
-"crons": [
-{
-"path": "/src/api/weekly-report",
-"schedule": "0 18 * * 0"
-}
-]
+  "routes": [
+    {
+      "src": "/discord-members",
+      "dest": "backend/server.js"
+    }
+  ],
+
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/"
+    }
+  ],
+
+  "crons": [
+    {
+      "path": "/src/api/weekly-report",
+      "schedule": "0 18 * * 0"
+    }
+  ]
 }
