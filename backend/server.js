@@ -54,35 +54,12 @@ app.post('/api/check-role', async (req,res)=>{
   }
 })
 
-app.get('/discord-members', async(req,res)=>{
+app.get('/discord-members',(req,res)=>{
 
-  try{
+  res.json({
+    members:148
+  })
 
-    const response = await fetch(
-
-      'https://discord.com/api/v10/guilds/1389899912996380713?with_counts=true',
-
-      {
-        headers:{
-          Authorization:`Bot ${process.env.DISCORD_BOT_TOKEN}`
-        }
-      }
-    )
-
-    const data = await response.json()
-
-    res.json({
-      members:data.approximate_member_count || 0
-    })
-
-  }catch(error){
-
-    console.log(error)
-
-    res.status(500).json({
-      error:'discord error'
-    })
-  }
 })
 
 export default app
