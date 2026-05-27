@@ -39,6 +39,9 @@ export default function Dashboard(){
   </span>
 
 </a>
+          </div>
+        </div>
+      </section>
 <section className="rules-panel">
 
   <h2>
@@ -74,10 +77,6 @@ export default function Dashboard(){
   </div>
 
 </section>
-          </div>
-        </div>
-      </section>
-
       <section className="stats-row">
         <div className="stat-box">
           <h3>48</h3>
