@@ -21,7 +21,7 @@ const ROLE_VETERAN = '1390074876207042590'
   })
   useEffect(()=>{
     const unsub = onSnapshot(
-      collection(db,'discord'),
+      collection(db,'discord_members'),
       (snapshot)=>{
         const users = []
         let onlineCount = 0
