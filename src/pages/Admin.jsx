@@ -367,29 +367,31 @@ async function loadDiscordMembers(){
 
         </p>
 
-        <div className="member-actions">
+<div className="member-card-bottom">
 
-          <button className="profile-btn">
+  <button className="profile-btn">
 
-            PROFILE
+    PROFILE
 
-          </button>
+  </button>
 
-          <button className="admin-btn">
+  <div className="member-row-buttons">
 
-            GIVE ADMIN
+    <button className="admin-btn">
 
-          </button>
+      ADMIN
 
-          <button className="ban-btn">
+    </button>
 
-            BAN
+    <button className="ban-btn">
 
-          </button>
+      BAN
 
-        </div>
+    </button>
 
-      </div>
+  </div>
+
+</div>
 
     ))}
 
