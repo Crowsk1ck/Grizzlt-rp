@@ -992,3 +992,92 @@ th,td{
 
   z-index:2;
 }
+.learn-btn{
+
+  position:relative;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  margin-top:28px;
+
+  min-width:220px;
+  height:56px;
+
+  padding:0 28px;
+
+  border:none;
+
+  border-radius:18px;
+
+  cursor:pointer;
+
+  overflow:hidden;
+
+  background:
+  linear-gradient(
+    135deg,
+    #151522,
+    #1d1d2f
+  );
+
+  border:
+  1px solid rgba(255,0,92,.25);
+
+  color:white;
+
+  font-size:14px;
+  font-weight:900;
+  letter-spacing:1px;
+
+  box-shadow:
+    0 0 22px rgba(255,0,92,.12);
+
+  transition:.28s ease;
+}
+
+.learn-btn::before{
+
+  content:'';
+
+  position:absolute;
+
+  top:-50%;
+  left:-30%;
+
+  width:120%;
+  height:220%;
+
+  background:
+  linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,.12),
+    transparent
+  );
+
+  transform:rotate(25deg);
+
+  transition:.6s;
+}
+
+.learn-btn:hover{
+
+  transform:
+  translateY(-3px);
+
+  background:
+  linear-gradient(
+    135deg,
+    #ff005c,
+    #ff2f7d
+  );
+
+  box-shadow:
+    0 0 38px rgba(255,0,92,.45);
+}
+
+.learn-btn:hover::before{
+  left:130%;
+}
