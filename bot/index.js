@@ -59,7 +59,7 @@ client.once('ready', async () => {
    for (const member of allMembers) {
 
   await db
-    .collection('discord')
+    .collection('discord_members')
     .doc(member.id)
     .set(member)
 
