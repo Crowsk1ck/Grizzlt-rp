@@ -101,12 +101,12 @@ export default function Topbar(){
 
             </div>
 
-            <button
-              className="logout-btn"
-              onClick={logout}
-            >
-              ВЫЙТИ
-            </button>
+<button
+  className="logout-btn"
+  onClick={logout}
+>
+  Тікай
+</button>
 
           </div>
 
