@@ -913,3 +913,101 @@ th,td{
   box-shadow:
     0 0 28px rgba(255,0,92,.45);
 }
+.discord-join-btn{
+
+  position:relative;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:14px;
+
+  width:270px;
+  height:68px;
+
+  border-radius:22px;
+
+  text-decoration:none;
+
+  overflow:hidden;
+
+  background:
+  linear-gradient(
+    135deg,
+    #ff005c,
+    #ff2f7d
+  );
+
+  border:
+  1px solid rgba(255,255,255,.08);
+
+  box-shadow:
+    0 0 35px rgba(255,0,92,.35),
+    inset 0 0 25px rgba(255,255,255,.05);
+
+  transition:.3s ease;
+}
+
+.discord-join-btn span{
+
+  position:relative;
+
+  color:white;
+
+  font-size:17px;
+  font-weight:900;
+
+  letter-spacing:1px;
+
+  z-index:2;
+}
+
+.discord-svg{
+
+  width:24px;
+  height:24px;
+
+  color:white;
+
+  z-index:2;
+}
+
+.discord-join-btn::before{
+
+  content:'';
+
+  position:absolute;
+
+  top:-50%;
+  left:-30%;
+
+  width:120%;
+  height:220%;
+
+  background:
+  linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,.16),
+    transparent
+  );
+
+  transform:rotate(25deg);
+
+  transition:.6s;
+}
+
+.discord-join-btn:hover{
+
+  transform:
+  translateY(-3px)
+  scale(1.02);
+
+  box-shadow:
+    0 0 45px rgba(255,0,92,.55),
+    0 0 90px rgba(255,0,92,.2);
+}
+
+.discord-join-btn:hover::before{
+  left:130%;
+}
