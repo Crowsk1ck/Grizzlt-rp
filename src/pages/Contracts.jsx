@@ -89,7 +89,7 @@ embeds:[
 
     author:{
       name:'GRIZZLY FAMILY',
-      icon_url:'https://cdn.discordapp.com/embed/avatars/0.png'
+      icon_url:''
     },
 
     title:'📦 НОВЫЙ КОНТРАКТ',
@@ -113,7 +113,7 @@ ${form.members
     },
 
     image:{
-      url:'https://images.unsplash.com/photo-1519501025264-65ba15a82390?q=80&w=1600&auto=format&fit=crop'
+      url:''
     },
 
     footer:{
