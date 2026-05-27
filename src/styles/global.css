@@ -26,6 +26,14 @@ body::before{
   min-height:100vh;
 }
 
+.member-avatar{
+  width:120px;
+  height:120px;
+  border-radius:50%;
+  object-fit:cover;
+  margin-bottom:20px;
+  border:2px solid #ff0066;
+}
 .sidebar{
   width:230px;
   background:#07070b;
