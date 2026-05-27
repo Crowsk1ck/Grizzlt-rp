@@ -127,7 +127,7 @@ export default function Contracts(){
       })
     }
   )
-
+}
       setForm({
         name:'',
         price:'',
