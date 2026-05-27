@@ -83,30 +83,46 @@ export default function Contracts(){
       await sendWebhook(
         contractsWebhook,
         {
-          embeds:[
-            {
-              title:'📦 Новый контракт',
-              color:0xff005c,
-              fields:[
-                {
-                  name:'Контракт',
-                  value:form.name
-                },
-                {
-                  name:'Сумма',
-                  value:form.price
-                },
-                {
-                  name:'Создатель',
-                  value:form.owner
-                },
-                {
-                  name:'Участники',
-                  value:form.members || 'Нет'
-                }
-              ]
-            }
-          ]
+embeds:[
+  {
+    color:0xff005c,
+
+    author:{
+      name:'GRIZZLY FAMILY',
+      icon_url:'https://cdn.discordapp.com/embed/avatars/0.png'
+    },
+
+    title:'📦 НОВЫЙ КОНТРАКТ',
+
+    description:
+`>>> 💼 **Контракт:** \`${form.name}\`
+
+💰 **Сумма:** \`${Number(form.price).toLocaleString()}$\`
+
+👑 **Создатель:** \`${form.owner}\`
+
+👥 **Участники:**
+${form.members
+  .split(',')
+  .map(m=>`• ${m.trim()}`)
+  .join('\n')}
+`,
+
+    thumbnail:{
+      url:'https://i.imgur.com/7F9Z6vC.png'
+    },
+
+    image:{
+      url:'https://images.unsplash.com/photo-1519501025264-65ba15a82390?q=80&w=1600&auto=format&fit=crop'
+    },
+
+    footer:{
+      text:'Grizzly Family System'
+    },
+
+    timestamp:new Date()
+  }
+]
         }
       )
 
