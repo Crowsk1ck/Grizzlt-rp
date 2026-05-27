@@ -212,17 +212,6 @@ async function loadDiscordMembers(){
     },{})
 
   )
-  .sort((a,b)=>b[1]-a[1])
-  .slice(0,5)
-  .map(([name,money],index)=>(
-
-    <div className="top-user" key={index}>
-      {name} — ${money.toLocaleString()}
-    </div>
-
-  ))}
-
-</div>
       </section>
     </>
   )
