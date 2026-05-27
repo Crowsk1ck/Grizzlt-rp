@@ -1,4 +1,6 @@
 {
+  "version": 2,
+
   "builds": [
     {
       "src": "backend/server.js",
@@ -11,7 +13,8 @@
       "src": "/discord-members",
       "dest": "backend/server.js"
     }
-  ],
+  ]
+}
 
   "rewrites": [
     {
