@@ -1558,3 +1558,32 @@ th,td{
   box-shadow:
     0 0 25px #ff008c55;
 }
+.member-actions{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  margin-top:20px;
+}
+
+.profile-btn,
+.admin-btn,
+.ban-btn{
+  height:46px;
+  border:none;
+  border-radius:14px;
+  color:white;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.profile-btn{
+  background:#232338;
+}
+
+.admin-btn{
+  background:#ff008c;
+}
+
+.ban-btn{
+  background:#ff3b3b;
+}
