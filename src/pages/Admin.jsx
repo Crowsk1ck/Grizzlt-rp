@@ -5,13 +5,23 @@ import {
   collection,
   getDocs,
   deleteDoc,
-  doc
+  doc,
+  updateDoc
 } from '../services/firebase/firebase'
 
 export default function Admin(){
 
   const [contracts,setContracts] = useState([])
   const [search,setSearch] = useState('')
+
+  const [editing,setEditing] = useState(null)
+
+  const [form,setForm] = useState({
+    name:'',
+    price:'',
+    owner:'',
+    members:''
+  })
 
   useEffect(()=>{
 
@@ -68,6 +78,50 @@ export default function Admin(){
 
   }
 
+  async function saveEdit(){
+
+    try{
+
+      await updateDoc(
+
+        doc(db,'contracts',editing),
+
+        {
+          name:form.name,
+          price:form.price,
+          owner:form.owner,
+          members:form.members
+        }
+
+      )
+
+      setContracts(prev=>
+
+        prev.map(item=>
+
+          item.id === editing
+
+            ? {
+                ...item,
+                ...form
+              }
+
+            : item
+
+        )
+
+      )
+
+      setEditing(null)
+
+    }catch(error){
+
+      console.error(error)
+
+    }
+
+  }
+
   const totalIncome = contracts.reduce((acc,item)=>{
 
     const value = parseInt(
@@ -94,11 +148,13 @@ export default function Admin(){
       <div className="admin-header">
 
         <div>
+
           <h1>ADMIN PANEL</h1>
 
           <p>
             Управление системой Grizzly
           </p>
+
         </div>
 
         <input
@@ -146,6 +202,7 @@ export default function Admin(){
           <span>Создатель</span>
           <span>Участники</span>
           <span>Удалить</span>
+          <span>Редактировать</span>
 
         </div>
 
@@ -181,11 +238,107 @@ export default function Admin(){
               DELETE
             </button>
 
+            <button
+              className="edit-btn"
+              onClick={()=>{
+
+                setEditing(contract.id)
+
+                setForm({
+                  name:contract.name || '',
+                  price:contract.price || '',
+                  owner:contract.owner || '',
+                  members:contract.members || ''
+                })
+
+              }}
+            >
+              EDIT
+            </button>
+
           </div>
 
         ))}
 
       </div>
+
+      {editing && (
+
+        <div className="modal-overlay">
+
+          <div className="edit-modal">
+
+            <h2>EDIT CONTRACT</h2>
+
+            <input
+              value={form.name}
+              onChange={(e)=>
+                setForm({
+                  ...form,
+                  name:e.target.value
+                })
+              }
+              placeholder="Название"
+            />
+
+            <input
+              value={form.price}
+              onChange={(e)=>
+                setForm({
+                  ...form,
+                  price:e.target.value
+                })
+              }
+              placeholder="Сумма"
+            />
+
+            <input
+              value={form.owner}
+              onChange={(e)=>
+                setForm({
+                  ...form,
+                  owner:e.target.value
+                })
+              }
+              placeholder="Создатель"
+            />
+
+            <textarea
+              value={form.members}
+              onChange={(e)=>
+                setForm({
+                  ...form,
+                  members:e.target.value
+                })
+              }
+              placeholder="Участники"
+            />
+
+            <div className="modal-buttons">
+
+              <button
+                className="save-btn"
+                onClick={saveEdit}
+              >
+                SAVE
+              </button>
+
+              <button
+                className="close-btn"
+                onClick={()=>
+                  setEditing(null)
+                }
+              >
+                CLOSE
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      )}
 
     </section>
 
