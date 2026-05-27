@@ -225,7 +225,7 @@ export default function Contracts(){
           </span>
 
           <button
-            className="primary-btn full-btn"
+            className="contract-submit-btn"
             onClick={handleCreateContract}
             disabled={loading}
           >
@@ -237,7 +237,7 @@ export default function Contracts(){
           </button>
         </div>
 
-        <div className="contract-submit-btn">
+        <div className="primary-btn full-btn">
 
           <div className="table-top">
             <h2>СПИСОК КОНТРАКТОВ</h2>
