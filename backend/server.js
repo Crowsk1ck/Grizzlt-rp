@@ -63,7 +63,7 @@ app.get('/discord-members', async(req,res)=>{
 
     const response = await fetch(
 
-      `https://discord.com/api/v10/guilds/ТВОЙ_SERVER_ID?with_counts=true`,
+      `https://discord.com/api/v10/guilds/1388989912996380713?with_counts=true`,
 
       {
         headers:{
