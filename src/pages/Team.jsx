@@ -1,4 +1,3 @@
-export default function Team(){
 import { useEffect, useState } from 'react'
 
 import {
@@ -8,11 +7,11 @@ import {
 
 import { db } from '../services/firebase/firebase'
 
+export default function Team(){
+
 const ROLE_OWNER = '1390073606481907895'
 const ROLE_LEADER = '1390074547864207534'
 const ROLE_VETERAN = '1390074876207042590'
-
-export default function Team(){
 
   const [members,setMembers] = useState([])
 
