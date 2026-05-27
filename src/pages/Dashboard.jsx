@@ -1,4 +1,38 @@
+import { useEffect, useState } from 'react'
+
+import {
+  db,
+  collection,
+  getDocs
+} from '../services/firebase/firebase'
+
 export default function Dashboard(){
+
+  const [contracts,setContracts] = useState([])
+
+  async function loadContracts(){
+
+    try{
+
+      const snapshot = await getDocs(
+        collection(db,'contracts')
+      )
+
+      const data = snapshot.docs.map(doc=>({
+        id:doc.id,
+        ...doc.data()
+      }))
+
+      setContracts(data)
+
+    }catch(error){
+      console.error(error)
+    }
+  }
+
+  useEffect(()=>{
+    loadContracts()
+  },[])
   return(
     <>
       <section className="hero-banner">
@@ -49,7 +83,7 @@ export default function Dashboard(){
         </div>
 
         <div className="stat-box">
-          <h3>1247</h3>
+         <h3>{contracts.length}</h3>
           <span>КОНТРАКТОВ</span>
         </div>
 
