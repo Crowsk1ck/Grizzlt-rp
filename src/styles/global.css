@@ -114,6 +114,8 @@ body::before{
   border-radius:26px;
   margin-bottom:18px;
   border:1px solid rgba(255,0,92,.15);
+  display:flex;
+  align-items:flex-end;
   background:
     linear-gradient(rgba(0,0,0,.5),rgba(0,0,0,.78)),
     url('https://images.unsplash.com/photo-1514565131-fce0801e5785?q=80&w=1800&auto=format&fit=crop');
@@ -122,10 +124,10 @@ body::before{
 }
 
 .hero-left{
-
-  padding:52px;
-
-  padding-bottom:42px;
+  position:relative;
+  z-index:2;
+  max-width:620px;
+  padding:40px;
 }
 
 .welcome{
@@ -152,7 +154,10 @@ body::before{
 }
 
 .hero-buttons{
-  margin-top:38px;
+  display:flex;
+  align-items:center;
+  gap:16px;
+  margin-top:28px;
 }
 
 .secondary-btn{
