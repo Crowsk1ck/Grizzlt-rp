@@ -155,9 +155,9 @@ async function loadDiscordMembers(){
             Мы занимаемся контрактами, бизнесом, войнами и контролем территорий.
           </p>
 
-          <button className="learn-btn">
-        Дізнатись
-          </button>
+          //<button className="learn-btn">
+       // Дізнатись
+         // </button>
         </div>
 
         <div className="panel">
