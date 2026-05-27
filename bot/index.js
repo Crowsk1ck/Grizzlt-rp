@@ -56,9 +56,14 @@ client.once('ready', async () => {
       online
     })
 
-    await db.collection('discord').doc('members').set({
-      users: allMembers
-    })
+   for (const member of allMembers) {
+
+  await db
+    .collection('discord')
+    .doc(member.id)
+    .set(member)
+
+}
 
     console.log('Discord synced')
 
