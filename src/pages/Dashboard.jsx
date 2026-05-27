@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react'
 
 import {
-collection,
-getDocs,
-onSnapshot
+  db,
+  collection,
+  getDocs
 } from '../services/firebase/firebase'
+
+import { onSnapshot } from 'firebase/firestore'
 
 export default function Dashboard(){
 
