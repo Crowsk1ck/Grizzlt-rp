@@ -80,8 +80,8 @@ export default function Dashboard(){
             Мы занимаемся контрактами, бизнесом, войнами и контролем территорий.
           </p>
 
-          <button className="primary-btn small-btn">
-            УЗНАТЬ БОЛЬШЕ
+          <button className="learn-btn">
+        Дізнатись
           </button>
         </div>
 
