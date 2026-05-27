@@ -83,7 +83,7 @@ export default function Contracts(){
   )
 
   await fetch(
-    'ТВОЙ_WEBHOOK_URL',
+    'https://discord.com/api/webhooks/1506424883737788619/yATAISypU22ZWVvhRKMsSeSZT1l7bghWRvPSoLaERM8tdj1Wx70JXq4QU2DjYwiHC72F',
     {
       method:'POST',
       headers:{
