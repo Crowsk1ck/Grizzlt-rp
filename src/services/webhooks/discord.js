@@ -16,5 +16,4 @@ export async function sendWebhook(url,payload){
 }
 
 export const contractsWebhook =
-'https://discord.com/api/webhooks/1506424883737788619/yATAISypU22ZWVvhRKMsSeSZT1l7bghWRvPSoLaERM8tdj1Wx70JXq4QU2DjYwiHC72F'
-import.meta.env.VITE_DISCORD_CONTRACTS_WEBHOOK
+  import.meta.env.VITE_DISCORD_CONTRACTS_WEBHOOK
