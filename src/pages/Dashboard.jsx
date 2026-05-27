@@ -42,38 +42,30 @@ export default function Dashboard(){
           </div>
         </div>
       </section>
-<section className="rules-panel">
+<section className="rules-strip">
 
-  <h2>
-    ПРАВИЛА СІМ'Ї
-  </h2>
+  <div className="rule-chip">
+    НЕ ЗЛИВАТИ ІНФОРМАЦІЮ
+  </div>
 
-  <div className="rules-list">
+  <div className="rule-chip">
+    DISCORD ОБОВʼЯЗКОВИЙ
+  </div>
 
-    <div className="rule-item">
-      Не зливати інформацію сімʼї
-    </div>
+  <div className="rule-chip">
+    ПОВАЖАТИ СТАРШИХ
+  </div>
 
-    <div className="rule-item">
-      Discord обовʼязковий
-    </div>
+  <div className="rule-chip">
+    БЕЗ ТОКСИЧНОСТІ
+  </div>
 
-    <div className="rule-item">
-      Поважати старший склад
-    </div>
+  <div className="rule-chip">
+    AFK 7 ДНІВ = KICK
+  </div>
 
-    <div className="rule-item">
-      Не токсичити всередині сімʼї
-    </div>
-
-    <div className="rule-item">
-      AFK більше 7 днів = kick
-    </div>
-
-    <div className="rule-item">
-      Контракти через систему
-    </div>
-
+  <div className="rule-chip">
+    КОНТРАКТИ ЧЕРЕЗ СИСТЕМУ
   </div>
 
 </section>
