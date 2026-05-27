@@ -18,6 +18,7 @@ import Team from './pages/Team'
 import Wars from './pages/Wars'
 import Economy from './pages/Economy'
 import Admin from './pages/Admin'
+import Liders from './pages/Liders'
 
 export default function App(){
 
