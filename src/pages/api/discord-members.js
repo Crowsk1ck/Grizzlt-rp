@@ -7,5 +7,5 @@ export default function handler(req, res) {
     tokenExists: !!process.env.DISCORD_BOT_TOKEN,
     hello: true
   })
-
+ 
 }
