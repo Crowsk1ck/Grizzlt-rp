@@ -1443,3 +1443,77 @@ th,td{
   padding:14px;
   border-radius:14px;
 }
+.members-page{
+  padding:40px;
+}
+
+.members-header{
+  margin-bottom:30px;
+}
+
+.members-header h1{
+  color:#ff008c;
+  font-size:42px;
+}
+
+.members-grid{
+  display:grid;
+  grid-template-columns:
+  repeat(auto-fill,minmax(320px,1fr));
+  gap:24px;
+}
+
+.member-card{
+  background:#0f0f18;
+  border:1px solid #ff008c22;
+  border-radius:24px;
+  padding:24px;
+}
+
+.member-card img{
+  width:90px;
+  height:90px;
+  border-radius:50%;
+  object-fit:cover;
+  margin-bottom:20px;
+}
+
+.member-card h2{
+  color:white;
+  margin-bottom:10px;
+}
+
+.online{
+  color:#00ff88;
+}
+
+.offline{
+  color:#ff4444;
+}
+
+.member-stats{
+  display:flex;
+  justify-content:space-between;
+  margin-top:24px;
+}
+
+.member-stats strong{
+  color:#ff008c;
+  font-size:22px;
+}
+
+.member-actions{
+  display:flex;
+  gap:12px;
+  margin-top:24px;
+}
+
+.member-actions button{
+  flex:1;
+  padding:14px;
+  border:none;
+  border-radius:14px;
+  background:#161622;
+  color:white;
+  cursor:pointer;
+}
