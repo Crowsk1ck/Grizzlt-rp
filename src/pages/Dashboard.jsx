@@ -106,7 +106,7 @@ async function loadDiscordMembers(){
       
       <section className="stats-row">
         <div className="stat-box">
-          <h3>{stats.online}</h3>
+          <h3>0</h3>
           <span>ONLINE</span>
         </div>
 
@@ -121,7 +121,7 @@ async function loadDiscordMembers(){
         </div>
 
         <div className="stat-box">
-          <h3>{stats.members}</h3>
+          <h3>0</h3>
           <span>УЧАСТНИКОВ</span>
         </div>
 
