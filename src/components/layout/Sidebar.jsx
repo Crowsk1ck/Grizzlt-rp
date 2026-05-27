@@ -30,7 +30,7 @@ export default function Sidebar({ isAdmin }){
 
       <div className="family-status">
         <div className="status-title">GRIZZLY FAMILY</div>
-        <div className="status-online">ONLINE:{stats.online}</div>
+        <div className="status-online">ONLINE:0</div>
       </div>
     </aside>
   )
