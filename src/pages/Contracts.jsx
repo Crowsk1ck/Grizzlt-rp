@@ -237,7 +237,7 @@ export default function Contracts(){
           </button>
         </div>
 
-        <div className="primary-btn full-btn">
+        <div className="contracts-table-panel">
 
           <div className="table-top">
             <h2>СПИСОК КОНТРАКТОВ</h2>
