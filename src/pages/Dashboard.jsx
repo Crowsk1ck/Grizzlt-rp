@@ -1,4 +1,5 @@
 export default function Dashboard(){
+  const [showRules,setShowRules] = useState(false)
   return(
     <>
       <section className="hero-banner">
