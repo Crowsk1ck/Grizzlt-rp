@@ -12,7 +12,8 @@ export default function Team(){
 const ROLE_OWNER = '1390073606481907895'
 const ROLE_LEADER = '1390074547864207534'
 const ROLE_VETERAN = '1390074876207042590'
-
+  
+  const [filter,setFilter] = useState('ALL')
   const [members,setMembers] = useState([])
 
   const [stats,setStats] = useState({
@@ -82,11 +83,34 @@ const ROLE_VETERAN = '1390074876207042590'
 
       <div className="team-controls">
         <div className="tabs">
-          <button className="active">ВСЕ УЧАСТНИКИ</button>
-          <button>ЛИДЕРЫ</button>
-          <button>ЗАМЕСТИТЕЛИ</button>
-          <button>ВЕТЕРАНЫ</button>
-        </div>
+  <button
+    className={filter === 'ALL' ? 'active' : ''}
+    onClick={() => setFilter('ALL')}
+  >
+    ВСЕ УЧАСТНИКИ
+  </button>
+
+  <button
+    className={filter === 'ЛИДЕР' ? 'active' : ''}
+    onClick={() => setFilter('ЛИДЕР')}
+  >
+    ЛИДЕРЫ
+  </button>
+
+  <button
+    className={filter === 'ЗАМЕСТИТЕЛЬ' ? 'active' : ''}
+    onClick={() => setFilter('ЗАМЕСТИТЕЛЬ')}
+  >
+    ЗАМЕСТИТЕЛИ
+  </button>
+
+  <button
+    className={filter === 'ВЕТЕРАН' ? 'active' : ''}
+    onClick={() => setFilter('ВЕТЕРАН')}
+  >
+    ВЕТЕРАНЫ
+  </button>
+</div>
 
         <div className="search-row">
           <input placeholder="Поиск участника..." />
@@ -94,7 +118,13 @@ const ROLE_VETERAN = '1390074876207042590'
       </div>
 
       <div className="members-grid">
-        {members.map((member,index)=>(
+        {members
+  .filter(member =>
+    filter === 'ALL'
+      ? true
+      : member.role === filter
+  )
+  .map((member,index)=>(
           <div className="member-panel" key={index}>
             <div className="member-overlay"></div>
 
