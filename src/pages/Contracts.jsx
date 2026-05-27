@@ -75,59 +75,41 @@ export default function Contracts(){
         createdAt:Date.now()
       }
 
-      const handleAddContract = async () => {
+      await addDoc(
+        collection(db,'contracts'),
+        contractData
+      )
 
-  await addDoc(
-    collection(db,'contracts'),
-    contractData
-  )
+      await sendWebhook(
+        contractsWebhook,
+        {
+          embeds:[
+            {
+              title:'📦 Новый контракт',
+              color:0xff005c,
+              fields:[
+                {
+                  name:'Контракт',
+                  value:form.name
+                },
+                {
+                  name:'Сумма',
+                  value:form.price
+                },
+                {
+                  name:'Создатель',
+                  value:form.owner
+                },
+                {
+                  name:'Участники',
+                  value:form.members || 'Нет'
+                }
+              ]
+            }
+          ]
+        }
+      )
 
-  await fetch(
-    'https://discord.com/api/webhooks/1506424883737788619/yATAISypU22ZWVvhRKMsSeSZT1l7bghWRvPSoLaERM8tdj1Wx70JXq4QU2DjYwiHC72F',
-    {
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json'
-      },
-
-      body:JSON.stringify({
-
-        embeds:[
-          {
-            title:'📄 Новый контракт',
-
-            color:16711836,
-
-            fields:[
-              {
-                name:'👤 Игрок',
-                value:contractData.player,
-                inline:true
-              },
-              {
-                name:'💰 Сумма',
-                value:`$${contractData.amount}`,
-                inline:true
-              },
-              {
-                name:'📝 Тип',
-                value:contractData.type,
-                inline:true
-              }
-            ],
-
-            footer:{
-              text:'GRIZZLY FAMILY'
-            },
-
-            timestamp:new Date()
-          }
-        ]
-
-      })
-    }
-  )
-}
       setForm({
         name:'',
         price:'',
