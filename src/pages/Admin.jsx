@@ -14,7 +14,7 @@ export default function Admin(){
   const [contracts,setContracts] = useState([])
   const [search,setSearch] = useState('')
   const [tab,setTab] = useState('contracts')
-  const [discordMembers,setDiscordMembers]
+  const [discordMembers,setDiscordMembers] = useState([])
 
   const [editing,setEditing] = useState(null)
 
