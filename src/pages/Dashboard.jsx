@@ -33,6 +33,16 @@ export default function Dashboard(){
   useEffect(()=>{
     loadContracts()
   },[])
+  const totalIncome = contracts.reduce((acc,item)=>{
+
+  const value = Number(
+    String(item.price)
+      .replace(/[^0-9]/g,'')
+  )
+
+  return acc + value
+
+},0)
   return(
     <>
       <section className="hero-banner">
@@ -88,7 +98,7 @@ export default function Dashboard(){
         </div>
 
         <div className="stat-box">
-          <h3>$2.540.000</h3>
+          <h3>${totalIncome.toLocaleString()}</h3>
           <span>ДОХОД</span>
         </div>
 
