@@ -106,7 +106,7 @@ async function loadDiscordMembers(){
       
       <section className="stats-row">
         <div className="stat-box">
-          <h3>48</h3>
+          <h3>{stats.online}</h3>
           <span>ONLINE</span>
         </div>
 
@@ -121,12 +121,12 @@ async function loadDiscordMembers(){
         </div>
 
         <div className="stat-box">
-          <h3>{members}</h3>
+          <h3>{stats.members}</h3>
           <span>УЧАСТНИКОВ</span>
         </div>
 
         <div className="stat-box">
-          <h3>24</h3>
+          <h3>0</h3>
           <span>МЕРОПРИЯТИЯ</span>
         </div>
       </section>
@@ -149,19 +149,19 @@ async function loadDiscordMembers(){
           <h2>ПОСЛЕДНИЕ НОВОСТИ</h2>
 
           <div className="news-item">
-            Новый контракт Vinewood
+            Скоро.
           </div>
 
           <div className="news-item">
-            Захват территории completed
+           Скоро.
           </div>
 
           <div className="news-item">
-            Набор новых участников
+            Скоро.
           </div>
 
           <div className="news-item">
-            Обновление семейного склада
+            Скоро.
           </div>
         </div>
 
