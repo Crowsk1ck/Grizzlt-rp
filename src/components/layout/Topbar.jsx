@@ -5,8 +5,7 @@ const LOGIN_URL =
 
 export default function Topbar(){
 
-  const [connected,setConnected] =
-    useState(false)
+  const [connected,setConnected] = useState(false)
 
   useEffect(()=>{
 
@@ -18,8 +17,9 @@ export default function Topbar(){
         hash.replace('#','')
       )
 
-      const token =
-        params.get('access_token')
+      const token = params.get(
+        'access_token'
+      )
 
       localStorage.setItem(
         'discord_token',
@@ -31,12 +31,12 @@ export default function Topbar(){
       setConnected(true)
     }
 
-    const savedToken =
+    const saved =
       localStorage.getItem(
         'discord_token'
       )
 
-    if(savedToken){
+    if(saved){
       setConnected(true)
     }
 
@@ -52,37 +52,40 @@ export default function Topbar(){
   }
 
   return(
-
     <header className="topbar">
 
       <div>
-        <h1>
-          GRIZZLY FAMILY SYSTEM
-        </h1>
-
-        <p>
-          GTA RP
-        </p>
+        <h2>GRIZZLY FAMILY SYSTEM</h2>
+        <p>Premium Cyberpunk GTA RP Platform</p>
       </div>
 
-      {
-        connected ? (
+      <div className="topbar-actions">
 
-          <button onClick={logout}>
-            Discord Connected
-          </button>
+        <div className="notification-dot"></div>
 
-        ) : (
+        {
+          connected ? (
 
-          <a
-            href={LOGIN_URL}
-            className="login-btn"
-          >
-            ВОЙТИ DISCORD
-          </a>
+            <button
+              className="neon-btn"
+              onClick={logout}
+            >
+              Discord Connected
+            </button>
 
-        )
-      }
+          ) : (
+
+            <a
+              href={LOGIN_URL}
+              className="neon-btn"
+            >
+              ВОЙТИ DISCORD
+            </a>
+
+          )
+        }
+
+      </div>
 
     </header>
   )

@@ -11,20 +11,26 @@ import Economy from './pages/Economy'
 import Admin from './pages/Admin'
 
 export default function App(){
+
+  const isAuth =
+    !!localStorage.getItem(
+      'discord_token'
+    )
+
   return(
     <div className="app">
-      <Sidebar />
+      {isAuth && <Sidebar />}
 
       <main className="content">
         <Topbar />
 
         <Routes>
           <Route path="/" element={<Dashboard />} />
-          <Route path="/contracts" element={<Contracts />} />
-          <Route path="/team" element={<Team />} />
-          <Route path="/wars" element={<Wars />} />
-          <Route path="/economy" element={<Economy />} />
-          <Route path="/admin" element={<Admin />} />
+          <Route path="/contracts" element={isAuth ? <Contracts /> : <Dashboard />} />
+          <Route path="/team" element={isAuth ? <Team /> : <Dashboard />} />
+          <Route path="/wars" element={isAuth ? <Wars /> : <Dashboard />} />
+          <Route path="/economy" element={isAuth ? <Economy /> : <Dashboard />} />
+          <Route path="/admin" element={isAuth ? <Admin /> : <Dashboard />} />
         </Routes>
       </main>
     </div>
