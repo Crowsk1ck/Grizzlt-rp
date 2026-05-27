@@ -213,7 +213,17 @@ const membersCount =
         acc[user] = 0
       }
 
-      acc[user] += share
+      contract.members
+  .split(',')
+  .map(name => name.trim())
+  .forEach(memberName => {
+
+    if(!acc[memberName]){
+      acc[memberName] = 0
+    }
+
+    acc[memberName] += share
+  })
 
       return acc
 
