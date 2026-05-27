@@ -115,7 +115,7 @@ export default function App(){
             path="/Members"
             element={
               isAuth
-              ? <Economy />
+              ? <Members />
               : <Dashboard />
             }
           />
