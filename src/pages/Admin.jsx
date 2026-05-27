@@ -13,6 +13,7 @@ export default function Admin(){
 
   const [contracts,setContracts] = useState([])
   const [search,setSearch] = useState('')
+  const [tab,setTab] = useState('contracts')
 
   const [editing,setEditing] = useState(null)
 
@@ -169,6 +170,49 @@ export default function Admin(){
 
       </div>
 
+      <div className="admin-tabs">
+
+        <button
+          className={
+            tab === 'contracts'
+              ? 'active-tab'
+              : ''
+          }
+          onClick={()=>
+            setTab('contracts')
+          }
+        >
+          CONTRACTS
+        </button>
+
+        <button
+          className={
+            tab === 'members'
+              ? 'active-tab'
+              : ''
+          }
+          onClick={()=>
+            setTab('members')
+          }
+        >
+          MEMBERS
+        </button>
+
+        <button
+          className={
+            tab === 'analytics'
+              ? 'active-tab'
+              : ''
+          }
+          onClick={()=>
+            setTab('analytics')
+          }
+        >
+          ANALYTICS
+        </button>
+
+      </div>
+
       <div className="admin-stats">
 
         <div className="admin-stat">
@@ -192,6 +236,8 @@ export default function Admin(){
         </div>
 
       </div>
+
+      {tab === 'contracts' && (
 
       <div className="admin-table">
 
@@ -261,6 +307,132 @@ export default function Admin(){
         ))}
 
       </div>
+
+      )}
+
+      {tab === 'members' && (
+
+      <div className="members-admin-grid">
+
+        {
+
+          [...new Set(
+
+            contracts.flatMap(contract=>
+
+              String(
+                contract.members || ''
+              )
+              .split(',')
+
+              .map(v=>v.trim())
+
+            )
+
+          )]
+
+          .map((user,index)=>(
+
+            <div
+              className="member-admin-card"
+              key={index}
+            >
+
+              <h2>
+                {user}
+              </h2>
+
+              <p>
+
+                CONTRACTS:
+
+                {
+
+                  contracts.filter(contract=>
+
+                    String(
+                      contract.members || ''
+                    )
+                    .includes(user)
+
+                  ).length
+
+                }
+
+              </p>
+
+              <p>
+
+                INCOME:
+
+                $
+
+                {
+
+                  Math.floor(
+
+                    contracts.reduce((acc,contract)=>{
+
+                      const users = String(
+                        contract.members || ''
+                      )
+                      .split(',')
+
+                      .map(v=>v.trim())
+
+                      if(users.includes(user)){
+
+                        const total = Number(
+
+                          String(
+                            contract.price || 0
+                          ).replace(/[^\d]/g,'')
+
+                        )
+
+                        return acc +
+
+                          (
+                            total * 0.8
+                          ) / users.length
+
+                      }
+
+                      return acc
+
+                    },0)
+
+                  ).toLocaleString()
+
+                }
+
+              </p>
+
+            </div>
+
+          ))
+
+        }
+
+      </div>
+
+      )}
+
+      {tab === 'analytics' && (
+
+      <div className="analytics-box">
+
+        <h2>
+          ANALYTICS SYSTEM
+        </h2>
+
+        <p>
+          Soon...
+        </p>
+
+      </div>
+
+      )}
 
       {editing && (
 
