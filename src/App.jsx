@@ -102,10 +102,10 @@ export default function App(){
           />
 
           <Route
-            path="/wars"
+            path="/Liders"
             element={
               isAuth
-              ? <Wars />
+              ? <Liders />
               : <Dashboard />
             }
           />
