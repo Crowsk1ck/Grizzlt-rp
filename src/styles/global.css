@@ -1197,71 +1197,52 @@ th,td{
 .contract-submit-btn:hover::before{
   left:130%;
 }
-.rules-panel{
-
-  margin-bottom:22px;
-
-  padding:26px;
-
-  border-radius:24px;
-
-  background:
-    linear-gradient(
-      135deg,
-      rgba(12,12,18,.96),
-      rgba(22,10,18,.92)
-    );
-
-  border:
-    1px solid rgba(255,0,92,.15);
-
-  box-shadow:
-    0 0 40px rgba(255,0,92,.08);
-}
-
-.rules-panel h2{
-
-  margin-bottom:20px;
-
-  color:white;
-
-  font-size:28px;
-}
-
-.rules-list{
+.rules-strip{
 
   display:flex;
 
-  flex-direction:column;
+  flex-wrap:wrap;
 
   gap:14px;
+
+  margin-bottom:22px;
 }
 
-.rule-item{
+.rule-chip{
 
-  padding:18px;
+  padding:14px 18px;
 
   border-radius:16px;
 
   background:
-    rgba(255,255,255,.03);
+    linear-gradient(
+      135deg,
+      rgba(18,18,28,.96),
+      rgba(28,12,22,.92)
+    );
 
   border:
-    1px solid rgba(255,0,92,.08);
+    1px solid rgba(255,0,92,.14);
 
   color:white;
+
+  font-size:13px;
+
+  font-weight:700;
+
+  letter-spacing:.5px;
 
   transition:.25s ease;
 }
 
-.rule-item:hover{
+.rule-chip:hover{
 
   transform:
-    translateX(4px);
+    translateY(-2px);
 
   border-color:
-    rgba(255,0,92,.32);
+    rgba(255,0,92,.35);
 
-  background:
-    rgba(255,0,92,.05);
+  box-shadow:
+    0 0 24px rgba(255,0,92,.12);
 }
