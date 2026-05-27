@@ -173,7 +173,7 @@ export default function Contracts(){
 
       <div className="contracts-layout">
 
-        <div className="contract-submit-btn">
+        <div className="contract-form-panel">
           <h2>ДОБАВИТЬ КОНТРАКТ</h2>
 
           <input
@@ -237,7 +237,7 @@ export default function Contracts(){
           </button>
         </div>
 
-        <div className="contracts-table-panel">
+        <div className="contract-submit-btn">
 
           <div className="table-top">
             <h2>СПИСОК КОНТРАКТОВ</h2>
