@@ -181,6 +181,7 @@ async function loadDiscordMembers(){
         </div>
 
 <div className="panel">
+
   <h2>ТОП УЧАСТНИКОВ</h2>
 
   {Object.entries(
@@ -193,7 +194,7 @@ async function loadDiscordMembers(){
         contract.user ||
         'Unknown'
 
-      const amount = Number(
+      const total = Number(
         String(
           contract.price ||
           contract.amount ||
@@ -201,17 +202,38 @@ async function loadDiscordMembers(){
         ).replace(/[^0-9]/g,'')
       )
 
+      const membersCount =
+        Number(contract.members || 1)
+
+      const share =
+        (total / membersCount) * 0.8
+
       if(!acc[user]){
         acc[user] = 0
       }
 
-      acc[user] += amount
+      acc[user] += share
 
       return acc
 
     },{})
 
   )
+  .sort((a,b)=>b[1]-a[1])
+  .slice(0,5)
+  .map(([name,money],index)=>(
+
+    <div
+      className="top-user"
+      key={index}
+    >
+      {name} — $
+      {Math.floor(money).toLocaleString()}
+    </div>
+
+  ))}
+
+</div>
       </section>
     </>
   )
