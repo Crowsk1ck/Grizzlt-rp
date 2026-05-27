@@ -16,7 +16,7 @@ export default function Sidebar({ isAdmin }){
         <NavLink to="/contracts">КОНТРАКТЫ</NavLink>
         <NavLink to="/team">КОМАНДА</NavLink>
         <NavLink to="/Liders">Лідери</NavLink>
-        <NavLink to="/economy">ЭКОНОМИКА</NavLink>
+        <NavLink to="/Member">ЭКОНОМИКА</NavLink>
         {
   isAdmin && (
 
