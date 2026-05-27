@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom'
 
-export default function Sidebar(){
+export default function Sidebar({ isAdmin }){
   return(
     <aside className="sidebar">
       <div className="brand">
@@ -14,7 +14,15 @@ export default function Sidebar(){
         <NavLink to="/team">КОМАНДА</NavLink>
         <NavLink to="/wars">ВОЙНЫ</NavLink>
         <NavLink to="/economy">ЭКОНОМИКА</NavLink>
-        <NavLink to="/admin">АДМИН</NavLink>
+        {
+  isAdmin && (
+
+    <Link to="/admin">
+      ADMIN PANEL
+    </Link>
+
+  )
+}
       </nav>
 
       <div className="family-status">
