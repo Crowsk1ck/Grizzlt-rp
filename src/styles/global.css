@@ -730,3 +730,54 @@ th,td{
   word-break:break-word;
   line-height:1.5;
 }
+
+
+.topbar-profile{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:10px 14px;
+  border-radius:16px;
+  background:rgba(15,15,25,.95);
+  border:1px solid rgba(255,0,90,.35);
+  box-shadow:0 0 20px rgba(255,0,90,.15);
+}
+
+.topbar-profile img{
+  width:42px;
+  height:42px;
+  border-radius:12px;
+  border:2px solid #ff005c;
+}
+
+.profile-info{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.nickname{
+  color:white;
+  font-weight:700;
+  font-size:14px;
+}
+
+.role-badge{
+  background:#ff005c;
+  color:white;
+  font-size:11px;
+  padding:3px 8px;
+  border-radius:999px;
+  font-weight:700;
+}
+
+.notify-btn{
+  width:36px;
+  height:36px;
+  border:none;
+  border-radius:12px;
+  background:#11111b;
+  color:#ff005c;
+  cursor:pointer;
+  font-size:16px;
+}

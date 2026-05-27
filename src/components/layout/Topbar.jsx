@@ -5,7 +5,11 @@ const LOGIN_URL =
 
 export default function Topbar(){
 
-  const [connected,setConnected] = useState(false)
+  const [connected,setConnected] =
+    useState(false)
+
+  const [user,setUser] =
+    useState(null)
 
   useEffect(()=>{
 
@@ -17,9 +21,8 @@ export default function Topbar(){
         hash.replace('#','')
       )
 
-      const token = params.get(
-        'access_token'
-      )
+      const token =
+        params.get('access_token')
 
       localStorage.setItem(
         'discord_token',
@@ -31,13 +34,28 @@ export default function Topbar(){
       setConnected(true)
     }
 
-    const saved =
+    const savedToken =
       localStorage.getItem(
         'discord_token'
       )
 
-    if(saved){
+    if(savedToken){
+
       setConnected(true)
+
+      fetch(
+        'https://discord.com/api/users/@me',
+        {
+          headers:{
+            Authorization:`Bearer ${savedToken}`
+          }
+        }
+      )
+      .then(res=>res.json())
+      .then(data=>{
+        setUser(data)
+      })
+
     }
 
   },[])
@@ -52,40 +70,61 @@ export default function Topbar(){
   }
 
   return(
+
     <header className="topbar">
 
       <div>
-        <h2>GRIZZLY FAMILY SYSTEM</h2>
-        <p>Premium Cyberpunk GTA RP Platform</p>
+        <h1>
+          GRIZZLY FAMILY SYSTEM
+        </h1>
+
+        <p>
+          Premium Cyberpunk GTA RP Platform
+        </p>
       </div>
 
-      <div className="topbar-actions">
+      {
+        connected && user ? (
 
-        <div className="notification-dot"></div>
+          <div className="topbar-profile">
 
-        {
-          connected ? (
+            <img
+              src={`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`}
+              alt=""
+            />
+
+            <div className="profile-info">
+
+              <span className="nickname">
+                {user.username}
+              </span>
+
+              <span className="role-badge">
+                MEMBER
+              </span>
+
+            </div>
 
             <button
-              className="neon-btn"
+              className="notify-btn"
               onClick={logout}
             >
-              Discord Connected
+              🔔
             </button>
 
-          ) : (
+          </div>
 
-            <a
-              href={LOGIN_URL}
-              className="neon-btn"
-            >
-              ВОЙТИ DISCORD
-            </a>
+        ) : (
 
-          )
-        }
+          <a
+            href={LOGIN_URL}
+            className="login-btn"
+          >
+            ВОЙТИ DISCORD
+          </a>
 
-      </div>
+        )
+      }
 
     </header>
   )
