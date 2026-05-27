@@ -922,10 +922,14 @@ th,td{
   justify-content:center;
   gap:14px;
 
-  width:270px;
-  height:68px;
+  padding:0 28px;
 
-  border-radius:22px;
+  min-width:220px;
+  height:58px;
+
+  flex-shrink:0;
+
+  border-radius:18px;
 
   text-decoration:none;
 
