@@ -35,7 +35,7 @@ async function loadDiscordMembers(){
   try{
 
     const response = await fetch(
-      'https://ТВОЙ-БЕКЕНД/discord-members'
+      'https://grizzly-family.vercel.app/discord-members'
     )
 
     const data = await response.json()
@@ -53,9 +53,6 @@ async function loadDiscordMembers(){
     loadDiscordMembers()
   },[])
   const totalIncome = contracts.reduce((acc,item)=>{
-const response = await fetch(
-  'https://grizzly-auth.vercel.app/discord-members'
-)
   const value = Number(
     String(item.price)
       .replace(/[^0-9]/g,'')
