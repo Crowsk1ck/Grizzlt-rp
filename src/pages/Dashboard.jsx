@@ -39,7 +39,12 @@ export default function Dashboard(){
   </span>
 
 </a>
-            <button className="secondary-btn">ПРАВИЛА СЕМЬИ</button>
+<button
+  className="secondary-btn"
+  onClick={() => setShowRules(true)}
+>
+  ПРАВИЛА
+</button>
           </div>
         </div>
       </section>
