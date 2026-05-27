@@ -54,16 +54,13 @@ app.post('/api/check-role', async (req,res)=>{
   }
 })
 
-app.listen(3001,()=>{
-  console.log('Grizzly auth backend running')
-})
 app.get('/discord-members', async(req,res)=>{
 
   try{
 
     const response = await fetch(
 
-      `https://discord.com/api/v10/guilds/1388989912996380713?with_counts=true`,
+      'https://discord.com/api/v10/guilds/1389899912996380713?with_counts=true',
 
       {
         headers:{
@@ -87,3 +84,5 @@ app.get('/discord-members', async(req,res)=>{
     })
   }
 })
+
+export default app
