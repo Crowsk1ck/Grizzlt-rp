@@ -180,14 +180,49 @@ async function loadDiscordMembers(){
           </div>
         </div>
 
-        <div className="panel">
-          <h2>ТОП УЧАСТНИКОВ</h2>
+<div className="panel">
+  <h2>ТОП УЧАСТНИКОВ</h2>
 
-          <div className="top-user">Ghost — $540.000</div>
-          <div className="top-user">Shadow — $325.000</div>
-          <div className="top-user">Venom — $210.000</div>
-          <div className="top-user">Blade — $190.000</div>
-        </div>
+  {Object.entries(
+
+    contracts.reduce((acc,contract)=>{
+
+      const user =
+        contract.name ||
+        contract.username ||
+        contract.user ||
+        'Unknown'
+
+      const amount = Number(
+        String(
+          contract.price ||
+          contract.amount ||
+          0
+        ).replace(/[^0-9]/g,'')
+      )
+
+      if(!acc[user]){
+        acc[user] = 0
+      }
+
+      acc[user] += amount
+
+      return acc
+
+    },{})
+
+  )
+  .sort((a,b)=>b[1]-a[1])
+  .slice(0,5)
+  .map(([name,money],index)=>(
+
+    <div className="top-user" key={index}>
+      {name} — ${money.toLocaleString()}
+    </div>
+
+  ))}
+
+</div>
       </section>
     </>
   )
