@@ -13,14 +13,12 @@ export default async function handler(req,res){
 
     const data = await response.json()
 
-    res.status(200).json({
-      members:data.approximate_member_count || 0
-    })
+    res.status(200).json(data)
 
   }catch(error){
 
     res.status(500).json({
-      members:0
+      error:String(error)
     })
 
   }
