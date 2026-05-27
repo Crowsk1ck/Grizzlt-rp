@@ -112,13 +112,14 @@ export default function Topbar(){
 
         ) : (
 
-          <a
-            href={LOGIN_URL}
-            className="login-btn"
-          >
-            ВОЙТИ DISCORD
-          </a>
-
+         <a
+  href={LOGIN_URL}
+  className="discord-login-btn"
+>
+  <span>
+    ВОЙТИ DISCORD
+  </span>
+</a>
         )
       }
 
