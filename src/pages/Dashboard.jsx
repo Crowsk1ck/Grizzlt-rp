@@ -48,6 +48,67 @@ export default function Dashboard(){
 </button>
           </div>
         </div>
+        {
+  showRules && (
+
+    <div
+      className="rules-modal-overlay"
+      onClick={() => setShowRules(false)}
+    >
+
+      <div
+        className="rules-modal"
+        onClick={(e)=>e.stopPropagation()}
+      >
+
+        <div className="rules-top">
+
+          <h2>
+            ПРАВИЛА СІМ'Ї
+          </h2>
+
+          <button
+            className="close-rules"
+            onClick={() => setShowRules(false)}
+          >
+            ✕
+          </button>
+
+        </div>
+
+        <div className="rules-list">
+
+          <div className="rule-item">
+            Не зливати інформацію сімʼї
+          </div>
+
+          <div className="rule-item">
+            Discord обовʼязковий
+          </div>
+
+          <div className="rule-item">
+            Поважати старший склад
+          </div>
+
+          <div className="rule-item">
+            Не токсичити всередині сімʼї
+          </div>
+
+          <div className="rule-item">
+            AFK більше 7 днів = kick
+          </div>
+
+          <div className="rule-item">
+            Контракти через систему
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  )
+}
       </section>
 
       <section className="stats-row">
