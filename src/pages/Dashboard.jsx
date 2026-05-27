@@ -48,6 +48,7 @@ export default function Dashboard(){
 </button>
           </div>
         </div>
+      </section>
         {
   showRules && (
 
@@ -109,8 +110,6 @@ export default function Dashboard(){
     </div>
   )
 }
-      </section>
-
       <section className="stats-row">
         <div className="stat-box">
           <h3>48</h3>
