@@ -1,14 +1,64 @@
 export default function Team(){
-  const members = [
-    {name:'cr0wsk1ck', role:'ЛИДЕР', money:'$540,000', status:'В СЕТИ'},
-    {name:'Shadow', role:'ЗАМЕСТИТЕЛЬ', money:'$365,000', status:'В СЕТИ'},
-    {name:'Mugiwara', role:'ВЕТЕРАН', money:'$210,000', status:'В СЕТИ'},
-    {name:'Nightmare', role:'ВЕТЕРАН', money:'$190,000', status:'НЕ В СЕТИ'},
-    {name:'Blaze', role:'УЧАСТНИК', money:'$150,000', status:'В СЕТИ'},
-    {name:'Hokage', role:'УЧАСТНИК', money:'$130,000', status:'В СЕТИ'},
-    {name:'Soza', role:'УЧАСТНИК', money:'$75,000', status:'НЕ В СЕТИ'},
-    {name:'Exotic', role:'УЧАСТНИК', money:'$40,000', status:'В СЕТИ'}
-  ]
+import { useEffect, useState } from 'react'
+
+import {
+  collection,
+  onSnapshot
+} from 'firebase/firestore'
+
+import { db } from '../services/firebase/firebase'
+
+const ROLE_OWNER = '1390073606481907895'
+const ROLE_LEADER = '1390074547864207534'
+const ROLE_VETERAN = '1390074876207042590'
+
+export default function Team(){
+
+  const [members,setMembers] = useState([])
+
+  const [stats,setStats] = useState({
+    members:0,
+    online:0
+  })
+  useEffect(()=>{
+    const unsub = onSnapshot(
+      collection(db,'discord_members'),
+      (snapshot)=>{
+        const users = []
+        let onlineCount = 0
+        snapshot.forEach((doc)=>{
+          const data = doc.data()
+          let role = 'УЧАСТНИК'
+          if(data.roles?.includes(ROLE_OWNER)){
+            role = 'ЛИДЕР'
+          }
+          else if(data.roles?.includes(ROLE_LEADER)){
+            role = 'ЗАМЕСТИТЕЛЬ'
+          }
+          else if(data.roles?.includes(ROLE_VETERAN)){
+            role = 'ВЕТЕРАН'
+          }
+          if(data.online){
+            onlineCount++
+          }
+          users.push({
+            name:data.username,
+            role,
+            status:data.online
+              ? 'В СЕТИ'
+              : 'НЕ В СЕТИ',
+            avatar:data.avatar
+          })
+        })
+        setMembers(users)
+        setStats({
+          members:users.length,
+          online:onlineCount
+        })
+      }
+    )
+    return ()=>unsub()
+  },[])
 
   return(
     <section className="team-page">
@@ -20,12 +70,12 @@ export default function Team(){
 
         <div className="team-stats">
           <div className="team-stat">
-            <h3>86</h3>
+            <h3>{stats.members}</h3>
             <span>ВСЕГО УЧАСТНИКОВ</span>
           </div>
 
           <div className="team-stat">
-            <h3>48</h3>
+            <h3>{stats.online}</h3>
             <span>ONLINE</span>
           </div>
 
@@ -55,6 +105,11 @@ export default function Team(){
             <div className="member-overlay"></div>
 
             <div className="member-content">
+              <img
+  src={member.avatar}
+  alt=""
+  className="member-avatar"
+/>
               <h3>{member.name}</h3>
 
               <span className="member-role">
