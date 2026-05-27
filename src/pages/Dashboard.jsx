@@ -38,7 +38,7 @@ async function loadDiscordMembers(){
   try{
 
     const unsub = onSnapshot(
-      collection(db,'discord','members','users'),
+      collection(db,'discord_members'),
       (snapshot)=>{
 
         let onlineCount = 0
