@@ -99,8 +99,11 @@ const ROLE_VETERAN = '1390074876207042590'
             <div className="member-overlay"></div>
 
             <div className="member-content">
-              <img
-  src={member.avatar}
+<img
+  src={
+    member.avatar ||
+    'https://cdn.discordapp.com/embed/avatars/0.png'
+  }
   alt=""
   className="member-avatar"
 />
