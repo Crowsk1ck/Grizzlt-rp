@@ -154,10 +154,6 @@ async function loadDiscordMembers(){
             Grizzly Family — элитная организация GTA RP сервера.
             Мы занимаемся контрактами, бизнесом, войнами и контролем территорий.
           </p>
-
-          //<button className="learn-btn">
-       // Дізнатись
-         // </button>
         </div>
 
         <div className="panel">
