@@ -122,10 +122,10 @@ body::before{
 }
 
 .hero-left{
-  position:relative;
-  z-index:2;
-  max-width:620px;
-  padding:40px;
+
+  padding:52px;
+
+  padding-bottom:42px;
 }
 
 .welcome{
@@ -133,11 +133,13 @@ body::before{
   letter-spacing:4px;
 }
 
-.hero-banner h1{
-  font-size:72px;
-  line-height:.95;
-  margin:12px 0 18px;
-  color:#ff005c;
+.hero-banner{
+
+  min-height:420px;
+
+  display:flex;
+
+  align-items:flex-end;
 }
 
 .hero-banner h1 span{
@@ -150,14 +152,7 @@ body::before{
 }
 
 .hero-buttons{
-
-  display:flex;
-  align-items:center;
-  flex-wrap:wrap;
-
-  gap:16px;
-
-  margin-top:32px;
+  margin-top:38px;
 }
 
 .secondary-btn{
@@ -295,14 +290,33 @@ th,td{
     font-size:48px;
   }
 
-  .topbar{
-    flex-direction:column;
-    align-items:flex-start;
-    gap:12px;
-  }
+.topbar{
+
+  background:
+  linear-gradient(
+    90deg,
+    rgba(10,10,15,.96),
+    rgba(20,10,18,.92)
+  );
+
+  border:
+  1px solid rgba(255,0,92,.12);
+
+  padding:18px 24px;
+
+  border-radius:24px;
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  margin-bottom:22px;
+
+  box-shadow:
+    0 0 40px rgba(255,0,92,.08);
 }
-
-
 .team-page{
   display:flex;
   flex-direction:column;
@@ -891,42 +905,32 @@ th,td{
 }
 .logout-btn{
 
-  height:44px;
+  height:46px;
 
-  padding:0 18px;
+  padding:0 22px;
 
   border:none;
 
   border-radius:14px;
 
   background:
-  linear-gradient(
-    135deg,
-    #151522,
-    #1d1d2f
-  );
+  rgba(20,20,30,.92);
 
   color:white;
 
   font-size:13px;
+
   font-weight:800;
-  letter-spacing:.5px;
 
   cursor:pointer;
 
   border:
-  1px solid rgba(255,0,92,.35);
-
-  box-shadow:
-    0 0 20px rgba(255,0,92,.18);
+  1px solid rgba(255,0,92,.2);
 
   transition:.25s ease;
 }
 
 .logout-btn:hover{
-
-  transform:
-  translateY(-2px);
 
   background:
   linear-gradient(
@@ -935,8 +939,11 @@ th,td{
     #ff2f7d
   );
 
+  transform:
+  translateY(-2px);
+
   box-shadow:
-    0 0 28px rgba(255,0,92,.45);
+    0 0 28px rgba(255,0,92,.35);
 }
 .discord-join-btn{
 
