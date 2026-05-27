@@ -1254,3 +1254,40 @@ th,td{
   box-shadow:
     0 0 24px rgba(255,0,92,.12);
 }
+.leaders-page{
+  padding:30px;
+}
+
+.leaders-header h1{
+  color:#ff008c;
+  font-size:48px;
+}
+
+.leaders-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+  margin-top:30px;
+}
+
+.leader-card{
+  background:#0f0f18;
+  border:1px solid #ff008c33;
+  border-radius:24px;
+  padding:24px;
+}
+
+.leader-card h3{
+  color:#ff008c;
+  margin-bottom:20px;
+}
+
+.leader-user{
+  background:#161622;
+  padding:14px;
+  border-radius:14px;
+  margin-bottom:12px;
+
+  display:flex;
+  justify-content:space-between;
+}
