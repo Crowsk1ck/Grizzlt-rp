@@ -8,7 +8,8 @@ import {
   deleteDoc,
   doc,
   query,
-  orderBy
+  orderBy,
+  updateDoc
 } from 'firebase/firestore'
 
 const firebaseConfig = {
@@ -31,5 +32,6 @@ export {
   deleteDoc,
   doc,
   query,
-  orderBy
+  orderBy,
+  updateDoc
 }
