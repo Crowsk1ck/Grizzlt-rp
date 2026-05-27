@@ -31,141 +31,116 @@ export default function Liders(){
       setContracts(data)
 
     }catch(error){
+
       console.error(error)
+
     }
 
   }
 
-  const topMoney = Object.entries(
-    contracts.reduce((acc, contract) => {
+  const moneyMap = {}
+  const contractsMap = {}
 
-      const total = parseInt(
-        String(
-          contract.price ||
-          contract.amount ||
-          0
-        ).replace(/[^\d]/g,'')
-      ) || 0
+  contracts.forEach(contract=>{
 
-      const remaining = total * 0.8
+    const total = parseInt(
+      String(contract.price || 0).replace(/[^\d]/g,'')
+    ) || 0
 
-      const members = contract.members
-        ? contract.members.split(',').map(m=>m.trim())
-        : []
+    const remaining = total * 0.8
 
-      const share = members.length
+    const members = contract.members
+      ? contract.members.split(',').map(m=>m.trim())
+      : []
+
+    const share =
+      members.length > 0
         ? remaining / members.length
         : 0
 
-      members.forEach(member => {
+    members.forEach(member=>{
 
-        if(!acc[member]){
-          acc[member] = 0
-        }
+      if(!moneyMap[member]){
+        moneyMap[member] = 0
+      }
 
-        acc[member] += share
+      if(!contractsMap[member]){
+        contractsMap[member] = 0
+      }
 
-      })
+      moneyMap[member] += share
+      contractsMap[member] += 1
 
-      return acc
+    })
 
-    },{})
-  )
-  .sort((a,b)=>b[1]-a[1])
-  .slice(0,10)
+  })
 
-  const topContracts = Object.entries(
-    contracts.reduce((acc, contract) => {
+  const topMoney = Object.entries(moneyMap)
+    .sort((a,b)=>b[1]-a[1])
 
-      const members = contract.members
-        ? contract.members.split(',').map(m=>m.trim())
-        : []
+  const topContracts = Object.entries(contractsMap)
+    .sort((a,b)=>b[1]-a[1])
 
-      members.forEach(member => {
+  return(
 
-        if(!acc[member]){
-          acc[member] = 0
-        }
+    <section className="leaders-page">
 
-        acc[member] += 1
+      <div className="leaders-header">
 
-      })
+        <h1>ЛИДЕРЫ</h1>
 
-      return acc
+        <p>
+          Лучшие участники семьи
+        </p>
 
-    },{})
-  )
-  .sort((a,b)=>b[1]-a[1])
-  .slice(0,10)
+      </div>
 
- return (
+      <div className="leaders-grid">
 
-  <section className="leaders-page">
+        <div className="leader-card">
 
-    <div className="leaders-header">
-      <h1>ЛИДЕРЫ</h1>
-      <p>Лучшие участники семьи</p>
-    </div>
+          <h3>ТОП ПО ДЕНЬГАМ</h3>
 
-    <div className="leaders-grid">
-
-      <div className="leader-card">
-
-        <h3>ТОП ПО ДЕНЬГАМ</h3>
-
-        {topMoney.length > 0 ? (
-
-          topMoney.map(([name,money],index)=>(
+          {topMoney.map(([name,money],index)=>(
 
             <div className="leader-user" key={index}>
+
               <span>{name}</span>
 
               <span>
                 ${Math.floor(money).toLocaleString()}
               </span>
+
             </div>
 
-          ))
+          ))}
 
-        ) : (
+        </div>
 
-          <div className="leader-user">
-            Нет данных
-          </div>
+        <div className="leader-card">
 
-        )}
+          <h3>ТОП ПО КОНТРАКТАМ</h3>
 
-      </div>
-
-      <div className="leader-card">
-
-        <h3>ТОП ПО КОНТРАКТАМ</h3>
-
-        {topContracts.length > 0 ? (
-
-          topContracts.map(([name,count],index)=>(
+          {topContracts.map(([name,count],index)=>(
 
             <div className="leader-user" key={index}>
+
               <span>{name}</span>
-              <span>{count}</span>
+
+              <span>
+                {count}
+              </span>
+
             </div>
 
-          ))
+          ))}
 
-        ) : (
-
-          <div className="leader-user">
-            Нет данных
-          </div>
-
-        )}
+        </div>
 
       </div>
 
-    </div>
+    </section>
 
-  </section>
-
-)
+  )
 
 }
