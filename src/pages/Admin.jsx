@@ -28,6 +28,7 @@ export default function Admin(){
   useEffect(()=>{
 
     loadContracts()
+    
     loadDiscordMembers()
 
   },[])
@@ -54,7 +55,28 @@ export default function Admin(){
     }
 
   }
+async function loadDiscordMembers(){
 
+  try{
+
+    const snapshot = await getDocs(
+      collection(db,'discord_members')
+    )
+
+    const data = snapshot.docs.map(doc=>({
+      id:doc.id,
+      ...doc.data()
+    }))
+
+    setDiscordMembers(data)
+
+  }catch(error){
+
+    console.error(error)
+
+  }
+
+}
   async function deleteContract(id){
 
     const confirmDelete = confirm(
