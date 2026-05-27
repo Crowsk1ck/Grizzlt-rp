@@ -17,7 +17,14 @@ export default function Dashboard(){
           </p>
 
           <div className="hero-buttons">
-            <button className="primary-btn">НАШ DISCORD</button>
+            <a
+  href="https://discord.gg/ТВОЙ_ИНВАЙТ"
+  target="_blank"
+  rel="noreferrer"
+  className="primary-btn"
+>
+  НАШ DISCORD
+</a>
             <button className="secondary-btn">ПРАВИЛА СЕМЬИ</button>
           </div>
         </div>
