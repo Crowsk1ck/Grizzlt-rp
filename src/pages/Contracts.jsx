@@ -173,7 +173,7 @@ export default function Contracts(){
 
       <div className="contracts-layout">
 
-        <div className="contract-form-panel">
+        <div className="contract-submit-btn">
           <h2>ДОБАВИТЬ КОНТРАКТ</h2>
 
           <input
