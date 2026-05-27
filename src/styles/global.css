@@ -150,29 +150,54 @@ body::before{
 }
 
 .hero-buttons{
+
   display:flex;
-  gap:12px;
-  margin-top:24px;
+  align-items:center;
+  flex-wrap:wrap;
+
+  gap:16px;
+
+  margin-top:32px;
 }
 
-.primary-btn,
 .secondary-btn{
+
+  height:58px;
+
+  padding:0 28px;
+
   border:none;
-  cursor:pointer;
-  padding:14px 22px;
-  border-radius:12px;
-  font-weight:700;
-  color:#fff;
+
+  border-radius:18px;
+
+  background:
+  rgba(15,15,25,.92);
+
+  border:
+  1px solid rgba(255,255,255,.06);
+
+  color:white;
+
+  font-weight:800;
+
+  transition:.25s ease;
+}
+
+.secondary-btn:hover{
+
+  transform:
+  translateY(-2px);
+
+  border-color:
+  rgba(255,0,92,.35);
+
+  box-shadow:
+  0 0 24px rgba(255,0,92,.15);
 }
 
 .primary-btn{
   background:#ff005c;
   box-shadow:0 0 24px rgba(255,0,92,.35);
-}
-
-.secondary-btn{
-  background:#111117;
-  border:1px solid rgba(255,255,255,.06);
 }
 
 .stats-row{
@@ -924,7 +949,7 @@ th,td{
 
   padding:0 28px;
 
-  min-width:220px;
+  width:240px;
   height:58px;
 
   flex-shrink:0;
