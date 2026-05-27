@@ -98,58 +98,74 @@ export default function Liders(){
   .sort((a,b)=>b[1]-a[1])
   .slice(0,10)
 
-  return(
+ return (
 
-    <section className="leaders-page">
+  <section className="leaders-page">
 
-      <div className="leaders-header">
+    <div className="leaders-header">
+      <h1>ЛИДЕРЫ</h1>
+      <p>Лучшие участники семьи</p>
+    </div>
 
-        <h1>ЛИДЕРЫ</h1>
+    <div className="leaders-grid">
 
-        <p>
-          Лучшие участники семьи Grizzly
-        </p>
+      <div className="leader-card">
 
-      </div>
+        <h3>ТОП ПО ДЕНЬГАМ</h3>
 
-      <div className="leaders-grid">
+        {topMoney.length > 0 ? (
 
-        <div className="leader-card">
-
-          <h3>ТОП ПО ДЕНЬГАМ</h3>
-
-          {topMoney.map(([name,money],index)=>(
+          topMoney.map(([name,money],index)=>(
 
             <div className="leader-user" key={index}>
               <span>{name}</span>
+
               <span>
                 ${Math.floor(money).toLocaleString()}
               </span>
             </div>
 
-          ))}
+          ))
 
-        </div>
+        ) : (
 
-        <div className="leader-card">
+          <div className="leader-user">
+            Нет данных
+          </div>
 
-          <h3>ТОП ПО КОНТРАКТАМ</h3>
+        )}
 
-          {topContracts.map(([name,count],index)=>(
+      </div>
+
+      <div className="leader-card">
+
+        <h3>ТОП ПО КОНТРАКТАМ</h3>
+
+        {topContracts.length > 0 ? (
+
+          topContracts.map(([name,count],index)=>(
 
             <div className="leader-user" key={index}>
               <span>{name}</span>
               <span>{count}</span>
             </div>
 
-          ))}
+          ))
 
-        </div>
+        ) : (
+
+          <div className="leader-user">
+            Нет данных
+          </div>
+
+        )}
 
       </div>
 
-    </section>
+    </div>
 
-  )
+  </section>
+
+)
 
 }
