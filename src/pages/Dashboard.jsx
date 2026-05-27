@@ -35,7 +35,7 @@ async function loadDiscordMembers(){
   try{
 
   const response = await fetch(
-  'https://grizzly-family-git-main-crowsk1cks-projects.vercel.app/discord-members'
+  'https://grizzlt-rp.vercel.app/discord-members'
 )
 
     const data = await response.json()
