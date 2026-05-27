@@ -1378,3 +1378,68 @@ th,td{
   border-radius:12px;
   cursor:pointer;
 }
+.edit-btn{
+  background:#ff008c;
+  border:none;
+  color:white;
+  padding:10px;
+  border-radius:12px;
+  cursor:pointer;
+}
+
+.modal-overlay{
+  position:fixed;
+  inset:0;
+  background:#00000090;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:999;
+}
+
+.edit-modal{
+  width:500px;
+  background:#0f0f18;
+  border:1px solid #ff008c33;
+  border-radius:24px;
+  padding:30px;
+}
+
+.edit-modal h2{
+  color:#ff008c;
+  margin-bottom:20px;
+}
+
+.edit-modal input,
+.edit-modal textarea{
+  width:100%;
+  margin-bottom:16px;
+  padding:14px;
+  border:none;
+  border-radius:14px;
+  background:#161622;
+  color:white;
+}
+
+.modal-buttons{
+  display:flex;
+  gap:12px;
+}
+
+.save-btn{
+  flex:1;
+  background:#ff008c;
+  border:none;
+  color:white;
+  padding:14px;
+  border-radius:14px;
+}
+
+.close-btn{
+  flex:1;
+  background:#222;
+  border:none;
+  color:white;
+  padding:14px;
+  border-radius:14px;
+}
