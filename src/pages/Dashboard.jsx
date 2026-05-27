@@ -188,22 +188,23 @@ async function loadDiscordMembers(){
 
     contracts.reduce((acc,contract)=>{
 
-      const user =
-        contract.name ||
-        contract.username ||
-        contract.user ||
-        'Unknown'
+const user =
+  contract.owner ||
+  contract.username ||
+  contract.user ||
+  'Unknown'
 
-      const total = Number(
-        String(
-          contract.price ||
-          contract.amount ||
-          0
-        ).replace(/[^0-9]/g,'')
-      )
-
-      const membersCount =
-        Number(contract.members || 1)
+   const total = parseInt(
+  String(
+    contract.price ||
+    contract.amount ||
+    0
+  ).replace(/[^\d]/g,'')
+) || 0
+const membersCount =
+  contract.members
+    ? contract.members.split(',').length
+    : 1
 
       const share =
         (total / membersCount) * 0.8
