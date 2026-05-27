@@ -51,7 +51,7 @@ client.once('ready', async () => {
 
     })
 
-    await db.collection('stats').doc('discord').set({
+    await db.collection('stats').doc('discord_members').set({
       members: members.size,
       online
     })
