@@ -239,201 +239,200 @@ export default function Admin(){
 
       {tab === 'contracts' && (
 
-      <div className="admin-table">
+  <div className="admin-table">
 
-        <div className="admin-table-head">
+    <div className="admin-table-head">
 
-          <span>Контракт</span>
-          <span>Сумма</span>
-          <span>Создатель</span>
-          <span>Участники</span>
-          <span>Удалить</span>
-          <span>Редактировать</span>
+      <span>Контракт</span>
+      <span>Сумма</span>
+      <span>Создатель</span>
+      <span>Участники</span>
+      <span>Удалить</span>
+      <span>Редактировать</span>
+
+    </div>
+
+    {filteredContracts.map(contract=>(
+
+      <div
+        className="admin-row"
+        key={contract.id}
+      >
+
+        <span>
+          {contract.name}
+        </span>
+
+        <span>
+          {contract.price}
+        </span>
+
+        <span>
+          {contract.owner}
+        </span>
+
+        <span>
+          {contract.members}
+        </span>
+
+        <button
+          className="delete-btn"
+          onClick={()=>
+            deleteContract(contract.id)
+          }
+        >
+          DELETE
+        </button>
+
+        <button
+          className="edit-btn"
+          onClick={()=>{
+
+            setEditing(contract.id)
+
+            setForm({
+              name:contract.name || '',
+              price:contract.price || '',
+              owner:contract.owner || '',
+              members:contract.members || ''
+            })
+
+          }}
+        >
+          EDIT
+        </button>
+
+      </div>
+
+    ))}
+
+  </div>
+
+)}
+
+{tab === 'members' && (
+
+  <div className="members-admin-grid">
+
+    {
+
+      [...new Set(
+
+        contracts.flatMap(contract=>
+
+          String(
+            contract.members || ''
+          )
+          .split(',')
+
+          .map(v=>v.trim())
+
+        )
+
+      )]
+
+      .map((user,index)=>(
+
+        <div
+          className="member-admin-card"
+          key={index}
+        >
+
+          <h2>
+            {user}
+          </h2>
+
+          <p>
+
+            CONTRACTS:
+
+            {
+
+              contracts.filter(contract=>
+
+                String(
+                  contract.members || ''
+                )
+                .includes(user)
+
+              ).length
+
+            }
+
+          </p>
+
+          <p>
+
+            INCOME:
+
+            $
+
+            {
+
+              Math.floor(
+
+                contracts.reduce((acc,contract)=>{
+
+                  const users = String(
+                    contract.members || ''
+                  )
+                  .split(',')
+
+                  .map(v=>v.trim())
+
+                  if(users.includes(user)){
+
+                    const total = Number(
+
+                      String(
+                        contract.price || 0
+                      ).replace(/[^\d]/g,'')
+
+                    )
+
+                    return acc +
+
+                      (
+                        total * 0.8
+                      ) / users.length
+
+                  }
+
+                  return acc
+
+                },0)
+
+              ).toLocaleString()
+
+            }
+
+          </p>
 
         </div>
 
-        {filteredContracts.map(contract=>(
+      ))
 
-          <div
-            className="admin-row"
-            key={contract.id}
-          >
+    }
 
-            <span>
-              {contract.name}
-            </span>
+  </div>
 
-            <span>
-              {contract.price}
-            </span>
+)}
 
-            <span>
-              {contract.owner}
-            </span>
+{tab === 'analytics' && (
 
-            <span>
-              {contract.members}
-            </span>
+  <div className="analytics-box">
 
-            <button
-              className="delete-btn"
-              onClick={()=>
-                deleteContract(contract.id)
-              }
-            >
-              DELETE
-            </button>
+    <h2>
+      ANALYTICS SYSTEM
+    </h2>
 
-            <button
-              className="edit-btn"
-              onClick={()=>{
+    <p>
+      Soon...
+    </p>
 
-                setEditing(contract.id)
+  </div>
 
-                setForm({
-                  name:contract.name || '',
-                  price:contract.price || '',
-                  owner:contract.owner || '',
-                  members:contract.members || ''
-                })
-
-              }}
-            >
-              EDIT
-            </button>
-
-          </div>
-
-        ))}
-
-      </div>
-
-      )}
-
-      {tab === 'members' && (
-
-      <div className="members-admin-grid">
-
-        {
-
-          [...new Set(
-
-            contracts.flatMap(contract=>
-
-              String(
-                contract.members || ''
-              )
-              .split(',')
-
-              .map(v=>v.trim())
-
-            )
-
-          )]
-
-          .map((user,index)=>(
-
-            <div
-              className="member-admin-card"
-              key={index}
-            >
-
-              <h2>
-                {user}
-              </h2>
-
-              <p>
-
-                CONTRACTS:
-
-                {
-
-                  contracts.filter(contract=>
-
-                    String(
-                      contract.members || ''
-                    )
-                    .includes(user)
-
-                  ).length
-
-                }
-
-              </p>
-
-              <p>
-
-                INCOME:
-
-                $
-
-                {
-
-                  Math.floor(
-
-                    contracts.reduce((acc,contract)=>{
-
-                      const users = String(
-                        contract.members || ''
-                      )
-                      .split(',')
-
-                      .map(v=>v.trim())
-
-                      if(users.includes(user)){
-
-                        const total = Number(
-
-                          String(
-                            contract.price || 0
-                          ).replace(/[^\d]/g,'')
-
-                        )
-
-                        return acc +
-
-                          (
-                            total * 0.8
-                          ) / users.length
-
-                      }
-
-                      return acc
-
-                    },0)
-
-                  ).toLocaleString()
-
-                }
-
-              </p>
-
-            </div>
-
-          ))
-
-        }
-
-      </div>
-
-      )}
-
-      {tab === 'analytics' && (
-
-      <div className="analytics-box">
-
-        <h2>
-          ANALYTICS SYSTEM
-        </h2>
-
-        <p>
-          Soon...
-        </p>
-
-      </div>
-
-      )}
-
+)}
       {editing && (
 
         <div className="modal-overlay">
