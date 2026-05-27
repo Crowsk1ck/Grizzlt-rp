@@ -2,11 +2,12 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 
 import { useEffect, useState } from 'react'
 
+import { db } from './services/firebase/firebase'
+
 import {
-  db,
   doc,
   getDoc
-} from './services/firebase/firebase'
+} from 'firebase/firestore'
 
 import Sidebar from './components/layout/Sidebar'
 import Topbar from './components/layout/Topbar'
