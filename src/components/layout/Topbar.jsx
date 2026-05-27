@@ -1,15 +1,11 @@
 import { useEffect, useState } from 'react'
 
 const LOGIN_URL =
-'https://discord.com/oauth2/authorize?client_id=1508833507894624399&response_type=token&redirect_uri=https%3A%2F%2Fwww.grizzly-family.online&scope=identify'
+'https://discord.com/oauth2/authorize?client_id=1508833507894624399&response_type=token&redirect_uri=https%3A%2F%2Fwww.grizzly-family.online%2F&scope=identify'
 
 export default function Topbar(){
 
-  const [connected,setConnected] =
-    useState(false)
-
-  const [user,setUser] =
-    useState(null)
+  const [user,setUser] = useState(null)
 
   useEffect(()=>{
 
@@ -31,29 +27,29 @@ export default function Topbar(){
 
       window.location.hash=''
 
-      setConnected(true)
+      window.location.href='/'
     }
 
-    const savedToken =
+    const token =
       localStorage.getItem(
         'discord_token'
       )
 
-    if(savedToken){
-
-      setConnected(true)
+    if(token){
 
       fetch(
         'https://discord.com/api/users/@me',
         {
           headers:{
-            Authorization:`Bearer ${savedToken}`
+            Authorization:`Bearer ${token}`
           }
         }
       )
       .then(res=>res.json())
       .then(data=>{
+
         setUser(data)
+
       })
 
     }
@@ -84,7 +80,7 @@ export default function Topbar(){
       </div>
 
       {
-        connected && user ? (
+        user ? (
 
           <div className="topbar-profile">
 
@@ -106,10 +102,10 @@ export default function Topbar(){
             </div>
 
             <button
-              className="notify-btn"
+              className="logout-btn"
               onClick={logout}
             >
-              🔔
+              ВЫЙТИ
             </button>
 
           </div>
