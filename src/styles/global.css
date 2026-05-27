@@ -196,17 +196,18 @@ body::before{
 }
 
 .stats-row{
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:14px;
-  margin-bottom:18px;
+  margin-top:22px;
 }
 
 .stat-box{
-  background:#09090d;
-  border-radius:16px;
-  border:1px solid rgba(255,0,92,.12);
-  padding:20px;
+
+  min-height:130px;
+
+  display:flex;
+
+  flex-direction:column;
+
+  justify-content:center;
 }
 
 .stat-box h3{
@@ -289,7 +290,7 @@ th,td{
   .hero-banner h1{
     font-size:48px;
   }
-
+}
 .topbar{
 
   background:
