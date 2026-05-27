@@ -1,5 +1,4 @@
 export default function Dashboard(){
-  const [showRules,setShowRules] = useState(false)
   return(
     <>
       <section className="hero-banner">
@@ -40,13 +39,16 @@ export default function Dashboard(){
   </span>
 
 </a>
-<button className="secondary-btn">
-  ПРАВИЛА СЕМЬИ
+<button
+  className="secondary-btn"
+  onClick={() => setShowRules(true)}
+>
+  ПРАВИЛА
 </button>
           </div>
         </div>
       </section>
-      
+
       <section className="stats-row">
         <div className="stat-box">
           <h3>48</h3>
