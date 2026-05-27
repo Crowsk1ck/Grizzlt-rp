@@ -19,6 +19,7 @@ import Wars from './pages/Wars'
 import Members from './pages/Members'
 import Admin from './pages/Admin'
 import Liders from './pages/Liders'
+import Economy from './pages/Economy'
 
 export default function App(){
 
