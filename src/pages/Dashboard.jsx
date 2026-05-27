@@ -9,7 +9,8 @@ import {
 export default function Dashboard(){
 
   const [contracts,setContracts] = useState([])
-
+  const [members,setMembers] = useState(0)
+  
   async function loadContracts(){
 
     try{
@@ -29,9 +30,27 @@ export default function Dashboard(){
       console.error(error)
     }
   }
+async function loadDiscordMembers(){
 
+  try{
+
+    const response = await fetch(
+      'https://ТВОЙ-БЕКЕНД/discord-members'
+    )
+
+    const data = await response.json()
+
+    setMembers(data.members || 0)
+
+  }catch(error){
+
+    console.log(error)
+  }
+}
+  
   useEffect(()=>{
     loadContracts()
+    loadDiscordMembers()
   },[])
   const totalIncome = contracts.reduce((acc,item)=>{
 
