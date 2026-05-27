@@ -314,105 +314,60 @@ export default function Admin(){
 
   <div className="members-admin-grid">
 
-    {
+    {discordMembers.map((member,index)=>(
 
-      [...new Set(
+      <div
+        className="member-admin-card"
+        key={index}
+      >
 
-        contracts.flatMap(contract=>
+        <img
+          src={member.avatar}
+          alt=""
+          className="member-avatar"
+        />
 
-          String(
-            contract.members || ''
-          )
-          .split(',')
+        <h2>
+          {member.username}
+        </h2>
 
-          .map(v=>v.trim())
+        <p>
 
-        )
+          {
 
-      )]
+            member.online
+              ? '🟢 ONLINE'
+              : '🔴 OFFLINE'
 
-      .map((user,index)=>(
+          }
 
-        <div
-          className="member-admin-card"
-          key={index}
-        >
+        </p>
 
-          <h2>
-            {user}
-          </h2>
+        <div className="member-actions">
 
-          <p>
+          <button
+            className="profile-btn"
+          >
+            PROFILE
+          </button>
 
-            CONTRACTS:
+          <button
+            className="admin-btn"
+          >
+            GIVE ADMIN
+          </button>
 
-            {
-
-              contracts.filter(contract=>
-
-                String(
-                  contract.members || ''
-                )
-                .includes(user)
-
-              ).length
-
-            }
-
-          </p>
-
-          <p>
-
-            INCOME:
-
-            $
-
-            {
-
-              Math.floor(
-
-                contracts.reduce((acc,contract)=>{
-
-                  const users = String(
-                    contract.members || ''
-                  )
-                  .split(',')
-
-                  .map(v=>v.trim())
-
-                  if(users.includes(user)){
-
-                    const total = Number(
-
-                      String(
-                        contract.price || 0
-                      ).replace(/[^\d]/g,'')
-
-                    )
-
-                    return acc +
-
-                      (
-                        total * 0.8
-                      ) / users.length
-
-                  }
-
-                  return acc
-
-                },0)
-
-              ).toLocaleString()
-
-            }
-
-          </p>
+          <button
+            className="ban-btn"
+          >
+            BAN
+          </button>
 
         </div>
 
-      ))
+      </div>
 
-    }
+    ))}
 
   </div>
 
