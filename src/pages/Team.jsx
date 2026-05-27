@@ -21,7 +21,7 @@ const ROLE_VETERAN = '1390074876207042590'
   })
   useEffect(()=>{
     const unsub = onSnapshot(
-      collection(db,'discord_members'),
+      collection(db,'discord'),
       (snapshot)=>{
         const users = []
         let onlineCount = 0
@@ -76,11 +76,6 @@ const ROLE_VETERAN = '1390074876207042590'
           <div className="team-stat">
             <h3>{stats.online}</h3>
             <span>ONLINE</span>
-          </div>
-
-          <div className="team-stat">
-            <h3>32</h3>
-            <span>В СЕТИ СЕГОДНЯ</span>
           </div>
         </div>
       </div>
