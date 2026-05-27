@@ -1197,86 +1197,35 @@ th,td{
 .contract-submit-btn:hover::before{
   left:130%;
 }
-.rules-modal-overlay{
+.rules-panel{
 
-  position:fixed;
+  margin-bottom:22px;
 
-  inset:0;
+  padding:26px;
 
-  background:
-    rgba(0,0,0,.72);
-
-  backdrop-filter:
-    blur(10px);
-
-  display:flex;
-
-  align-items:center;
-
-  justify-content:center;
-
-  z-index:999;
-}
-
-.rules-modal{
-
-  width:700px;
-
-  max-width:90%;
-
-  padding:32px;
-
-  border-radius:28px;
+  border-radius:24px;
 
   background:
     linear-gradient(
       135deg,
-      rgba(12,12,18,.98),
-      rgba(22,10,18,.96)
+      rgba(12,12,18,.96),
+      rgba(22,10,18,.92)
     );
 
   border:
-    1px solid rgba(255,0,92,.18);
+    1px solid rgba(255,0,92,.15);
 
   box-shadow:
-    0 0 60px rgba(255,0,92,.18);
+    0 0 40px rgba(255,0,92,.08);
 }
 
-.rules-top{
+.rules-panel h2{
 
-  display:flex;
-
-  align-items:center;
-
-  justify-content:space-between;
-
-  margin-bottom:28px;
-}
-
-.rules-top h2{
+  margin-bottom:20px;
 
   color:white;
 
-  font-size:34px;
-}
-
-.close-rules{
-
-  width:42px;
-
-  height:42px;
-
-  border:none;
-
-  border-radius:14px;
-
-  cursor:pointer;
-
-  background:#171722;
-
-  color:white;
-
-  font-size:18px;
+  font-size:28px;
 }
 
 .rules-list{
@@ -1290,7 +1239,7 @@ th,td{
 
 .rule-item{
 
-  padding:18px 20px;
+  padding:18px;
 
   border-radius:16px;
 
@@ -1301,8 +1250,6 @@ th,td{
     1px solid rgba(255,0,92,.08);
 
   color:white;
-
-  font-size:15px;
 
   transition:.25s ease;
 }
@@ -1316,5 +1263,5 @@ th,td{
     rgba(255,0,92,.32);
 
   background:
-    rgba(255,0,92,.06);
+    rgba(255,0,92,.05);
 }
