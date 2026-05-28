@@ -1,4 +1,5 @@
 import {
+
   LayoutDashboard,
   Users,
   ScrollText,
@@ -7,7 +8,15 @@ import {
   Trophy,
   Calendar,
   Image
+
 } from 'lucide-react'
+
+import {
+
+  useEffect,
+  useState
+
+} from 'react'
 
 import '../../styles/sidebar.css'
 
@@ -17,6 +26,36 @@ export default function Sidebar({
   setActive
 
 }){
+
+  const [user,setUser] = useState(null)
+
+  useEffect(()=>{
+
+    const token =
+      localStorage.getItem(
+        'discord_token'
+      )
+
+    if(token){
+
+      fetch(
+        'https://discord.com/api/users/@me',
+        {
+          headers:{
+            Authorization:`Bearer ${token}`
+          }
+        }
+      )
+      .then(res=>res.json())
+      .then(data=>{
+
+        setUser(data)
+
+      })
+
+    }
+
+  },[])
 
   const navItems = [
 
@@ -90,26 +129,32 @@ export default function Sidebar({
 
         </div>
 
-        <div className="sidebar-profile">
+        {
+          user && (
 
-          <img
-            src="https://i.imgur.com/6VBx3io.png"
-            alt=""
-          />
+            <div className="sidebar-profile">
 
-          <div>
+              <img
+                src={`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`}
+                alt=""
+              />
 
-            <h3>
-              cr0wsk1ck
-            </h3>
+              <div>
 
-            <span>
-              LEADER
-            </span>
+                <h3>
+                  {user.username}
+                </h3>
 
-          </div>
+                <span>
+                  LEADER
+                </span>
 
-        </div>
+              </div>
+
+            </div>
+
+          )
+        }
 
       </div>
 
