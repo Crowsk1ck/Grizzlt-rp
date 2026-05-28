@@ -127,18 +127,15 @@ export default function Team(){
         .split(',')
         .map(v=>v.trim())
 
-        if(
-          users.includes(member.name)
-        ){
+        if(users.includes(member.name)){
 
           member.contracts += 1
 
           totalContracts++
 
           const total = Number(
-            String(
-              contract.price || 0
-            ).replace(/[^\d]/g,'')
+            String(contract.price || 0)
+            .replace(/[^\d]/g,'')
           )
 
           const membersCount =
@@ -170,18 +167,14 @@ export default function Team(){
 
   const filteredMembers = members
     .filter(member=>
-
       filter === 'ALL'
         ? true
         : member.role === filter
-
     )
     .filter(member=>
-
       member.name
         ?.toLowerCase()
         .includes(search.toLowerCase())
-
     )
 
   const topMember = [...members]
@@ -262,9 +255,7 @@ export default function Team(){
           </div>
 
           <strong>
-            ${Math.floor(
-              topMember.income
-            ).toLocaleString()}
+            ${Math.floor(topMember.income).toLocaleString()}
           </strong>
 
         </div>
@@ -281,9 +272,7 @@ export default function Team(){
                 ? 'active'
                 : ''
             }
-            onClick={()=>
-              setFilter('ALL')
-            }
+            onClick={()=> setFilter('ALL')}
           >
             ВСЕ
           </button>
@@ -294,9 +283,7 @@ export default function Team(){
                 ? 'active'
                 : ''
             }
-            onClick={()=>
-              setFilter('ЛИДЕР')
-            }
+            onClick={()=> setFilter('ЛИДЕР')}
           >
             ЛИДЕРЫ
           </button>
@@ -307,9 +294,7 @@ export default function Team(){
                 ? 'active'
                 : ''
             }
-            onClick={()=>
-              setFilter('ЗАМЕСТИТЕЛЬ')
-            }
+            onClick={()=> setFilter('ЗАМЕСТИТЕЛЬ')}
           >
             ЗАМЫ
           </button>
@@ -320,9 +305,7 @@ export default function Team(){
                 ? 'active'
                 : ''
             }
-            onClick={()=>
-              setFilter('ВЕТЕРАН')
-            }
+            onClick={()=> setFilter('ВЕТЕРАН')}
           >
             ВЕТЕРАНЫ
           </button>
@@ -348,12 +331,17 @@ export default function Team(){
         {filteredMembers.map((member,index)=>(
 
           <div
-            className="member-panel"
+            className={`member-panel ${
+              member.role === 'ЛИДЕР'
+                ? 'leader'
+                : member.role === 'ВЕТЕРАН'
+                ? 'veteran'
+                : 'member'
+            }`}
             key={index}
           >
 
             <div className="member-overlay"></div>
-
             <div className="member-glow"></div>
 
             <div className="member-content">
@@ -369,13 +357,13 @@ export default function Team(){
                   className="member-avatar"
                 />
 
-<span
-  className={
-    member.online
-      ? 'status-dot status-online'
-      : 'status-dot status-offline'
-  }
-/>
+                <span
+                  className={
+                    member.online
+                      ? 'status-dot status-online'
+                      : 'status-dot status-offline'
+                  }
+                />
 
               </div>
 
@@ -408,9 +396,7 @@ export default function Team(){
                 <div>
 
                   <strong>
-                    ${Math.floor(
-                      member.income
-                    ).toLocaleString()}
+                    ${Math.floor(member.income).toLocaleString()}
                   </strong>
 
                   <span>
@@ -422,20 +408,20 @@ export default function Team(){
               </div>
 
               <div
-  className={
-    member.status === 'В СЕТИ'
-      ? 'team-online'
-      : 'team-offline'
-  }
->
-  {member.status}
-</div>
+                className={
+                  member.status === 'В СЕТИ'
+                    ? 'team-online'
+                    : 'team-offline'
+                }
+              >
+                {member.status}
+              </div>
 
-</div>
+            </div>
 
-</div>
+          </div>
 
-))}
+        ))}
 
       </div>
 
