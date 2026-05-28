@@ -26,14 +26,7 @@ body::before{
   min-height:100vh;
 }
 
-.member-avatar{
-  width:120px;
-  height:120px;
-  border-radius:50%;
-  object-fit:cover;
-  margin-bottom:20px;
-  border:2px solid #ff0066;
-}
+
 .sidebar{
   width:230px;
   background:#07070b;
@@ -1596,12 +1589,7 @@ th,td{
   font-size:42px;
 }
 
-.members-grid{
-  display:grid;
-  grid-template-columns:
-  repeat(auto-fill,minmax(320px,1fr));
-  gap:24px;
-}
+
 
 .member-card{
   background:#0f0f18;
@@ -1623,12 +1611,14 @@ th,td{
   margin-bottom:10px;
 }
 
-.online{
-  color:#00ff88;
+.team-online{
+  color:#00ff9d;
+  font-weight:800;
 }
 
-.offline{
-  color:#ff4444;
+.team-offline{
+  color:#ff4d4d;
+  font-weight:800;
 }
 
 .member-stats{
