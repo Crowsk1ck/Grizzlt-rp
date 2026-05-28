@@ -11,6 +11,9 @@ import './styles/global.css'
 import './styles/animations.css'
 import './styles/responsive.css'
 import './styles/skeleton.css'
+import './styles/global.css'
+import './styles/sidebar.css'
+import './styles/dashboard.css'
 
 ReactDOM.createRoot(
   document.getElementById('root')
