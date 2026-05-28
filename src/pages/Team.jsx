@@ -369,11 +369,11 @@ export default function Team(){
                   className="member-avatar"
                 />
 
-                <span className={
-                  member.online
-                    ? 'status-dot online'
-                    : 'status-dot offline'
-                } />
+className={
+  member.online
+    ? 'status-dot status-online'
+    : 'status-dot status-offline'
+} />
 
               </div>
 
@@ -419,11 +419,11 @@ export default function Team(){
 
               </div>
 
-              <div className={
-                member.status === 'В СЕТИ'
-                  ? 'online'
-                  : 'offline'
-              }>
+              className={
+  member.status === 'В СЕТИ'
+    ? 'team-online'
+    : 'team-offline'
+}>
                 {member.status}
               </div>
 
