@@ -1,5 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
+
 import '../styles/contracts.css'
+
+import toast from 'react-hot-toast'
+
 import {
   db,
   collection,
@@ -30,7 +34,9 @@ export default function Contracts(){
   const [loading,setLoading] = useState(false)
 
   async function loadContracts(){
+
     try{
+
       const q = query(
         collection(db,'contracts'),
         orderBy('createdAt','desc')
@@ -44,13 +50,23 @@ export default function Contracts(){
       }))
 
       setContracts(data)
+
     }catch(error){
+
       console.error(error)
+
+      toast.error(
+        'Ошибка загрузки'
+      )
+
     }
+
   }
 
   useEffect(()=>{
+
     loadContracts()
+
   },[])
 
   async function handleCreateContract(){
@@ -60,18 +76,30 @@ export default function Contracts(){
       !form.price ||
       !form.owner
     ){
-      return alert('Заполни все поля')
+
+      toast.error(
+        'Заполни все поля'
+      )
+
+      return
     }
 
     try{
+
       setLoading(true)
 
       const contractData = {
+
         name:form.name,
+
         price:form.price,
+
         owner:form.owner,
+
         members:form.members,
+
         date:new Date().toLocaleDateString(),
+
         createdAt:Date.now()
       }
 
@@ -83,18 +111,20 @@ export default function Contracts(){
       await sendWebhook(
         contractsWebhook,
         {
-embeds:[
-  {
-    color:0xff005c,
 
-    author:{
-      name:'GRIZZLY FAMILY',
-      icon_url:''
-    },
+          embeds:[
+            {
 
-    title:'📦 НОВЫЙ КОНТРАКТ',
+              color:0xff005c,
 
-    description:
+              author:{
+                name:'GRIZZLY FAMILY',
+                icon_url:''
+              },
+
+              title:'📦 НОВЫЙ КОНТРАКТ',
+
+              description:
 `>>> 💼 **Контракт:** \`${form.name}\`
 
 💰 **Сумма:** \`${Number(form.price).toLocaleString()}$\`
@@ -108,38 +138,54 @@ ${form.members
   .join('\n')}
 `,
 
-    thumbnail:{
-      url:'https://i.imgur.com/7F9Z6vC.png'
-    },
+              thumbnail:{
+                url:'https://i.imgur.com/7F9Z6vC.png'
+              },
 
-    image:{
-      url:''
-    },
+              image:{
+                url:''
+              },
 
-    footer:{
-      text:'Grizzly Family System'
-    },
+              footer:{
+                text:'Grizzly Family System'
+              },
 
-    timestamp:new Date()
-  }
-]
+              timestamp:new Date()
+            }
+          ]
+
         }
       )
 
       setForm({
+
         name:'',
         price:'',
         owner:'',
         members:''
+
       })
 
       await loadContracts()
 
+      toast.success(
+        'Контракт добавлен'
+      )
+
     }catch(error){
+
       console.error(error)
+
+      toast.error(
+        'Ошибка Firebase'
+      )
+
     }finally{
+
       setLoading(false)
+
     }
+
   }
 
   async function handleDelete(id){
@@ -152,45 +198,75 @@ ${form.members
 
       await loadContracts()
 
+      toast.success(
+        'Контракт удалён'
+      )
+
     }catch(error){
+
       console.error(error)
+
+      toast.error(
+        'Ошибка удаления'
+      )
+
     }
+
   }
 
   const participantsCount = useMemo(()=>{
+
     if(!form.members) return 0
 
     return form.members
       .split(',')
       .filter(Boolean)
       .length
+
   },[form.members])
 
   const totalIncome = useMemo(()=>{
+
     return contracts.reduce((acc,item)=>{
+
       const value = Number(
         String(item.price)
           .replace(/[^0-9]/g,'')
       )
 
       return acc + value
+
     },0)
+
   },[contracts])
 
   return(
+
     <section className="contracts-page">
 
       <div className="contracts-header">
+
         <div>
-          <h1>КОНТРАКТЫ</h1>
-          <p>Управление контрактами семьи.</p>
+
+          <h1>
+            КОНТРАКТЫ
+          </h1>
+
+          <p>
+            Управление контрактами семьи.
+          </p>
+
         </div>
+
       </div>
 
       <div className="contracts-layout">
 
         <div className="contract-form-panel">
-          <h2>ДОБАВИТЬ КОНТРАКТ</h2>
+
+          <h2>
+            ДОБАВИТЬ КОНТРАКТ
+          </h2>
 
           <input
             placeholder="Название контракта"
@@ -234,10 +310,14 @@ ${form.members
                 members:e.target.value
               })
             }
-          ></textarea>
+          />
 
           <span className="participants-count">
-            Количество участников: {participantsCount}
+
+            Количество участников:
+            {' '}
+            {participantsCount}
+
           </span>
 
           <button
@@ -245,44 +325,85 @@ ${form.members
             onClick={handleCreateContract}
             disabled={loading}
           >
+
             {
               loading
-              ? 'СОЗДАНИЕ...'
-              : 'ДОБАВИТЬ КОНТРАКТ'
+                ? 'СОЗДАНИЕ...'
+                : 'ДОБАВИТЬ КОНТРАКТ'
             }
+
           </button>
+
         </div>
 
         <div className="contracts-table-panel">
 
           <div className="table-top">
-            <h2>СПИСОК КОНТРАКТОВ</h2>
+
+            <h2>
+              СПИСОК КОНТРАКТОВ
+            </h2>
+
           </div>
 
           <table>
+
             <thead>
+
               <tr>
+
                 <th>#</th>
+
                 <th>НАЗВАНИЕ</th>
+
                 <th>СУММА</th>
+
                 <th>КТО НАЧАЛ</th>
+
                 <th>УЧАСТНИКИ</th>
+
                 <th>ДАТА</th>
+
                 <th>ДЕЙСТВИЯ</th>
+
               </tr>
+
             </thead>
 
             <tbody>
+
               {
+
                 contracts.map((contract,index)=>(
+
                   <tr key={contract.id}>
-                    <td>{index + 1}</td>
-                    <td>{contract.name}</td>
-                    <td>{contract.price}</td>
-                    <td>{contract.owner}</td>
-                    <td>{contract.members}</td>
-                    <td>{contract.date}</td>
+
                     <td>
+                      {index + 1}
+                    </td>
+
+                    <td>
+                      {contract.name}
+                    </td>
+
+                    <td>
+                      {contract.price}
+                    </td>
+
+                    <td>
+                      {contract.owner}
+                    </td>
+
+                    <td>
+                      {contract.members}
+                    </td>
+
+                    <td>
+                      {contract.date}
+                    </td>
+
+                    <td>
+
                       <span
                         className="delete-btn"
                         onClick={()=>
@@ -291,11 +412,17 @@ ${form.members
                       >
                         🗑
                       </span>
+
                     </td>
+
                   </tr>
+
                 ))
+
               }
+
             </tbody>
+
           </table>
 
         </div>
@@ -305,19 +432,33 @@ ${form.members
       <div className="contracts-stats">
 
         <div className="contract-stat-card">
-          <span>КОНТРАКТОВ</span>
-          <h3>{contracts.length}</h3>
+
+          <span>
+            КОНТРАКТОВ
+          </span>
+
+          <h3>
+            {contracts.length}
+          </h3>
+
         </div>
 
         <div className="contract-stat-card green">
-          <span>ОБЩИЙ ДОХОД</span>
+
+          <span>
+            ОБЩИЙ ДОХОД
+          </span>
+
           <h3>
             ${totalIncome.toLocaleString()}
           </h3>
+
         </div>
 
       </div>
 
     </section>
+
   )
+
 }
