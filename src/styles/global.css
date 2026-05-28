@@ -539,8 +539,44 @@ th,td{
 }
 
 .member-panel{
+  position:relative;
+  overflow:hidden;
+
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-start;
+
+  min-height:420px;
+
   border-radius:28px;
+
   padding:26px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.04),
+      rgba(255,255,255,.02)
+    );
+
+  border:
+    1px solid rgba(255,0,92,.16);
+
+  backdrop-filter:blur(18px);
+
+  transition:.3s ease;
+}
+
+.member-panel:hover{
+
+  transform:
+    translateY(-6px);
+
+  border-color:
+    rgba(255,0,92,.35);
+
+  box-shadow:
+    0 0 35px rgba(255,0,92,.16);
 }
 
 .avatar-wrapper{
@@ -567,8 +603,11 @@ th,td{
 }
 
 .member-stats-box{
+  display:grid;
+  grid-template-columns:1fr 1fr;
   gap:12px;
-  margin-bottom:18px;
+  margin-top:24px;
+  margin-bottom:20px;
 }
 
 .member-stats-box div{
