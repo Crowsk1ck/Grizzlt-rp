@@ -1,0 +1,271 @@
+/* =========================================
+   LEADERS PAGE
+========================================= */
+
+.leaders-page{
+
+  min-height:100vh;
+
+  padding:40px;
+
+  color:white;
+}
+
+/* =========================================
+   HEADER
+========================================= */
+
+.leaders-header{
+
+  margin-bottom:34px;
+}
+
+.leaders-header h1{
+
+  font-size:64px;
+
+  font-weight:900;
+
+  margin-bottom:12px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #ff0066,
+      #ff2f92
+    );
+
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+.leaders-header p{
+
+  color:#8f8f98;
+
+  font-size:18px;
+}
+
+/* =========================================
+   GRID
+========================================= */
+
+.leaders-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(2,1fr);
+
+  gap:28px;
+}
+
+/* =========================================
+   CARD
+========================================= */
+
+.leader-card{
+
+  position:relative;
+
+  overflow:hidden;
+
+  border-radius:30px;
+
+  padding:30px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,0,92,.08),
+      rgba(0,0,0,.92)
+    );
+
+  border:
+    1px solid rgba(255,0,92,.12);
+
+  backdrop-filter:blur(18px);
+
+  transition:.3s;
+}
+
+.leader-card:hover{
+
+  transform:
+    translateY(-5px);
+
+  border-color:
+    rgba(255,0,92,.25);
+
+  box-shadow:
+    0 20px 60px rgba(255,0,92,.14);
+}
+
+.leader-card::before{
+
+  content:'';
+
+  position:absolute;
+
+  width:240px;
+  height:240px;
+
+  border-radius:50%;
+
+  background:
+    rgba(255,0,92,.08);
+
+  filter:blur(90px);
+
+  top:-120px;
+  right:-120px;
+}
+
+/* =========================================
+   TITLE
+========================================= */
+
+.leader-card h3{
+
+  position:relative;
+
+  z-index:2;
+
+  font-size:28px;
+
+  margin-bottom:28px;
+
+  color:#ff2f92;
+}
+
+/* =========================================
+   USER ROW
+========================================= */
+
+.leader-user{
+
+  position:relative;
+
+  z-index:2;
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  gap:20px;
+
+  padding:18px 22px;
+
+  margin-bottom:14px;
+
+  border-radius:18px;
+
+  background:
+    rgba(255,255,255,.04);
+
+  border:
+    1px solid rgba(255,255,255,.04);
+
+  transition:.25s;
+}
+
+.leader-user:hover{
+
+  transform:
+    scale(1.02);
+
+  background:
+    rgba(255,0,92,.08);
+
+  border-color:
+    rgba(255,0,92,.18);
+}
+
+/* =========================================
+   NAME
+========================================= */
+
+.leader-user span:first-child{
+
+  font-size:16px;
+
+  font-weight:700;
+
+  color:white;
+}
+
+/* =========================================
+   VALUE
+========================================= */
+
+.leader-user span:last-child{
+
+  color:#00ff9d;
+
+  font-weight:800;
+
+  font-size:17px;
+}
+
+/* =========================================
+   TOP 1 EFFECT
+========================================= */
+
+.leader-user:first-of-type{
+
+  border:
+    1px solid rgba(255,215,0,.35);
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(255,215,0,.12),
+      rgba(255,0,92,.06)
+    );
+
+  box-shadow:
+    0 0 30px rgba(255,215,0,.12);
+}
+
+.leader-user:first-of-type span:first-child::before{
+
+  content:'👑 ';
+
+  color:#ffd700;
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media(max-width:1000px){
+
+  .leaders-grid{
+
+    grid-template-columns:1fr;
+  }
+
+}
+
+@media(max-width:700px){
+
+  .leaders-page{
+    padding:20px;
+  }
+
+  .leaders-header h1{
+    font-size:42px;
+  }
+
+  .leader-card{
+    padding:22px;
+  }
+
+  .leader-user{
+
+    padding:16px;
+  }
+
+}
