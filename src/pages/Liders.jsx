@@ -4,7 +4,7 @@ import {
   collection,
   getDocs
 } from '../services/firebase/firebase'
-
+import '../styles/liders.css'
 export default function Liders(){
 
   const [contracts,setContracts] = useState([])
