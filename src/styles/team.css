@@ -499,7 +499,64 @@
 
   margin-top:14px;
 }
+.member-overlay{
+  position:absolute;
 
+  inset:0;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,0,92,.04),
+      transparent
+    );
+
+  z-index:1;
+}
+
+.member-glow{
+  position:absolute;
+
+  width:180px;
+  height:180px;
+
+  background:
+    rgba(255,0,92,.14);
+
+  border-radius:50%;
+
+  filter:blur(70px);
+
+  top:-80px;
+  right:-80px;
+
+  z-index:0;
+}
+
+.status-dot{
+  position:absolute;
+
+  right:-2px;
+  bottom:-2px;
+
+  width:18px;
+  height:18px;
+
+  border-radius:50%;
+
+  border:3px solid #111;
+}
+
+.status-online{
+  background:#00ff9d;
+
+  box-shadow:
+    0 0 16px #00ff9d;
+}
+
+.status-offline{
+  background:#777;
+}
 /* =========================
    MOBILE
 ========================= */
