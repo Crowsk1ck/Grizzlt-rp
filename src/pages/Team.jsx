@@ -369,11 +369,13 @@ export default function Team(){
                   className="member-avatar"
                 />
 
-className={
-  member.online
-    ? 'status-dot status-online'
-    : 'status-dot status-offline'
-} />
+<span
+  className={
+    member.online
+      ? 'status-dot status-online'
+      : 'status-dot status-offline'
+  }
+/>
 
               </div>
 
