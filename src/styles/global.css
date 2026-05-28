@@ -17,6 +17,8 @@ body{
   color:white;
 
   overflow-x:hidden;
+
+  scroll-behavior:smooth;
 }
 
 body{
@@ -36,13 +38,13 @@ body::before{
 
     radial-gradient(
       circle at top left,
-      rgba(255,0,92,.12),
+      rgba(255,0,92,.08),
       transparent 30%
     ),
 
     radial-gradient(
       circle at bottom right,
-      rgba(255,0,92,.08),
+      rgba(255,0,92,.05),
       transparent 30%
     );
 
@@ -52,7 +54,7 @@ body::before{
 }
 
 /* =========================================
-   APP LAYOUT
+   APP
 ========================================= */
 
 .app{
@@ -61,7 +63,7 @@ body::before{
 
   min-height:100vh;
 
-  background:#050505;
+  background:#050507;
 }
 
 .content{
@@ -74,14 +76,7 @@ body::before{
 
   padding:20px;
 
-  background:transparent;
-
   overflow-x:hidden;
-}
-
-main{
-
-  background:transparent;
 }
 
 /* =========================================
@@ -106,16 +101,15 @@ main{
 
   background:
     linear-gradient(
-      90deg,
-      rgba(10,10,15,.96),
-      rgba(20,10,18,.88)
+      180deg,
+      rgba(15,15,20,.96),
+      rgba(8,8,12,.96)
     );
 
   border:
-    1px solid rgba(255,0,92,.10);
+    1px solid rgba(255,255,255,.04);
 
-  box-shadow:
-    0 0 30px rgba(255,0,92,.06);
+  backdrop-filter:blur(18px);
 }
 
 .topbar h1{
@@ -123,15 +117,15 @@ main{
   font-size:18px;
 
   font-weight:900;
-
-  margin-bottom:4px;
 }
 
 .topbar p{
 
-  color:#b8b8c2;
+  color:#9d9da8;
 
   font-size:13px;
+
+  margin-top:4px;
 }
 
 /* =========================================
@@ -154,7 +148,7 @@ main{
     rgba(255,255,255,.03);
 
   border:
-    1px solid rgba(255,0,92,.14);
+    1px solid rgba(255,255,255,.04);
 }
 
 .topbar-profile img{
@@ -164,18 +158,9 @@ main{
 
   object-fit:cover;
 
-  border-radius:12px;
+  border-radius:14px;
 
   border:2px solid #ff0066;
-}
-
-.profile-info{
-
-  display:flex;
-
-  align-items:center;
-
-  gap:10px;
 }
 
 .nickname{
@@ -187,7 +172,17 @@ main{
 
 .role-badge{
 
-  padding:4px 10px;
+  margin-top:3px;
+
+  display:inline-flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  height:22px;
+
+  padding:0 10px;
 
   border-radius:999px;
 
@@ -216,7 +211,7 @@ button{
   cursor:pointer;
 
   transition:
-    .25s cubic-bezier(.22,1,.36,1);
+    .3s cubic-bezier(.22,1,.36,1);
 }
 
 button:hover{
@@ -248,29 +243,12 @@ a{
 }
 
 /* =========================================
-   TABLES
-========================================= */
-
-table{
-
-  width:100%;
-
-  border-collapse:collapse;
-}
-
-th,
-td{
-
-  padding:16px;
-}
-
-/* =========================================
    SCROLLBAR
 ========================================= */
 
 ::-webkit-scrollbar{
 
-  width:10px;
+  width:8px;
 }
 
 ::-webkit-scrollbar-track{
@@ -304,7 +282,7 @@ td{
 
     margin-left:0;
 
-    padding:14px;
+    padding:14px 14px 90px;
   }
 
   .topbar{
