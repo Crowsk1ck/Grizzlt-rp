@@ -158,18 +158,26 @@
   border-color: rgba(255,0,92,.25);
 }
 
-.member-top {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
-  min-height: 92px;
-  margin-bottom: 24px;
+.member-top{
+
+  position:relative;
+
+  z-index:2;
+
+  display:flex;
+
+  align-items:center;
+
+  gap:16px;
+
+  min-width:0;
+
+  margin-bottom:24px;
 }
 
 .member-avatar {
   width: 78px;
+  flex-shrink:0;
   height: 78px;
   object-fit: cover;
   border-radius: 22px;
@@ -177,18 +185,28 @@
   flex-shrink: 0;
 }
 
-.member-info {
-  flex: 1;
-  min-width: 0;
-  overflow: hidden;
+.member-info{
+
+  flex:1;
+
+  min-width:0;
+
+  overflow:hidden;
 }
 
-.member-info h3 {
-  font-size: 22px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-bottom: 8px;
+.member-info h3{
+
+  font-size:20px;
+
+  font-weight:800;
+
+  overflow:hidden;
+
+  text-overflow:ellipsis;
+
+  white-space:nowrap;
+
+  width:100%;
 }
 
 .member-role {
