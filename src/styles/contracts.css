@@ -1,170 +1,171 @@
-/* =========================================
-   CONTRACTS PAGE
-========================================= */
-
 .contracts-page{
-
-  min-height:100vh;
-
-  padding:40px;
-
-  color:white;
-}
-
-/* =========================================
-   HEADER
-========================================= */
-
-.contracts-header{
-
   display:flex;
-
-  justify-content:space-between;
-
-  align-items:center;
-
-  margin-bottom:30px;
+  flex-direction:column;
+  gap:18px;
 }
 
-.contracts-header h1{
+.contracts-top{
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  gap:18px;
+}
 
-  font-size:56px;
-
-  font-weight:900;
-
-  margin-bottom:10px;
+.contracts-hero{
+  position:relative;
+  overflow:hidden;
+  min-height:260px;
+  border-radius:28px;
+  padding:34px;
 
   background:
     linear-gradient(
-      90deg,
-      #ff0066,
-      #ff2f92
+      135deg,
+      rgba(255,0,92,.16),
+      rgba(0,0,0,.92)
     );
 
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
+  border:1px solid rgba(255,255,255,.05);
 }
 
-.contracts-header p{
+.contracts-badge{
+  width:max-content;
 
-  color:#8f8f98;
+  padding:8px 16px;
 
-  font-size:18px;
+  border-radius:999px;
+
+  background:
+    rgba(255,0,92,.12);
+
+  color:#ff2f92;
+
+  font-size:11px;
+
+  font-weight:800;
+
+  letter-spacing:2px;
+
+  margin-bottom:18px;
 }
 
-/* =========================================
-   LAYOUT
-========================================= */
+.contracts-hero h1{
+  font-size:64px;
+  line-height:.9;
+  font-weight:900;
+  margin-bottom:20px;
+  color:#ff0066;
+}
 
-.contracts-layout{
+.contracts-hero h1 span{
+  color:white;
+}
 
+.contracts-hero p{
+  max-width:520px;
+  color:#b9b9c5;
+  line-height:1.7;
+}
+
+/* STATS */
+
+.contracts-stats{
   display:grid;
-
-  grid-template-columns:
-    420px 1fr;
-
-  gap:24px;
-
-  margin-bottom:28px;
+  grid-template-columns:repeat(2,1fr);
+  gap:14px;
 }
 
-/* =========================================
-   FORM PANEL
-========================================= */
+.contracts-stat{
+  min-height:120px;
 
-.contract-form-panel{
+  padding:22px;
+
+  border-radius:22px;
 
   background:
     linear-gradient(
       145deg,
       rgba(255,0,92,.08),
-      rgba(0,0,0,.9)
+      rgba(0,0,0,.92)
     );
 
-  border:
-    1px solid rgba(255,0,92,.12);
-
-  border-radius:28px;
-
-  padding:28px;
-
-  backdrop-filter:blur(18px);
+  border:1px solid rgba(255,255,255,.05);
 }
 
-.contract-form-panel h2{
-
-  font-size:26px;
-
-  margin-bottom:24px;
+.contracts-stat h3{
+  font-size:38px;
+  color:#ff0066;
+  margin-bottom:10px;
 }
 
-.contract-form-panel input,
-.contract-form-panel textarea{
+.contracts-stat span{
+  color:#a8a8b4;
+  font-size:12px;
+}
 
+/* LAYOUT */
+
+.contracts-layout{
+  display:grid;
+  grid-template-columns:360px 1fr;
+  gap:18px;
+}
+
+/* FORM */
+
+.contracts-form-card{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+
+  padding:24px;
+
+  border-radius:26px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,0,92,.08),
+      rgba(0,0,0,.94)
+    );
+
+  border:1px solid rgba(255,255,255,.05);
+}
+
+.contracts-form-card h2{
+  color:#ff0066;
+  margin-bottom:10px;
+}
+
+.contracts-form-card input,
+.contracts-form-card textarea{
   width:100%;
+
+  padding:16px;
 
   border:none;
   outline:none;
 
-  margin-bottom:16px;
-
-  padding:18px;
-
-  border-radius:18px;
+  border-radius:16px;
 
   background:
-    rgba(255,255,255,.05);
+    rgba(255,255,255,.04);
 
-  border:
-    1px solid rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.05);
 
   color:white;
-
-  font-size:15px;
-
-  transition:.25s;
 }
 
-.contract-form-panel textarea{
-
-  min-height:140px;
-
+.contracts-form-card textarea{
+  min-height:120px;
   resize:none;
 }
 
-.contract-form-panel input:focus,
-.contract-form-panel textarea:focus{
-
-  border-color:
-    rgba(255,0,92,.4);
-
-  box-shadow:
-    0 0 20px rgba(255,0,92,.12);
-}
-
-.participants-count{
-
-  display:block;
-
-  margin-bottom:18px;
-
-  color:#8f8f98;
-
-  font-size:14px;
-}
-
-/* =========================================
-   BUTTON
-========================================= */
-
-.contract-submit-btn{
-
-  width:100%;
-  height:58px;
+.contracts-form-card button{
+  height:52px;
 
   border:none;
 
-  border-radius:18px;
+  border-radius:16px;
 
   background:
     linear-gradient(
@@ -175,225 +176,110 @@
 
   color:white;
 
-  font-size:15px;
-
   font-weight:800;
 
   cursor:pointer;
-
-  transition:.3s;
 }
 
-.contract-submit-btn:hover{
+/* TABLE */
 
-  transform:
-    translateY(-3px);
+.contracts-table-card{
+  padding:24px;
 
-  box-shadow:
-    0 15px 40px rgba(255,0,92,.28);
-}
-
-/* =========================================
-   TABLE PANEL
-========================================= */
-
-.contracts-table-panel{
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255,0,92,.05),
-      rgba(0,0,0,.92)
-    );
-
-  border:
-    1px solid rgba(255,0,92,.12);
-
-  border-radius:28px;
-
-  padding:28px;
-
-  overflow:auto;
-}
-
-.table-top{
-
-  display:flex;
-
-  justify-content:space-between;
-
-  align-items:center;
-
-  margin-bottom:24px;
-}
-
-.table-top h2{
-
-  font-size:28px;
-}
-
-/* =========================================
-   TABLE
-========================================= */
-
-table{
-
-  width:100%;
-
-  border-collapse:collapse;
-}
-
-thead{
-
-  background:
-    rgba(255,255,255,.03);
-}
-
-th{
-
-  padding:18px;
-
-  text-align:left;
-
-  color:#ff2f92;
-
-  font-size:13px;
-
-  letter-spacing:1px;
-}
-
-td{
-
-  padding:18px;
-
-  border-top:
-    1px solid rgba(255,255,255,.05);
-
-  color:#d7d7dc;
-
-  font-size:14px;
-}
-
-tbody tr{
-
-  transition:.25s;
-}
-
-tbody tr:hover{
-
-  background:
-    rgba(255,255,255,.03);
-}
-
-/* =========================================
-   DELETE
-========================================= */
-
-.delete-btn{
-
-  display:flex;
-
-  align-items:center;
-
-  justify-content:center;
-
-  width:38px;
-  height:38px;
-
-  border-radius:12px;
-
-  background:
-    rgba(255,0,92,.12);
-
-  cursor:pointer;
-
-  transition:.25s;
-}
-
-.delete-btn:hover{
-
-  background:
-    rgba(255,0,92,.24);
-
-  transform:
-    scale(1.08);
-}
-
-/* =========================================
-   STATS
-========================================= */
-
-.contracts-stats{
-
-  display:grid;
-
-  grid-template-columns:
-    repeat(2,260px);
-
-  gap:20px;
-}
-
-.contract-stat-card{
+  border-radius:26px;
 
   background:
     linear-gradient(
       145deg,
       rgba(255,0,92,.08),
-      rgba(0,0,0,.88)
+      rgba(0,0,0,.94)
     );
 
-  border:
-    1px solid rgba(255,0,92,.12);
-
-  border-radius:24px;
-
-  padding:24px;
+  border:1px solid rgba(255,255,255,.05);
 }
 
-.contract-stat-card span{
+.contracts-table-header{
+  margin-bottom:24px;
+}
 
-  color:#8f8f98;
+.contracts-table-header h2{
+  color:#ff0066;
+}
 
+.contracts-table{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+
+.contract-row{
+  display:grid;
+
+  grid-template-columns:
+    1.2fr .9fr .4fr;
+
+  align-items:center;
+
+  gap:16px;
+
+  padding:20px;
+
+  border-radius:18px;
+
+  background:
+    rgba(255,255,255,.03);
+
+  border:1px solid rgba(255,255,255,.04);
+}
+
+.contract-info h3{
+  margin-bottom:8px;
+}
+
+.contract-info span{
+  color:#a5a5b2;
   font-size:13px;
 }
 
-.contract-stat-card h3{
-
-  margin-top:14px;
-
-  font-size:38px;
+.contract-members{
+  color:#d7d7df;
 }
 
-.contract-stat-card.green h3{
-
-  color:#00ff9d;
+.contract-price{
+  color:#ff0066;
+  font-weight:800;
+  font-size:18px;
 }
 
-/* =========================================
-   MOBILE
-========================================= */
+/* MOBILE */
 
-@media(max-width:1200px){
+@media(max-width:1100px){
+
+  .contracts-top{
+    grid-template-columns:1fr;
+  }
 
   .contracts-layout{
-
     grid-template-columns:1fr;
   }
 
 }
 
-@media(max-width:800px){
+@media(max-width:700px){
 
-  .contracts-page{
-    padding:20px;
+  .contracts-hero{
+    padding:26px;
   }
 
-  .contracts-header h1{
-    font-size:42px;
+  .contracts-hero h1{
+    font-size:44px;
   }
 
   .contracts-stats{
+    grid-template-columns:1fr;
+  }
 
+  .contract-row{
     grid-template-columns:1fr;
   }
 
