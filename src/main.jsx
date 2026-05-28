@@ -10,6 +10,7 @@ import App from './App'
 import './styles/global.css'
 import './styles/animations.css'
 import './styles/responsive.css'
+import './styles/skeleton.css'
 
 ReactDOM.createRoot(
   document.getElementById('root')
