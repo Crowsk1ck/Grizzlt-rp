@@ -690,3 +690,75 @@
 .member-panel.member{
   border-color:rgba(255,255,255,.06);
 }
+.team-page{
+  min-height:100vh;
+
+  padding:40px;
+
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(255,0,80,.22),
+      transparent 35%
+    ),
+    linear-gradient(
+      180deg,
+      #090909 0%,
+      #050505 100%
+    );
+
+  color:white;
+}
+
+.team-header{
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:flex-start;
+
+  gap:30px;
+
+  margin-bottom:40px;
+
+  flex-wrap:wrap;
+}
+
+.members-grid{
+  display:grid;
+
+  grid-template-columns:
+    repeat(auto-fit,minmax(320px,1fr));
+
+  gap:24px;
+}
+
+.member-panel{
+  position:relative;
+
+  overflow:hidden;
+
+  display:flex;
+
+  flex-direction:column;
+
+  min-height:280px;
+
+  border-radius:30px;
+
+  padding:24px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,0,92,.08),
+      rgba(0,0,0,.88)
+    );
+
+  border:
+    1px solid rgba(255,0,92,.14);
+
+  backdrop-filter:blur(18px);
+
+  transition:.35s ease;
+}
