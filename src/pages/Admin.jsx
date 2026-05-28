@@ -4,65 +4,77 @@ export default function Admin(){
 
   const actions = [
 
-{
-    title:'Добавить участника',
-    action:'addMember'
-  },
+    {
+      title:'Добавить участника',
+      action:'addMember'
+    },
 
-  {
-    title:'Удалить участника',
-    action:'deleteMember'
-  },
+    {
+      title:'Удалить участника',
+      action:'deleteMember'
+    },
 
-  {
-    title:'Выдать контракт',
-    action:'addContract'
-  },
+    {
+      title:'Выдать контракт',
+      action:'addContract'
+    },
 
-  {
-    title:'Обновить статистику',
-    action:'updateStats'
-  },
+    {
+      title:'Обновить статистику',
+      action:'updateStats'
+    },
 
-  {
-    title:'Очистить логи',
-    action:'clearLogs'
-  }
+    {
+      title:'Очистить логи',
+      action:'clearLogs'
+    }
 
   ]
-function handleAdminAction(type){
 
-  if(type === 'addMember'){
+  function handleAdminAction(type){
 
-    alert('Система добавления участника скоро будет подключена')
+    if(type === 'addMember'){
+
+      alert(
+        'Система добавления участника скоро будет подключена'
+      )
+
+    }
+
+    if(type === 'deleteMember'){
+
+      alert(
+        'Система удаления участника скоро будет подключена'
+      )
+
+    }
+
+    if(type === 'addContract'){
+
+      alert(
+        'Система контрактов скоро будет подключена'
+      )
+
+    }
+
+    if(type === 'updateStats'){
+
+      alert(
+        'Статистика обновлена'
+      )
+
+    }
+
+    if(type === 'clearLogs'){
+
+      alert(
+        'Логи очищены'
+      )
+
+    }
 
   }
 
-  if(type === 'deleteMember'){
-
-    alert('Система удаления участника скоро будет подключена')
-
-  }
-
-  if(type === 'addContract'){
-
-    alert('Система контрактов скоро будет подключена')
-
-  }
-
-  if(type === 'updateStats'){
-
-    alert('Статистика обновлена')
-
-  }
-
-  if(type === 'clearLogs'){
-
-    alert('Логи очищены')
-
-  }
-
-}
   const logs = [
 
     'cr0wsk1ck выдал контракт',
@@ -107,17 +119,17 @@ function handleAdminAction(type){
 
             {actions.map((item,index)=>(
 
-             <button
-  key={index}
-  className="action-btn"
-  onClick={()=>
-    handleAdminAction(
-      {item.title}.action
-    )
-  }
->
+              <button
+                key={index}
+                className="action-btn"
+                onClick={()=>
+                  handleAdminAction(
+                    item.action
+                  )
+                }
+              >
 
-                {item}
+                {item.title}
 
               </button>
 
