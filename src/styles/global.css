@@ -94,3 +94,114 @@ a{
   }
 
 }
+.discord-login-btn{
+
+  position:relative;
+
+  overflow:hidden;
+
+  height:54px;
+
+  padding:0 24px;
+
+  border-radius:18px;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  gap:14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #5865F2,
+      #7b84ff
+    );
+
+  color:white;
+
+  font-weight:800;
+
+  letter-spacing:.5px;
+
+  box-shadow:
+    0 15px 35px rgba(88,101,242,.35);
+
+  transition:.3s;
+}
+
+.discord-login-btn:hover{
+
+  transform:
+    translateY(-3px);
+
+  box-shadow:
+    0 20px 45px rgba(88,101,242,.45);
+}
+
+.discord-glow{
+
+  position:absolute;
+
+  width:160px;
+  height:160px;
+
+  border-radius:50%;
+
+  background:
+    rgba(255,255,255,.12);
+
+  filter:blur(60px);
+
+  top:-80px;
+  right:-60px;
+}
+
+.discord-login-btn svg{
+
+  position:relative;
+  z-index:2;
+}
+
+.discord-login-btn span{
+
+  position:relative;
+  z-index:2;
+}
+.logout-btn{
+
+  height:42px;
+
+  padding:0 18px;
+
+  border:none;
+
+  border-radius:14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ff0066,
+      #ff2f92
+    );
+
+  color:white;
+
+  font-weight:800;
+
+  cursor:pointer;
+
+  transition:.3s;
+}
+
+.logout-btn:hover{
+
+  transform:
+    translateY(-2px);
+
+  box-shadow:
+    0 12px 24px rgba(255,0,92,.3);
+}
