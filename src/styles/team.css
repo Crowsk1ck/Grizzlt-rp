@@ -284,7 +284,7 @@
 
   overflow:hidden;
 
-  min-height:370px;
+  height:370px;
 
   padding:24px;
 
@@ -362,6 +362,7 @@
 
 .member-info h3{
 
+  display:block;
   font-size:22px;
   overflow:hidden;
   text-overflow:ellipsis;
@@ -395,7 +396,7 @@
 .member-stats{
 
   position:relative;
-  margin-top:auto;
+  margin-top:22px;
   z-index:2;
   display:grid;
   grid-template-columns:
