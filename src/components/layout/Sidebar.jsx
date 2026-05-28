@@ -94,8 +94,8 @@ export default function Sidebar({
     },
 
     {
-      path:'/members',
-      title:'Members',
+      path:'/gallery',
+      title:'Gallery',
       icon:<Image size={20}/>
     },
 
