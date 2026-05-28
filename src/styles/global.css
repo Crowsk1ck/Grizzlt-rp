@@ -9,13 +9,15 @@
   font-family:Inter,Arial,sans-serif;
 }
 
+html,
 body{
   background:#050507;
-  color:#fff;
+  color:white;
   overflow-x:hidden;
 }
 
 body::before{
+
   content:'';
 
   position:fixed;
@@ -25,12 +27,12 @@ body::before{
   background:
     radial-gradient(
       circle at top,
-      #ff005522,
+      rgba(255,0,92,.16),
       transparent 35%
     ),
     radial-gradient(
       circle at bottom right,
-      #ff005511,
+      rgba(255,0,92,.10),
       transparent 30%
     );
 
@@ -40,113 +42,23 @@ body::before{
 }
 
 /* =========================================
-   APP LAYOUT
+   APP
 ========================================= */
 
 .app{
+
   display:flex;
+
   min-height:100vh;
 }
 
 .content{
+
   flex:1;
+
   padding:22px;
-}
 
-/* =========================================
-   SIDEBAR
-========================================= */
-
-.sidebar{
-  width:230px;
-
-  background:#07070b;
-
-  border-right:
-    1px solid rgba(255,0,92,.12);
-
-  padding:20px;
-
-  display:flex;
-
-  flex-direction:column;
-
-  justify-content:space-between;
-}
-
-.brand h1{
-  color:#ff005c;
-  font-size:34px;
-  line-height:1;
-}
-
-.brand span{
-  color:#fff;
-  font-size:12px;
-  letter-spacing:3px;
-}
-
-.sidebar-nav{
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-  margin-top:28px;
-}
-
-.sidebar-nav a{
-  text-decoration:none;
-
-  color:#d4d4d8;
-
-  background:#0e0e13;
-
-  padding:14px 16px;
-
-  border-radius:12px;
-
-  font-size:13px;
-
-  transition:.25s;
-
-  border:1px solid transparent;
-}
-
-.sidebar-nav a:hover,
-.sidebar-nav a.active{
-
-  border-color:#ff005c;
-
-  background:#130811;
-
-  color:#fff;
-
-  box-shadow:
-    0 0 24px rgba(255,0,92,.16);
-}
-
-/* =========================================
-   FAMILY STATUS
-========================================= */
-
-.family-status{
-  background:#0e0e13;
-
-  border:
-    1px solid rgba(255,0,92,.12);
-
-  padding:16px;
-
-  border-radius:16px;
-}
-
-.status-title{
-  font-size:12px;
-  margin-bottom:8px;
-}
-
-.status-online{
-  color:#00ff88;
-  font-size:12px;
+  margin-left:220px;
 }
 
 /* =========================================
@@ -155,268 +67,52 @@ body::before{
 
 .topbar{
 
-  background:
-    linear-gradient(
-      90deg,
-      rgba(10,10,15,.96),
-      rgba(20,10,18,.92)
-    );
-
-  border:
-    1px solid rgba(255,0,92,.12);
-
-  padding:18px 24px;
-
-  border-radius:24px;
-
   display:flex;
 
   justify-content:space-between;
 
   align-items:center;
 
-  margin-bottom:22px;
+  gap:20px;
+
+  padding:18px 24px;
+
+  margin-bottom:24px;
+
+  border-radius:26px;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(10,10,15,.98),
+      rgba(20,10,18,.92)
+    );
+
+  border:
+    1px solid rgba(255,0,92,.12);
 
   box-shadow:
     0 0 40px rgba(255,0,92,.08);
 }
 
 /* =========================================
-   HERO
+   TOPBAR INFO
 ========================================= */
 
-.hero-banner{
+.topbar h1{
 
-  position:relative;
+  font-size:22px;
 
-  min-height:420px;
+  font-weight:900;
 
-  overflow:hidden;
-
-  border-radius:26px;
-
-  margin-bottom:18px;
-
-  border:
-    1px solid rgba(255,0,92,.15);
-
-  display:flex;
-
-  align-items:flex-end;
-
-  background:
-    linear-gradient(
-      rgba(0,0,0,.5),
-      rgba(0,0,0,.78)
-    ),
-    url('https://images.unsplash.com/photo-1514565131-fce0801e5785?q=80&w=1800&auto=format&fit=crop');
-
-  background-size:cover;
-  background-position:center;
+  margin-bottom:4px;
 }
 
-.hero-left{
-  position:relative;
-  z-index:2;
+.topbar p{
 
-  max-width:620px;
-
-  padding:40px;
-}
-
-.welcome{
-  font-size:13px;
-  letter-spacing:4px;
-}
-
-.hero-banner h1 span{
-  color:#fff;
-}
-
-.hero-banner p{
-  color:#d6d6db;
-  line-height:1.6;
-}
-
-/* =========================================
-   BUTTONS
-========================================= */
-
-.hero-buttons{
-  display:flex;
-  align-items:center;
-  gap:16px;
-  margin-top:28px;
-}
-
-.secondary-btn{
-
-  height:58px;
-
-  padding:0 28px;
-
-  border:none;
-
-  border-radius:18px;
-
-  background:
-    rgba(15,15,25,.92);
-
-  border:
-    1px solid rgba(255,255,255,.06);
-
-  color:white;
-
-  font-weight:800;
-
-  transition:.25s ease;
-}
-
-.secondary-btn:hover{
-
-  transform:
-    translateY(-2px);
-
-  border-color:
-    rgba(255,0,92,.35);
-
-  box-shadow:
-    0 0 24px rgba(255,0,92,.15);
-}
-
-.primary-btn{
-  background:#ff005c;
-
-  box-shadow:
-    0 0 24px rgba(255,0,92,.35);
-}
-
-/* =========================================
-   STATS
-========================================= */
-
-.stats-row{
-  display:grid;
-
-  grid-template-columns:
-    repeat(5,minmax(180px,1fr));
-
-  gap:18px;
-
-  margin-top:22px;
-  margin-bottom:22px;
-}
-
-.stat-box{
-
-  background:#09090d;
-
-  border-radius:18px;
-
-  border:
-    1px solid rgba(255,0,92,.12);
-
-  padding:24px;
-
-  min-height:130px;
-
-  display:flex;
-
-  flex-direction:column;
-
-  justify-content:center;
-
-  transition:.25s ease;
-}
-
-.stat-box:hover{
-
-  transform:
-    translateY(-3px);
-
-  border-color:
-    rgba(255,0,92,.35);
-
-  box-shadow:
-    0 0 28px rgba(255,0,92,.12);
-}
-
-.stat-box h3{
-  color:#ff005c;
-  font-size:28px;
-  margin-bottom:8px;
-}
-
-.stat-box span{
-  color:#888894;
-  font-size:12px;
-}
-
-/* =========================================
-   PANELS
-========================================= */
-
-.dashboard-layout{
-  display:grid;
-
-  grid-template-columns:
-    1.2fr 1fr 1fr;
-
-  gap:14px;
-}
-
-.panel{
-
-  background:#09090d;
-
-  border-radius:18px;
-
-  border:
-    1px solid rgba(255,0,92,.12);
-
-  padding:22px;
-}
-
-.panel h2{
-  color:#ff005c;
-  font-size:15px;
-  margin-bottom:16px;
-}
-
-.panel p{
   color:#b8b8c2;
-  line-height:1.7;
-}
 
-.news-item,
-.top-user{
-
-  background:#121219;
-
-  padding:12px;
-
-  border-radius:12px;
-
-  margin-bottom:10px;
-
-  font-size:13px;
-}
-
-/* =========================================
-   TABLE
-========================================= */
-
-table{
-  width:100%;
-  border-collapse:collapse;
-}
-
-th,
-td{
-  padding:16px;
-
-  border-bottom:
-    1px solid rgba(255,255,255,.05);
+  font-size:14px;
 }
 
 /* =========================================
@@ -424,95 +120,176 @@ td{
 ========================================= */
 
 .topbar-profile{
+
   display:flex;
+
   align-items:center;
+
   gap:12px;
 
   padding:10px 14px;
 
-  border-radius:16px;
+  border-radius:18px;
 
   background:
-    rgba(15,15,25,.95);
+    rgba(255,255,255,.03);
 
   border:
-    1px solid rgba(255,0,90,.35);
-
-  box-shadow:
-    0 0 20px rgba(255,0,90,.15);
+    1px solid rgba(255,0,92,.18);
 }
 
 .topbar-profile img{
-  width:42px;
-  height:42px;
 
-  border-radius:12px;
+  width:46px;
+  height:46px;
 
-  border:2px solid #ff005c;
+  object-fit:cover;
+
+  border-radius:14px;
+
+  border:2px solid #ff0066;
 }
 
 .profile-info{
+
   display:flex;
+
   align-items:center;
-  gap:8px;
+
+  gap:10px;
 }
 
 .nickname{
-  color:white;
-  font-weight:700;
+
   font-size:14px;
+
+  font-weight:800;
 }
 
 .role-badge{
-  background:#ff005c;
 
-  color:white;
-
-  font-size:11px;
-
-  padding:3px 8px;
+  padding:4px 10px;
 
   border-radius:999px;
 
-  font-weight:700;
+  background:
+    linear-gradient(
+      135deg,
+      #ff0066,
+      #ff2f92
+    );
+
+  font-size:11px;
+
+  font-weight:800;
+}
+
+/* =========================================
+   BUTTONS
+========================================= */
+
+button{
+
+  border:none;
+
+  outline:none;
+
+  cursor:pointer;
+
+  transition:.25s;
+}
+
+button:hover{
+
+  transform:
+    translateY(-2px);
+}
+
+/* =========================================
+   INPUTS
+========================================= */
+
+input,
+textarea{
+
+  border:none;
+  outline:none;
+}
+
+/* =========================================
+   LINKS
+========================================= */
+
+a{
+
+  text-decoration:none;
+}
+
+/* =========================================
+   TABLES
+========================================= */
+
+table{
+
+  width:100%;
+
+  border-collapse:collapse;
+}
+
+th,
+td{
+
+  padding:16px;
+}
+
+/* =========================================
+   SCROLLBAR
+========================================= */
+
+::-webkit-scrollbar{
+
+  width:10px;
+}
+
+::-webkit-scrollbar-track{
+
+  background:#09090d;
+}
+
+::-webkit-scrollbar-thumb{
+
+  background:#ff0066;
+
+  border-radius:999px;
 }
 
 /* =========================================
    MOBILE
 ========================================= */
 
-@media(max-width:1100px){
-
-  .stats-row{
-    grid-template-columns:repeat(2,1fr);
-  }
-
-  .dashboard-layout{
-    grid-template-columns:1fr;
-  }
-
-}
-
-@media(max-width:850px){
-
-  .sidebar{
-    display:none;
-  }
+@media(max-width:900px){
 
   .content{
-    padding:12px;
-  }
 
-  .hero-banner h1{
-    font-size:48px;
+    margin-left:90px;
   }
 
 }
 
 @media(max-width:700px){
 
-  .stats-row{
-    grid-template-columns:1fr;
+  .content{
+
+    margin-left:0;
+
+    padding:14px;
+  }
+
+  .topbar{
+
+    flex-direction:column;
+
+    align-items:flex-start;
   }
 
 }
