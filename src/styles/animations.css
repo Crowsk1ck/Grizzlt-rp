@@ -1,0 +1,111 @@
+/* =========================================
+   FADE
+========================================= */
+
+@keyframes fadeUp{
+
+  from{
+    opacity:0;
+    transform:
+      translateY(30px);
+  }
+
+  to{
+    opacity:1;
+    transform:
+      translateY(0);
+  }
+
+}
+
+/* =========================================
+   GLOW
+========================================= */
+
+@keyframes neonPulse{
+
+  0%{
+    box-shadow:
+      0 0 0 rgba(255,0,92,0);
+  }
+
+  50%{
+    box-shadow:
+      0 0 30px rgba(255,0,92,.28);
+  }
+
+  100%{
+    box-shadow:
+      0 0 0 rgba(255,0,92,0);
+  }
+
+}
+
+/* =========================================
+   FLOAT
+========================================= */
+
+@keyframes floatCard{
+
+  0%{
+    transform:
+      translateY(0px);
+  }
+
+  50%{
+    transform:
+      translateY(-6px);
+  }
+
+  100%{
+    transform:
+      translateY(0px);
+  }
+
+}
+
+/* =========================================
+   ROTATE BLUR
+========================================= */
+
+@keyframes rotateBlur{
+
+  from{
+    transform:
+      rotate(0deg);
+  }
+
+  to{
+    transform:
+      rotate(360deg);
+  }
+
+}
+
+/* =========================================
+   CLASSES
+========================================= */
+
+.fade-up{
+
+  animation:
+    fadeUp .7s ease;
+}
+
+.neon-pulse{
+
+  animation:
+    neonPulse 3s infinite;
+}
+
+.float-card{
+
+  animation:
+    floatCard 5s ease-in-out infinite;
+}
+
+.rotate-blur{
+
+  animation:
+    rotateBlur 18s linear infinite;
+}
