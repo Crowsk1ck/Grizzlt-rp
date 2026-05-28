@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-
+import '../styles/contracts.css'
 import {
   db,
   collection,
