@@ -6,6 +6,7 @@ import {
 } from 'firebase/firestore'
 
 import { db } from '../services/firebase/firebase'
+import '../styles/team.css'
 
 export default function Team(){
 
