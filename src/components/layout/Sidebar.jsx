@@ -1,37 +1,166 @@
 import {
-  NavLink,
-  Link
-} from 'react-router-dom'
+  LayoutDashboard,
+  Users,
+  ScrollText,
+  BarChart3,
+  Shield,
+  Trophy,
+  Calendar,
+  Image
+} from 'lucide-react'
+
 import '../../styles/sidebar.css'
-export default function Sidebar({ isAdmin }){
+
+export default function Sidebar({
+
+  active,
+  setActive
+
+}){
+
+  const navItems = [
+
+    {
+      id:'dashboard',
+      title:'Dashboard',
+      icon:<LayoutDashboard size={20}/>
+    },
+
+    {
+      id:'team',
+      title:'Team',
+      icon:<Users size={20}/>
+    },
+
+    {
+      id:'contracts',
+      title:'Contracts',
+      icon:<ScrollText size={20}/>
+    },
+
+    {
+      id:'statistics',
+      title:'Statistics',
+      icon:<BarChart3 size={20}/>
+    },
+
+    {
+      id:'gallery',
+      title:'Gallery',
+      icon:<Image size={20}/>
+    },
+
+    {
+      id:'calendar',
+      title:'Calendar',
+      icon:<Calendar size={20}/>
+    },
+
+    {
+      id:'achievements',
+      title:'Achievements',
+      icon:<Trophy size={20}/>
+    },
+
+    {
+      id:'admin',
+      title:'Admin',
+      icon:<Shield size={20}/>
+    }
+
+  ]
+
   return(
+
     <aside className="sidebar">
-      <div className="brand">
-        <h1>GRIZZLY</h1>
-        <span>FAMILY</span>
+
+      <div className="sidebar-top">
+
+        <div className="sidebar-logo">
+
+          <div className="logo-glow"></div>
+
+          <h1>
+            GRIZZLY
+          </h1>
+
+          <span>
+            FAMILY
+          </span>
+
+        </div>
+
+        <div className="sidebar-profile">
+
+          <img
+            src="https://i.imgur.com/6VBx3io.png"
+            alt=""
+          />
+
+          <div>
+
+            <h3>
+              cr0wsk1ck
+            </h3>
+
+            <span>
+              LEADER
+            </span>
+
+          </div>
+
+        </div>
+
       </div>
 
-      <nav className="sidebar-nav">
-        <NavLink to="/">ГЛАВНАЯ</NavLink>
-        <NavLink to="/contracts">КОНТРАКТЫ</NavLink>
-        <NavLink to="/team">КОМАНДА</NavLink>
-        <NavLink to="/Liders">Лідери</NavLink>
-        <NavLink to="/Member">ЭКОНОМИКА</NavLink>
-        {
-  isAdmin && (
+      <div className="sidebar-nav">
 
-    <Link to="/admin">
-      ADMIN PANEL
-    </Link>
+        {navItems.map((item)=>(
 
-  )
-}
-      </nav>
+          <button
+            key={item.id}
+            onClick={()=>
+              setActive(item.id)
+            }
+            className={
+              active === item.id
+              ? 'sidebar-link active'
+              : 'sidebar-link'
+            }
+          >
 
-      <div className="family-status">
-        <div className="status-title">GRIZZLY FAMILY</div>
-        <div className="status-online">ONLINE:0</div>
+            <div className="sidebar-icon">
+
+              {item.icon}
+
+            </div>
+
+            <span>
+              {item.title}
+            </span>
+
+          </button>
+
+        ))}
+
       </div>
+
+      <div className="sidebar-bottom">
+
+        <div className="family-online">
+
+          <div className="online-dot"></div>
+
+          <span>
+            48 MEMBERS ONLINE
+          </span>
+
+        </div>
+
+      </div>
+
     </aside>
+
   )
+
 }
