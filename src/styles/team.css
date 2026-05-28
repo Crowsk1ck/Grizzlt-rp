@@ -228,6 +228,7 @@
 ========================================= */
 
 .member-card{
+
   position:relative;
 
   overflow:hidden;
@@ -249,7 +250,8 @@
       rgba(0,0,0,.94)
     );
 
-  border:1px solid rgba(255,255,255,.05);
+  border:
+    1px solid rgba(255,255,255,.05);
 
   transition:
     .35s cubic-bezier(.22,1,.36,1);
