@@ -419,21 +419,21 @@ className={
 
               </div>
 
-              <span
+              <div
   className={
-    member.online
-      ? 'status-dot status-online'
-      : 'status-dot status-offline'
+    member.status === 'В СЕТИ'
+      ? 'team-online'
+      : 'team-offline'
   }
-/>
-                {member.status}
-              </div>
+>
+  {member.status}
+</div>
 
-            </div>
+</div>
 
-          </div>
+</div>
 
-        ))}
+))}
 
       </div>
 
