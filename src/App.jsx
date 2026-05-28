@@ -42,9 +42,6 @@ export default function App(){
   const [isAdmin,setIsAdmin] =
     useState(false)
 
-  const [active,setActive] =
-    useState('dashboard')
-
   useEffect(()=>{
 
     async function checkAdmin(){
@@ -93,8 +90,6 @@ export default function App(){
         isAuth && (
 
           <Sidebar
-            active={active}
-            setActive={setActive}
             isAdmin={isAdmin}
           />
 
@@ -131,19 +126,19 @@ export default function App(){
           />
 
           <Route
-            path="/members"
+            path="/liders"
             element={
               isAuth
-              ? <Members />
+              ? <Liders />
               : <Dashboard />
             }
           />
 
           <Route
-            path="/liders"
+            path="/members"
             element={
               isAuth
-              ? <Liders />
+              ? <Members />
               : <Dashboard />
             }
           />
