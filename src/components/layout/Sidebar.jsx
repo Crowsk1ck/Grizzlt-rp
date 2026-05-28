@@ -18,16 +18,26 @@ import {
 
 } from 'react'
 
-import '../../styles/sidebar.css'
+import {
+
+  Link,
+  useLocation
+
+} from 'react-router-dom'
+
+import '../styles/sidebar.css'
 
 export default function Sidebar({
 
-  active,
-  setActive
+  isAdmin
 
 }){
 
-  const [user,setUser] = useState(null)
+  const [user,setUser] =
+    useState(null)
+
+  const location =
+    useLocation()
 
   useEffect(()=>{
 
@@ -60,54 +70,54 @@ export default function Sidebar({
   const navItems = [
 
     {
-      id:'dashboard',
+      path:'/',
       title:'Dashboard',
       icon:<LayoutDashboard size={20}/>
     },
 
     {
-      id:'team',
+      path:'/team',
       title:'Team',
       icon:<Users size={20}/>
     },
 
     {
-      id:'contracts',
+      path:'/contracts',
       title:'Contracts',
       icon:<ScrollText size={20}/>
     },
 
     {
-      id:'statistics',
+      path:'/statistics',
       title:'Statistics',
       icon:<BarChart3 size={20}/>
     },
 
     {
-      id:'gallery',
-      title:'Gallery',
+      path:'/members',
+      title:'Members',
       icon:<Image size={20}/>
     },
 
     {
-      id:'calendar',
-      title:'Calendar',
-      icon:<Calendar size={20}/>
-    },
-
-    {
-      id:'achievements',
-      title:'Achievements',
+      path:'/liders',
+      title:'Liders',
       icon:<Trophy size={20}/>
-    },
-
-    {
-      id:'admin',
-      title:'Admin',
-      icon:<Shield size={20}/>
     }
 
   ]
+
+  if(isAdmin){
+
+    navItems.push({
+
+      path:'/admin',
+      title:'Admin',
+      icon:<Shield size={20}/>
+
+    })
+
+  }
 
   return(
 
@@ -146,7 +156,7 @@ export default function Sidebar({
                 </h3>
 
                 <span>
-                  LEADER
+                  MEMBER
                 </span>
 
               </div>
@@ -162,13 +172,11 @@ export default function Sidebar({
 
         {navItems.map((item)=>(
 
-          <button
-            key={item.id}
-            onClick={()=>
-              setActive(item.id)
-            }
+          <Link
+            key={item.path}
+            to={item.path}
             className={
-              active === item.id
+              location.pathname === item.path
               ? 'sidebar-link active'
               : 'sidebar-link'
             }
@@ -184,7 +192,7 @@ export default function Sidebar({
               {item.title}
             </span>
 
-          </button>
+          </Link>
 
         ))}
 
@@ -197,7 +205,7 @@ export default function Sidebar({
           <div className="online-dot"></div>
 
           <span>
-            48 MEMBERS ONLINE
+            
           </span>
 
         </div>
