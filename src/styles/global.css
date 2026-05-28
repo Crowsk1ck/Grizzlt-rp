@@ -340,14 +340,6 @@ th,td{
     0 0 40px rgba(255,0,92,.08);
 }
 
-  .search-row input{
-    width:100%;
-  }
-
-  .members-grid{
-    grid-template-columns:1fr;
-  }
-
 .contracts-page{
   display:flex;
   flex-direction:column;
@@ -1267,77 +1259,6 @@ th,td{
   padding:14px;
   border-radius:14px;
 }
-.members-page{
-  padding:40px;
-}
-
-.members-header{
-  margin-bottom:30px;
-}
-
-.members-header h1{
-  color:#ff008c;
-  font-size:42px;
-}
-
-
-
-.member-card{
-  background:#0f0f18;
-  border:1px solid #ff008c22;
-  border-radius:24px;
-  padding:24px;
-}
-
-.member-card img{
-  width:90px;
-  height:90px;
-  border-radius:50%;
-  object-fit:cover;
-  margin-bottom:20px;
-}
-
-.member-card h2{
-  color:white;
-  margin-bottom:10px;
-}
-
-.team-online{
-  color:#00ff9d;
-  font-weight:800;
-}
-
-.team-offline{
-  color:#ff4d4d;
-  font-weight:800;
-}
-
-.member-stats{
-  display:flex;
-  justify-content:space-between;
-  margin-top:24px;
-}
-
-.member-stats strong{
-  color:#ff008c;
-  font-size:22px;
-}
-
-.member-actions{
-  display:flex;
-  gap:12px;
-  margin-top:24px;
-}
-
-.member-actions button{
-  flex:1;
-  padding:14px;
-  border:none;
-  border-radius:14px;
-  background:#161622;
-  color:white;
-  cursor:pointer;
-}
 .admin-tabs{
   display:flex;
   gap:14px;
@@ -1423,7 +1344,7 @@ th,td{
 
 }
 
-.member-avatar{
+.member-admin-avatar{
 
   width:110px;
   height:110px;
