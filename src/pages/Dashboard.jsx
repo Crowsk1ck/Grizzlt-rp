@@ -2,64 +2,107 @@ import '../styles/dashboard.css'
 
 export default function Dashboard(){
 
+  const topMembers = [
+
+    {
+      name:'cr0wsk1ck',
+      money:'$540,000'
+    },
+
+    {
+      name:'Shadow',
+      money:'$325,000'
+    },
+
+    {
+      name:'Nightmare',
+      money:'$210,000'
+    }
+
+  ]
+
+  const activity = [
+
+    'Новый контракт Vinewood',
+    'Захват территории',
+    'Пополнение состава',
+    'Успешная операция',
+    'Новый набор участников'
+
+  ]
+
   return(
 
     <div className="dashboard-page">
 
-      <section className="hero-banner">
+      <section className="dashboard-hero">
 
-        <div className="hero-left">
+        <div className="dashboard-overlay"></div>
 
-          <div className="welcome">
-            WELCOME TO
+        <div className="dashboard-left">
+
+          <div className="dashboard-badge">
+            GRIZZLY FAMILY
           </div>
 
           <h1>
-            GRIZZLY
-            <br/>
-            <span>FAMILY</span>
+            PREMIUM
+            <br />
+            <span>GTA RP</span>
           </h1>
 
           <p>
-            Мы не просто семья —
-            мы сила, которая правит улицами.
-            Дисциплина. Хаос. Репутация.
+            Элитная организация GTA RP сервера.
+            Контракты. Контроль территорий.
+            Дисциплина. Репутация. Власть.
           </p>
 
-          <div className="hero-buttons">
+          <div className="dashboard-buttons">
 
-            <button className="discord-join-btn">
-              НАШ DISCORD
+            <button className="join-btn">
+              DISCORD
             </button>
 
             <button className="rules-btn">
-              ПРАВИЛА СЕМЬИ
+              ПРАВИЛА
             </button>
 
           </div>
 
         </div>
 
-        <div className="hero-right">
+        <div className="dashboard-right">
 
-          <div className="hero-stat">
+          <div className="hero-card">
+
             <h3>48</h3>
+
             <span>ONLINE</span>
+
           </div>
 
-          <div className="hero-stat">
+          <div className="hero-card">
+
             <h3>1247</h3>
+
             <span>КОНТРАКТОВ</span>
+
           </div>
 
-          <div className="hero-stat">
+          <div className="hero-card">
+
             <h3>$2.5M</h3>
+
             <span>ОБЩИЙ ДОХОД</span>
+
           </div>
 
-          <div className="hero-stat">
+          <div className="hero-card">
+
             <h3>86</h3>
+
             <span>УЧАСТНИКОВ</span>
+
           </div>
 
         </div>
@@ -68,16 +111,17 @@ export default function Dashboard(){
 
       <section className="dashboard-grid">
 
-        <div className="dashboard-card">
+        <div className="dashboard-card about-card">
 
           <h2>О НАС</h2>
 
           <p>
             Grizzly Family —
-            элитная организация GTA RP сервера.
-
+            одна из самых влиятельных организаций
+            GTA RP сервера.
             Мы занимаемся контрактами,
-            бизнесом, войнами и контролем территорий.
+            бизнесом,
+            войнами и контролем территорий.
           </p>
 
           <button className="more-btn">
@@ -86,79 +130,66 @@ export default function Dashboard(){
 
         </div>
 
-        <div className="dashboard-card">
+        <div className="dashboard-card activity-card">
 
-          <h2>ПОСЛЕДНИЕ НОВОСТИ</h2>
+          <h2>АКТИВНОСТЬ</h2>
 
-          <div className="news-item">
-            <span>
-              Новый контракт Vinewood
-            </span>
+          <div className="activity-list">
 
-            <span>
-              2 часа назад
-            </span>
-          </div>
+            {activity.map((item,index)=>(
 
-          <div className="news-item">
-            <span>
-              Захват территории
-            </span>
+              <div
+                className="activity-item"
+                key={index}
+              >
 
-            <span>
-              5 часов назад
-            </span>
-          </div>
+                <div className="activity-dot"></div>
 
-          <div className="news-item">
-            <span>
-              Пополнение состава
-            </span>
+                <span>{item}</span>
 
-            <span>
-              1 день назад
-            </span>
-          </div>
+              </div>
 
-          <div className="news-item">
-            <span>
-              Новый набор участников
-            </span>
+            ))}
 
-            <span>
-              2 дня назад
-            </span>
           </div>
 
         </div>
 
-        <div className="dashboard-card">
+        <div className="dashboard-card top-card">
 
           <h2>ТОП УЧАСТНИКОВ</h2>
 
-          <div className="top-member">
-            <span>1. cr0wsk1ck</span>
-            <span>$540,000</span>
-          </div>
+          <div className="top-list">
 
-          <div className="top-member">
-            <span>2. Shadow</span>
-            <span>$325,000</span>
-          </div>
+            {topMembers.map((member,index)=>(
 
-          <div className="top-member">
-            <span>3. Mugiwara</span>
-            <span>$210,000</span>
-          </div>
+              <div
+                className="top-item"
+                key={index}
+              >
 
-          <div className="top-member">
-            <span>4. Nightmare</span>
-            <span>$180,000</span>
-          </div>
+                <div className="top-user">
 
-          <div className="top-member">
-            <span>5. Blaze</span>
-            <span>$150,000</span>
+                  <div className="top-avatar">
+
+                    {index+1}
+
+                  </div>
+
+                  <span>
+                    {member.name}
+                  </span>
+
+                </div>
+
+                <strong>
+                  {member.money}
+                </strong>
+
+              </div>
+
+            ))}
+
           </div>
 
         </div>
@@ -166,5 +197,7 @@ export default function Dashboard(){
       </section>
 
     </div>
+
   )
+
 }
