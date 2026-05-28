@@ -1,0 +1,124 @@
+/* =========================================
+   SKELETON
+========================================= */
+
+.skeleton{
+
+  position:relative;
+
+  overflow:hidden;
+
+  background:
+    rgba(255,255,255,.04);
+
+  border-radius:20px;
+}
+
+.skeleton::before{
+
+  content:'';
+
+  position:absolute;
+
+  top:0;
+  left:-100%;
+
+  width:100%;
+  height:100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,.08),
+      transparent
+    );
+
+  animation:
+    skeletonLoading 1.2s infinite;
+}
+
+@keyframes skeletonLoading{
+
+  100%{
+    left:100%;
+  }
+
+}
+
+/* =========================================
+   MEMBER CARD
+========================================= */
+
+.member-skeleton{
+
+  height:340px;
+
+  border-radius:30px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,0,92,.08),
+      rgba(0,0,0,.9)
+    );
+
+  border:
+    1px solid rgba(255,0,92,.12);
+
+  padding:24px;
+}
+
+.member-skeleton-avatar{
+
+  width:90px;
+  height:90px;
+
+  border-radius:50%;
+
+  margin-bottom:20px;
+}
+
+.member-skeleton-line{
+
+  height:18px;
+
+  border-radius:12px;
+
+  margin-bottom:14px;
+}
+
+.member-skeleton-line.big{
+
+  width:70%;
+  height:28px;
+}
+
+.member-skeleton-line.small{
+
+  width:40%;
+}
+
+/* =========================================
+   TABLE
+========================================= */
+
+.table-skeleton{
+
+  height:60px;
+
+  border-radius:16px;
+
+  margin-bottom:12px;
+}
+
+/* =========================================
+   DASHBOARD
+========================================= */
+
+.stat-skeleton{
+
+  height:170px;
+
+  border-radius:28px;
+}
