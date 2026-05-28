@@ -52,11 +52,25 @@ export default function Team(){
         ?.toLowerCase()
         .includes(search.toLowerCase())
 
-    const matchRole =
+const LEADER_ROLE = '1390073606481907895'
+const DEPUTY_ROLE = '1390074547864207534'
 
-      filter === 'all'
-      ? true
-      : member.roles?.includes('1390073606481907895')
+const matchRole =
+
+  filter === 'all'
+
+  ? true
+
+  : filter === 'leader'
+
+  ? member.roles?.includes(LEADER_ROLE)
+
+  : filter === 'deputy'
+
+  ? member.roles?.includes(DEPUTY_ROLE)
+
+  : !member.roles?.includes(LEADER_ROLE) &&
+    !member.roles?.includes(DEPUTY_ROLE)
 
     return matchSearch && matchRole
 
