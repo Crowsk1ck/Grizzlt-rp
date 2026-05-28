@@ -1,7 +1,3 @@
-/* =========================================
-   PREMIUM SIDEBAR
-========================================= */
-
 .sidebar{
 
   position:fixed;
@@ -21,12 +17,12 @@
   background:
     linear-gradient(
       180deg,
-      rgba(10,10,14,.98),
+      rgba(12,12,16,.98),
       rgba(6,6,10,.98)
     );
 
   border-right:
-    1px solid rgba(255,0,92,.10);
+    1px solid rgba(255,255,255,.04);
 
   overflow:hidden;
 
@@ -45,9 +41,9 @@
   border-radius:50%;
 
   background:
-    rgba(255,0,92,.08);
+    rgba(255,0,92,.06);
 
-  filter:blur(100px);
+  filter:blur(110px);
 
   top:-120px;
   left:-120px;
@@ -93,17 +89,15 @@
 
   margin-top:6px;
 
-  color:white;
-
   font-size:12px;
 
   letter-spacing:5px;
 
-  opacity:.9;
+  color:white;
 }
 
 /* =========================================
-   NAVIGATION
+   NAV
 ========================================= */
 
 .sidebar-nav{
@@ -133,15 +127,16 @@
     rgba(255,255,255,.03);
 
   border:
-    1px solid rgba(255,255,255,.03);
+    1px solid rgba(255,255,255,.04);
 
-  color:#d3d3db;
+  color:#cfcfd7;
 
   font-size:13px;
 
   font-weight:800;
 
-  transition:.3s;
+  transition:
+    .3s cubic-bezier(.22,1,.36,1);
 }
 
 .sidebar-nav a:hover{
@@ -150,7 +145,7 @@
     translateX(5px);
 
   border-color:
-    rgba(255,0,92,.16);
+    rgba(255,0,92,.18);
 
   color:white;
 }
@@ -164,21 +159,19 @@
       #ff2f92
     );
 
-  color:white;
-
   border:none;
 
+  color:white;
+
   box-shadow:
-    0 10px 24px rgba(255,0,92,.24);
+    0 10px 24px rgba(255,0,92,.22);
 }
 
 /* =========================================
-   FAMILY STATUS
+   STATUS
 ========================================= */
 
 .family-status{
-
-  margin-top:24px;
 
   padding:14px;
 
@@ -279,7 +272,7 @@
     border-right:none;
 
     border-top:
-      1px solid rgba(255,0,92,.12);
+      1px solid rgba(255,255,255,.06);
   }
 
   .brand,
