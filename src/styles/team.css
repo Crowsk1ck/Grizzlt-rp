@@ -1,36 +1,24 @@
 .team-page{
-
   display:flex;
-
   flex-direction:column;
-
   gap:18px;
 }
- 
+
 /* =========================================
    TOP SECTION
 ========================================= */
 
 .team-top{
-
   display:grid;
-
-  grid-template-columns:
-    1.1fr .9fr;
-
+  grid-template-columns:1.1fr .9fr;
   gap:18px;
 }
 
 .team-hero{
-
   position:relative;
-
   overflow:hidden;
-
   min-height:260px;
-
   border-radius:28px;
-
   padding:34px;
 
   background:
@@ -40,12 +28,10 @@
       rgba(0,0,0,.92)
     );
 
-  border:
-    1px solid rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.05);
 }
 
 .team-hero::before{
-
   content:'';
 
   position:absolute;
@@ -55,8 +41,7 @@
 
   border-radius:50%;
 
-  background:
-    rgba(255,0,92,.12);
+  background:rgba(255,0,92,.12);
 
   filter:blur(120px);
 
@@ -65,15 +50,13 @@
 }
 
 .team-badge{
-
   width:max-content;
 
   padding:8px 16px;
 
   border-radius:999px;
 
-  background:
-    rgba(255,0,92,.12);
+  background:rgba(255,0,92,.12);
 
   color:#ff2f92;
 
@@ -87,29 +70,20 @@
 }
 
 .team-hero h1{
-
   font-size:64px;
-
   line-height:.9;
-
   font-weight:900;
-
   margin-bottom:20px;
-
   color:#ff0066;
 }
 
 .team-hero h1 span{
-
   color:white;
 }
 
 .team-hero p{
-
   max-width:520px;
-
   color:#b9b9c5;
-
   line-height:1.7;
 }
 
@@ -118,17 +92,12 @@
 ========================================= */
 
 .team-stats{
-
   display:grid;
-
-  grid-template-columns:
-    repeat(2,1fr);
-
+  grid-template-columns:repeat(2,1fr);
   gap:14px;
 }
 
 .team-stat{
-
   min-height:120px;
 
   padding:22px;
@@ -142,34 +111,26 @@
       rgba(0,0,0,.92)
     );
 
-  border:
-    1px solid rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.05);
 
   transition:.3s;
 }
 
 .team-stat:hover{
-
-  transform:
-    translateY(-5px);
+  transform:translateY(-5px);
 
   box-shadow:
     0 20px 40px rgba(255,0,92,.12);
 }
 
 .team-stat h3{
-
   font-size:38px;
-
   color:#ff0066;
-
   margin-bottom:10px;
 }
 
 .team-stat span{
-
   color:#a8a8b4;
-
   font-size:12px;
 }
 
@@ -178,79 +139,73 @@
 ========================================= */
 
 .team-controls{
-
   display:flex;
-
   justify-content:space-between;
-
   align-items:center;
-
   gap:16px;
-
   flex-wrap:wrap;
 }
 
 .team-tabs{
-
   display:flex;
-
   gap:10px;
-
   flex-wrap:wrap;
 }
 
 .team-tabs button{
-
   height:44px;
 
   padding:0 18px;
 
+  border:none;
+
   border-radius:14px;
 
-  background:
-    rgba(255,255,255,.04);
+  background:rgba(255,255,255,.04);
 
-  border:
-    1px solid rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.05);
 
   color:white;
 
   font-weight:700;
 
+  cursor:pointer;
+
   transition:.3s;
 }
 
 .team-tabs button:hover{
+  border-color:rgba(255,0,92,.2);
 
-  border-color:
-    rgba(255,0,92,.2);
+  transform:translateY(-2px);
 }
 
 .team-tabs .active{
-
   background:
     linear-gradient(
       135deg,
       #ff0066,
       #ff2f92
     );
+
+  box-shadow:
+    0 10px 25px rgba(255,0,92,.25);
 }
 
 .team-search{
-
   width:260px;
-
   height:46px;
 
   padding:0 18px;
 
+  border:none;
+  outline:none;
+
   border-radius:14px;
 
-  background:
-    rgba(255,255,255,.04);
+  background:rgba(255,255,255,.04);
 
-  border:
-    1px solid rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.05);
 
   color:white;
 }
@@ -260,7 +215,6 @@
 ========================================= */
 
 .members-grid{
-
   display:grid;
 
   grid-template-columns:
@@ -272,16 +226,8 @@
 /* =========================================
    MEMBER CARD
 ========================================= */
-.member-info{
 
-  flex:1;
-
-  min-width:0;
-
-  overflow:hidden;
-}
 .member-card{
-
   position:relative;
 
   overflow:hidden;
@@ -303,24 +249,14 @@
       rgba(0,0,0,.94)
     );
 
-  border:
-    1px solid rgba(255,255,255,.05);
-
-  transition:
-    .35s cubic-bezier(.22,1,.36,1);
-}
-
-  border:
-    1px solid rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.05);
 
   transition:
     .35s cubic-bezier(.22,1,.36,1);
 }
 
 .member-card:hover{
-
-  transform:
-    translateY(-8px);
+  transform:translateY(-8px);
 
   border-color:
     rgba(255,0,92,.22);
@@ -330,7 +266,6 @@
 }
 
 .member-card::before{
-
   content:'';
 
   position:absolute;
@@ -350,19 +285,22 @@
 }
 
 .member-top{
-
   position:relative;
+
   z-index:2;
+
   display:flex;
+
   align-items:flex-start;
+
   min-height:92px;
+
   gap:16px;
 
   margin-bottom:24px;
 }
 
 .member-avatar{
-
   width:78px;
   height:78px;
 
@@ -371,10 +309,19 @@
   border-radius:22px;
 
   border:2px solid #ff0066;
+
+  flex-shrink:0;
+}
+
+.member-info{
+  flex:1;
+
+  min-width:0;
+
+  overflow:hidden;
 }
 
 .member-info h3{
-
   display:block;
 
   font-size:22px;
@@ -389,8 +336,8 @@
 
   margin-bottom:8px;
 }
-.member-role{
 
+.member-role{
   width:max-content;
 
   padding:6px 12px;
@@ -412,7 +359,6 @@
 ========================================= */
 
 .member-stats{
-
   position:relative;
 
   z-index:2;
@@ -428,11 +374,14 @@
 }
 
 .member-box{
-
   padding:18px;
+
   display:flex;
+
   flex-direction:column;
+
   justify-content:center;
+
   border-radius:18px;
 
   background:
@@ -443,7 +392,6 @@
 }
 
 .member-box strong{
-
   display:block;
 
   font-size:22px;
@@ -454,7 +402,6 @@
 }
 
 .member-box span{
-
   color:#a5a5b2;
 
   font-size:11px;
@@ -465,7 +412,6 @@
 ========================================= */
 
 .member-status{
-
   position:absolute;
 
   right:18px;
@@ -479,7 +425,9 @@
 
 .online{
   background:#00ff99;
-  box-shadow:0 0 15px rgba(0,255,153,.7);
+
+  box-shadow:
+    0 0 15px rgba(0,255,153,.7);
 }
 
 .offline{
@@ -493,7 +441,6 @@
 @media(max-width:1100px){
 
   .team-top{
-
     grid-template-columns:1fr;
   }
 
@@ -502,23 +449,23 @@
 @media(max-width:700px){
 
   .team-hero{
-
     padding:26px;
   }
 
   .team-hero h1{
-
     font-size:44px;
   }
 
   .team-stats{
-
     grid-template-columns:1fr;
   }
 
   .team-search{
-
     width:100%;
+  }
+
+  .members-grid{
+    grid-template-columns:1fr;
   }
 
 }
