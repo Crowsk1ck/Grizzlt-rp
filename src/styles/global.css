@@ -348,8 +348,6 @@ th,td{
     grid-template-columns:1fr;
   }
 
-}
-
 .contracts-page{
   display:flex;
   flex-direction:column;
