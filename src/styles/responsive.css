@@ -1,169 +1,83 @@
-/* =========================================
-   1600
-========================================= */
-
-@media(max-width:1600px){
+@media(max-width:1200px){
 
   .stats-row{
-
     grid-template-columns:
       repeat(3,1fr);
   }
 
   .dashboard-layout{
+    grid-template-columns:1fr;
+  }
 
+  .team-header{
     grid-template-columns:1fr;
   }
 
 }
-
-/* =========================================
-   1400
-========================================= */
-
-@media(max-width:1400px){
-
-  .members-grid{
-
-    grid-template-columns:
-      repeat(3,1fr);
-  }
-
-}
-
-/* =========================================
-   1100
-========================================= */
-
-@media(max-width:1100px){
-
-  .members-grid{
-
-    grid-template-columns:
-      repeat(2,1fr);
-  }
-
-  .hero-left h1{
-
-    font-size:72px;
-  }
-
-}
-
-/* =========================================
-   900
-========================================= */
 
 @media(max-width:900px){
 
   .content{
-
     margin-left:90px;
   }
 
   .hero-banner{
-
-    padding:40px;
+    padding:28px;
+    min-height:300px;
   }
 
   .hero-left h1{
-
-    font-size:58px;
+    font-size:52px;
   }
 
   .stats-row{
-
     grid-template-columns:
       repeat(2,1fr);
   }
 
-  .contracts-grid{
-
+  .members-grid{
     grid-template-columns:1fr;
   }
 
 }
-
-/* =========================================
-   700
-========================================= */
 
 @media(max-width:700px){
 
   .content{
-
     margin-left:0;
-
-    padding:14px;
+    padding:14px 14px 90px;
   }
 
   .topbar{
-
     flex-direction:column;
-
     align-items:flex-start;
   }
 
-  .hero-banner{
+  .sidebar{
 
-    padding:28px;
+    bottom:0;
 
-    min-height:auto;
-  }
+    top:auto;
 
-  .hero-left h1{
+    width:100%;
 
-    font-size:42px;
-  }
+    height:76px;
 
-  .hero-left p{
+    flex-direction:row;
 
-    font-size:15px;
-  }
-
-  .stats-row{
-
-    grid-template-columns:1fr;
-  }
-
-  .members-grid{
-
-    grid-template-columns:1fr;
-  }
-
-  .tabs{
-
-    overflow:auto;
-
-    padding-bottom:10px;
+    align-items:center;
   }
 
 }
 
-/* =========================================
-   500
-========================================= */
-
-@media(max-width:500px){
+@media(max-width:600px){
 
   .hero-left h1{
-
-    font-size:34px;
+    font-size:40px;
   }
 
-  .stat-box{
-
-    padding:22px;
-  }
-
-  .member-panel{
-
-    padding:22px;
-  }
-
-  .panel{
-
-    padding:22px;
+  .stats-row{
+    grid-template-columns:1fr;
   }
 
 }
