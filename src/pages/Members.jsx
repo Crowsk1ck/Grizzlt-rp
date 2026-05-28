@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import {
   db,
@@ -9,6 +9,8 @@ import {
 export default function Members(){
 
   const [members,setMembers] = useState([])
+  const [search,setSearch] = useState('')
+  const [loading,setLoading] = useState(true)
 
   useEffect(()=>{
 
@@ -20,6 +22,8 @@ export default function Members(){
 
     try{
 
+      setLoading(true)
+
       const snapshot = await getDocs(
         collection(db,'discord_members')
       )
@@ -30,7 +34,10 @@ export default function Members(){
         ...doc.data(),
 
         contracts:0,
-        income:0
+        income:0,
+        level:Math.floor(Math.random()*50)+1,
+        xp:Math.floor(Math.random()*100),
+        role:'GRIZZLY MEMBER'
 
       }))
 
@@ -50,7 +57,6 @@ export default function Members(){
             contract.members || ''
           )
           .split(',')
-
           .map(v=>v.trim())
 
           if(
@@ -86,104 +92,228 @@ export default function Members(){
 
       console.error(error)
 
+    }finally{
+
+      setLoading(false)
+
     }
 
   }
 
+  const filteredMembers = useMemo(()=>{
+
+    return members.filter(member=>
+      member.username
+      ?.toLowerCase()
+      .includes(search.toLowerCase())
+    )
+
+  },[members,search])
+
+  const totalIncome = members.reduce((acc,item)=>{
+    return acc + item.income
+  },0)
+
+  const onlineMembers = members.filter(member=>
+    member.online
+  ).length
+
   return(
 
-    <section className="members-page">
+    <section className="premium-members-page">
 
-      <div className="members-header">
+      <div className="premium-members-top">
 
-        <h1>
-          MEMBER MANAGER
-        </h1>
+        <div>
 
-        <p>
-          Управление участниками семьи
-        </p>
+          <span className="members-badge">
+            GRIZZLY FAMILY
+          </span>
+
+          <h1>
+            PREMIUM MEMBER SYSTEM
+          </h1>
+
+          <p>
+            Управление составом семьи GTA RP
+          </p>
+
+        </div>
+
+        <div className="members-search">
+
+          <input
+            type="text"
+            placeholder="Поиск участника..."
+            value={search}
+            onChange={e=>setSearch(e.target.value)}
+          />
+
+        </div>
+
+      </div>
+
+      <div className="members-stats-grid">
+
+        <div className="premium-stat-card">
+
+          <span>
+            ВСЕГО УЧАСТНИКОВ
+          </span>
+
+          <h2>
+            {members.length}
+          </h2>
+
+        </div>
+
+        <div className="premium-stat-card">
+
+          <span>
+            ONLINE
+          </span>
+
+          <h2>
+            {onlineMembers}
+          </h2>
+
+        </div>
+
+        <div className="premium-stat-card">
+
+          <span>
+            ОБЩИЙ ДОХОД
+          </span>
+
+          <h2>
+            ${Math.floor(totalIncome).toLocaleString()}
+          </h2>
+
+        </div>
 
       </div>
 
-      <div className="members-grid">
+      {
+        loading
+          ? (
+            <div className="members-loading">
+              LOADING MEMBERS...
+            </div>
+          )
+          : (
+            <div className="premium-members-grid">
 
-        {members.map(member=>(
+              {filteredMembers.map(member=>(
 
-          <div
-            className="member-card"
-            key={member.id}
-          >
+                <div
+                  className="premium-member-card"
+                  key={member.id}
+                >
 
-            <img
-              src={member.avatar}
-              alt=""
-            />
+                  <div className="member-card-glow" />
 
-            <h2>
-              {member.username}
-            </h2>
+                  <div className="member-avatar-wrapper">
 
-            <span className={
-              member.online
-                ? 'online'
-                : 'offline'
-            }>
-              {
-                member.online
-                  ? 'ONLINE'
-                  : 'OFFLINE'
-              }
-            </span>
+                    <img
+                      src={member.avatar}
+                      alt=""
+                      className="member-avatar"
+                    />
 
-            <div className="member-stats">
+                    <span className={
+                      member.online
+                        ? 'member-status online'
+                        : 'member-status offline'
+                    } />
 
-              <div>
+                  </div>
 
-                <strong>
-                  {member.contracts}
-                </strong>
+                  <div className="member-info">
 
-                <p>
-                  Контрактов
-                </p>
+                    <h2>
+                      {member.username}
+                    </h2>
 
-              </div>
+                    <p>
+                      {member.role}
+                    </p>
 
-              <div>
+                  </div>
 
-                <strong>
-                  $
-                  {Math.floor(
-                    member.income
-                  ).toLocaleString()}
-                </strong>
+                  <div className="member-level">
 
-                <p>
-                  Доход
-                </p>
+                    <div className="level-top">
 
-              </div>
+                      <span>
+                        LEVEL {member.level}
+                      </span>
+
+                      <span>
+                        {member.xp}%
+                      </span>
+
+                    </div>
+
+                    <div className="xp-bar">
+
+                      <div
+                        className="xp-fill"
+                        style={{
+                          width:`${member.xp}%`
+                        }}
+                      />
+
+                    </div>
+
+                  </div>
+
+                  <div className="premium-member-stats">
+
+                    <div>
+
+                      <strong>
+                        {member.contracts}
+                      </strong>
+
+                      <p>
+                        Контрактов
+                      </p>
+
+                    </div>
+
+                    <div>
+
+                      <strong>
+                        ${Math.floor(member.income).toLocaleString()}
+                      </strong>
+
+                      <p>
+                        Доход
+                      </p>
+
+                    </div>
+
+                  </div>
+
+                  <div className="premium-member-actions">
+
+                    <button>
+                      PROFILE
+                    </button>
+
+                    <button>
+                      ADMIN PANEL
+                    </button>
+
+                  </div>
+
+                </div>
+
+              ))}
 
             </div>
-
-            <div className="member-actions">
-
-              <button>
-                PROFILE
-              </button>
-
-              <button>
-                ADMIN
-              </button>
-
-            </div>
-
-          </div>
-
-        ))}
-
-      </div>
+          )
+      }
 
     </section>
 
