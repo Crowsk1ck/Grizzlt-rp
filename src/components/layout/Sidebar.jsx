@@ -2,7 +2,7 @@ import {
   NavLink,
   Link
 } from 'react-router-dom'
-
+import '../styles/sidebar.css'
 export default function Sidebar({ isAdmin }){
   return(
     <aside className="sidebar">
