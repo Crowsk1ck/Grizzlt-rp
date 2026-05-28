@@ -6,33 +6,54 @@ import {
 } from 'firebase/firestore'
 
 import { db } from '../services/firebase/firebase'
+
 import '../styles/team.css'
 
 export default function Team(){
 
-  const ROLE_OWNER = '1390073606481907895'
-  const ROLE_LEADER = '1390074547864207534'
-  const ROLE_VETERAN = '1390074876207042590'
+  const ROLE_OWNER =
+    '1390073606481907895'
 
-  const [filter,setFilter] = useState('ALL')
-  const [members,setMembers] = useState([])
-  const [contracts,setContracts] = useState([])
-  const [search,setSearch] = useState('')
+  const ROLE_LEADER =
+    '1390074547864207534'
+
+  const ROLE_VETERAN =
+    '1390074876207042590'
+
+  const [filter,setFilter] =
+    useState('ALL')
+
+  const [members,setMembers] =
+    useState([])
+
+  const [contracts,setContracts] =
+    useState([])
+
+  const [search,setSearch] =
+    useState('')
+
+  const [loading,setLoading] =
+    useState(true)
 
   const [stats,setStats] = useState({
+
     members:0,
     online:0,
     income:0,
     contracts:0
+
   })
 
   useEffect(()=>{
 
     const unsubMembers = onSnapshot(
+
       collection(db,'discord_members'),
+
       (snapshot)=>{
 
         const users = []
+
         let onlineCount = 0
 
         snapshot.forEach((doc)=>{
@@ -41,14 +62,34 @@ export default function Team(){
 
           let role = 'УЧАСТНИК'
 
-          if(data.roles?.includes(ROLE_OWNER)){
+          if(
+            data.roles?.includes(
+              ROLE_OWNER
+            )
+          ){
+
             role = 'ЛИДЕР'
+
           }
-          else if(data.roles?.includes(ROLE_LEADER)){
+
+          else if(
+            data.roles?.includes(
+              ROLE_LEADER
+            )
+          ){
+
             role = 'ЗАМЕСТИТЕЛЬ'
+
           }
-          else if(data.roles?.includes(ROLE_VETERAN)){
+
+          else if(
+            data.roles?.includes(
+              ROLE_VETERAN
+            )
+          ){
+
             role = 'ВЕТЕРАН'
+
           }
 
           if(data.online){
@@ -56,16 +97,28 @@ export default function Team(){
           }
 
           users.push({
+
             name:data.username,
+
             role,
+
             status:data.online
               ? 'В СЕТИ'
               : 'НЕ В СЕТИ',
+
             online:data.online,
+
             avatar:data.avatar,
+
             contracts:0,
+
             income:0,
-            level:Math.floor(Math.random()*50)+1
+
+            level:
+              Math.floor(
+                Math.random()*50
+              ) + 1
+
           })
 
         })
@@ -73,32 +126,47 @@ export default function Team(){
         setMembers(users)
 
         setStats(prev=>({
+
           ...prev,
+
           members:users.length,
+
           online:onlineCount
+
         }))
 
+        setLoading(false)
+
       }
+
     )
 
     const unsubContracts = onSnapshot(
+
       collection(db,'contracts'),
+
       (snapshot)=>{
 
         const data = []
 
         snapshot.forEach((doc)=>{
+
           data.push(doc.data())
+
         })
 
         setContracts(data)
 
       }
+
     )
 
     return ()=>{
+
       unsubMembers()
+
       unsubContracts()
+
     }
 
   },[])
@@ -109,14 +177,17 @@ export default function Team(){
       return
     }
 
-    const updatedMembers = [...members]
+    const updatedMembers =
+      [...members]
 
     let totalIncome = 0
+
     let totalContracts = 0
 
     updatedMembers.forEach(member=>{
 
       member.contracts = 0
+
       member.income = 0
 
       contracts.forEach(contract=>{
@@ -127,15 +198,21 @@ export default function Team(){
         .split(',')
         .map(v=>v.trim())
 
-        if(users.includes(member.name)){
+        if(
+          users.includes(member.name)
+        ){
 
           member.contracts += 1
 
           totalContracts++
 
           const total = Number(
-            String(contract.price || 0)
+
+            String(
+              contract.price || 0
+            )
             .replace(/[^\d]/g,'')
+
           )
 
           const membersCount =
@@ -158,27 +235,100 @@ export default function Team(){
     setMembers(updatedMembers)
 
     setStats(prev=>({
+
       ...prev,
-      income:Math.floor(totalIncome),
+
+      income:
+        Math.floor(totalIncome),
+
       contracts:totalContracts
+
     }))
 
   },[contracts])
 
   const filteredMembers = members
+
     .filter(member=>
+
       filter === 'ALL'
+
         ? true
+
         : member.role === filter
+
     )
+
     .filter(member=>
+
       member.name
         ?.toLowerCase()
-        .includes(search.toLowerCase())
+        .includes(
+          search.toLowerCase()
+        )
+
     )
 
   const topMember = [...members]
-    .sort((a,b)=>b.income-a.income)[0]
+
+    .sort((a,b)=>
+
+      b.income - a.income
+
+    )[0]
+
+  if(loading){
+
+    return(
+
+      <div className="members-grid">
+
+        {
+
+          [...Array(8)].map((_,index)=>(
+
+            <div
+              key={index}
+              className="
+                member-skeleton
+                skeleton
+              "
+            >
+
+              <div
+                className="
+                  member-skeleton-avatar
+                  skeleton
+                "
+              />
+
+              <div
+                className="
+                  member-skeleton-line
+                  big
+                  skeleton
+                "
+              />
+
+              <div
+                className="
+                  member-skeleton-line
+                  small
+                  skeleton
+                "
+              />
+
+            </div>
+
+          ))
+
+        }
+
+      </div>
+
+    )
+
+  }
 
   return(
 
@@ -197,7 +347,8 @@ export default function Team(){
           </h1>
 
           <p>
-            Сильные лидеры. Верные соратники.
+            Сильные лидеры.
+            Верные соратники.
           </p>
 
         </div>
@@ -205,62 +356,92 @@ export default function Team(){
         <div className="team-stats">
 
           <div className="team-stat">
-            <h3>{stats.members}</h3>
+
+            <h3>
+              {stats.members}
+            </h3>
+
             <span>
               ВСЕГО УЧАСТНИКОВ
             </span>
+
           </div>
 
           <div className="team-stat">
-            <h3>{stats.online}</h3>
+
+            <h3>
+              {stats.online}
+            </h3>
+
             <span>
               ONLINE
             </span>
+
           </div>
 
           <div className="team-stat">
+
             <h3>
-              ${stats.income.toLocaleString()}
+              $
+              {stats.income
+                .toLocaleString()}
             </h3>
+
             <span>
               ОБЩИЙ ДОХОД
             </span>
+
           </div>
 
           <div className="team-stat">
-            <h3>{stats.contracts}</h3>
+
+            <h3>
+              {stats.contracts}
+            </h3>
+
             <span>
               КОНТРАКТОВ
             </span>
+
           </div>
 
         </div>
 
       </div>
 
-      {topMember && (
+      {
 
-        <div className="top-earner">
+        topMember && (
 
-          <div>
+          <div className="top-earner">
 
-            <span>
-              TOP EARNER
-            </span>
+            <div>
 
-            <h2>
-              {topMember.name}
-            </h2>
+              <span>
+                TOP EARNER
+              </span>
+
+              <h2>
+                {topMember.name}
+              </h2>
+
+            </div>
+
+            <strong>
+
+              $
+
+              {Math.floor(
+                topMember.income
+              ).toLocaleString()}
+
+            </strong>
 
           </div>
 
-          <strong>
-            ${Math.floor(topMember.income).toLocaleString()}
-          </strong>
+        )
 
-        </div>
-
-      )}
+      }
 
       <div className="team-controls">
 
@@ -272,7 +453,9 @@ export default function Team(){
                 ? 'active'
                 : ''
             }
-            onClick={()=> setFilter('ALL')}
+            onClick={()=>
+              setFilter('ALL')
+            }
           >
             ВСЕ
           </button>
@@ -283,7 +466,9 @@ export default function Team(){
                 ? 'active'
                 : ''
             }
-            onClick={()=> setFilter('ЛИДЕР')}
+            onClick={()=>
+              setFilter('ЛИДЕР')
+            }
           >
             ЛИДЕРЫ
           </button>
@@ -294,7 +479,11 @@ export default function Team(){
                 ? 'active'
                 : ''
             }
-            onClick={()=> setFilter('ЗАМЕСТИТЕЛЬ')}
+            onClick={()=>
+              setFilter(
+                'ЗАМЕСТИТЕЛЬ'
+              )
+            }
           >
             ЗАМЫ
           </button>
@@ -305,7 +494,9 @@ export default function Team(){
                 ? 'active'
                 : ''
             }
-            onClick={()=> setFilter('ВЕТЕРАН')}
+            onClick={()=>
+              setFilter('ВЕТЕРАН')
+            }
           >
             ВЕТЕРАНЫ
           </button>
@@ -315,10 +506,14 @@ export default function Team(){
         <div className="search-row">
 
           <input
-            placeholder="Поиск участника..."
+            placeholder="
+              Поиск участника...
+            "
             value={search}
             onChange={(e)=>
-              setSearch(e.target.value)
+              setSearch(
+                e.target.value
+              )
             }
           />
 
@@ -328,100 +523,155 @@ export default function Team(){
 
       <div className="members-grid">
 
-        {filteredMembers.map((member,index)=>(
+        {
 
-          <div
-            className={`member-panel ${
-              member.role === 'ЛИДЕР'
-                ? 'leader'
-                : member.role === 'ВЕТЕРАН'
-                ? 'veteran'
-                : 'member'
-            }`}
-            key={index}
-          >
+          filteredMembers.map(
+            (member,index)=>(
 
-            <div className="member-overlay"></div>
-            <div className="member-glow"></div>
+            <div
 
-            <div className="member-content">
+              className={`
+                member-panel
 
-              <div className="avatar-wrapper">
+                ${
+                  member.role ===
+                  'ЛИДЕР'
 
-                <img
-                  src={
-                    member.avatar ||
-                    'https://cdn.discordapp.com/embed/avatars/0.png'
-                  }
-                  alt=""
-                  className="member-avatar"
-                />
+                    ? 'leader'
 
-                <span
-                  className={
-                    member.online
-                      ? 'status-dot status-online'
-                      : 'status-dot status-offline'
-                  }
-                />
+                    : member.role ===
+                      'ВЕТЕРАН'
 
-              </div>
+                    ? 'veteran'
 
-              <h3>
-                {member.name}
-              </h3>
-
-              <span className="member-role">
-                {member.role}
-              </span>
-
-              <div className="member-level">
-                LEVEL {member.level}
-              </div>
-
-              <div className="member-stats-box">
-
-                <div>
-
-                  <strong>
-                    {member.contracts}
-                  </strong>
-
-                  <span>
-                    Контрактов
-                  </span>
-
-                </div>
-
-                <div>
-
-                  <strong>
-                    ${Math.floor(member.income).toLocaleString()}
-                  </strong>
-
-                  <span>
-                    Заработано
-                  </span>
-
-                </div>
-
-              </div>
-
-              <div
-                className={
-                  member.status === 'В СЕТИ'
-                    ? 'team-online'
-                    : 'team-offline'
+                    : 'member'
                 }
-              >
-                {member.status}
+              `}
+
+              key={index}
+            >
+
+              <div className="
+                member-overlay
+              " />
+
+              <div className="
+                member-glow
+              " />
+
+              <div className="
+                member-content
+              ">
+
+                <div className="
+                  avatar-wrapper
+                ">
+
+                  <img
+
+                    src={
+                      member.avatar ||
+
+                      'https://cdn.discordapp.com/embed/avatars/0.png'
+                    }
+
+                    alt=""
+
+                    className="
+                      member-avatar
+                    "
+                  />
+
+                  <span
+
+                    className={
+                      member.online
+
+                        ? 'status-dot status-online'
+
+                        : 'status-dot status-offline'
+                    }
+
+                  />
+
+                </div>
+
+                <h3>
+                  {member.name}
+                </h3>
+
+                <span className="
+                  member-role
+                ">
+                  {member.role}
+                </span>
+
+                <div className="
+                  member-level
+                ">
+                  LEVEL {member.level}
+                </div>
+
+                <div className="
+                  member-stats-box
+                ">
+
+                  <div>
+
+                    <strong>
+                      {member.contracts}
+                    </strong>
+
+                    <span>
+                      Контрактов
+                    </span>
+
+                  </div>
+
+                  <div>
+
+                    <strong>
+
+                      $
+
+                      {Math.floor(
+                        member.income
+                      ).toLocaleString()}
+
+                    </strong>
+
+                    <span>
+                      Заработано
+                    </span>
+
+                  </div>
+
+                </div>
+
+                <div
+
+                  className={
+                    member.status ===
+                    'В СЕТИ'
+
+                      ? 'team-online'
+
+                      : 'team-offline'
+                  }
+
+                >
+
+                  {member.status}
+
+                </div>
+
               </div>
 
             </div>
 
-          </div>
+          ))
 
-        ))}
+        }
 
       </div>
 
