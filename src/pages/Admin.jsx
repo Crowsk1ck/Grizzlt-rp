@@ -8,7 +8,7 @@ import {
   doc,
   updateDoc
 } from '../services/firebase/firebase'
-import '../styles/admin.css'
+import '../styles/admin.css' 
 export default function Admin(){
 
   const [contracts,setContracts] = useState([])
