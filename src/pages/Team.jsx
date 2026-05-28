@@ -11,344 +11,94 @@ import '../styles/team.css'
 
 export default function Team(){
 
-  const ROLE_OWNER =
-    '1390073606481907895'
+  const [members,setMembers] = useState([])
 
-  const ROLE_LEADER =
-    '1390074547864207534'
+  const [search,setSearch] = useState('')
 
-  const ROLE_VETERAN =
-    '1390074876207042590'
-
-  const [filter,setFilter] =
-    useState('ALL')
-
-  const [members,setMembers] =
-    useState([])
-
-  const [contracts,setContracts] =
-    useState([])
-
-  const [search,setSearch] =
-    useState('')
-
-  const [loading,setLoading] =
-    useState(true)
-
-  const [stats,setStats] = useState({
-
-    members:0,
-    online:0,
-    income:0,
-    contracts:0
-
-  })
+  const [filter,setFilter] = useState('all')
 
   useEffect(()=>{
 
-    const unsubMembers = onSnapshot(
+    const unsub = onSnapshot(
 
-      collection(db,'discord_members'),
+      collection(db,'members'),
 
       (snapshot)=>{
 
-        const users = []
-
-        let onlineCount = 0
+        const arr = []
 
         snapshot.forEach((doc)=>{
 
-          const data = doc.data()
-
-          let role = 'УЧАСТНИК'
-
-          if(
-            data.roles?.includes(
-              ROLE_OWNER
-            )
-          ){
-
-            role = 'ЛИДЕР'
-
-          }
-
-          else if(
-            data.roles?.includes(
-              ROLE_LEADER
-            )
-          ){
-
-            role = 'ЗАМЕСТИТЕЛЬ'
-
-          }
-
-          else if(
-            data.roles?.includes(
-              ROLE_VETERAN
-            )
-          ){
-
-            role = 'ВЕТЕРАН'
-
-          }
-
-          if(data.online){
-            onlineCount++
-          }
-
-          users.push({
-
-            name:data.username,
-
-            role,
-
-            status:data.online
-              ? 'В СЕТИ'
-              : 'НЕ В СЕТИ',
-
-            online:data.online,
-
-            avatar:data.avatar,
-
-            contracts:0,
-
-            income:0,
-
-            level:
-              Math.floor(
-                Math.random()*50
-              ) + 1
-
+          arr.push({
+            id:doc.id,
+            ...doc.data()
           })
 
         })
 
-        setMembers(users)
-
-        setStats(prev=>({
-
-          ...prev,
-
-          members:users.length,
-
-          online:onlineCount
-
-        }))
-
-        setLoading(false)
-
+        setMembers(arr)
       }
 
     )
 
-    const unsubContracts = onSnapshot(
-
-      collection(db,'contracts'),
-
-      (snapshot)=>{
-
-        const data = []
-
-        snapshot.forEach((doc)=>{
-
-          data.push(doc.data())
-
-        })
-
-        setContracts(data)
-
-      }
-
-    )
-
-    return ()=>{
-
-      unsubMembers()
-
-      unsubContracts()
-
-    }
+    return ()=>unsub()
 
   },[])
 
-  useEffect(()=>{
+  const filteredMembers = members.filter((member)=>{
 
-    if(!members.length){
-      return
-    }
-
-    const updatedMembers =
-      [...members]
-
-    let totalIncome = 0
-
-    let totalContracts = 0
-
-    updatedMembers.forEach(member=>{
-
-      member.contracts = 0
-
-      member.income = 0
-
-      contracts.forEach(contract=>{
-
-        const users = String(
-          contract.members || ''
-        )
-        .split(',')
-        .map(v=>v.trim())
-
-        if(
-          users.includes(member.name)
-        ){
-
-          member.contracts += 1
-
-          totalContracts++
-
-          const total = Number(
-
-            String(
-              contract.price || 0
-            )
-            .replace(/[^\d]/g,'')
-
-          )
-
-          const membersCount =
-            users.length || 1
-
-          const share =
-            (total * 0.8)
-            / membersCount
-
-          member.income += share
-
-          totalIncome += share
-
-        }
-
-      })
-
-    })
-
-    setMembers(updatedMembers)
-
-    setStats(prev=>({
-
-      ...prev,
-
-      income:
-        Math.floor(totalIncome),
-
-      contracts:totalContracts
-
-    }))
-
-  },[contracts])
-
-  const filteredMembers = members
-
-    .filter(member=>
-
-      filter === 'ALL'
-
-        ? true
-
-        : member.role === filter
-
-    )
-
-    .filter(member=>
-
-      member.name
+    const matchSearch =
+      member.username
         ?.toLowerCase()
-        .includes(
-          search.toLowerCase()
-        )
+        .includes(search.toLowerCase())
 
-    )
+    const matchRole =
 
-  const topMember = [...members]
+      filter === 'all'
+      ? true
+      : member.role === filter
 
-    .sort((a,b)=>
+    return matchSearch && matchRole
 
-      b.income - a.income
+  })
 
-    )[0]
+  const totalIncome = members.reduce(
 
-  if(loading){
+    (acc,member)=>
 
-    return(
+      acc + Number(member.earned || 0),
 
-      <div className="members-grid">
+    0
+  )
 
-        {
+  const onlineMembers = members.filter(
 
-          [...Array(8)].map((_,index)=>(
+    (m)=>m.online
 
-            <div
-              key={index}
-              className="
-                member-skeleton
-                skeleton
-              "
-            >
-
-              <div
-                className="
-                  member-skeleton-avatar
-                  skeleton
-                "
-              />
-
-              <div
-                className="
-                  member-skeleton-line
-                  big
-                  skeleton
-                "
-              />
-
-              <div
-                className="
-                  member-skeleton-line
-                  small
-                  skeleton
-                "
-              />
-
-            </div>
-
-          ))
-
-        }
-
-      </div>
-
-    )
-
-  }
+  ).length
 
   return(
 
-    <section className="team-page">
+    <div className="team-page">
 
-      <div className="team-header">
+      <div className="team-top">
 
-        <div>
+        <div className="team-hero">
 
-          <span className="team-badge">
+          <div className="team-badge">
             GRIZZLY FAMILY
-          </span>
+          </div>
 
           <h1>
-            PREMIUM TEAM SYSTEM
+            PREMIUM
+            <br/>
+            <span>TEAM SYSTEM</span>
           </h1>
 
           <p>
             Сильные лидеры.
             Верные соратники.
+            Премиальная система семьи GTA RP.
           </p>
 
         </div>
@@ -356,312 +106,136 @@ export default function Team(){
         <div className="team-stats">
 
           <div className="team-stat">
-
-            <h3>
-              {stats.members}
-            </h3>
-
-            <span>
-              ВСЕГО УЧАСТНИКОВ
-            </span>
-
+            <h3>{members.length}</h3>
+            <span>ВСЕГО УЧАСТНИКОВ</span>
           </div>
 
           <div className="team-stat">
-
-            <h3>
-              {stats.online}
-            </h3>
-
-            <span>
-              ONLINE
-            </span>
-
+            <h3>{onlineMembers}</h3>
+            <span>ONLINE</span>
           </div>
 
           <div className="team-stat">
-
-            <h3>
-              $
-              {stats.income
-                .toLocaleString()}
-            </h3>
-
-            <span>
-              ОБЩИЙ ДОХОД
-            </span>
-
+            <h3>${totalIncome}</h3>
+            <span>ОБЩИЙ ДОХОД</span>
           </div>
 
           <div className="team-stat">
-
-            <h3>
-              {stats.contracts}
-            </h3>
-
-            <span>
-              КОНТРАКТОВ
-            </span>
-
+            <h3>0</h3>
+            <span>КОНТРАКТОВ</span>
           </div>
 
         </div>
 
       </div>
 
-      {
-
-        topMember && (
-
-          <div className="top-earner">
-
-            <div>
-
-              <span>
-                TOP EARNER
-              </span>
-
-              <h2>
-                {topMember.name}
-              </h2>
-
-            </div>
-
-            <strong>
-
-              $
-
-              {Math.floor(
-                topMember.income
-              ).toLocaleString()}
-
-            </strong>
-
-          </div>
-
-        )
-
-      }
-
       <div className="team-controls">
 
-        <div className="tabs">
+        <div className="team-tabs">
 
           <button
             className={
-              filter === 'ALL'
-                ? 'active'
-                : ''
+              filter === 'all'
+              ? 'active'
+              : ''
             }
-            onClick={()=>
-              setFilter('ALL')
-            }
+            onClick={()=>setFilter('all')}
           >
             ВСЕ
           </button>
 
           <button
             className={
-              filter === 'ЛИДЕР'
-                ? 'active'
-                : ''
+              filter === 'leader'
+              ? 'active'
+              : ''
             }
-            onClick={()=>
-              setFilter('ЛИДЕР')
-            }
+            onClick={()=>setFilter('leader')}
           >
             ЛИДЕРЫ
           </button>
 
           <button
             className={
-              filter === 'ЗАМЕСТИТЕЛЬ'
-                ? 'active'
-                : ''
+              filter === 'deputy'
+              ? 'active'
+              : ''
             }
-            onClick={()=>
-              setFilter(
-                'ЗАМЕСТИТЕЛЬ'
-              )
-            }
+            onClick={()=>setFilter('deputy')}
           >
             ЗАМЫ
           </button>
 
           <button
             className={
-              filter === 'ВЕТЕРАН'
-                ? 'active'
-                : ''
+              filter === 'member'
+              ? 'active'
+              : ''
             }
-            onClick={()=>
-              setFilter('ВЕТЕРАН')
-            }
+            onClick={()=>setFilter('member')}
           >
-            ВЕТЕРАНЫ
+            УЧАСТНИКИ
           </button>
 
         </div>
 
-        <div className="search-row">
-
-          <input
-            placeholder="
-              Поиск участника...
-            "
-            value={search}
-            onChange={(e)=>
-              setSearch(
-                e.target.value
-              )
-            }
-          />
-
-        </div>
+        <input
+          type="text"
+          className="team-search"
+          placeholder="Поиск участника..."
+          value={search}
+          onChange={(e)=>
+            setSearch(e.target.value)
+          }
+        />
 
       </div>
 
       <div className="members-grid">
 
-        {
+        {filteredMembers.map((member)=>(
 
-          filteredMembers.map(
-            (member,index)=>(
+          <div
+            className="member-card"
+            key={member.id}
+          >
 
             <div
+              className={
+                member.online
+                ? 'member-status online'
+                : 'member-status offline'
+              }
+            />
 
-              className={`
-                member-panel
+            <div className="member-top">
 
-                ${
-                  member.role ===
-                  'ЛИДЕР'
-
-                    ? 'leader'
-
-                    : member.role ===
-                      'ВЕТЕРАН'
-
-                    ? 'veteran'
-
-                    : 'member'
+              <img
+                src={
+                  member.avatar ||
+                  'https://i.imgur.com/6VBx3io.png'
                 }
-              `}
+                alt=""
+                className="member-avatar"
+              />
 
-              key={index}
-            >
-
-              <div className="
-                member-overlay
-              " />
-
-              <div className="
-                member-glow
-              " />
-
-              <div className="
-                member-content
-              ">
-
-                <div className="
-                  avatar-wrapper
-                ">
-
-                  <img
-
-                    src={
-                      member.avatar ||
-
-                      'https://cdn.discordapp.com/embed/avatars/0.png'
-                    }
-
-                    alt=""
-
-                    className="
-                      member-avatar
-                    "
-                  />
-
-                  <span
-
-                    className={
-                      member.online
-
-                        ? 'status-dot status-online'
-
-                        : 'status-dot status-offline'
-                    }
-
-                  />
-
-                </div>
+              <div className="member-info">
 
                 <h3>
-                  {member.name}
+                  {member.username}
                 </h3>
 
-                <span className="
-                  member-role
-                ">
-                  {member.role}
-                </span>
+                <div className="member-role">
 
-                <div className="
-                  member-level
-                ">
-                  LEVEL {member.level}
-                </div>
+                  {
+                    member.role === 'leader'
+                    ? 'ЛИДЕР'
 
-                <div className="
-                  member-stats-box
-                ">
+                    : member.role === 'deputy'
+                    ? 'ЗАМЕСТИТЕЛЬ'
 
-                  <div>
-
-                    <strong>
-                      {member.contracts}
-                    </strong>
-
-                    <span>
-                      Контрактов
-                    </span>
-
-                  </div>
-
-                  <div>
-
-                    <strong>
-
-                      $
-
-                      {Math.floor(
-                        member.income
-                      ).toLocaleString()}
-
-                    </strong>
-
-                    <span>
-                      Заработано
-                    </span>
-
-                  </div>
-
-                </div>
-
-                <div
-
-                  className={
-                    member.status ===
-                    'В СЕТИ'
-
-                      ? 'team-online'
-
-                      : 'team-offline'
+                    : 'УЧАСТНИК'
                   }
-
-                >
-
-                  {member.status}
 
                 </div>
 
@@ -669,14 +243,68 @@ export default function Team(){
 
             </div>
 
-          ))
+            <div className="member-stats">
 
-        }
+              <div className="member-box">
+
+                <strong>
+                  LEVEL {member.level || 1}
+                </strong>
+
+                <span>
+                  УРОВЕНЬ
+                </span>
+
+              </div>
+
+              <div className="member-box">
+
+                <strong>
+                  {member.contracts || 0}
+                </strong>
+
+                <span>
+                  КОНТРАКТОВ
+                </span>
+
+              </div>
+
+              <div className="member-box">
+
+                <strong>
+                  ${member.earned || 0}
+                </strong>
+
+                <span>
+                  ЗАРАБОТАНО
+                </span>
+
+              </div>
+
+              <div className="member-box">
+
+                <strong>
+                  {
+                    member.online
+                    ? 'ONLINE'
+                    : 'OFFLINE'
+                  }
+                </strong>
+
+                <span>
+                  СТАТУС
+                </span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        ))}
 
       </div>
 
-    </section>
-
+    </div>
   )
-
 }
