@@ -7,7 +7,7 @@ import {
 } from '../services/firebase/firebase'
 
 import { onSnapshot } from 'firebase/firestore'
-
+import '../styles/dashboard.css'
 export default function Dashboard(){
 
   const [contracts,setContracts] = useState([])
