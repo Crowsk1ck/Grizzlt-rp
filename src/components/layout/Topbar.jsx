@@ -8,7 +8,7 @@ const LOGIN_URL =
 export default function Topbar(){
 
   const [user,setUser] = useState(null)
-
+  const [userRole,setUserRole] = useState('MEMBER')
   useEffect(()=>{
 
     const hash = window.location.hash
@@ -51,7 +51,41 @@ export default function Topbar(){
       .then(data=>{
 
         setUser(data)
+fetch(
 
+  'https://discord.com/api/users/@me/guilds',
+
+  {
+    headers:{
+      Authorization:`Bearer ${token}`
+    }
+  }
+
+)
+.then(res=>res.json())
+.then(guilds=>{
+
+  const guild =
+    guilds.find(
+      g=>g.id === '1388985576761182308'
+    )
+
+  if(guild){
+
+    if(
+      guild.permissions?.includes('8')
+    ){
+
+      setUserRole('ADMIN')
+
+    }else{
+
+      setUserRole('MEMBER')
+    }
+
+  }
+
+})
       })
 
     }
@@ -104,8 +138,8 @@ export default function Topbar(){
               </span>
 
               <span className="role-badge">
-                MEMBER
-              </span>
+  {userRole}
+</span>
 
             </div>
 
