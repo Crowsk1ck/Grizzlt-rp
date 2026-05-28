@@ -1,7 +1,3 @@
-/* =========================================
-   GLOBAL RESET
-========================================= */
-
 *{
   margin:0;
   padding:0;
@@ -9,287 +5,92 @@
   font-family:Inter,Arial,sans-serif;
 }
 
-html,
-body{
+:root{
+  --bg:#050507;
+  --card:#0d0d12;
+  --card2:#11111a;
+  --pink:#ff0066;
+  --pink2:#ff2f92;
+  --text:#ffffff;
+  --muted:#9f9fad;
+  --green:#00ff99;
+}
 
-  background:#050507;
+html,
+body,
+#root{
+
+  min-height:100%;
+
+  background:var(--bg);
 
   color:white;
 
   overflow-x:hidden;
-
-  scroll-behavior:smooth;
 }
 
 body{
 
-  min-height:100vh;
-}
-
-body::before{
-
-  content:'';
-
-  position:fixed;
-
-  inset:0;
-
   background:
-
     radial-gradient(
-      circle at top left,
-      rgba(255,0,92,.08),
-      transparent 30%
+      circle at top,
+      rgba(255,0,92,.14),
+      transparent 35%
     ),
-
-    radial-gradient(
-      circle at bottom right,
-      rgba(255,0,92,.05),
-      transparent 30%
-    );
-
-  pointer-events:none;
-
-  z-index:-2;
+    #050507;
 }
 
-/* =========================================
-   APP
-========================================= */
+body::-webkit-scrollbar{
+  width:8px;
+}
+
+body::-webkit-scrollbar-thumb{
+
+  background:var(--pink);
+
+  border-radius:999px;
+}
 
 .app{
 
   display:flex;
 
   min-height:100vh;
-
-  background:#050507;
 }
 
 .content{
 
   flex:1;
 
-  min-height:100vh;
+  margin-left:170px;
 
-  margin-left:205px;
-
-  padding:20px;
-
-  overflow-x:hidden;
+  padding:18px;
 }
 
-/* =========================================
-   TOPBAR
-========================================= */
-
-.topbar{
-
-  display:flex;
-
-  justify-content:space-between;
-
-  align-items:center;
-
-  gap:20px;
-
-  padding:16px 22px;
-
-  margin-bottom:22px;
-
-  border-radius:24px;
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(15,15,20,.96),
-      rgba(8,8,12,.96)
-    );
-
-  border:
-    1px solid rgba(255,255,255,.04);
-
-  backdrop-filter:blur(18px);
-}
-
-.topbar h1{
-
-  font-size:18px;
-
-  font-weight:900;
-}
-
-.topbar p{
-
-  color:#9d9da8;
-
-  font-size:13px;
-
-  margin-top:4px;
-}
-
-/* =========================================
-   PROFILE
-========================================= */
-
-.topbar-profile{
-
-  display:flex;
-
-  align-items:center;
-
-  gap:12px;
-
-  padding:8px 12px;
-
-  border-radius:18px;
-
-  background:
-    rgba(255,255,255,.03);
-
-  border:
-    1px solid rgba(255,255,255,.04);
-}
-
-.topbar-profile img{
-
-  width:42px;
-  height:42px;
-
-  object-fit:cover;
-
-  border-radius:14px;
-
-  border:2px solid #ff0066;
-}
-
-.nickname{
-
-  font-size:14px;
-
-  font-weight:800;
-}
-
-.role-badge{
-
-  margin-top:3px;
-
-  display:inline-flex;
-
-  align-items:center;
-
-  justify-content:center;
-
-  height:22px;
-
-  padding:0 10px;
-
-  border-radius:999px;
-
-  background:
-    linear-gradient(
-      135deg,
-      #ff0066,
-      #ff2f92
-    );
-
-  font-size:10px;
-
-  font-weight:800;
-}
-
-/* =========================================
-   BUTTONS
-========================================= */
-
-button{
-
-  border:none;
-
-  outline:none;
-
-  cursor:pointer;
-
-  transition:
-    .3s cubic-bezier(.22,1,.36,1);
-}
-
-button:hover{
-
-  transform:
-    translateY(-2px);
-}
-
-/* =========================================
-   INPUTS
-========================================= */
-
+button,
 input,
 textarea{
 
   border:none;
+
   outline:none;
 }
 
-/* =========================================
-   LINKS
-========================================= */
+button{
+  cursor:pointer;
+}
 
 a{
-
   text-decoration:none;
-
-  color:inherit;
 }
-
-/* =========================================
-   SCROLLBAR
-========================================= */
-
-::-webkit-scrollbar{
-
-  width:8px;
-}
-
-::-webkit-scrollbar-track{
-
-  background:#09090d;
-}
-
-::-webkit-scrollbar-thumb{
-
-  background:#ff0066;
-
-  border-radius:999px;
-}
-
-/* =========================================
-   MOBILE
-========================================= */
 
 @media(max-width:900px){
 
   .content{
 
-    margin-left:90px;
-  }
-
-}
-
-@media(max-width:700px){
-
-  .content{
-
     margin-left:0;
 
-    padding:14px 14px 90px;
-  }
-
-  .topbar{
-
-    flex-direction:column;
-
-    align-items:flex-start;
+    padding:14px;
   }
 
 }
