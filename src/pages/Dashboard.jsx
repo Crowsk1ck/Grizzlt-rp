@@ -1,142 +1,10 @@
-import { useEffect, useState } from 'react'
-
-import {
-  db,
-  collection,
-  getDocs
-} from '../services/firebase/firebase'
-
-import { onSnapshot } from 'firebase/firestore'
-
 import '../styles/dashboard.css'
 
 export default function Dashboard(){
 
-  const [contracts,setContracts] = useState([])
-  const [members,setMembers] = useState(0)
-  const [online,setOnline] = useState(0)
-
-  async function loadContracts(){
-
-    try{
-
-      const snapshot = await getDocs(
-        collection(db,'contracts')
-      )
-
-      const data = snapshot.docs.map(doc=>({
-        id:doc.id,
-        ...doc.data()
-      }))
-
-      setContracts(data)
-
-    }catch(error){
-
-      console.error(error)
-
-    }
-
-  }
-
-  async function loadDiscordMembers(){
-
-    try{
-
-      const unsub = onSnapshot(
-        collection(db,'discord_members'),
-        (snapshot)=>{
-
-          let onlineCount = 0
-
-          snapshot.forEach((doc)=>{
-
-            const data = doc.data()
-
-            if(data.online){
-              onlineCount++
-            }
-
-          })
-
-          setMembers(snapshot.size)
-          setOnline(onlineCount)
-
-        }
-      )
-
-      return unsub
-
-    }catch(error){
-
-      console.error(error)
-
-    }
-
-  }
-
-  useEffect(()=>{
-
-    loadContracts()
-    loadDiscordMembers()
-
-  },[])
-
-  const totalIncome = contracts.reduce((acc,item)=>{
-
-    const value = Number(
-      String(item.price)
-        .replace(/[^0-9]/g,'')
-    )
-
-    return acc + value
-
-  },0)
-
-  const topUsers = Object.entries(
-
-    contracts.reduce((acc,contract)=>{
-
-      const total = parseInt(
-
-        String(
-          contract.price || 0
-        ).replace(/[^\d]/g,'')
-
-      ) || 0
-
-      const membersList = contract.members
-        ? contract.members
-            .split(',')
-            .map(name=>name.trim())
-        : []
-
-      const share =
-        membersList.length > 0
-          ? (total * 0.8) / membersList.length
-          : 0
-
-      membersList.forEach(member=>{
-
-        if(!acc[member]){
-          acc[member] = 0
-        }
-
-        acc[member] += share
-
-      })
-
-      return acc
-
-    },{})
-
-  )
-  .sort((a,b)=>b[1]-a[1])
-  .slice(0,5)
-
   return(
 
-    <section className="dashboard-page">
+    <div className="dashboard-page">
 
       <section className="hero-banner">
 
@@ -148,7 +16,7 @@ export default function Dashboard(){
 
           <h1>
             GRIZZLY
-            <br />
+            <br/>
             <span>FAMILY</span>
           </h1>
 
@@ -160,134 +28,143 @@ export default function Dashboard(){
 
           <div className="hero-buttons">
 
-            <a
-              href="https://discord.gg/APPf3Rq3dF"
-              target="_blank"
-              rel="noreferrer"
-              className="discord-join-btn"
-            >
+            <button className="discord-join-btn">
+              НАШ DISCORD
+            </button>
 
-              <svg
-                className="discord-svg"
-                viewBox="0 0 127.14 96.36"
-              >
-                <path
-                  fill="currentColor"
-                  d="M107.7 8.07A105.15 105.15 0 0 0 81.47 0a72.06 72.06 0 0 0-3.36 6.83 97.68 97.68 0 0 0-29.11 0A72.37 72.37 0 0 0 45.64 0 105.89 105.89 0 0 0 19.39 8.09C2.79 32.65-1.71 56.6.54 80.21h.04a105.73 105.73 0 0 0 32.17 16.15 77.7 77.7 0 0 0 6.89-11.11 68.42 68.42 0 0 1-10.85-5.18c.91-.66 1.8-1.34 2.66-2.04a75.57 75.57 0 0 0 64.32 0c.87.71 1.76 1.39 2.66 2.04a68.68 68.68 0 0 1-10.87 5.19 77 77 0 0 0 6.89 11.1A105.25 105.25 0 0 0 126.6 80.22c2.64-27.29-4.5-51.02-18.9-72.15Z"
-                />
-              </svg>
+            <button className="rules-btn">
+              ПРАВИЛА СЕМЬИ
+            </button>
 
-              <span>
-                НАШ DISCORD
-              </span>
+          </div>
 
-            </a>
+        </div>
 
+        <div className="hero-right">
+
+          <div className="hero-stat">
+            <h3>48</h3>
+            <span>ONLINE</span>
+          </div>
+
+          <div className="hero-stat">
+            <h3>1247</h3>
+            <span>КОНТРАКТОВ</span>
+          </div>
+
+          <div className="hero-stat">
+            <h3>$2.5M</h3>
+            <span>ОБЩИЙ ДОХОД</span>
+          </div>
+
+          <div className="hero-stat">
+            <h3>86</h3>
+            <span>УЧАСТНИКОВ</span>
           </div>
 
         </div>
 
       </section>
 
-      <section className="stats-row">
+      <section className="dashboard-grid">
 
-        <div className="stat-box">
-          <h3>{online}</h3>
-          <span>ONLINE</span>
-        </div>
-
-        <div className="stat-box">
-          <h3>{contracts.length}</h3>
-          <span>КОНТРАКТОВ</span>
-        </div>
-
-        <div className="stat-box">
-          <h3>
-            ${totalIncome.toLocaleString()}
-          </h3>
-          <span>ДОХОД</span>
-        </div>
-
-        <div className="stat-box">
-          <h3>{members}</h3>
-          <span>УЧАСТНИКОВ</span>
-        </div>
-
-        <div className="stat-box">
-          <h3>0</h3>
-          <span>МЕРОПРИЯТИЯ</span>
-        </div>
-
-      </section>
-
-      <section className="dashboard-layout">
-
-        <div className="panel">
+        <div className="dashboard-card">
 
           <h2>О НАС</h2>
 
           <p>
             Grizzly Family —
             элитная организация GTA RP сервера.
+
             Мы занимаемся контрактами,
-            бизнесом,
-            войнами
-            и контролем территорий.
+            бизнесом, войнами и контролем территорий.
           </p>
+
+          <button className="more-btn">
+            УЗНАТЬ БОЛЬШЕ
+          </button>
 
         </div>
 
-        <div className="panel">
+        <div className="dashboard-card">
 
           <h2>ПОСЛЕДНИЕ НОВОСТИ</h2>
 
           <div className="news-item">
-            • Скоро обновление dashboard
+            <span>
+              Новый контракт Vinewood
+            </span>
+
+            <span>
+              2 часа назад
+            </span>
           </div>
 
           <div className="news-item">
-            • Новый contracts system
+            <span>
+              Захват территории
+            </span>
+
+            <span>
+              5 часов назад
+            </span>
           </div>
 
           <div className="news-item">
-            • Premium team profiles
+            <span>
+              Пополнение состава
+            </span>
+
+            <span>
+              1 день назад
+            </span>
           </div>
 
           <div className="news-item">
-            • Discord integration update
+            <span>
+              Новый набор участников
+            </span>
+
+            <span>
+              2 дня назад
+            </span>
           </div>
 
         </div>
 
-        <div className="panel">
+        <div className="dashboard-card">
 
           <h2>ТОП УЧАСТНИКОВ</h2>
 
-          {topUsers.map(([name,money],index)=>(
+          <div className="top-member">
+            <span>1. cr0wsk1ck</span>
+            <span>$540,000</span>
+          </div>
 
-            <div
-              className="top-user"
-              key={index}
-            >
+          <div className="top-member">
+            <span>2. Shadow</span>
+            <span>$325,000</span>
+          </div>
 
-              <span>{name}</span>
+          <div className="top-member">
+            <span>3. Mugiwara</span>
+            <span>$210,000</span>
+          </div>
 
-              <strong>
-                $
-                {Math.floor(money)
-                  .toLocaleString()}
-              </strong>
+          <div className="top-member">
+            <span>4. Nightmare</span>
+            <span>$180,000</span>
+          </div>
 
-            </div>
-
-          ))}
+          <div className="top-member">
+            <span>5. Blaze</span>
+            <span>$150,000</span>
+          </div>
 
         </div>
 
       </section>
 
-    </section>
-
+    </div>
   )
-
 }
