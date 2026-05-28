@@ -1,5 +1,5 @@
 /* =========================================
-   PREMIUM SIDEBAR
+   PREMIUM SIDEBAR FINAL
 ========================================= */
 
 .sidebar{
@@ -9,16 +9,16 @@
   top:0;
   left:0;
 
-  width:220px;
+  width:190px;
   height:100vh;
 
-  padding:22px 16px;
+  padding:18px 14px;
 
   display:flex;
 
   flex-direction:column;
 
-  justify-content:space-between;
+  justify-content:flex-start;
 
   background:
     linear-gradient(
@@ -83,18 +83,18 @@
 
   z-index:2;
 
-  margin-bottom:40px;
+  margin-bottom:22px;
 }
 
 .brand h1{
 
-  font-size:56px;
+  font-size:42px;
 
   line-height:.85;
 
   font-weight:1000;
 
-  letter-spacing:-3px;
+  letter-spacing:-2px;
 
   background:
     linear-gradient(
@@ -115,15 +115,15 @@
 
   color:white;
 
-  font-size:16px;
+  font-size:12px;
 
-  letter-spacing:6px;
+  letter-spacing:5px;
 
   opacity:.9;
 }
 
 /* =========================================
-   NAV
+   NAVIGATION
 ========================================= */
 
 .sidebar-nav{
@@ -136,9 +136,11 @@
 
   flex-direction:column;
 
-  gap:12px;
+  gap:10px;
 
-  margin-top:20px;
+  margin-top:10px;
+
+  margin-bottom:auto;
 }
 
 .sidebar-nav a{
@@ -149,11 +151,11 @@
 
   align-items:center;
 
-  height:56px;
+  height:48px;
 
-  padding:0 18px;
+  padding:0 16px;
 
-  border-radius:18px;
+  border-radius:16px;
 
   background:
     rgba(255,255,255,.03);
@@ -161,9 +163,9 @@
   border:
     1px solid rgba(255,255,255,.03);
 
-  color:#cfcfd7;
+  color:#d3d3db;
 
-  font-size:14px;
+  font-size:13px;
 
   font-weight:700;
 
@@ -196,10 +198,10 @@
 .sidebar-nav a:hover{
 
   transform:
-    translateX(6px);
+    translateX(5px);
 
   border-color:
-    rgba(255,0,92,.18);
+    rgba(255,0,92,.16);
 
   color:white;
 }
@@ -210,7 +212,7 @@
 }
 
 /* =========================================
-   ACTIVE LINK
+   ACTIVE
 ========================================= */
 
 .sidebar-nav .active{
@@ -227,7 +229,7 @@
   border:none;
 
   box-shadow:
-    0 10px 30px rgba(255,0,92,.25);
+    0 10px 24px rgba(255,0,92,.24);
 }
 
 .sidebar-nav .active::before{
@@ -245,7 +247,9 @@
 
   z-index:2;
 
-  padding:18px;
+  margin-top:24px;
+
+  padding:14px;
 
   border-radius:22px;
 
@@ -280,11 +284,11 @@
 
   z-index:2;
 
-  font-size:14px;
+  font-size:13px;
 
   font-weight:800;
 
-  margin-bottom:16px;
+  margin-bottom:14px;
 }
 
 .status-online{
@@ -293,7 +297,7 @@
 
   z-index:2;
 
-  height:18px;
+  height:16px;
 
   border-radius:999px;
 
@@ -305,7 +309,7 @@
     );
 
   box-shadow:
-    0 0 20px rgba(0,255,157,.5);
+    0 0 18px rgba(0,255,157,.45);
 }
 
 /* =========================================
@@ -316,21 +320,21 @@
 
   .sidebar{
 
-    width:90px;
+    width:88px;
 
-    padding:18px 10px;
+    padding:16px 10px;
   }
 
   .brand h1{
 
-    font-size:34px;
+    font-size:28px;
 
     letter-spacing:-1px;
   }
 
   .brand span{
 
-    font-size:9px;
+    font-size:8px;
 
     letter-spacing:2px;
   }
@@ -361,13 +365,13 @@
 
     width:100%;
 
-    height:78px;
+    height:76px;
 
     flex-direction:row;
 
     align-items:center;
 
-    padding:10px 14px;
+    padding:10px 12px;
 
     border-right:none;
 
@@ -396,11 +400,11 @@
 
     flex:1;
 
-    height:54px;
+    height:52px;
 
     justify-content:center;
 
-    border-radius:16px;
+    border-radius:14px;
   }
 
 }
