@@ -1,260 +1,177 @@
-import { useEffect, useMemo, useState } from 'react'
-
-import '../styles/contracts.css'
-
-import toast from 'react-hot-toast'
+import { useEffect, useState } from 'react'
 
 import {
-  db,
   collection,
   addDoc,
-  getDocs,
-  deleteDoc,
-  doc,
-  query,
-  orderBy
-} from '../services/firebase/firebase'
+  onSnapshot
+} from 'firebase/firestore'
 
-import {
-  sendWebhook,
-  contractsWebhook
-} from '../services/webhooks/discord'
+import { db } from '../services/firebase/firebase'
+
+import '../styles/contracts.css'
 
 export default function Contracts(){
 
   const [contracts,setContracts] = useState([])
 
   const [form,setForm] = useState({
-    name:'',
+
+    title:'',
+    client:'',
     price:'',
-    owner:'',
     members:''
+
   })
-
-  const [loading,setLoading] = useState(false)
-
-  async function loadContracts(){
-
-    try{
-
-      const q = query(
-        collection(db,'contracts'),
-        orderBy('createdAt','desc')
-      )
-
-      const snapshot = await getDocs(q)
-
-      const data = snapshot.docs.map(docItem=>({
-        id:docItem.id,
-        ...docItem.data()
-      }))
-
-      setContracts(data)
-
-    }catch(error){
-
-      console.error(error)
-
-      toast.error(
-        'Ошибка загрузки'
-      )
-
-    }
-
-  }
 
   useEffect(()=>{
 
-    loadContracts()
+    const unsub = onSnapshot(
+
+      collection(db,'contracts'),
+
+      (snapshot)=>{
+
+        const arr = []
+
+        snapshot.forEach((doc)=>{
+
+          arr.push({
+
+            id:doc.id,
+            ...doc.data()
+
+          })
+
+        })
+
+        setContracts(arr)
+
+      }
+
+    )
+
+    return ()=>unsub()
 
   },[])
 
-  async function handleCreateContract(){
+  async function createContract(){
 
     if(
-      !form.name ||
-      !form.price ||
-      !form.owner
-    ){
+      !form.title ||
+      !form.client ||
+      !form.price
+    ) return
 
-      toast.error(
-        'Заполни все поля'
-      )
+    await addDoc(
 
-      return
-    }
+      collection(db,'contracts'),
 
-    try{
+      {
 
-      setLoading(true)
-
-      const contractData = {
-
-        name:form.name,
-
-        price:form.price,
-
-        owner:form.owner,
-
-        members:form.members,
-
-        date:new Date().toLocaleDateString(),
+        ...form,
 
         createdAt:Date.now()
+
       }
 
-      await addDoc(
-        collection(db,'contracts'),
-        contractData
-      )
+    )
 
-      await sendWebhook(
-        contractsWebhook,
-        {
+    setForm({
 
-          embeds:[
-            {
+      title:'',
+      client:'',
+      price:'',
+      members:''
 
-              color:0xff005c,
-
-              author:{
-                name:'GRIZZLY FAMILY',
-                icon_url:''
-              },
-
-              title:'📦 НОВЫЙ КОНТРАКТ',
-
-              description:
-`>>> 💼 **Контракт:** \`${form.name}\`
-
-💰 **Сумма:** \`${Number(form.price).toLocaleString()}$\`
-
-👑 **Создатель:** \`${form.owner}\`
-
-👥 **Участники:**
-${form.members
-  .split(',')
-  .map(m=>`• ${m.trim()}`)
-  .join('\n')}
-`,
-
-              thumbnail:{
-                url:'https://i.imgur.com/7F9Z6vC.png'
-              },
-
-              image:{
-                url:''
-              },
-
-              footer:{
-                text:'Grizzly Family System'
-              },
-
-              timestamp:new Date()
-            }
-          ]
-
-        }
-      )
-
-      setForm({
-
-        name:'',
-        price:'',
-        owner:'',
-        members:''
-
-      })
-
-      await loadContracts()
-
-      toast.success(
-        'Контракт добавлен'
-      )
-
-    }catch(error){
-
-      console.error(error)
-
-      toast.error(
-        'Ошибка Firebase'
-      )
-
-    }finally{
-
-      setLoading(false)
-
-    }
+    })
 
   }
 
-  async function handleDelete(id){
+  const totalIncome = contracts.reduce(
 
-    try{
+    (acc,item)=>
 
-      await deleteDoc(
-        doc(db,'contracts',id)
-      )
-
-      await loadContracts()
-
-      toast.success(
-        'Контракт удалён'
-      )
-
-    }catch(error){
-
-      console.error(error)
-
-      toast.error(
-        'Ошибка удаления'
-      )
-
-    }
-
-  }
-
-  const participantsCount = useMemo(()=>{
-
-    if(!form.members) return 0
-
-    return form.members
-      .split(',')
-      .filter(Boolean)
-      .length
-
-  },[form.members])
-
-  const totalIncome = useMemo(()=>{
-
-    return contracts.reduce((acc,item)=>{
-
-      const value = Number(
+      acc +
+      Number(
         String(item.price)
-          .replace(/[^0-9]/g,'')
-      )
+          .replace(/[^\d]/g,'')
+      ),
 
-      return acc + value
+    0
 
-    },0)
-
-  },[contracts])
+  )
 
   return(
 
-    <section className="contracts-page">
+    <div className="contracts-page">
 
-      <div className="contracts-header">
+      <div className="contracts-top">
 
-        <div>
+        <div className="contracts-hero">
+
+          <div className="contracts-badge">
+            GRIZZLY CONTRACTS
+          </div>
 
           <h1>
-            КОНТРАКТЫ
+            PREMIUM
+            <br/>
+            <span>CONTRACTS</span>
           </h1>
 
           <p>
             Управление контрактами семьи.
+            Доходы. Выплаты. Контроль операций.
           </p>
+
+        </div>
+
+        <div className="contracts-stats">
+
+          <div className="contracts-stat">
+
+            <h3>
+              {contracts.length}
+            </h3>
+
+            <span>
+              ВСЕГО КОНТРАКТОВ
+            </span>
+
+          </div>
+
+          <div className="contracts-stat">
+
+            <h3>
+              $
+              {totalIncome.toLocaleString()}
+            </h3>
+
+            <span>
+              ОБЩИЙ ДОХОД
+            </span>
+
+          </div>
+
+          <div className="contracts-stat">
+
+            <h3>24</h3>
+
+            <span>
+              АКТИВНЫХ
+            </span>
+
+          </div>
+
+          <div className="contracts-stat">
+
+            <h3>98%</h3>
+
+            <span>
+              УСПЕШНОСТЬ
+            </span>
+
+          </div>
 
         </div>
 
@@ -262,25 +179,39 @@ ${form.members
 
       <div className="contracts-layout">
 
-        <div className="contract-form-panel">
+        <div className="contracts-form-card">
 
           <h2>
-            ДОБАВИТЬ КОНТРАКТ
+            СОЗДАТЬ КОНТРАКТ
           </h2>
 
           <input
-            placeholder="Название контракта"
-            value={form.name}
+            type="text"
+            placeholder="Название"
+            value={form.title}
             onChange={(e)=>
               setForm({
                 ...form,
-                name:e.target.value
+                title:e.target.value
               })
             }
           />
 
           <input
-            placeholder="Сумма ($)"
+            type="text"
+            placeholder="Клиент"
+            value={form.client}
+            onChange={(e)=>
+              setForm({
+                ...form,
+                client:e.target.value
+              })
+            }
+          />
+
+          <input
+            type="text"
+            placeholder="Сумма"
             value={form.price}
             onChange={(e)=>
               setForm({
@@ -290,19 +221,8 @@ ${form.members
             }
           />
 
-          <input
-            placeholder="Кто начал контракт"
-            value={form.owner}
-            onChange={(e)=>
-              setForm({
-                ...form,
-                owner:e.target.value
-              })
-            }
-          />
-
           <textarea
-            placeholder="Участники (через запятую)"
+            placeholder="Участники"
             value={form.members}
             onChange={(e)=>
               setForm({
@@ -312,152 +232,71 @@ ${form.members
             }
           />
 
-          <span className="participants-count">
-
-            Количество участников:
-            {' '}
-            {participantsCount}
-
-          </span>
-
           <button
-            className="contract-submit-btn"
-            onClick={handleCreateContract}
-            disabled={loading}
+            onClick={createContract}
           >
-
-            {
-              loading
-                ? 'СОЗДАНИЕ...'
-                : 'ДОБАВИТЬ КОНТРАКТ'
-            }
-
+            СОЗДАТЬ
           </button>
 
         </div>
 
-        <div className="contracts-table-panel">
+        <div className="contracts-table-card">
 
-          <div className="table-top">
+          <div className="contracts-table-header">
 
             <h2>
-              СПИСОК КОНТРАКТОВ
+              АКТИВНЫЕ КОНТРАКТЫ
             </h2>
 
           </div>
 
-          <table>
+          <div className="contracts-table">
 
-            <thead>
+            {contracts.map((contract)=>(
 
-              <tr>
+              <div
+                className="contract-row"
+                key={contract.id}
+              >
 
-                <th>#</th>
+                <div className="contract-info">
 
-                <th>НАЗВАНИЕ</th>
+                  <h3>
+                    {contract.title}
+                  </h3>
 
-                <th>СУММА</th>
+                  <span>
+                    {contract.client}
+                  </span>
 
-                <th>КТО НАЧАЛ</th>
+                </div>
 
-                <th>УЧАСТНИКИ</th>
+                <div className="contract-members">
 
-                <th>ДАТА</th>
+                  {
+                    contract.members ||
+                    '—'
+                  }
 
-                <th>ДЕЙСТВИЯ</th>
+                </div>
 
-              </tr>
+                <div className="contract-price">
 
-            </thead>
+                  {contract.price}
 
-            <tbody>
+                </div>
 
-              {
+              </div>
 
-                contracts.map((contract,index)=>(
+            ))}
 
-                  <tr key={contract.id}>
-
-                    <td>
-                      {index + 1}
-                    </td>
-
-                    <td>
-                      {contract.name}
-                    </td>
-
-                    <td>
-                      {contract.price}
-                    </td>
-
-                    <td>
-                      {contract.owner}
-                    </td>
-
-                    <td>
-                      {contract.members}
-                    </td>
-
-                    <td>
-                      {contract.date}
-                    </td>
-
-                    <td>
-
-                      <span
-                        className="delete-btn"
-                        onClick={()=>
-                          handleDelete(contract.id)
-                        }
-                      >
-                        🗑
-                      </span>
-
-                    </td>
-
-                  </tr>
-
-                ))
-
-              }
-
-            </tbody>
-
-          </table>
+          </div>
 
         </div>
 
       </div>
 
-      <div className="contracts-stats">
-
-        <div className="contract-stat-card">
-
-          <span>
-            КОНТРАКТОВ
-          </span>
-
-          <h3>
-            {contracts.length}
-          </h3>
-
-        </div>
-
-        <div className="contract-stat-card green">
-
-          <span>
-            ОБЩИЙ ДОХОД
-          </span>
-
-          <h3>
-            ${totalIncome.toLocaleString()}
-          </h3>
-
-        </div>
-
-      </div>
-
-    </section>
+    </div>
 
   )
 
