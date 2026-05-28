@@ -616,3 +616,77 @@
   }
 
 }
+.member-overlay{
+  position:absolute;
+  inset:0;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.03),
+      transparent
+    );
+
+  opacity:.5;
+
+  z-index:1;
+}
+
+.member-glow{
+  position:absolute;
+
+  width:140px;
+  height:140px;
+
+  background:
+    rgba(255,0,92,.10);
+
+  border-radius:50%;
+
+  filter:blur(60px);
+
+  top:-40px;
+  right:-40px;
+
+  z-index:0;
+}
+
+.status-dot{
+  position:absolute;
+
+  right:12px;
+  bottom:12px;
+
+  width:14px;
+  height:14px;
+
+  border-radius:50%;
+
+  border:2px solid #111;
+}
+
+.status-online{
+  background:#00ff9d;
+
+  box-shadow:
+    0 0 16px #00ff9d;
+}
+
+.status-offline{
+  background:#8f8f98;
+}
+
+.member-panel.leader{
+  border-color:rgba(255,0,92,.35);
+
+  box-shadow:
+    0 0 40px rgba(255,0,92,.18);
+}
+
+.member-panel.veteran{
+  border-color:rgba(255,170,0,.25);
+}
+
+.member-panel.member{
+  border-color:rgba(255,255,255,.06);
+}
