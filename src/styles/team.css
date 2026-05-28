@@ -310,6 +310,13 @@
     .35s cubic-bezier(.22,1,.36,1);
 }
 
+  border:
+    1px solid rgba(255,255,255,.05);
+
+  transition:
+    .35s cubic-bezier(.22,1,.36,1);
+}
+
 .member-card:hover{
 
   transform:
@@ -369,14 +376,19 @@
 .member-info h3{
 
   display:block;
+
   font-size:22px;
+
   overflow:hidden;
+
   text-overflow:ellipsis;
+
   white-space:nowrap;
+
   max-width:170px;
+
   margin-bottom:8px;
 }
-
 .member-role{
 
   width:max-content;
