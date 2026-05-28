@@ -26,12 +26,19 @@
 ========================= */
 
 .team-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-  gap:30px;
-  margin-bottom:40px;
-  flex-wrap:wrap;
+  position:relative;
+}
+.team-header::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(255,0,92,.04),
+      transparent
+    );
+  pointer-events:none;
 }
 
 .team-badge{
