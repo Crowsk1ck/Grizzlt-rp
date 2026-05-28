@@ -575,21 +575,30 @@ th,td{
   filter:blur(70px);
   right:-120px;
   top:-120px;
+  z-index:0;
+}
+
+.member-overlay{
+  opacity:.12;
+  z-index:1;
 }
 
 .member-content{
   position:relative;
-  z-index:2;
+  z-index:5;
 }
 
 .avatar-wrapper{
   position:relative;
+  z-index:6;
   width:120px;
   height:120px;
   margin-bottom:26px;
 }
 
 .member-avatar{
+  position:relative;
+  z-index:7;
   width:100%;
   height:100%;
   object-fit:cover;
@@ -598,7 +607,6 @@ th,td{
   box-shadow:
     0 10px 30px rgba(255,0,100,.35);
 }
-
 .status-dot{
   position:absolute;
   right:-2px;
