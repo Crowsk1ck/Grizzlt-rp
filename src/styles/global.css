@@ -346,7 +346,7 @@ th,td{
   box-shadow:
     0 0 40px rgba(255,0,92,.08);
 }
-```css
+
 .team-page{
   min-height:100vh;
   padding:40px;
@@ -713,130 +713,6 @@ th,td{
   }
 
 }
-
-.tabs{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-}
-
-.tabs button{
-  background:#0d0d12;
-  border:1px solid rgba(255,255,255,.05);
-  color:#c9c9d2;
-  padding:12px 18px;
-  border-radius:12px;
-  cursor:pointer;
-  font-size:12px;
-}
-
-.tabs button.active{
-  background:#ff005c;
-  color:white;
-  box-shadow:0 0 20px rgba(255,0,92,.25);
-}
-
-.search-row input{
-  background:#0d0d12;
-  border:1px solid rgba(255,255,255,.05);
-  padding:14px 16px;
-  border-radius:12px;
-  color:white;
-  width:260px;
-}
-
-.members-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-  gap:16px;
-}
-
-.member-panel{
-  position:relative;
-  overflow:hidden;
-  min-height:300px;
-  border-radius:18px;
-  border:1px solid rgba(255,0,92,.14);
-  background:
-    linear-gradient(rgba(0,0,0,.2),rgba(0,0,0,.85)),
-    url('https://images.unsplash.com/photo-1511367461989-f85a21fda167?q=80&w=1200&auto=format&fit=crop');
-  background-size:cover;
-  background-position:center;
-}
-
-.member-overlay{
-  position:absolute;
-  inset:0;
-  background:
-    linear-gradient(to top,rgba(0,0,0,.95),rgba(0,0,0,.1)),
-    rgba(255,0,92,.1);
-}
-
-.member-content{
-  position:absolute;
-  left:18px;
-  right:18px;
-  bottom:18px;
-  z-index:2;
-}
-
-.member-content h3{
-  font-size:26px;
-  margin-bottom:8px;
-}
-
-.member-role{
-  display:inline-block;
-  padding:6px 10px;
-  border-radius:999px;
-  background:#ff005c22;
-  border:1px solid rgba(255,0,92,.3);
-  color:#ff6f9f;
-  font-size:11px;
-  margin-bottom:12px;
-}
-
-.member-money{
-  font-size:18px;
-  color:#fff;
-  margin-bottom:10px;
-}
-
-.online{
-  color:#00ff88;
-  font-size:13px;
-}
-
-.offline{
-  color:#ff4b6e;
-  font-size:13px;
-}
-
-@media(max-width:900px){
-  .team-header{
-    flex-direction:column;
-  }
-
-  .team-stats{
-    width:100%;
-    flex-wrap:wrap;
-  }
-
-  .team-controls{
-    flex-direction:column;
-    align-items:flex-start;
-  }
-
-  .search-row{
-    width:100%;
-  }
-
-  .search-row input{
-    width:100%;
-  }
-}
-
-
 
 .contracts-page{
   display:flex;
