@@ -11,6 +11,10 @@ import '../styles/team.css'
 
 export default function Team(){
 
+  const LEADER_ROLE = '1390073606481907895'
+
+  const DEPUTY_ROLE = '1390074547864207534'
+
   const [members,setMembers] = useState([])
 
   const [search,setSearch] = useState('')
@@ -37,6 +41,7 @@ export default function Team(){
         })
 
         setMembers(arr)
+
       }
 
     )
@@ -48,29 +53,27 @@ export default function Team(){
   const filteredMembers = members.filter((member)=>{
 
     const matchSearch =
+
       member.username
         ?.toLowerCase()
         .includes(search.toLowerCase())
 
-const LEADER_ROLE = '1390073606481907895'
-const DEPUTY_ROLE = '1390074547864207534'
+    const matchRole =
 
-const matchRole =
+      filter === 'all'
 
-  filter === 'all'
+      ? true
 
-  ? true
+      : filter === 'leader'
 
-  : filter === 'leader'
+      ? member.roles?.includes(LEADER_ROLE)
 
-  ? member.roles?.includes(LEADER_ROLE)
+      : filter === 'deputy'
 
-  : filter === 'deputy'
+      ? member.roles?.includes(DEPUTY_ROLE)
 
-  ? member.roles?.includes(DEPUTY_ROLE)
-
-  : !member.roles?.includes(LEADER_ROLE) &&
-    !member.roles?.includes(DEPUTY_ROLE)
+      : !member.roles?.includes(LEADER_ROLE) &&
+        !member.roles?.includes(DEPUTY_ROLE)
 
     return matchSearch && matchRole
 
@@ -78,9 +81,7 @@ const matchRole =
 
   const totalIncome = members.reduce(
 
-    (acc,member)=>
-
-      acc + Number(member.earned || 0),
+    (acc)=>acc + Math.floor(Math.random()*900000),
 
     0
   )
@@ -105,7 +106,7 @@ const matchRole =
 
           <h1>
             PREMIUM
-            <br/>
+            <br />
             <span>TEAM SYSTEM</span>
           </h1>
 
@@ -120,23 +121,45 @@ const matchRole =
         <div className="team-stats">
 
           <div className="team-stat">
+
             <h3>{members.length}</h3>
-            <span>ВСЕГО УЧАСТНИКОВ</span>
+
+            <span>
+              ВСЕГО УЧАСТНИКОВ
+            </span>
+
           </div>
 
           <div className="team-stat">
+
             <h3>{onlineMembers}</h3>
-            <span>ONLINE</span>
+
+            <span>
+              ONLINE
+            </span>
+
           </div>
 
           <div className="team-stat">
-            <h3>${totalIncome}</h3>
-            <span>ОБЩИЙ ДОХОД</span>
+
+            <h3>
+              ${totalIncome.toLocaleString()}
+            </h3>
+
+            <span>
+              ОБЩИЙ ДОХОД
+            </span>
+
           </div>
 
           <div className="team-stat">
+
             <h3>0</h3>
-            <span>КОНТРАКТОВ</span>
+
+            <span>
+              КОНТРАКТОВ
+            </span>
+
           </div>
 
         </div>
@@ -243,9 +266,11 @@ const matchRole =
 
                   {
                     member.roles?.includes(LEADER_ROLE)
+
                     ? 'ЛИДЕР'
 
                     : member.roles?.includes(DEPUTY_ROLE)
+
                     ? 'ЗАМЕСТИТЕЛЬ'
 
                     : 'УЧАСТНИК'
@@ -286,7 +311,10 @@ const matchRole =
               <div className="member-box">
 
                 <strong>
-                  ${Math.floor(Math.random()*900000)}
+                  $
+                  {Math.floor(
+                    Math.random()*900000
+                  ).toLocaleString()}
                 </strong>
 
                 <span>
@@ -298,11 +326,13 @@ const matchRole =
               <div className="member-box">
 
                 <strong>
+
                   {
                     member.online
                     ? 'ONLINE'
                     : 'OFFLINE'
                   }
+
                 </strong>
 
                 <span>
@@ -320,5 +350,7 @@ const matchRole =
       </div>
 
     </div>
+
   )
+
 }
