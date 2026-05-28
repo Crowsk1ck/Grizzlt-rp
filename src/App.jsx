@@ -15,12 +15,19 @@ import Topbar from './components/layout/Topbar'
 import Dashboard from './pages/Dashboard'
 import Contracts from './pages/Contracts'
 import Team from './pages/Team'
-import Wars from './pages/Wars'
 import Members from './pages/Members'
 import Admin from './pages/Admin'
 import Liders from './pages/Liders'
-import Economy from './pages/Economy'
 
+import './styles/global.css'
+import './styles/sidebar.css'
+import './styles/dashboard.css'
+import './styles/team.css'
+import './styles/contracts.css'
+import './styles/liders.css'
+import './styles/admin.css'
+import './styles/animations.css'
+import './styles/responsive.css'
 export default function App(){
 
   const isAuth =
