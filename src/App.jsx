@@ -19,6 +19,7 @@ import Members from './pages/Members'
 import Admin from './pages/Admin'
 import Liders from './pages/Liders'
 import Statistics from './pages/Statistics'
+import Gallery from './pages/Gallery'
 
 import './styles/global.css'
 import './styles/sidebar.css'
@@ -31,6 +32,7 @@ import './styles/admin.css'
 import './styles/statistics.css'
 import './styles/animations.css'
 import './styles/responsive.css'
+import './styles/gallery.css'
 
 export default function App(){
 
