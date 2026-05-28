@@ -1,5 +1,3 @@
-
-```css
 .team-page {
   display: flex;
   flex-direction: column;
@@ -290,6 +288,3 @@
     grid-template-columns: 1fr;
   }
 }
-```
-
-Замени файл полностью. Старый team.css удали целиком перед вставкой.
