@@ -4,14 +4,65 @@ export default function Admin(){
 
   const actions = [
 
-    'Добавить участника',
-    'Удалить участника',
-    'Выдать контракт',
-    'Обновить статистику',
-    'Очистить логи'
+{
+    title:'Добавить участника',
+    action:'addMember'
+  },
+
+  {
+    title:'Удалить участника',
+    action:'deleteMember'
+  },
+
+  {
+    title:'Выдать контракт',
+    action:'addContract'
+  },
+
+  {
+    title:'Обновить статистику',
+    action:'updateStats'
+  },
+
+  {
+    title:'Очистить логи',
+    action:'clearLogs'
+  }
 
   ]
+function handleAdminAction(type){
 
+  if(type === 'addMember'){
+
+    alert('Система добавления участника скоро будет подключена')
+
+  }
+
+  if(type === 'deleteMember'){
+
+    alert('Система удаления участника скоро будет подключена')
+
+  }
+
+  if(type === 'addContract'){
+
+    alert('Система контрактов скоро будет подключена')
+
+  }
+
+  if(type === 'updateStats'){
+
+    alert('Статистика обновлена')
+
+  }
+
+  if(type === 'clearLogs'){
+
+    alert('Логи очищены')
+
+  }
+
+}
   const logs = [
 
     'cr0wsk1ck выдал контракт',
@@ -56,10 +107,15 @@ export default function Admin(){
 
             {actions.map((item,index)=>(
 
-              <button
-                key={index}
-                className="action-btn"
-              >
+             <button
+  key={index}
+  className="action-btn"
+  onClick={()=>
+    handleAdminAction(
+      {item.title}.action
+    )
+  }
+>
 
                 {item}
 
