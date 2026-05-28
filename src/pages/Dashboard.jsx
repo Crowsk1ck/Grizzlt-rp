@@ -188,7 +188,25 @@ export default function Dashboard(){
           <div className="hero-card">
 
             <h3>
-              $2.5M
+              {
+
+    '$' +
+
+    contracts.reduce(
+
+      (total,contract)=>
+
+        total +
+
+        Number(
+          contract.price || 0
+        ),
+
+      0
+
+    ).toLocaleString()
+
+  }
             </h3>
 
             <span>
