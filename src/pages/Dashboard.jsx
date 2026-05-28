@@ -1,6 +1,84 @@
 import '../styles/dashboard.css'
 
+import {
+  useEffect,
+  useState
+} from 'react'
+
+import {
+  collection,
+  getDocs
+} from 'firebase/firestore'
+
+import {
+  db
+} from '../services/firebase/firebase'
+
 export default function Dashboard(){
+
+  const [members,setMembers] =
+    useState([])
+
+  const [contracts,setContracts] =
+    useState([])
+
+  useEffect(()=>{
+
+    async function loadData(){
+
+      try{
+
+        const membersSnap =
+          await getDocs(
+            collection(
+              db,
+              'discord_members'
+            )
+          )
+
+        const membersData =
+          membersSnap.docs.map(doc=>({
+
+            id:doc.id,
+            ...doc.data()
+
+          }))
+
+        setMembers(
+          membersData
+        )
+
+        const contractsSnap =
+          await getDocs(
+            collection(
+              db,
+              'contracts'
+            )
+          )
+
+        const contractsData =
+          contractsSnap.docs.map(doc=>({
+
+            id:doc.id,
+            ...doc.data()
+
+          }))
+
+        setContracts(
+          contractsData
+        )
+
+      }catch(error){
+
+        console.log(error)
+
+      }
+
+    }
+
+    loadData()
+
+  },[])
 
   const topMembers = [
 
@@ -75,33 +153,63 @@ export default function Dashboard(){
 
           <div className="hero-card">
 
-            <h3>48</h3>
+            <h3>
 
-            <span>ONLINE</span>
+              {
+                members.filter(
+                  member=>member.online
+                ).length
+              }
 
-          </div>
+            </h3>
 
-          <div className="hero-card">
-
-            <h3>1247</h3>
-
-            <span>КОНТРАКТОВ</span>
-
-          </div>
-
-          <div className="hero-card">
-
-            <h3>$2.5M</h3>
-
-            <span>ОБЩИЙ ДОХОД</span>
+            <span>
+              ONLINE
+            </span>
 
           </div>
 
           <div className="hero-card">
 
-            <h3>86</h3>
+            <h3>
 
-            <span>УЧАСТНИКОВ</span>
+              {
+                contracts.length
+              }
+
+            </h3>
+
+            <span>
+              КОНТРАКТОВ
+            </span>
+
+          </div>
+
+          <div className="hero-card">
+
+            <h3>
+              $2.5M
+            </h3>
+
+            <span>
+              ОБЩИЙ ДОХОД
+            </span>
+
+          </div>
+
+          <div className="hero-card">
+
+            <h3>
+
+              {
+                members.length
+              }
+
+            </h3>
+
+            <span>
+              УЧАСТНИКОВ
+            </span>
 
           </div>
 
@@ -113,7 +221,9 @@ export default function Dashboard(){
 
         <div className="dashboard-card about-card">
 
-          <h2>О НАС</h2>
+          <h2>
+            О НАС
+          </h2>
 
           <p>
             Grizzly Family —
@@ -132,7 +242,9 @@ export default function Dashboard(){
 
         <div className="dashboard-card activity-card">
 
-          <h2>АКТИВНОСТЬ</h2>
+          <h2>
+            АКТИВНОСТЬ
+          </h2>
 
           <div className="activity-list">
 
@@ -145,7 +257,9 @@ export default function Dashboard(){
 
                 <div className="activity-dot"></div>
 
-                <span>{item}</span>
+                <span>
+                  {item}
+                </span>
 
               </div>
 
@@ -157,7 +271,9 @@ export default function Dashboard(){
 
         <div className="dashboard-card top-card">
 
-          <h2>ТОП УЧАСТНИКОВ</h2>
+          <h2>
+            ТОП УЧАСТНИКОВ
+          </h2>
 
           <div className="top-list">
 
