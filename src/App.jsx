@@ -28,6 +28,7 @@ import './styles/liders.css'
 import './styles/admin.css'
 import './styles/animations.css'
 import './styles/responsive.css'
+
 export default function App(){
 
   const isAuth =
