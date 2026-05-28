@@ -264,7 +264,7 @@
   display:grid;
 
   grid-template-columns:
-    repeat(auto-fit,minmax(280px,1fr));
+    repeat(auto-fit,minmax(320px,1fr));
 
   gap:18px;
 }
@@ -272,14 +272,19 @@
 /* =========================================
    MEMBER CARD
 ========================================= */
+.member-info{
 
+  flex:1;
+
+  overflow:hidden;
+}
 .member-card{
 
   position:relative;
 
   overflow:hidden;
 
-  min-height:340px;
+  min-height:370px;
 
   padding:24px;
 
@@ -334,13 +339,10 @@
 .member-top{
 
   position:relative;
-
   z-index:2;
-
   display:flex;
-
-  align-items:center;
-
+  align-items:flex-start;
+  min-height:92px;
   gap:16px;
 
   margin-bottom:24px;
@@ -361,7 +363,10 @@
 .member-info h3{
 
   font-size:22px;
-
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  max-width:170px;
   margin-bottom:8px;
 }
 
@@ -390,11 +395,9 @@
 .member-stats{
 
   position:relative;
-
+  margin-top:auto;
   z-index:2;
-
   display:grid;
-
   grid-template-columns:
     repeat(2,1fr);
 
@@ -406,7 +409,9 @@
 .member-box{
 
   padding:18px;
-
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
   border-radius:18px;
 
   background:
