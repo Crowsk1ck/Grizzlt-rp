@@ -18,60 +18,7 @@
 
   overflow:hidden;
 
-  background:
-
-    radial-gradient(
-      circle at top left,
-      rgba(255,0,92,.12),
-      transparent 25%
-    ),
-
-    radial-gradient(
-      circle at right center,
-      rgba(255,0,92,.08),
-      transparent 30%
-    ),
-
-    linear-gradient(
-      180deg,
-      #090909 0%,
-      #050505 100%
-    );
-}
-
-.team-page::before{
-
-  content:'';
-
-  position:absolute;
-
-  inset:0;
-
-  pointer-events:none;
-
-  background:
-
-    radial-gradient(
-      circle at 20% 20%,
-      rgba(255,0,92,.06),
-      transparent 25%
-    ),
-
-    radial-gradient(
-      circle at 80% 30%,
-      rgba(255,0,92,.05),
-      transparent 30%
-    ),
-
-    radial-gradient(
-      circle at 50% 80%,
-      rgba(255,0,92,.04),
-      transparent 30%
-    );
-
-  filter:blur(40px);
-
-  opacity:.9;
+  background:transparent;
 }
 
 /* =========================================
