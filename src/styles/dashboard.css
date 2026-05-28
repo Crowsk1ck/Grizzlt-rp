@@ -1,17 +1,11 @@
-/* =========================================
-   DASHBOARD PAGE
-========================================= */
-
 .dashboard-page{
 
-  min-height:100vh;
+  display:flex;
 
-  color:white;
+  flex-direction:column;
+
+  gap:18px;
 }
-
-/* =========================================
-   HERO
-========================================= */
 
 .hero-banner{
 
@@ -19,216 +13,190 @@
 
   overflow:hidden;
 
-  display:flex;
+  min-height:360px;
 
-  align-items:center;
+  border-radius:28px;
 
-  min-height:340px;
-
-  padding:42px;
-
-  margin-bottom:24px;
-
-  border-radius:32px;
+  padding:36px;
 
   background:
     linear-gradient(
-      135deg,
-      rgba(255,0,92,.16),
-      rgba(0,0,0,.96)
+      90deg,
+      rgba(0,0,0,.88),
+      rgba(255,0,92,.08)
     );
 
   border:
-    1px solid rgba(255,255,255,.04);
+    1px solid rgba(255,0,92,.12);
 
-  backdrop-filter:blur(20px);
-}
+  display:grid;
 
-.hero-banner::before{
+  grid-template-columns:
+    1.1fr .9fr;
 
-  content:'';
-
-  position:absolute;
-
-  width:520px;
-  height:520px;
-
-  border-radius:50%;
-
-  background:
-    rgba(255,0,92,.08);
-
-  filter:blur(140px);
-
-  top:-220px;
-  right:-120px;
-
-  animation:
-    pulseGlow 6s infinite alternate;
-}
-
-.hero-banner::after{
-
-  content:'';
-
-  position:absolute;
-
-  inset:0;
-
-  background:
-    linear-gradient(
-      135deg,
-      transparent,
-      rgba(255,0,92,.03)
-    );
-
-  pointer-events:none;
+  gap:30px;
 }
 
 .hero-left{
 
-  position:relative;
+  display:flex;
 
-  z-index:2;
+  flex-direction:column;
 
-  max-width:620px;
+  justify-content:center;
 }
 
 .welcome{
 
-  display:inline-flex;
+  width:max-content;
 
-  align-items:center;
-
-  padding:9px 16px;
-
-  margin-bottom:18px;
+  padding:8px 16px;
 
   border-radius:999px;
 
   background:
-    rgba(255,0,92,.10);
-
-  border:
-    1px solid rgba(255,0,92,.18);
+    rgba(255,0,92,.12);
 
   color:#ff2f92;
 
-  font-size:12px;
+  font-size:11px;
 
   font-weight:800;
 
   letter-spacing:2px;
+
+  margin-bottom:18px;
 }
 
 .hero-left h1{
 
   font-size:72px;
 
-  line-height:.95;
-
-  margin-bottom:18px;
+  line-height:.9;
 
   font-weight:900;
 
-  background:
-    linear-gradient(
-      90deg,
-      #ff0066,
-      #ff4fa3
-    );
+  margin-bottom:20px;
 
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
+  color:#ff0066;
 }
 
 .hero-left h1 span{
 
   color:white;
-
-  -webkit-text-fill-color:white;
 }
 
 .hero-left p{
 
-  color:#b8b8c2;
+  max-width:520px;
 
-  font-size:16px;
+  color:#c2c2cc;
 
   line-height:1.7;
-
-  margin-bottom:28px;
-}
-
-/* =========================================
-   BUTTON
-========================================= */
-
-.discord-join-btn{
-
-  display:inline-flex;
-
-  align-items:center;
-
-  justify-content:center;
-
-  gap:12px;
-
-  height:56px;
-
-  padding:0 24px;
-
-  border-radius:18px;
-
-  background:
-    linear-gradient(
-      135deg,
-      #5865f2,
-      #7289da
-    );
-
-  color:white;
-
-  font-size:14px;
-
-  font-weight:800;
-
-  transition:
-    .3s cubic-bezier(.22,1,.36,1);
-}
-
-.discord-join-btn:hover{
-
-  transform:
-    translateY(-4px) scale(1.02);
-
-  box-shadow:
-    0 15px 40px rgba(88,101,242,.35);
-}
-
-/* =========================================
-   STATS
-========================================= */
-
-.stats-row{
-
-  display:grid;
-
-  grid-template-columns:
-    repeat(5,1fr);
-
-  gap:18px;
 
   margin-bottom:24px;
 }
 
-.stat-box{
+.hero-buttons{
 
-  position:relative;
+  display:flex;
 
-  overflow:hidden;
+  gap:14px;
+}
 
-  min-height:135px;
+.discord-join-btn,
+.rules-btn{
+
+  height:50px;
+
+  padding:0 22px;
+
+  border-radius:14px;
+
+  font-weight:800;
+}
+
+.discord-join-btn{
+
+  background:
+    linear-gradient(
+      135deg,
+      #ff0066,
+      #ff2f92
+    );
+
+  color:white;
+}
+
+.rules-btn{
+
+  background:
+    rgba(255,255,255,.04);
+
+  color:white;
+
+  border:
+    1px solid rgba(255,255,255,.08);
+}
+
+.hero-right{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(2,1fr);
+
+  gap:14px;
+
+  align-content:center;
+}
+
+.hero-stat{
+
+  min-height:110px;
+
+  padding:22px;
+
+  border-radius:20px;
+
+  background:
+    rgba(0,0,0,.55);
+
+  border:
+    1px solid rgba(255,255,255,.05);
+
+  backdrop-filter:blur(12px);
+}
+
+.hero-stat h3{
+
+  font-size:38px;
+
+  color:#ff0066;
+
+  margin-bottom:10px;
+}
+
+.hero-stat span{
+
+  color:#a8a8b4;
+
+  font-size:12px;
+}
+
+.dashboard-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(3,1fr);
+
+  gap:18px;
+}
+
+.dashboard-card{
+
+  min-height:260px;
 
   padding:24px;
 
@@ -243,270 +211,53 @@
 
   border:
     1px solid rgba(255,255,255,.04);
-
-  transition:
-    .35s cubic-bezier(.22,1,.36,1);
-
-  animation:
-    fadeUp .7s ease;
 }
 
-.stat-box:hover{
+.dashboard-card h2{
 
-  transform:
-    translateY(-6px);
+  color:#ff0066;
 
-  border-color:
-    rgba(255,0,92,.24);
-
-  box-shadow:
-    0 20px 50px rgba(255,0,92,.14);
+  margin-bottom:18px;
 }
 
-.stat-box::before{
+.dashboard-card p,
+.news-item,
+.top-member{
 
-  content:'';
-
-  position:absolute;
-
-  width:140px;
-  height:140px;
-
-  border-radius:50%;
-
-  background:
-    rgba(255,0,92,.08);
-
-  filter:blur(70px);
-
-  top:-60px;
-  right:-60px;
+  color:#b9b9c5;
 }
 
-.stat-box h3{
+.news-item,
+.top-member{
 
-  position:relative;
+  display:flex;
 
-  z-index:2;
+  justify-content:space-between;
 
-  font-size:42px;
+  padding:12px 0;
 
-  margin-bottom:14px;
-
-  color:#ff2f92;
+  border-bottom:
+    1px solid rgba(255,255,255,.04);
 }
 
-.stat-box span{
+.more-btn{
 
-  position:relative;
+  margin-top:22px;
 
-  z-index:2;
+  height:44px;
 
-  color:#9c9ca6;
+  padding:0 20px;
 
-  font-size:12px;
-
-  letter-spacing:1px;
-}
-
-/* =========================================
-   DASHBOARD LAYOUT
-========================================= */
-
-.dashboard-layout{
-
-  display:grid;
-
-  grid-template-columns:
-    1.2fr 1fr 1fr;
-
-  gap:22px;
-}
-
-/* =========================================
-   PANELS
-========================================= */
-
-.panel{
-
-  position:relative;
-
-  overflow:hidden;
-
-  min-height:300px;
-
-  padding:28px;
-
-  border-radius:28px;
+  border-radius:14px;
 
   background:
     linear-gradient(
-      145deg,
-      rgba(255,0,92,.08),
-      rgba(0,0,0,.92)
+      135deg,
+      #ff0066,
+      #ff2f92
     );
 
-  border:
-    1px solid rgba(255,255,255,.04);
+  color:white;
 
-  transition:
-    .35s cubic-bezier(.22,1,.36,1);
-
-  animation:
-    fadeUp .9s ease;
-}
-
-.panel:hover{
-
-  transform:
-    translateY(-6px);
-
-  border-color:
-    rgba(255,0,92,.22);
-
-  box-shadow:
-    0 20px 50px rgba(255,0,92,.12);
-}
-
-.panel::before{
-
-  content:'';
-
-  position:absolute;
-
-  width:160px;
-  height:160px;
-
-  border-radius:50%;
-
-  background:
-    rgba(255,0,92,.06);
-
-  filter:blur(80px);
-
-  top:-70px;
-  right:-70px;
-}
-
-.panel h2{
-
-  position:relative;
-
-  z-index:2;
-
-  margin-bottom:20px;
-
-  font-size:24px;
-
-  color:#ff2f92;
-}
-
-.panel p{
-
-  position:relative;
-
-  z-index:2;
-
-  color:#b8b8c2;
-
-  line-height:1.7;
-}
-
-/* =========================================
-   ANIMATIONS
-========================================= */
-
-@keyframes fadeUp{
-
-  from{
-
-    opacity:0;
-
-    transform:
-      translateY(30px);
-  }
-
-  to{
-
-    opacity:1;
-
-    transform:
-      translateY(0);
-  }
-
-}
-
-@keyframes pulseGlow{
-
-  from{
-
-    transform:
-      scale(1);
-
-    opacity:.5;
-  }
-
-  to{
-
-    transform:
-      scale(1.2);
-
-    opacity:1;
-  }
-
-}
-
-/* =========================================
-   MOBILE
-========================================= */
-
-@media(max-width:1200px){
-
-  .stats-row{
-
-    grid-template-columns:
-      repeat(3,1fr);
-  }
-
-  .dashboard-layout{
-
-    grid-template-columns:1fr;
-  }
-
-}
-
-@media(max-width:900px){
-
-  .hero-banner{
-
-    padding:28px;
-
-    min-height:300px;
-  }
-
-  .hero-left h1{
-
-    font-size:52px;
-  }
-
-  .stats-row{
-
-    grid-template-columns:
-      repeat(2,1fr);
-  }
-
-}
-
-@media(max-width:600px){
-
-  .hero-left h1{
-
-    font-size:40px;
-  }
-
-  .stats-row{
-
-    grid-template-columns:1fr;
-  }
-
+  font-weight:800;
 }
