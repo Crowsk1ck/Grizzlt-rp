@@ -1,0 +1,188 @@
+.statistics-page{
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+}
+
+.statistics-header{
+  position:relative;
+
+  overflow:hidden;
+
+  min-height:260px;
+
+  border-radius:30px;
+
+  padding:36px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,0,92,.16),
+      rgba(0,0,0,.94)
+    );
+
+  border:
+    1px solid rgba(255,255,255,.05);
+}
+
+.statistics-badge{
+  width:max-content;
+
+  padding:8px 16px;
+
+  border-radius:999px;
+
+  background:
+    rgba(255,0,92,.12);
+
+  color:#ff2f92;
+
+  font-size:11px;
+
+  font-weight:800;
+
+  letter-spacing:2px;
+
+  margin-bottom:20px;
+}
+
+.statistics-header h1{
+  font-size:72px;
+
+  line-height:.9;
+
+  font-weight:900;
+
+  color:#ff0066;
+}
+
+.statistics-header h1 span{
+  color:white;
+}
+
+/* GRID */
+
+.statistics-grid{
+  display:grid;
+
+  grid-template-columns:
+    repeat(4,1fr);
+
+  gap:18px;
+}
+
+.statistics-card{
+  min-height:180px;
+
+  padding:28px;
+
+  border-radius:26px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,0,92,.08),
+      rgba(0,0,0,.94)
+    );
+
+  border:
+    1px solid rgba(255,255,255,.05);
+}
+
+.statistics-card h3{
+  font-size:42px;
+
+  color:#ff0066;
+
+  margin-bottom:14px;
+}
+
+.statistics-card span{
+  color:#b8b8c4;
+
+  font-size:12px;
+}
+
+/* CHART */
+
+.statistics-chart{
+  position:relative;
+
+  height:320px;
+
+  border-radius:30px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,0,92,.08),
+      rgba(0,0,0,.94)
+    );
+
+  border:
+    1px solid rgba(255,255,255,.05);
+
+  overflow:hidden;
+}
+
+.chart-line{
+  position:absolute;
+
+  left:0;
+  bottom:60px;
+
+  width:100%;
+  height:4px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      #ff0066,
+      transparent
+    );
+
+  transform:
+    rotate(-8deg);
+}
+
+.chart-line.second{
+  bottom:130px;
+
+  transform:
+    rotate(5deg);
+}
+
+.chart-line.third{
+  bottom:200px;
+
+  transform:
+    rotate(-3deg);
+}
+
+/* MOBILE */
+
+@media(max-width:1100px){
+
+  .statistics-grid{
+    grid-template-columns:1fr 1fr;
+  }
+
+}
+
+@media(max-width:700px){
+
+  .statistics-header{
+    padding:28px;
+  }
+
+  .statistics-header h1{
+    font-size:48px;
+  }
+
+  .statistics-grid{
+    grid-template-columns:1fr;
+  }
+
+}
