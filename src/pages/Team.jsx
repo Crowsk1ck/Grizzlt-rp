@@ -242,10 +242,10 @@ const matchRole =
                 <div className="member-role">
 
                   {
-                    member.role === 'leader'
+                    member.roles?.includes(LEADER_ROLE)
                     ? 'ЛИДЕР'
 
-                    : member.role === 'deputy'
+                    : member.roles?.includes(DEPUTY_ROLE)
                     ? 'ЗАМЕСТИТЕЛЬ'
 
                     : 'УЧАСТНИК'
