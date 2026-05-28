@@ -18,14 +18,17 @@ import Team from './pages/Team'
 import Members from './pages/Members'
 import Admin from './pages/Admin'
 import Liders from './pages/Liders'
+import Statistics from './pages/Statistics'
 
 import './styles/global.css'
 import './styles/sidebar.css'
+import './styles/topbar.css'
 import './styles/dashboard.css'
 import './styles/team.css'
 import './styles/contracts.css'
 import './styles/liders.css'
 import './styles/admin.css'
+import './styles/statistics.css'
 import './styles/animations.css'
 import './styles/responsive.css'
 
@@ -36,7 +39,11 @@ export default function App(){
       'discord_token'
     )
 
-  const [isAdmin,setIsAdmin] = useState(false)
+  const [isAdmin,setIsAdmin] =
+    useState(false)
+
+  const [active,setActive] =
+    useState('dashboard')
 
   useEffect(()=>{
 
@@ -45,7 +52,9 @@ export default function App(){
       try{
 
         const discordUser = JSON.parse(
-          localStorage.getItem('discord_user')
+          localStorage.getItem(
+            'discord_user'
+          )
         )
 
         if(!discordUser?.id) return
@@ -56,7 +65,8 @@ export default function App(){
           discordUser.id
         )
 
-        const adminSnap = await getDoc(adminRef)
+        const adminSnap =
+          await getDoc(adminRef)
 
         setIsAdmin(
           adminSnap.exists()
@@ -66,6 +76,7 @@ export default function App(){
 
         console.log(error)
       }
+
     }
 
     if(isAuth){
@@ -75,11 +86,20 @@ export default function App(){
   },[isAuth])
 
   return(
+
     <div className="app">
 
-      {isAuth && (
-        <Sidebar isAdmin={isAdmin} />
-      )}
+      {
+        isAuth && (
+
+          <Sidebar
+            active={active}
+            setActive={setActive}
+            isAdmin={isAdmin}
+          />
+
+        )
+      }
 
       <main className="content">
 
@@ -111,7 +131,16 @@ export default function App(){
           />
 
           <Route
-            path="/Liders"
+            path="/members"
+            element={
+              isAuth
+              ? <Members />
+              : <Dashboard />
+            }
+          />
+
+          <Route
+            path="/liders"
             element={
               isAuth
               ? <Liders />
@@ -120,10 +149,10 @@ export default function App(){
           />
 
           <Route
-            path="/Members"
+            path="/statistics"
             element={
               isAuth
-              ? <Members />
+              ? <Statistics />
               : <Dashboard />
             }
           />
@@ -142,5 +171,7 @@ export default function App(){
       </main>
 
     </div>
+
   )
+
 }
