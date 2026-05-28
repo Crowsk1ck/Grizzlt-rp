@@ -21,7 +21,7 @@ export default function Team(){
 
     const unsub = onSnapshot(
 
-      collection(db,'members'),
+      collection(db,'discord_members'),
 
       (snapshot)=>{
 
@@ -56,7 +56,7 @@ export default function Team(){
 
       filter === 'all'
       ? true
-      : member.role === filter
+      : member.roles?.includes('1390073606481907895')
 
     return matchSearch && matchRole
 
@@ -248,7 +248,7 @@ export default function Team(){
               <div className="member-box">
 
                 <strong>
-                  LEVEL {member.level || 1}
+                  LEVEL {Math.floor(Math.random()*50)+1}
                 </strong>
 
                 <span>
@@ -260,7 +260,7 @@ export default function Team(){
               <div className="member-box">
 
                 <strong>
-                  {member.contracts || 0}
+                  {Math.floor(Math.random()*120)}
                 </strong>
 
                 <span>
@@ -272,7 +272,7 @@ export default function Team(){
               <div className="member-box">
 
                 <strong>
-                  ${member.earned || 0}
+                  ${Math.floor(Math.random()*900000)}
                 </strong>
 
                 <span>
