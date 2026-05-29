@@ -143,7 +143,24 @@ export default function Sidebar({
           user && (
 
             <div className="sidebar-profile">
+<button
+  className="sidebar-logout"
+  onClick={() => {
 
+    localStorage.removeItem(
+      'discord_token'
+    )
+
+    localStorage.removeItem(
+      'discord_user'
+    )
+
+    window.location.reload()
+
+  }}
+>
+  ВИЙТИ
+</button>
               <img
                 src={`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`}
                 alt=""
