@@ -15,6 +15,8 @@ export default function Contracts(){
   const [contracts,setContracts] = useState([])
   const [members,setMembers] = useState([])
   const [selectedMembers,setSelectedMembers] = useState([])
+  const [selectedContract,setSelectedContract] =
+  useState(null)
 
   const [form,setForm] = useState({
     title:'',
@@ -346,16 +348,25 @@ export default function Contracts(){
     .split(',')
     .length > 3 && (
 
-    <span className="more-members">
+<span
+  className="more-members"
+  onClick={() => {
 
-      +
-      {
-        (contract.members || '')
-          .split(',')
-          .length - 3
-      }
+    setSelectedContract(
+      contract
+    )
 
-    </span>
+  }}
+>
+
+  +
+  {
+    (contract.members || '')
+      .split(',')
+      .length - 3
+  }
+
+</span>
 
   )}
 
@@ -382,6 +393,50 @@ export default function Contracts(){
         </div>
 
       </div>
+      {
+  selectedContract && (
+
+    <div
+      className="members-modal"
+      onClick={() =>
+        setSelectedContract(null)
+      }
+    >
+
+      <div
+        className="members-modal-content"
+        onClick={(e)=>
+          e.stopPropagation()
+        }
+      >
+
+        <h2>
+          Участники контракта
+        </h2>
+
+        {
+          selectedContract.members
+            .split(',')
+            .map((name,index)=>(
+
+              <div
+                key={index}
+                className="modal-member"
+              >
+
+                {name.trim()}
+
+              </div>
+
+            ))
+        }
+
+      </div>
+
+    </div>
+
+  )
+}
 </div>
   )
 
