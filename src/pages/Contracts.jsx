@@ -28,6 +28,32 @@ useEffect(()=>{
 
   const unsub = onSnapshot(
 
+    collection(db,'contracts'),
+
+    (snapshot)=>{
+
+      const arr = []
+
+      snapshot.forEach((doc)=>{
+
+        arr.push({
+          id:doc.id,
+          ...doc.data()
+        })
+
+      })
+
+      setContracts(arr)
+
+    }
+
+  )
+
+  return ()=>unsub()
+
+},[])
+  const unsub = onSnapshot(
+
     collection(db,'discord_members'),
 
     (snapshot)=>{
@@ -53,46 +79,76 @@ useEffect(()=>{
 
 },[])
 
-  async function createContract(){
+async function createContract(){
 
-    if(
-      !form.title ||
-      !form.client ||
-      !form.price
-    ) return
+  if(
+    !form.title ||
+    !form.client ||
+    !form.price
+  ){
+    alert('Заполните все поля')
+    return
+  }
 
-await addDoc(
+  if(
+    selectedMembers.length === 0
+  ){
+    alert('Выберите участников')
+    return
+  }
 
-  collection(db,'contracts'),
+  try{
 
-  {
+    await addDoc(
 
-    title: form.title,
+      collection(
+        db,
+        'contracts'
+      ),
 
-    client: form.client,
+      {
 
-    price: form.price,
+        title:
+          form.title,
 
-    members:
-      selectedMembers.join(', '),
+        client:
+          form.client,
 
-    createdAt:
-      Date.now()
+        price:
+          form.price,
+
+        members:
+          selectedMembers.join(', '),
+
+        createdAt:
+          Date.now()
+
+      }
+
+    )
+
+    setSelectedMembers([])
+
+    setForm({
+
+      title:'',
+      client:'',
+      price:'',
+      members:''
+
+    })
+
+  }catch(error){
+
+    console.log(error)
+
+    alert(
+      'Ошибка создания контракта'
+    )
 
   }
 
-)
-
-setSelectedMembers([])
-
-setForm({
-
-  title:'',
-  client:'',
-  price:'',
-  members:''
-
-})
+}
 
   }
 
