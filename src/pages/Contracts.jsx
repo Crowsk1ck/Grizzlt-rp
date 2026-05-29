@@ -232,61 +232,69 @@ setForm({
 
 <div className="members-picker">
 
-  {members.map(member => (
+  {members.map(member => {
 
-    <label
-      key={member.id}
-      className="member-check"
-    >
+    const name =
+      member.nickname ||
+      member.username
 
-      <input
-        type="checkbox"
-        checked={
-          selectedMembers.includes(
-            member.nickname ||
-            member.username
-          )
+    const selected =
+      selectedMembers.includes(name)
+
+    return (
+
+      <div
+        key={member.id}
+        className={
+          selected
+            ? 'member-card selected'
+            : 'member-card'
         }
-        onChange={(e)=>{
+        onClick={() => {
 
-          const name =
-            member.nickname ||
-            member.username
+          if(selected){
 
-          if(e.target.checked){
+            setSelectedMembers(
+              selectedMembers.filter(
+                item => item !== name
+              )
+            )
+
+          }else{
 
             setSelectedMembers([
               ...selectedMembers,
               name
             ])
 
-          }else{
-
-            setSelectedMembers(
-
-              selectedMembers.filter(
-                item => item !== name
-              )
-
-            )
-
           }
 
         }}
-      />
+      >
 
-      <span>
+        <img
+          src={member.avatar}
+          alt=""
+          className="member-card-avatar"
+        />
 
-        {
-          member.nickname ||
-          member.username
-        }
+        <h4>
+          {name}
+        </h4>
 
-      </span>
+        <span>
+          {
+            member.online
+              ? 'ONLINE'
+              : 'OFFLINE'
+          }
+        </span>
 
-    </label>
+      </div>
 
-  ))}
+    )
+
+  })}
 
 </div>
 
