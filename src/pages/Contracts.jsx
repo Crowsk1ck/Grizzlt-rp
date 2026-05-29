@@ -85,7 +85,6 @@ export default function Contracts(){
 
     if(
       !form.title ||
-      !form.client ||
       !form.price
     ){
       alert('Заполните все поля')
@@ -111,7 +110,6 @@ export default function Contracts(){
         {
 
           title: form.title,
-          client: form.client,
           price: form.price,
           members: selectedMembers.join(', '),
           createdAt: Date.now()
@@ -125,7 +123,6 @@ export default function Contracts(){
       setForm({
 
         title:'',
-        client:'',
         price:'',
         members:''
 
@@ -222,18 +219,6 @@ export default function Contracts(){
               setForm({
                 ...form,
                 title:e.target.value
-              })
-            }
-          />
-
-          <input
-            type="text"
-            placeholder="Клиент"
-            value={form.client}
-            onChange={(e)=>
-              setForm({
-                ...form,
-                client:e.target.value
               })
             }
           />
@@ -358,7 +343,8 @@ export default function Contracts(){
     }
 
   </div>
-
+</div>
+                </div>
 <div className="contract-price">
 
   <span className="contract-label">
@@ -380,9 +366,7 @@ export default function Contracts(){
         </div>
 
       </div>
-
-    </div>
-
+</div>
   )
 
 }
