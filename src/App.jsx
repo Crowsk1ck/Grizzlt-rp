@@ -44,7 +44,32 @@ export default function App(){
     useState(false)
 
   useEffect(()=>{
+  const hash = window.location.hash
 
+  if(hash.includes('access_token')){
+
+    const params =
+      new URLSearchParams(
+        hash.replace('#','')
+      )
+
+    const token =
+      params.get('access_token')
+
+    if(token){
+
+      localStorage.setItem(
+        'discord_token',
+        token
+      )
+
+      window.location.href='/'
+
+    }
+
+  }
+
+},[])
     async function checkAdmin(){
 
       try{
