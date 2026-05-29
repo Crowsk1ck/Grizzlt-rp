@@ -9,27 +9,38 @@ const client = new Client({
   ]
 })
 
-const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT)
+const serviceAccount = JSON.parse(
+  process.env.FIREBASE_SERVICE_ACCOUNT
+)
 
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
+  credential: admin.credential.cert(
+    serviceAccount
+  )
 })
 
 const db = admin.firestore()
 
-const SERVER_ID = process.env.DISCORD_SERVER_ID
+const SERVER_ID =
+  process.env.DISCORD_SERVER_ID
 
 client.once('ready', async () => {
 
-  console.log(`Logged as ${client.user.tag}`)
+  console.log(
+    `Logged as ${client.user.tag}`
+  )
 
-  const guild = await client.guilds.fetch(SERVER_ID)
+  const guild =
+    await client.guilds.fetch(
+      SERVER_ID
+    )
 
   await guild.members.fetch()
 
-  setInterval(async () => {
+  async function syncMembers(){
 
-    const members = guild.members.cache
+    const members =
+      guild.members.cache
 
     const allMembers = []
 
@@ -37,56 +48,85 @@ client.once('ready', async () => {
 
     members.forEach(member => {
 
-      const status = member.presence?.status || 'offline'
+      const status =
+        member.presence?.status ||
+        'offline'
 
-      if (status !== 'offline') online++
+      if(status !== 'offline'){
+        online++
+      }
 
-llMembers.push({
-  id: member.id,
+      allMembers.push({
 
-  username: member.user.username,
+        id: member.id,
 
-  nickname:
-    member.nickname ||
-    member.displayName ||
-    member.user.globalName ||
-    member.user.username,
+        username:
+          member.user.username,
 
-  avatar: member.user.displayAvatarURL(),
+        nickname:
+          member.nickname ||
+          member.displayName ||
+          member.user.globalName ||
+          member.user.username,
 
-  roles: member.roles.cache.map(
-    r => r.id
-  ),
+        avatar:
+          member.user.displayAvatarURL({
+            extension:'png',
+            size:512
+          }),
 
-  online:
-    status !== 'offline'
-})
+        roles:
+          member.roles.cache.map(
+            role => role.id
+          ),
+
+        online:
+          status !== 'offline',
+
+        bot:
+          member.user.bot
+
+      })
 
     })
 
-    await db.collection('stats').doc('discord_members').set({
-      members: members.size,
-      online
-    })
+    await db
+      .collection('stats')
+      .doc('discord_members')
+      .set({
+        members: members.size,
+        online
+      })
 
-const batch = db.batch()
+    const batch = db.batch()
 
-for (const member of allMembers) {
+    for(const member of allMembers){
 
-  const ref = db
-    .collection('discord_members')
-    .doc(member.id)
+      const ref = db
+        .collection('discord_members')
+        .doc(member.id)
 
-  batch.set(ref, member)
+      batch.set(ref, member)
 
-}
+    }
 
-await batch.commit()
+    await batch.commit()
 
-    console.log('Discord synced')
+    console.log(
+      `Discord synced | Members: ${members.size} | Online: ${online}`
+    )
 
-  }, 300000)
+  }
+
+  await syncMembers()
+
+  setInterval(
+    syncMembers,
+    300000
+  )
 
 })
 
-client.login(process.env.DISCORD_BOT_TOKEN)
+client.login(
+  process.env.DISCORD_BOT_TOKEN
+)
