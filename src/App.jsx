@@ -44,86 +44,100 @@ export default function App(){
 
   // Discord OAuth
 
-  useEffect(()=>{
+  // Discord OAuth
 
-    const hash =
-      window.location.hash
+useEffect(()=>{
 
-    if(hash.includes('access_token')){
+  const hash = window.location.hash
 
-      const params =
-        new URLSearchParams(
-          hash.replace('#','')
-        )
+  if(hash.includes('access_token')){
 
-      const token =
-        params.get('access_token')
+    const params =
+      new URLSearchParams(
+        hash.replace('#','')
+      )
 
-      if(token){
+    const token =
+      params.get('access_token')
+
+    if(token){
+
+      localStorage.setItem(
+        'discord_token',
+        token
+      )
+
+      fetch(
+        'https://discord.com/api/users/@me',
+        {
+          headers:{
+            Authorization:`Bearer ${token}`
+          }
+        }
+      )
+      .then(res=>res.json())
+      .then(data=>{
 
         localStorage.setItem(
-          'discord_token',
-          token
+          'discord_user',
+          JSON.stringify(data)
         )
 
         window.location.href='/'
 
-      }
+      })
 
     }
 
-  },[])
+  }
 
-  // Admin check
+},[])
 
-  useEffect(()=>{
 
-    async function checkAdmin(){
+// Admin Check
 
-      try{
+useEffect(()=>{
 
-        const discordUser =
-          JSON.parse(
-            localStorage.getItem(
-              'discord_user'
-            )
-          )
+  async function checkAdmin(){
 
-        if(!discordUser?.id)
-          return
+    try{
 
-        const adminRef =
-          doc(
-            db,
-            'admins',
-            discordUser.id
-          )
-
-        const adminSnap =
-          await getDoc(
-            adminRef
-          )
-
-        setIsAdmin(
-          adminSnap.exists()
+      const discordUser = JSON.parse(
+        localStorage.getItem(
+          'discord_user'
         )
+      )
 
-      }catch(error){
+      if(!discordUser?.id) return
 
-        console.log(error)
+      const adminRef = doc(
+        db,
+        'admins',
+        discordUser.id
+      )
 
-      }
+      const adminSnap =
+        await getDoc(adminRef)
+
+      setIsAdmin(
+        adminSnap.exists()
+      )
+
+    }catch(error){
+
+      console.log(error)
 
     }
 
-    if(isAuth){
+  }
 
-      checkAdmin()
+  if(isAuth){
 
-    }
+    checkAdmin()
 
-  },[isAuth])
+  }
 
+},[isAuth])
   return(
 
     <div className="app">
