@@ -140,20 +140,6 @@ export default function Dashboard(){
             <button className="join-btn">
               DISCORD
             </button>
-<div className="dashboard-buttons">
-
-  {
-    !isAuth && (
-
-      <a
-        href={LOGIN_URL}
-        className="join-btn"
-      >
-        ВОЙТИ DISCORD
-      </a>
-
-    )
-  }
             <button className="rules-btn">
               ПРАВИЛА
             </button>
