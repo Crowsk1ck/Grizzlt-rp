@@ -131,6 +131,10 @@
 }
 
 .join-btn{
+display:flex;
+align-items:center;
+justify-content:center;
+text-decoration:none;
   background:
     linear-gradient(
       135deg,
