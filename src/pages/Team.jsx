@@ -259,7 +259,7 @@ export default function Team(){
               <div className="member-info">
 
                 <h3>
-                  {member.username}
+                  {member.nickname || member.username}
                 </h3>
 
                 <div className="member-role">
