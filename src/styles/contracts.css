@@ -395,6 +395,31 @@
   margin:0;
 
 }
+.contract-members-list{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:8px;
+
+}
+
+.contract-members-list span{
+
+  background:#12070d;
+
+  border:1px solid rgba(255,0,102,.3);
+
+  padding:6px 12px;
+
+  border-radius:10px;
+
+  color:white;
+
+  font-size:13px;
+
+}
 /* MOBILE */
 
 @media(max-width:1100px){
