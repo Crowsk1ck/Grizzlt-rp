@@ -151,7 +151,6 @@ const isAuth =
   <a href={LOGIN_URL} className="join-btn">
     ВОЙТИ DISCORD
   </a>
-)
 
     ) : (
 
