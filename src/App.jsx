@@ -10,7 +10,6 @@ import {
 } from 'firebase/firestore'
 
 import Sidebar from './components/layout/Sidebar'
-import Topbar from './components/layout/Topbar'
 
 import Dashboard from './pages/Dashboard'
 import Contracts from './pages/Contracts'
@@ -100,7 +99,6 @@ export default function App(){
 
       <main className="content">
 
-        <Topbar />
 
         <Routes>
 
