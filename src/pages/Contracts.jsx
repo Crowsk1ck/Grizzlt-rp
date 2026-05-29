@@ -343,30 +343,29 @@ export default function Contracts(){
     УЧАСТНИКИ
   </span>
 
-  <p>
-    {
-    contract.members
-      ? (()=>{
+<div className="contract-members">
 
-          const list =
-            contract.members
-              .split(',')
+  <span className="contract-label">
+    УЧАСТНИКИ
+  </span>
 
-          if(list.length <= 4){
+  <div className="contract-members-list">
 
-            return contract.members
+    {(contract.members || '')
+      .split(',')
+      .slice(0,5)
+      .map((name,index)=>(
 
-          }
+        <span key={index}>
+          {name.trim()}
+        </span>
 
-          return `${list
-            .slice(0,4)
-            .join(', ')}
-            +${list.length-4}`
+      ))
+    }
 
-        })()
-      : '—'
-  }
-  </p>
+  </div>
+
+</div>
 
 </div>
 
