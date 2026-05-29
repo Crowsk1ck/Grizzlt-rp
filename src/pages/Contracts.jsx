@@ -15,140 +15,131 @@ export default function Contracts(){
   const [contracts,setContracts] = useState([])
   const [members,setMembers] = useState([])
   const [selectedMembers,setSelectedMembers] = useState([])
-  const [form,setForm] = useState({
 
+  const [form,setForm] = useState({
     title:'',
     client:'',
     price:'',
     members:''
-
   })
 
-useEffect(()=>{
+  useEffect(()=>{
 
-  const unsub = onSnapshot(
+    const unsub = onSnapshot(
 
-    collection(db,'contracts'),
+      collection(db,'contracts'),
 
-    (snapshot)=>{
+      (snapshot)=>{
 
-      const arr = []
+        const arr = []
 
-      snapshot.forEach((doc)=>{
+        snapshot.forEach((doc)=>{
 
-        arr.push({
-          id:doc.id,
-          ...doc.data()
+          arr.push({
+            id:doc.id,
+            ...doc.data()
+          })
+
         })
 
-      })
-
-      setContracts(arr)
-
-    }
-
-  )
-
-  return ()=>unsub()
-
-},[])
-  const unsub = onSnapshot(
-
-    collection(db,'discord_members'),
-
-    (snapshot)=>{
-
-      const arr = []
-
-      snapshot.forEach((doc)=>{
-
-        arr.push({
-          id:doc.id,
-          ...doc.data()
-        })
-
-      })
-
-      setMembers(arr)
-
-    }
-
-  )
-
-  return ()=>unsub()
-
-},[])
-
-async function createContract(){
-
-  if(
-    !form.title ||
-    !form.client ||
-    !form.price
-  ){
-    alert('Заполните все поля')
-    return
-  }
-
-  if(
-    selectedMembers.length === 0
-  ){
-    alert('Выберите участников')
-    return
-  }
-
-  try{
-
-    await addDoc(
-
-      collection(
-        db,
-        'contracts'
-      ),
-
-      {
-
-        title:
-          form.title,
-
-        client:
-          form.client,
-
-        price:
-          form.price,
-
-        members:
-          selectedMembers.join(', '),
-
-        createdAt:
-          Date.now()
+        setContracts(arr)
 
       }
 
     )
 
-    setSelectedMembers([])
+    return ()=>unsub()
 
-    setForm({
+  },[])
 
-      title:'',
-      client:'',
-      price:'',
-      members:''
+  useEffect(()=>{
 
-    })
+    const unsub = onSnapshot(
 
-  }catch(error){
+      collection(db,'discord_members'),
 
-    console.log(error)
+      (snapshot)=>{
 
-    alert(
-      'Ошибка создания контракта'
+        const arr = []
+
+        snapshot.forEach((doc)=>{
+
+          arr.push({
+            id:doc.id,
+            ...doc.data()
+          })
+
+        })
+
+        setMembers(arr)
+
+      }
+
     )
 
-  }
+    return ()=>unsub()
 
-}
+  },[])
+
+  async function createContract(){
+
+    if(
+      !form.title ||
+      !form.client ||
+      !form.price
+    ){
+      alert('Заполните все поля')
+      return
+    }
+
+    if(
+      selectedMembers.length === 0
+    ){
+      alert('Выберите участников')
+      return
+    }
+
+    try{
+
+      await addDoc(
+
+        collection(
+          db,
+          'contracts'
+        ),
+
+        {
+
+          title: form.title,
+          client: form.client,
+          price: form.price,
+          members: selectedMembers.join(', '),
+          createdAt: Date.now()
+
+        }
+
+      )
+
+      setSelectedMembers([])
+
+      setForm({
+
+        title:'',
+        client:'',
+        price:'',
+        members:''
+
+      })
+
+    }catch(error){
+
+      console.log(error)
+
+      alert(
+        'Ошибка создания контракта'
+      )
+
+    }
 
   }
 
@@ -194,48 +185,23 @@ async function createContract(){
         <div className="contracts-stats">
 
           <div className="contracts-stat">
-
-            <h3>
-              {contracts.length}
-            </h3>
-
-            <span>
-              ВСЕГО КОНТРАКТОВ
-            </span>
-
+            <h3>{contracts.length}</h3>
+            <span>ВСЕГО КОНТРАКТОВ</span>
           </div>
 
           <div className="contracts-stat">
-
-            <h3>
-              $
-              {totalIncome.toLocaleString()}
-            </h3>
-
-            <span>
-              ОБЩИЙ ДОХОД
-            </span>
-
+            <h3>${totalIncome.toLocaleString()}</h3>
+            <span>ОБЩИЙ ДОХОД</span>
           </div>
 
           <div className="contracts-stat">
-
             <h3>24</h3>
-
-            <span>
-              АКТИВНЫХ
-            </span>
-
+            <span>АКТИВНЫХ</span>
           </div>
 
           <div className="contracts-stat">
-
             <h3>98%</h3>
-
-            <span>
-              УСПЕШНОСТЬ
-            </span>
-
+            <span>УСПЕШНОСТЬ</span>
           </div>
 
         </div>
@@ -246,9 +212,7 @@ async function createContract(){
 
         <div className="contracts-form-card">
 
-          <h2>
-            СОЗДАТЬ КОНТРАКТ
-          </h2>
+          <h2>СОЗДАТЬ КОНТРАКТ</h2>
 
           <input
             type="text"
@@ -286,77 +250,69 @@ async function createContract(){
             }
           />
 
-<div className="members-picker">
+          <div className="members-picker">
 
-  {members.map(member => {
+            {members.map(member => {
 
-    const name =
-      member.nickname ||
-      member.username
+              const name =
+                member.nickname ||
+                member.username
 
-    const selected =
-      selectedMembers.includes(name)
+              const selected =
+                selectedMembers.includes(name)
 
-    return (
+              return (
 
-      <div
-        key={member.id}
-        className={
-          selected
-            ? 'member-card selected'
-            : 'member-card'
-        }
-        onClick={() => {
+                <div
+                  key={member.id}
+                  className={
+                    selected
+                      ? 'member-card selected'
+                      : 'member-card'
+                  }
+                  onClick={() => {
 
-          if(selected){
+                    if(selected){
 
-            setSelectedMembers(
-              selectedMembers.filter(
-                item => item !== name
+                      setSelectedMembers(
+                        selectedMembers.filter(
+                          item => item !== name
+                        )
+                      )
+
+                    }else{
+
+                      setSelectedMembers([
+                        ...selectedMembers,
+                        name
+                      ])
+
+                    }
+
+                  }}
+                >
+
+                  <img
+                    src={member.avatar}
+                    alt=""
+                    className="member-card-avatar"
+                  />
+
+                  <h4>{name}</h4>
+
+                  <span>
+                    {member.online ? 'ONLINE' : 'OFFLINE'}
+                  </span>
+
+                </div>
+
               )
-            )
 
-          }else{
+            })}
 
-            setSelectedMembers([
-              ...selectedMembers,
-              name
-            ])
+          </div>
 
-          }
-
-        }}
-      >
-
-        <img
-          src={member.avatar}
-          alt=""
-          className="member-card-avatar"
-        />
-
-        <h4>
-          {name}
-        </h4>
-
-        <span>
-          {
-            member.online
-              ? 'ONLINE'
-              : 'OFFLINE'
-          }
-        </span>
-
-      </div>
-
-    )
-
-  })}
-
-</div>
-
-          <button
-            onClick={createContract}
-          >
+          <button onClick={createContract}>
             СОЗДАТЬ
           </button>
 
@@ -365,11 +321,7 @@ async function createContract(){
         <div className="contracts-table-card">
 
           <div className="contracts-table-header">
-
-            <h2>
-              АКТИВНЫЕ КОНТРАКТЫ
-            </h2>
-
+            <h2>АКТИВНЫЕ КОНТРАКТЫ</h2>
           </div>
 
           <div className="contracts-table">
@@ -382,30 +334,16 @@ async function createContract(){
               >
 
                 <div className="contract-info">
-
-                  <h3>
-                    {contract.title}
-                  </h3>
-
-                  <span>
-                    {contract.client}
-                  </span>
-
+                  <h3>{contract.title}</h3>
+                  <span>{contract.client}</span>
                 </div>
 
                 <div className="contract-members">
-
-                  {
-                    contract.members ||
-                    '—'
-                  }
-
+                  {contract.members || '—'}
                 </div>
 
                 <div className="contract-price">
-
                   {contract.price}
-
                 </div>
 
               </div>
