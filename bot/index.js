@@ -56,18 +56,23 @@ client.once('ready', async () => {
       online
     })
 
-   for (const member of allMembers) {
+const batch = db.batch()
 
-  await db
+for (const member of allMembers) {
+
+  const ref = db
     .collection('discord_members')
     .doc(member.id)
-    .set(member)
+
+  batch.set(ref, member)
 
 }
 
+await batch.commit()
+
     console.log('Discord synced')
 
-  }, 15000)
+  }, 300000)
 
 })
 
