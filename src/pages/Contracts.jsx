@@ -343,12 +343,6 @@ export default function Contracts(){
     УЧАСТНИКИ
   </span>
 
-<div className="contract-members">
-
-  <span className="contract-label">
-    УЧАСТНИКИ
-  </span>
-
   <div className="contract-members-list">
 
     {(contract.members || '')
@@ -364,10 +358,6 @@ export default function Contracts(){
     }
 
   </div>
-
-</div>
-
-</div>
 
 <div className="contract-price">
 
