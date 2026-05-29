@@ -83,14 +83,16 @@ await addDoc(
 
 )
 
-    setForm({
-      setSelectedMembers([]),
-      title:'',
-      client:'',
-      price:'',
-      members:''
+setSelectedMembers([])
 
-    })
+setForm({
+
+  title:'',
+  client:'',
+  price:'',
+  members:''
+
+})
 
   }
 
