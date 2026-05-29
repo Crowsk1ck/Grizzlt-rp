@@ -16,6 +16,11 @@ import {
 
 export default function Dashboard(){
 
+const isAuth =
+  !!localStorage.getItem(
+    'discord_token'
+  )
+  
   const [members,setMembers] =
     useState([])
 
@@ -137,14 +142,37 @@ export default function Dashboard(){
 
           <div className="dashboard-buttons">
 
-            <button className="join-btn">
-              DISCORD
-            </button>
-            <button className="rules-btn">
-              ПРАВИЛА
-            </button>
+  {
 
-          </div>
+    !isAuth ? (
+
+      <a
+        href={LOGIN_URL}
+        className="join-btn"
+      >
+        ВОЙТИ DISCORD
+      </a>
+
+    ) : (
+
+      <a
+        href="https://discord.gg/"
+        target="_blank"
+        rel="noreferrer"
+        className="join-btn"
+      >
+        DISCORD
+      </a>
+
+    )
+
+  }
+
+  <button className="rules-btn">
+    ПРАВИЛА
+  </button>
+
+</div>
 
         </div>
 
