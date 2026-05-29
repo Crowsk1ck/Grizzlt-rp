@@ -13,7 +13,7 @@ import '../styles/contracts.css'
 export default function Contracts(){
 
   const [contracts,setContracts] = useState([])
-
+  const [members,setMembers] = useState([])
   const [form,setForm] = useState({
 
     title:'',
@@ -23,36 +23,34 @@ export default function Contracts(){
 
   })
 
-  useEffect(()=>{
+useEffect(()=>{
 
-    const unsub = onSnapshot(
+  const unsub = onSnapshot(
 
-      collection(db,'contracts'),
+    collection(db,'discord_members'),
 
-      (snapshot)=>{
+    (snapshot)=>{
 
-        const arr = []
+      const arr = []
 
-        snapshot.forEach((doc)=>{
+      snapshot.forEach((doc)=>{
 
-          arr.push({
-
-            id:doc.id,
-            ...doc.data()
-
-          })
-
+        arr.push({
+          id:doc.id,
+          ...doc.data()
         })
 
-        setContracts(arr)
+      })
 
-      }
+      setMembers(arr)
 
-    )
+    }
 
-    return ()=>unsub()
+  )
 
-  },[])
+  return ()=>unsub()
+
+},[])
 
   async function createContract(){
 
@@ -221,16 +219,39 @@ export default function Contracts(){
             }
           />
 
-          <textarea
-            placeholder="Участники"
-            value={form.members}
-            onChange={(e)=>
-              setForm({
-                ...form,
-                members:e.target.value
-              })
-            }
-          />
+<select
+  className="contract-select"
+  value={form.members}
+  onChange={(e)=>
+    setForm({
+      ...form,
+      members:e.target.value
+    })
+  }
+>
+
+  <option value="">
+    Виберіть учасника
+  </option>
+
+  {members.map(member => (
+
+    <option
+      key={member.id}
+      value={
+        member.nickname ||
+        member.username
+      }
+    >
+      {
+        member.nickname ||
+        member.username
+      }
+    </option>
+
+  ))}
+
+</select>
 
           <button
             onClick={createContract}
