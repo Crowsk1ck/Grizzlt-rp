@@ -250,7 +250,27 @@
   font-weight:800;
   font-size:18px;
 }
+.contract-select{
 
+  width:100%;
+
+  padding:18px;
+
+  margin-bottom:16px;
+
+  border:none;
+
+  outline:none;
+
+  border-radius:16px;
+
+  background:#12070d;
+
+  color:white;
+
+  font-size:15px;
+
+}
 /* MOBILE */
 
 @media(max-width:1100px){
