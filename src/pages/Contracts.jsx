@@ -14,6 +14,7 @@ export default function Contracts(){
 
   const [contracts,setContracts] = useState([])
   const [members,setMembers] = useState([])
+  const [selectedMembers,setSelectedMembers] = useState([])
   const [form,setForm] = useState({
 
     title:'',
@@ -60,22 +61,30 @@ useEffect(()=>{
       !form.price
     ) return
 
-    await addDoc(
+await addDoc(
 
-      collection(db,'contracts'),
+  collection(db,'contracts'),
 
-      {
+  {
 
-        ...form,
+    title: form.title,
 
-        createdAt:Date.now()
+    client: form.client,
 
-      }
+    price: form.price,
 
-    )
+    members:
+      selectedMembers.join(', '),
+
+    createdAt:
+      Date.now()
+
+  }
+
+)
 
     setForm({
-
+      setSelectedMembers([]),
       title:'',
       client:'',
       price:'',
@@ -219,39 +228,65 @@ useEffect(()=>{
             }
           />
 
-<select
-  className="contract-select"
-  value={form.members}
-  onChange={(e)=>
-    setForm({
-      ...form,
-      members:e.target.value
-    })
-  }
->
-
-  <option value="">
-    Виберіть учасника
-  </option>
+<div className="members-picker">
 
   {members.map(member => (
 
-    <option
+    <label
       key={member.id}
-      value={
-        member.nickname ||
-        member.username
-      }
+      className="member-check"
     >
-      {
-        member.nickname ||
-        member.username
-      }
-    </option>
+
+      <input
+        type="checkbox"
+        checked={
+          selectedMembers.includes(
+            member.nickname ||
+            member.username
+          )
+        }
+        onChange={(e)=>{
+
+          const name =
+            member.nickname ||
+            member.username
+
+          if(e.target.checked){
+
+            setSelectedMembers([
+              ...selectedMembers,
+              name
+            ])
+
+          }else{
+
+            setSelectedMembers(
+
+              selectedMembers.filter(
+                item => item !== name
+              )
+
+            )
+
+          }
+
+        }}
+      />
+
+      <span>
+
+        {
+          member.nickname ||
+          member.username
+        }
+
+      </span>
+
+    </label>
 
   ))}
 
-</select>
+</div>
 
           <button
             onClick={createContract}
