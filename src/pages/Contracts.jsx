@@ -326,17 +326,40 @@ export default function Contracts(){
               >
 
                 <div className="contract-info">
-                  <h3>{contract.title}</h3>
-                  <span>{contract.client}</span>
-                </div>
 
-                <div className="contract-members">
-                  {contract.members || '—'}
-                </div>
+  <span className="contract-label">
+    НАЗВАНИЕ
+  </span>
 
-                <div className="contract-price">
-                  {contract.price}
-                </div>
+  <h3>
+    {contract.title}
+  </h3>
+
+</div>
+
+<div className="contract-members">
+
+  <span className="contract-label">
+    УЧАСТНИКИ
+  </span>
+
+  <p>
+    {contract.members || '—'}
+  </p>
+
+</div>
+
+<div className="contract-price">
+
+  <span className="contract-label">
+    СУММА
+  </span>
+
+  <h3>
+    ${contract.price}
+  </h3>
+
+</div>
 
               </div>
 
