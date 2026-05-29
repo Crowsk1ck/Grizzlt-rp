@@ -341,8 +341,6 @@ export default function Contracts(){
 
       ))
     }
-
-  </div>
 </div>
                 </div>
 <div className="contract-price">
