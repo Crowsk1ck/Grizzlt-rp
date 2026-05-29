@@ -271,6 +271,41 @@
   font-size:15px;
 
 }
+.members-picker{
+
+  max-height:260px;
+
+  overflow:auto;
+
+  padding:12px;
+
+  border-radius:18px;
+
+  background:#12070d;
+
+  margin-bottom:16px;
+
+}
+
+.member-check{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:10px;
+
+  padding:10px;
+
+  cursor:pointer;
+
+}
+
+.member-check span{
+
+  color:white;
+
+}
 /* MOBILE */
 
 @media(max-width:1100px){
