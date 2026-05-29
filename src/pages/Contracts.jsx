@@ -344,7 +344,28 @@ export default function Contracts(){
   </span>
 
   <p>
-    {contract.members || '—'}
+    {
+    contract.members
+      ? (()=>{
+
+          const list =
+            contract.members
+              .split(',')
+
+          if(list.length <= 4){
+
+            return contract.members
+
+          }
+
+          return `${list
+            .slice(0,4)
+            .join(', ')}
+            +${list.length-4}`
+
+        })()
+      : '—'
+  }
   </p>
 
 </div>
