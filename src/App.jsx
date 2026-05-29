@@ -1,5 +1,4 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
-
 import { useEffect, useState } from 'react'
 
 import { db } from './services/firebase/firebase'
@@ -43,53 +42,67 @@ export default function App(){
   const [isAdmin,setIsAdmin] =
     useState(false)
 
+  // Discord OAuth
+
   useEffect(()=>{
-  const hash = window.location.hash
 
-  if(hash.includes('access_token')){
+    const hash =
+      window.location.hash
 
-    const params =
-      new URLSearchParams(
-        hash.replace('#','')
-      )
+    if(hash.includes('access_token')){
 
-    const token =
-      params.get('access_token')
+      const params =
+        new URLSearchParams(
+          hash.replace('#','')
+        )
 
-    if(token){
+      const token =
+        params.get('access_token')
 
-      localStorage.setItem(
-        'discord_token',
-        token
-      )
+      if(token){
 
-      window.location.href='/'
+        localStorage.setItem(
+          'discord_token',
+          token
+        )
+
+        window.location.href='/'
+
+      }
 
     }
 
-  }
+  },[])
 
-},[])
+  // Admin check
+
+  useEffect(()=>{
+
     async function checkAdmin(){
 
       try{
 
-        const discordUser = JSON.parse(
-          localStorage.getItem(
-            'discord_user'
+        const discordUser =
+          JSON.parse(
+            localStorage.getItem(
+              'discord_user'
+            )
           )
-        )
 
-        if(!discordUser?.id) return
+        if(!discordUser?.id)
+          return
 
-        const adminRef = doc(
-          db,
-          'admins',
-          discordUser.id
-        )
+        const adminRef =
+          doc(
+            db,
+            'admins',
+            discordUser.id
+          )
 
         const adminSnap =
-          await getDoc(adminRef)
+          await getDoc(
+            adminRef
+          )
 
         setIsAdmin(
           adminSnap.exists()
@@ -98,12 +111,15 @@ export default function App(){
       }catch(error){
 
         console.log(error)
+
       }
 
     }
 
     if(isAuth){
+
       checkAdmin()
+
     }
 
   },[isAuth])
@@ -113,6 +129,7 @@ export default function App(){
     <div className="app">
 
       {
+
         isAuth && (
 
           <Sidebar
@@ -120,10 +137,10 @@ export default function App(){
           />
 
         )
+
       }
 
       <main className="content">
-
 
         <Routes>
 
@@ -136,8 +153,8 @@ export default function App(){
             path="/contracts"
             element={
               isAuth
-              ? <Contracts />
-              : <Dashboard />
+                ? <Contracts />
+                : <Dashboard />
             }
           />
 
@@ -145,8 +162,8 @@ export default function App(){
             path="/team"
             element={
               isAuth
-              ? <Team />
-              : <Dashboard />
+                ? <Team />
+                : <Dashboard />
             }
           />
 
@@ -154,8 +171,8 @@ export default function App(){
             path="/liders"
             element={
               isAuth
-              ? <Liders />
-              : <Dashboard />
+                ? <Liders />
+                : <Dashboard />
             }
           />
 
@@ -163,8 +180,17 @@ export default function App(){
             path="/members"
             element={
               isAuth
-              ? <Members />
-              : <Dashboard />
+                ? <Members />
+                : <Dashboard />
+            }
+          />
+
+          <Route
+            path="/gallery"
+            element={
+              isAuth
+                ? <Gallery />
+                : <Dashboard />
             }
           />
 
@@ -172,8 +198,8 @@ export default function App(){
             path="/statistics"
             element={
               isAuth
-              ? <Statistics />
-              : <Dashboard />
+                ? <Statistics />
+                : <Dashboard />
             }
           />
 
@@ -181,8 +207,8 @@ export default function App(){
             path="/admin"
             element={
               isAdmin
-              ? <Admin />
-              : <Navigate to="/" />
+                ? <Admin />
+                : <Navigate to="/" />
             }
           />
 
