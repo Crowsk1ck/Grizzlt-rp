@@ -41,13 +41,26 @@ client.once('ready', async () => {
 
       if (status !== 'offline') online++
 
-      allMembers.push({
-        id: member.id,
-        username: member.user.username,
-        avatar: member.user.displayAvatarURL(),
-        roles: member.roles.cache.map(r => r.id),
-        online: status !== 'offline'
-      })
+llMembers.push({
+  id: member.id,
+
+  username: member.user.username,
+
+  nickname:
+    member.nickname ||
+    member.displayName ||
+    member.user.globalName ||
+    member.user.username,
+
+  avatar: member.user.displayAvatarURL(),
+
+  roles: member.roles.cache.map(
+    r => r.id
+  ),
+
+  online:
+    status !== 'offline'
+})
 
     })
 
