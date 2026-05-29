@@ -250,67 +250,59 @@ export default function Contracts(){
             }
           />
 
-          <div className="members-picker">
+<div className="members-picker">
 
-            {members.map(member => {
+  {members.map(member => {
 
-              const name =
-                member.nickname ||
-                member.username
+    const name =
+      member.nickname ||
+      member.username
 
-              const selected =
-                selectedMembers.includes(name)
+    const selected =
+      selectedMembers.includes(name)
 
-              return (
+    return (
 
-                <div
-                  key={member.id}
-                  className={
-                    selected
-                      ? 'member-card selected'
-                      : 'member-card'
-                  }
-                  onClick={() => {
+      <div
+        key={member.id}
+        className={
+          selected
+            ? 'member-item selected'
+            : 'member-item'
+        }
+        onClick={() => {
 
-                    if(selected){
+          if(selected){
 
-                      setSelectedMembers(
-                        selectedMembers.filter(
-                          item => item !== name
-                        )
-                      )
+            setSelectedMembers(
 
-                    }else{
-
-                      setSelectedMembers([
-                        ...selectedMembers,
-                        name
-                      ])
-
-                    }
-
-                  }}
-                >
-
-                  <img
-                    src={member.avatar}
-                    alt=""
-                    className="member-card-avatar"
-                  />
-
-                  <h4>{name}</h4>
-
-                  <span>
-                    {member.online ? 'ONLINE' : 'OFFLINE'}
-                  </span>
-
-                </div>
-
+              selectedMembers.filter(
+                item => item !== name
               )
 
-            })}
+            )
 
-          </div>
+          }else{
+
+            setSelectedMembers([
+              ...selectedMembers,
+              name
+            ])
+
+          }
+
+        }}
+      >
+
+        {name}
+
+      </div>
+
+    )
+
+  })}
+
+</div>
 
           <button onClick={createContract}>
             СОЗДАТЬ
