@@ -1,6 +1,15 @@
 import { useEffect, useState } from 'react'
 
 import {
+  ResponsiveContainer,
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip
+} from 'recharts'
+
+import {
   collection,
   onSnapshot
 } from 'firebase/firestore'
@@ -281,15 +290,37 @@ export default function Statistics(){
 
       </div>
 
-      <div className="statistics-chart">
+<div className="statistics-chart">
 
-        <div className="chart-line"></div>
+  <ResponsiveContainer
+    width="100%"
+    height={320}
+  >
 
-        <div className="chart-line second"></div>
+    <LineChart
+      data={chartData}
+    >
 
-        <div className="chart-line third"></div>
+      <XAxis
+        dataKey="month"
+      />
 
-      </div>
+      <YAxis />
+
+      <Tooltip />
+
+      <Line
+        type="monotone"
+        dataKey="income"
+        stroke="#ff0066"
+        strokeWidth={4}
+      />
+
+    </LineChart>
+
+  </ResponsiveContainer>
+
+</div>
 
     </div>
 
