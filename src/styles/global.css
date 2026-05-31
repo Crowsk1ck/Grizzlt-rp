@@ -225,3 +225,26 @@ a{
   }
 
 }
+@media(max-width:768px){
+
+  .app{
+
+    margin-left:0;
+
+    padding:12px;
+
+    padding-bottom:100px;
+
+  }
+
+  .content{
+
+    margin-left:0;
+
+    padding:10px;
+
+    width:100%;
+
+  }
+
+}
