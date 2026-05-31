@@ -288,39 +288,6 @@ const biggestContract =
         ))}
 
       </div>
-
-      <div className="statistics-top">
-
-        <h2>
-          ТОП ПО ДОХОДУ
-        </h2>
-
-        {topMoney.map(
-
-          ([name,money],index)=>(
-
-            <div
-              className="statistics-user"
-              key={index}
-            >
-
-              <span>
-                #{index + 1} {name}
-              </span>
-
-              <span>
-                $
-                {Math.floor(money)
-                  .toLocaleString()}
-              </span>
-
-            </div>
-
-          )
-
-        )}
-
-      </div>
 <div className="statistics-extra">
 
   <div className="statistics-extra-card">
