@@ -191,7 +191,39 @@ export default function Statistics(){
         income
 
       }))
+const topMember =
 
+  Object.entries(moneyMap)
+
+    .sort((a,b)=>b[1]-a[1])[0]
+
+const biggestContract =
+
+  contracts.length > 0
+
+    ? contracts.reduce(
+
+        (max,current)=>{
+
+          const currentPrice = parseInt(
+            String(current.price || 0)
+              .replace(/[^\d]/g,'')
+          ) || 0
+
+          const maxPrice = parseInt(
+            String(max.price || 0)
+              .replace(/[^\d]/g,'')
+          ) || 0
+
+          return currentPrice > maxPrice
+            ? current
+            : max
+
+        }
+
+      )
+
+    : null
   const stats = [
 
     {
@@ -289,7 +321,37 @@ export default function Statistics(){
         )}
 
       </div>
+<div className="statistics-extra">
 
+  <div className="statistics-extra-card">
+
+    <h3>
+      🏆 Найактивніший учасник
+    </h3>
+
+    <p>
+      {topMember?.[0] || 'Немає'}
+    </p>
+
+  </div>
+
+  <div className="statistics-extra-card">
+
+    <h3>
+      💰 Найдорожчий контракт
+    </h3>
+
+    <p>
+      {biggestContract?.title || 'Немає'}
+    </p>
+
+    <span>
+      ${biggestContract?.price || 0}
+    </span>
+
+  </div>
+
+</div>
 <div className="statistics-chart">
 
   <ResponsiveContainer
