@@ -230,58 +230,6 @@ async function deleteContract(id){
 
   )
 {
-  editingContract && (
-
-    <div
-      className="edit-modal"
-      onClick={() =>
-        setEditingContract(null)
-      }
-    >
-
-      <div
-        className="edit-modal-content"
-        onClick={(e)=>
-          e.stopPropagation()
-        }
-      >
-
-        <h2>
-          Редактировать контракт
-        </h2>
-
-        <input
-          value={editTitle}
-          onChange={(e)=>
-            setEditTitle(
-              e.target.value
-            )
-          }
-          placeholder="Название"
-        />
-
-        <input
-          value={editPrice}
-          onChange={(e)=>
-            setEditPrice(
-              e.target.value
-            )
-          }
-          placeholder="Сумма"
-        />
-
-        <button
-          onClick={saveContract}
-        >
-          Сохранить
-        </button>
-
-      </div>
-
-    </div>
-
-  )
-}
   return(
 
     <div className="contracts-page">
@@ -537,6 +485,58 @@ async function deleteContract(id){
 
       </div>
       {
+          editingContract && (
+
+    <div
+      className="edit-modal"
+      onClick={() =>
+        setEditingContract(null)
+      }
+    >
+
+      <div
+        className="edit-modal-content"
+        onClick={(e)=>
+          e.stopPropagation()
+        }
+      >
+
+        <h2>
+          Редактировать контракт
+        </h2>
+
+        <input
+          value={editTitle}
+          onChange={(e)=>
+            setEditTitle(
+              e.target.value
+            )
+          }
+          placeholder="Название"
+        />
+
+        <input
+          value={editPrice}
+          onChange={(e)=>
+            setEditPrice(
+              e.target.value
+            )
+          }
+          placeholder="Сумма"
+        />
+
+        <button
+          onClick={saveContract}
+        >
+          Сохранить
+        </button>
+
+      </div>
+
+    </div>
+
+  )
+}
   selectedContract && (
 
     <div
