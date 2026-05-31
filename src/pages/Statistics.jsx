@@ -58,112 +58,131 @@ export default function Statistics(){
 
   )
 
-  const members = contract.members
-    ? contract.members
-        .split(',')
-        .map(m=>m.trim())
-    : []
+  const membersSet = new Set()
 
-  const share =
-    members.length > 0
-      ? total / members.length
-      : 0
+  contracts.forEach(contract=>{
 
-  members.forEach(member=>{
+    if(!contract.members) return
 
-    if(!moneyMap[member]){
-
-      moneyMap[member] = 0
-
-    }
-
-    moneyMap[member] += share
+    contract.members
+      .split(',')
+      .forEach(member=>
+        membersSet.add(
+          member.trim()
+        )
+      )
 
   })
 
-})
-const monthStats = {}
+  const averageIncome =
 
-contracts.forEach(contract=>{
+    contracts.length > 0
 
-  if(!contract.createdAt) return
+      ? Math.floor(
+          totalIncome /
+          contracts.length
+        )
 
-  const month =
+      : 0
 
-    new Date(contract.createdAt)
+  const moneyMap = {}
 
-      .toLocaleDateString(
+  contracts.forEach(contract=>{
 
-        'ru-RU',
+    const total = parseInt(
 
-        {
-          month:'short'
-        }
+      String(contract.price || 0)
+        .replace(/[^\d]/g,'')
 
-      )
+    ) || 0
 
-  const price = parseInt(
+    const members = contract.members
 
-    String(contract.price || 0)
-      .replace(/[^\d]/g,'')
+      ? contract.members
+          .split(',')
+          .map(m=>m.trim())
 
-  ) || 0
+      : []
 
-  if(!monthStats[month]){
+    const share =
 
-    monthStats[month] = 0
+      members.length > 0
 
-  }
+        ? total / members.length
 
-  monthStats[month] += price
+        : 0
 
-})
-const chartData =
+    members.forEach(member=>{
 
-  Object.entries(monthStats)
+      if(!moneyMap[member]){
 
-    .map(([month,income])=>({
+        moneyMap[member] = 0
 
-      month,
+      }
 
-      income
+      moneyMap[member] += share
 
-    }))
-  const price = parseInt(
+    })
 
-    String(contract.price || 0)
-      .replace(/[^\d]/g,'')
+  })
 
-  ) || 0
+  const topMoney =
 
-  if(!monthStats[month]){
+    Object.entries(moneyMap)
 
-    monthStats[month] = 0
+      .sort((a,b)=>b[1]-a[1])
 
-  }
+      .slice(0,5)
 
-  monthStats[month] += price
+  const monthStats = {}
 
-})
+  contracts.forEach(contract=>{
 
-const chartData =
+    if(!contract.createdAt) return
 
-  Object.entries(monthStats)
+    const month =
 
-    .map(([month,total])=>({
+      new Date(contract.createdAt)
 
-      month,
+        .toLocaleDateString(
 
-      income:total
+          'ru-RU',
 
-    }))
-const topMoney =
+          {
+            month:'short'
+          }
 
-  Object.entries(moneyMap)
+        )
 
-    .sort((a,b)=>b[1]-a[1])
+    const price = parseInt(
 
-    .slice(0,5)
+      String(contract.price || 0)
+        .replace(/[^\d]/g,'')
+
+    ) || 0
+
+    if(!monthStats[month]){
+
+      monthStats[month] = 0
+
+    }
+
+    monthStats[month] += price
+
+  })
+
+  const chartData =
+
+    Object.entries(monthStats)
+
+      .map(([month,income])=>({
+
+        month,
+
+        income
+
+      }))
+
   const stats = [
 
     {
@@ -228,45 +247,40 @@ const topMoney =
         ))}
 
       </div>
+
       <div className="statistics-top">
 
-  <h2>
-    ТОП ПО ДОХОДУ
-  </h2>
+        <h2>
+          ТОП ПО ДОХОДУ
+        </h2>
 
-  {topMoney.map(
+        {topMoney.map(
 
-    ([name,money],index)=>(
+          ([name,money],index)=>(
 
-      <div
-        className="statistics-user"
-        key={index}
-      >
+            <div
+              className="statistics-user"
+              key={index}
+            >
 
-        <span>
+              <span>
+                #{index + 1} {name}
+              </span>
 
-          #{index+1}
-          {' '}
-          {name}
+              <span>
+                $
+                {Math.floor(money)
+                  .toLocaleString()}
+              </span>
 
-        </span>
+            </div>
 
-        <span>
+          )
 
-          $
-          {Math.floor(money)
-            .toLocaleString()
-          }
-
-        </span>
+        )}
 
       </div>
 
-    )
-
-  )}
-
-</div>
       <div className="statistics-chart">
 
         <div className="chart-line"></div>
