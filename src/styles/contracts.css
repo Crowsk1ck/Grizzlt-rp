@@ -497,6 +497,29 @@
   cursor:pointer;
 
 }
+.delete-contract-btn{
+
+  background:none;
+
+  border:none;
+
+  color:#ff0066;
+
+  font-size:22px;
+
+  cursor:pointer;
+
+  transition:.2s;
+
+}
+
+.delete-contract-btn:hover{
+
+  transform:scale(1.15);
+
+  color:#ff3d8f;
+
+}
 /* MOBILE */
 
 @media(max-width:1100px){
