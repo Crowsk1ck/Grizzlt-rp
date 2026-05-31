@@ -123,20 +123,49 @@ const monthStats = {}
 
 contracts.forEach(contract=>{
 
-  const date = contract.createdAt
-
-  if(!date) return
+  if(!contract.createdAt) return
 
   const month =
 
-    new Date(date)
+    new Date(contract.createdAt)
+
       .toLocaleDateString(
+
         'ru-RU',
+
         {
           month:'short'
         }
+
       )
 
+  const price = parseInt(
+
+    String(contract.price || 0)
+      .replace(/[^\d]/g,'')
+
+  ) || 0
+
+  if(!monthStats[month]){
+
+    monthStats[month] = 0
+
+  }
+
+  monthStats[month] += price
+
+})
+const chartData =
+
+  Object.entries(monthStats)
+
+    .map(([month,income])=>({
+
+      month,
+
+      income
+
+    }))
   const price = parseInt(
 
     String(contract.price || 0)
