@@ -5,7 +5,8 @@ import {
   addDoc,
   onSnapshot,
   deleteDoc,
-  doc
+  doc,
+  updateDoc
 } from 'firebase/firestore'
 
 import { db } from '../services/firebase/firebase'
@@ -15,6 +16,9 @@ import '../styles/contracts.css'
 export default function Contracts(){
 
   const [contracts,setContracts] = useState([])
+  const [editingContract,setEditingContract] = useState(null)
+  const [editTitle,setEditTitle] = useState('')
+  const [editPrice,setEditPrice] = useState('')
   const [members,setMembers] = useState([])
   const [selectedMembers,setSelectedMembers] = useState([])
   const [selectedContract,setSelectedContract] =
@@ -84,7 +88,47 @@ export default function Contracts(){
     return ()=>unsub()
 
   },[])
+function openEditModal(contract){
 
+  setEditingContract(contract)
+
+  setEditTitle(
+    contract.title
+  )
+
+  setEditPrice(
+    contract.price
+  )
+
+}
+  async function saveContract(){
+
+  try{
+
+    await updateDoc(
+
+      doc(
+        db,
+        'contracts',
+        editingContract.id
+      ),
+
+      {
+        title:editTitle,
+        price:editPrice
+      }
+
+    )
+
+    setEditingContract(null)
+
+  }catch(error){
+
+    console.log(error)
+
+  }
+
+}
   async function createContract(){
 
     if(
@@ -186,7 +230,59 @@ async function deleteContract(id){
     0
 
   )
+{
+  editingContract && (
 
+    <div
+      className="edit-modal"
+      onClick={() =>
+        setEditingContract(null)
+      }
+    >
+
+      <div
+        className="edit-modal-content"
+        onClick={(e)=>
+          e.stopPropagation()
+        }
+      >
+
+        <h2>
+          Редактировать контракт
+        </h2>
+
+        <input
+          value={editTitle}
+          onChange={(e)=>
+            setEditTitle(
+              e.target.value
+            )
+          }
+          placeholder="Название"
+        />
+
+        <input
+          value={editPrice}
+          onChange={(e)=>
+            setEditPrice(
+              e.target.value
+            )
+          }
+          placeholder="Сумма"
+        />
+
+        <button
+          onClick={saveContract}
+        >
+          Сохранить
+        </button>
+
+      </div>
+
+    </div>
+
+  )
+}
   return(
 
     <div className="contracts-page">
@@ -423,6 +519,14 @@ async function deleteContract(id){
   }
 >
   🗑️
+</button>
+                <button
+  className="edit-contract-btn"
+  onClick={() =>
+    openEditModal(contract)
+  }
+>
+  ✏️
 </button>
               </div>
 
