@@ -310,10 +310,12 @@ export default function Statistics(){
       <Tooltip />
 
       <Line
-        type="monotone"
-        dataKey="income"
-        stroke="#ff0066"
-        strokeWidth={4}
+  type="monotone"
+  dataKey="income"
+  stroke="#ff0066"
+  strokeWidth={4}
+  dot={{ r: 6 }}
+  activeDot={{ r: 10 }}
       />
 
     </LineChart>
