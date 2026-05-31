@@ -767,3 +767,24 @@ display:grid;
   }
 
 }
+@media(max-width:768px){
+
+  .contracts-grid{
+
+    grid-template-columns:1fr;
+
+  }
+
+  .contract-row{
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:flex-start;
+
+    gap:12px;
+
+  }
+
+}
