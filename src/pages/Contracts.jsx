@@ -165,6 +165,27 @@ function openEditModal(contract){
         }
 
       )
+      setSelectedMembers([])
+
+      setForm({
+
+        title:'',
+        price:'',
+        members:''
+
+      })
+
+    }catch(error){
+
+      console.log(error)
+
+      alert(
+        'Ошибка создания контракта'
+      )
+
+    }
+
+  }
 async function deleteContract(id){
 
   const confirmDelete =
@@ -195,28 +216,6 @@ async function deleteContract(id){
   }
 
 }
-      setSelectedMembers([])
-
-      setForm({
-
-        title:'',
-        price:'',
-        members:''
-
-      })
-
-    }catch(error){
-
-      console.log(error)
-
-      alert(
-        'Ошибка создания контракта'
-      )
-
-    }
-
-  }
-
   const totalIncome = contracts.reduce(
 
     (acc,item)=>
