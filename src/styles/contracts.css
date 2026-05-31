@@ -557,6 +557,63 @@
     0 0 18px rgba(255,0,102,.35);
 
 }
+.edit-contract-btn{
+
+  width:42px;
+
+  height:42px;
+
+  border:none;
+
+  border-radius:12px;
+
+  background:rgba(255,255,255,.05);
+
+  color:white;
+
+  cursor:pointer;
+
+}
+
+.edit-modal{
+
+  position:fixed;
+
+  inset:0;
+
+  background:rgba(0,0,0,.75);
+
+  display:flex;
+
+  justify-content:center;
+
+  align-items:center;
+
+  z-index:9999;
+
+}
+
+.edit-modal-content{
+
+  width:450px;
+
+  padding:24px;
+
+  border-radius:20px;
+
+  background:#12070d;
+
+  border:1px solid #ff0066;
+
+}
+
+.edit-modal-content input{
+
+  width:100%;
+
+  margin-top:12px;
+
+}
 /* MOBILE */
 
 @media(max-width:1100px){
