@@ -3,7 +3,9 @@ import { useEffect, useState } from 'react'
 import {
   collection,
   addDoc,
-  onSnapshot
+  onSnapshot,
+  deleteDoc,
+  doc
 } from 'firebase/firestore'
 
 import { db } from '../services/firebase/firebase'
@@ -119,7 +121,36 @@ export default function Contracts(){
         }
 
       )
+async function deleteContract(id){
 
+  const confirmDelete =
+    window.confirm(
+      'Удалить контракт?'
+    )
+
+  if(!confirmDelete) return
+
+  try{
+
+    await deleteDoc(
+      doc(
+        db,
+        'contracts',
+        id
+      )
+    )
+
+  }catch(error){
+
+    console.log(error)
+
+    alert(
+      'Ошибка удаления'
+    )
+
+  }
+
+}
       setSelectedMembers([])
 
       setForm({
@@ -383,7 +414,16 @@ export default function Contracts(){
   </h3>
 
 </div>
-
+<button
+  className="delete-contract-btn"
+  onClick={() =>
+    deleteContract(
+      contract.id
+    )
+  }
+>
+  🗑️
+</button>
               </div>
 
             ))}
