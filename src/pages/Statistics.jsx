@@ -1,27 +1,110 @@
+import { useEffect, useState } from 'react'
+
+import {
+  collection,
+  onSnapshot
+} from 'firebase/firestore'
+
+import { db } from '../services/firebase/firebase'
+
 import '../styles/statistics.css'
 
 export default function Statistics(){
+
+  const [contracts,setContracts] = useState([])
+
+  useEffect(()=>{
+
+    const unsub = onSnapshot(
+
+      collection(db,'contracts'),
+
+      (snapshot)=>{
+
+        const data = snapshot.docs.map(doc=>({
+
+          id:doc.id,
+
+          ...doc.data()
+
+        }))
+
+        setContracts(data)
+
+      }
+
+    )
+
+    return ()=>unsub()
+
+  },[])
+
+  const totalIncome = contracts.reduce(
+
+    (sum,contract)=>{
+
+      const price = parseInt(
+
+        String(contract.price || 0)
+          .replace(/[^\d]/g,'')
+
+      ) || 0
+
+      return sum + price
+
+    },
+
+    0
+
+  )
+
+  const membersSet = new Set()
+
+  contracts.forEach(contract=>{
+
+    if(!contract.members) return
+
+    contract.members
+      .split(',')
+      .forEach(member=>
+        membersSet.add(
+          member.trim()
+        )
+      )
+
+  })
+
+  const averageIncome =
+
+    contracts.length > 0
+
+      ? Math.floor(
+          totalIncome /
+          contracts.length
+        )
+
+      : 0
 
   const stats = [
 
     {
       title:'ОБЩИЙ ДОХОД',
-      value:'$2.5M'
+      value:`$${totalIncome.toLocaleString()}`
     },
 
     {
       title:'КОНТРАКТОВ',
-      value:'1247'
+      value:contracts.length
     },
 
     {
-      title:'ONLINE',
-      value:'48'
+      title:'УЧАСТНИКОВ',
+      value:membersSet.size
     },
 
     {
-      title:'УСПЕШНОСТЬ',
-      value:'98%'
+      title:'СРЕДНИЙ ДОХОД',
+      value:`$${averageIncome.toLocaleString()}`
     }
 
   ]
