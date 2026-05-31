@@ -229,7 +229,6 @@ async function deleteContract(id){
     0
 
   )
-{
   return(
 
     <div className="contracts-page">
