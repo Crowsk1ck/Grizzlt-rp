@@ -58,43 +58,6 @@ export default function Statistics(){
 
   )
 
-  const membersSet = new Set()
-
-  contracts.forEach(contract=>{
-
-    if(!contract.members) return
-
-    contract.members
-      .split(',')
-      .forEach(member=>
-        membersSet.add(
-          member.trim()
-        )
-      )
-
-  })
-
-  const averageIncome =
-
-    contracts.length > 0
-
-      ? Math.floor(
-          totalIncome /
-          contracts.length
-        )
-
-      : 0
-const moneyMap = {}
-
-contracts.forEach(contract=>{
-
-  const total = parseInt(
-
-    String(contract.price || 0)
-      .replace(/[^\d]/g,'')
-
-  ) || 0
-
   const members = contract.members
     ? contract.members
         .split(',')
