@@ -510,23 +510,23 @@ async function deleteContract(id){
   </h3>
 
 </div>
+
 <button
-  className="delete-contract-btn"
-  onClick={() =>
-    deleteContract(
-      contract.id
-    )
-  }
->
-  🗑️
-</button>
-                <button
   className="edit-contract-btn"
   onClick={() =>
     openEditModal(contract)
   }
 >
   ✏️
+</button>
+
+<button
+  className="delete-contract-btn"
+  onClick={() =>
+    deleteContract(contract.id)
+  }
+>
+  🗑️
 </button>
               </div>
 
