@@ -215,7 +215,7 @@
 .contract-row{
 
   display:grid;
-
+  position:relative;
   grid-template-columns:
     220px
     1fr
@@ -499,25 +499,31 @@
 }
 .delete-contract-btn{
 
+  position:absolute;
+
+  bottom:20px;
+
+  left:20px;
+
   background:none;
 
   border:none;
 
-  color:#ff0066;
-
-  font-size:22px;
+  font-size:26px;
 
   cursor:pointer;
 
   transition:.2s;
 
+  opacity:.7;
+
 }
 
 .delete-contract-btn:hover{
 
-  transform:scale(1.15);
+  opacity:1;
 
-  color:#ff3d8f;
+  transform:scale(1.15);
 
 }
 /* MOBILE */
