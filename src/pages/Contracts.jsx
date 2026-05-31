@@ -537,6 +537,7 @@ async function deleteContract(id){
 
   )
 }
+      {
   selectedContract && (
 
     <div
