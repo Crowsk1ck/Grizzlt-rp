@@ -17,12 +17,12 @@ export default function Contracts(){
 
   const [contracts,setContracts] = useState([])
   const [editingContract,setEditingContract] = useState(null)
+  const [editMembers,setEditMembers] = useState([])
   const [editTitle,setEditTitle] = useState('')
   const [editPrice,setEditPrice] = useState('')
   const [members,setMembers] = useState([])
   const [selectedMembers,setSelectedMembers] = useState([])
-  const [selectedContract,setSelectedContract] =
-  useState(null)
+  const [selectedContract,setSelectedContract] = useState(null)
 
   const [form,setForm] = useState({
     title:'',
@@ -92,12 +92,18 @@ function openEditModal(contract){
 
   setEditingContract(contract)
 
-  setEditTitle(
-    contract.title
-  )
+  setEditTitle(contract.title)
 
-  setEditPrice(
-    contract.price
+  setEditPrice(contract.price)
+
+  setEditMembers(
+
+    contract.members
+      ? contract.members
+          .split(',')
+          .map(m => m.trim())
+      : []
+
   )
 
 }
@@ -105,20 +111,26 @@ function openEditModal(contract){
 
   try{
 
-    await updateDoc(
+await updateDoc(
 
-      doc(
-        db,
-        'contracts',
-        editingContract.id
-      ),
+  doc(
+    db,
+    'contracts',
+    editingContract.id
+  ),
 
-      {
-        title:editTitle,
-        price:editPrice
-      }
+  {
 
-    )
+    title:editTitle,
+
+    price:editPrice,
+
+    members:
+      editMembers.join(', ')
+
+  }
+
+)
 
     setEditingContract(null)
 
@@ -514,21 +526,75 @@ async function deleteContract(id){
           placeholder="Название"
         />
 
-        <input
-          value={editPrice}
-          onChange={(e)=>
-            setEditPrice(
-              e.target.value
-            )
-          }
-          placeholder="Сумма"
-        />
+<input
+  value={editPrice}
+  onChange={(e)=>
+    setEditPrice(
+      e.target.value
+    )
+  }
+  placeholder="Сумма"
+/>
 
-        <button
-          onClick={saveContract}
-        >
-          Сохранить
-        </button>
+<div className="edit-members">
+
+  {members.map(member => {
+
+    const name =
+      member.nickname ||
+      member.username
+
+    const selected =
+      editMembers.includes(name)
+
+    return (
+
+      <div
+        key={member.id}
+        className={
+          selected
+            ? 'member-item selected'
+            : 'member-item'
+        }
+        onClick={() => {
+
+          if(selected){
+
+            setEditMembers(
+
+              editMembers.filter(
+                item => item !== name
+              )
+
+            )
+
+          }else{
+
+            setEditMembers([
+              ...editMembers,
+              name
+            ])
+
+          }
+
+        }}
+      >
+
+        {name}
+
+      </div>
+
+    )
+
+  })}
+
+</div>
+
+<button
+  onClick={saveContract}
+>
+  Сохранить
+</button>
 
       </div>
 
