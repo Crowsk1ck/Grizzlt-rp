@@ -149,7 +149,88 @@ export default function Statistics(){
         ))}
 
       </div>
+const moneyMap = {}
 
+contracts.forEach(contract=>{
+
+  const total = parseInt(
+
+    String(contract.price || 0)
+      .replace(/[^\d]/g,'')
+
+  ) || 0
+
+  const members = contract.members
+    ? contract.members
+        .split(',')
+        .map(m=>m.trim())
+    : []
+
+  const share =
+    members.length > 0
+      ? total / members.length
+      : 0
+
+  members.forEach(member=>{
+
+    if(!moneyMap[member]){
+
+      moneyMap[member] = 0
+
+    }
+
+    moneyMap[member] += share
+
+  })
+
+})
+
+const topMoney =
+
+  Object.entries(moneyMap)
+
+    .sort((a,b)=>b[1]-a[1])
+
+    .slice(0,5)
+      <div className="statistics-top">
+
+  <h2>
+    ТОП ПО ДОХОДУ
+  </h2>
+
+  {topMoney.map(
+
+    ([name,money],index)=>(
+
+      <div
+        className="statistics-user"
+        key={index}
+      >
+
+        <span>
+
+          #{index+1}
+          {' '}
+          {name}
+
+        </span>
+
+        <span>
+
+          $
+          {Math.floor(money)
+            .toLocaleString()
+          }
+
+        </span>
+
+      </div>
+
+    )
+
+  )}
+
+</div>
       <div className="statistics-chart">
 
         <div className="chart-line"></div>
