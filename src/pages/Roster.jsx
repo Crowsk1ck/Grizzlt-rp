@@ -1,4 +1,4 @@
-import { Activity, Users } from 'lucide-react';
+import { Activity, Search, Users } from 'lucide-react';
 import { collection, doc, getDocs, onSnapshot } from 'firebase/firestore';
 import { useEffect, useMemo, useState } from 'react';
 import PageHero from '../components/PageHero.jsx';
@@ -6,11 +6,22 @@ import Section from '../components/Section.jsx';
 import { roster } from '../data/siteData.js';
 import { db } from '../lib/firebase.js';
 
+function sortMembers(a, b, sortMode) {
+  if (sortMode === 'name') {
+    return (a.nickname || a.username).localeCompare(b.nickname || b.username);
+  }
+
+  return Number(b.online) - Number(a.online) || (a.nickname || a.username).localeCompare(b.nickname || b.username);
+}
+
 export default function Roster() {
   const [members, setMembers] = useState([]);
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(Boolean(db));
   const [error, setError] = useState('');
+  const [query, setQuery] = useState('');
+  const [filter, setFilter] = useState('all');
+  const [sortMode, setSortMode] = useState('online');
 
   useEffect(() => {
     if (!db) {
@@ -20,20 +31,19 @@ export default function Roster() {
 
     let active = true;
     const loadingTimer = window.setTimeout(() => {
-      if (active) {
-        setLoading(false);
-      }
+      if (active) setLoading(false);
     }, 8000);
+
+    function mapMembers(snapshot) {
+      return snapshot.docs
+        .map((item) => ({ id: item.id, ...item.data() }))
+        .filter((member) => !member.bot);
+    }
 
     getDocs(collection(db, 'discord_members'))
       .then((snapshot) => {
         if (!active) return;
-        const nextMembers = snapshot.docs
-          .map((item) => ({ id: item.id, ...item.data() }))
-          .filter((member) => !member.bot)
-          .sort((a, b) => Number(b.online) - Number(a.online) || a.nickname.localeCompare(b.nickname));
-
-        setMembers(nextMembers);
+        setMembers(mapMembers(snapshot));
         setLoading(false);
       })
       .catch((snapshotError) => {
@@ -46,12 +56,7 @@ export default function Roster() {
       collection(db, 'discord_members'),
       (snapshot) => {
         if (!active) return;
-        const nextMembers = snapshot.docs
-          .map((item) => ({ id: item.id, ...item.data() }))
-          .filter((member) => !member.bot)
-          .sort((a, b) => Number(b.online) - Number(a.online) || a.nickname.localeCompare(b.nickname));
-
-        setMembers(nextMembers);
+        setMembers(mapMembers(snapshot));
         setLoading(false);
       },
       (snapshotError) => {
@@ -81,57 +86,15 @@ export default function Roster() {
     };
   }, [members, stats]);
 
-  return (
-    <>
-      <PageHero
-        eyebrow="Roster"
-        title="Склад родини"
-        text="Живий склад Grizzly Family синхронізується з Discord через бота та Firestore."
-      />
-      <Section title="Discord склад" eyebrow="Live">
-        <div className="roster-stats">
-          <article>
-            <Users size={24} />
-            <strong>{visibleStats.total}</strong>
-            <span>учасників Discord</span>
-          </article>
-          <article>
-            <Activity size={24} />
-            <strong>{visibleStats.online}</strong>
-            <span>онлайн зараз</span>
-          </article>
-        </div>
+  const filteredMembers = useMemo(() => {
+    const searchValue = query.trim().toLowerCase();
 
-        {loading && <p>Завантажуємо склад із Firestore...</p>}
-        {error && <p className="auth-alert">Не вдалося прочитати discord_members: {error}</p>}
-
-        {!loading && members.length > 0 && (
-          <div className="member-grid">
-            {members.map((member) => (
-              <article className="member-card" key={member.id}>
-                <img src={member.avatar || '/assets/grizzly-logo.png'} alt={member.nickname || member.username} />
-                <div>
-                  <span className={member.online ? 'status online' : 'status offline'}>{member.online ? 'Online' : 'Offline'}</span>
-                  <h3>{member.nickname || member.username}</h3>
-                  <p>@{member.username}</p>
-                </div>
-              </article>
-            ))}
-          </div>
-        )}
-
-        {!loading && members.length === 0 && !error && (
-          <div className="table fallback-roster">
-            {roster.map(([name, rank, duty]) => (
-              <div className="table-row" key={name}>
-                <strong>{name}</strong>
-                <span>{rank}</span>
-                <p>{duty}</p>
-              </div>
-            ))}
-          </div>
-        )}
-      </Section>
-    </>
-  );
-}
+    return members
+      .filter((member) => {
+        if (filter === 'online') return member.online;
+        if (filter === 'offline') return !member.online;
+        return true;
+      })
+      .filter((member) => {
+        if (!searchValue) return true;
+        const name = `${member.nickname || ''} ${member.username || ''}`.toLowerCase();
