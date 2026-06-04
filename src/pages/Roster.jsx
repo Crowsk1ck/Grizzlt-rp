@@ -98,3 +98,4 @@ export default function Roster() {
       .filter((member) => {
         if (!searchValue) return true;
         const name = `${member.nickname || ''} ${member.username || ''}`.toLowerCase();
+      }
