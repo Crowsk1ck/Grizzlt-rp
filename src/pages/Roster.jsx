@@ -1,5 +1,5 @@
 import { Activity, Users } from 'lucide-react';
-import { collection, doc, onSnapshot } from 'firebase/firestore';
+import { collection, doc, getDocs, onSnapshot } from 'firebase/firestore';
 import { useEffect, useMemo, useState } from 'react';
 import PageHero from '../components/PageHero.jsx';
 import Section from '../components/Section.jsx';
@@ -18,9 +18,34 @@ export default function Roster() {
       return undefined;
     }
 
+    let active = true;
+    const loadingTimer = window.setTimeout(() => {
+      if (active) {
+        setLoading(false);
+      }
+    }, 8000);
+
+    getDocs(collection(db, 'discord_members'))
+      .then((snapshot) => {
+        if (!active) return;
+        const nextMembers = snapshot.docs
+          .map((item) => ({ id: item.id, ...item.data() }))
+          .filter((member) => !member.bot)
+          .sort((a, b) => Number(b.online) - Number(a.online) || a.nickname.localeCompare(b.nickname));
+
+        setMembers(nextMembers);
+        setLoading(false);
+      })
+      .catch((snapshotError) => {
+        if (!active) return;
+        setError(snapshotError.message);
+        setLoading(false);
+      });
+
     const unsubscribeMembers = onSnapshot(
       collection(db, 'discord_members'),
       (snapshot) => {
+        if (!active) return;
         const nextMembers = snapshot.docs
           .map((item) => ({ id: item.id, ...item.data() }))
           .filter((member) => !member.bot)
@@ -30,6 +55,7 @@ export default function Roster() {
         setLoading(false);
       },
       (snapshotError) => {
+        if (!active) return;
         setError(snapshotError.message);
         setLoading(false);
       },
@@ -40,6 +66,8 @@ export default function Roster() {
     });
 
     return () => {
+      active = false;
+      window.clearTimeout(loadingTimer);
       unsubscribeMembers();
       unsubscribeStats();
     };
