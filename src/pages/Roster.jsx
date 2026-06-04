@@ -98,3 +98,94 @@ export default function Roster() {
       .filter((member) => {
         if (!searchValue) return true;
         const name = `${member.nickname || ''} ${member.username || ''}`.toLowerCase();
+        return name.includes(searchValue);
+      })
+      .sort((a, b) => sortMembers(a, b, sortMode));
+  }, [members, query, filter, sortMode]);
+
+  return (
+    <>
+      <PageHero
+        eyebrow="Roster"
+        title="Склад родини"
+        text="Живий склад Grizzly Family синхронізується з Discord через бота та Firestore."
+      />
+      <Section title="Discord склад" eyebrow="Live">
+        <div className="roster-stats">
+          <article>
+            <Users size={24} />
+            <strong>{visibleStats.total}</strong>
+            <span>учасників Discord</span>
+          </article>
+          <article>
+            <Activity size={24} />
+            <strong>{visibleStats.online}</strong>
+            <span>онлайн зараз</span>
+          </article>
+        </div>
+
+        <div className="roster-controls">
+          <label className="search-field">
+            <Search size={18} />
+            <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Пошук по ніку або Discord" />
+          </label>
+          <div className="segmented">
+            {[
+              ['all', 'Всі'],
+              ['online', 'Online'],
+              ['offline', 'Offline'],
+            ].map(([value, label]) => (
+              <button className={filter === value ? 'active' : ''} type="button" key={value} onClick={() => setFilter(value)}>
+                {label}
+              </button>
+            ))}
+          </div>
+          <select value={sortMode} onChange={(event) => setSortMode(event.target.value)} aria-label="Сортування складу">
+            <option value="online">Online зверху</option>
+            <option value="name">За ім’ям</option>
+          </select>
+        </div>
+
+        {!loading && members.length > 0 && (
+          <p className="roster-count">
+            Показано {filteredMembers.length} з {members.length}
+          </p>
+        )}
+
+        {loading && <p>Завантажуємо склад із Firestore...</p>}
+        {error && <p className="auth-alert">Не вдалося прочитати discord_members: {error}</p>}
+
+        {!loading && filteredMembers.length > 0 && (
+          <div className="member-grid">
+            {filteredMembers.map((member) => (
+              <article className="member-card" key={member.id}>
+                <img src={member.avatar || '/assets/grizzly-logo.png'} alt={member.nickname || member.username} />
+                <div>
+                  <span className={member.online ? 'status online' : 'status offline'}>{member.online ? 'Online' : 'Offline'}</span>
+                  <h3>{member.nickname || member.username}</h3>
+                  <p>@{member.username}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        )}
+
+        {!loading && members.length > 0 && filteredMembers.length === 0 && (
+          <p className="auth-alert">Нічого не знайдено. Спробуй змінити пошук або фільтр.</p>
+        )}
+
+        {!loading && members.length === 0 && !error && (
+          <div className="table fallback-roster">
+            {roster.map(([name, rank, duty]) => (
+              <div className="table-row" key={name}>
+                <strong>{name}</strong>
+                <span>{rank}</span>
+                <p>{duty}</p>
+              </div>
+            ))}
+          </div>
+        )}
+      </Section>
+    </>
+  );
+}
