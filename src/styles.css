@@ -517,6 +517,94 @@ p {
   margin-bottom: 0;
 }
 
+.roster-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 240px));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.roster-stats article {
+  display: grid;
+  gap: 8px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  padding: 20px;
+  box-shadow: var(--shadow-pink), var(--shadow-blue);
+}
+
+.roster-stats svg {
+  color: var(--blue-soft);
+}
+
+.roster-stats strong {
+  font-size: 34px;
+  line-height: 1;
+}
+
+.roster-stats span {
+  color: var(--muted);
+}
+
+.member-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.member-card {
+  display: grid;
+  grid-template-columns: 74px 1fr;
+  gap: 14px;
+  align-items: center;
+  min-height: 118px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  padding: 16px;
+  overflow: hidden;
+}
+
+.member-card img {
+  width: 74px;
+  height: 74px;
+  object-fit: cover;
+  border: 1px solid rgba(255, 22, 120, 0.4);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.member-card h3 {
+  margin: 6px 0 2px;
+  font-size: 18px;
+  overflow-wrap: anywhere;
+}
+
+.member-card p {
+  margin: 0;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+.status {
+  display: inline-flex;
+  width: max-content;
+  border: 1px solid var(--line);
+  padding: 4px 8px;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.status.online {
+  border-color: rgba(92, 255, 180, 0.5);
+  color: #8affca;
+  background: rgba(92, 255, 180, 0.1);
+}
+
+.status.offline {
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.05);
+}
+
 .rank-list,
 .news-list,
 .event-grid,
@@ -736,6 +824,7 @@ textarea:focus {
 
   .grid.four,
   .grid.two,
+  .member-grid,
   .event-grid,
   .diplomacy-grid,
   .gallery-grid {
@@ -760,6 +849,8 @@ textarea:focus {
 
   .stat-strip,
   .grid.four,
+  .roster-stats,
+  .member-grid,
   .event-grid,
   .diplomacy-grid,
   .gallery-grid,
