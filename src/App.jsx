@@ -16,7 +16,7 @@ import Contact from './pages/Contact.jsx';
 import Profile from './pages/Profile.jsx';
 import DatabasePage from './pages/Database.jsx';
 import NotFound from './pages/NotFound.jsx';
-
+ 
 export default function App() {
   return (
     <Layout>
