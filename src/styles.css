@@ -784,6 +784,10 @@ p {
   cursor: pointer;
 }
 
+.admin-news-form {
+  max-width: 920px;
+}
+
 .rank-list,
 .news-list,
 .event-grid,

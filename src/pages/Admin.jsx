@@ -1,4 +1,4 @@
-import { Check, Clock, Search, ShieldAlert, UserCheck, X } from 'lucide-react';
+import { Check, Clock, Newspaper, Search, ShieldAlert, UserCheck, X } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import PageHero from '../components/PageHero.jsx';
 import Section from '../components/Section.jsx';
@@ -25,6 +25,8 @@ export default function Admin() {
   const [error, setError] = useState('');
   const [query, setQuery] = useState('');
   const [filter, setFilter] = useState('all');
+  const [newsForm, setNewsForm] = useState({ title: '', tag: 'Grizzly Bulletin', text: '' });
+  const [newsStatus, setNewsStatus] = useState('');
 
   async function loadApplications() {
     setLoading(true);
@@ -61,6 +63,28 @@ export default function Admin() {
       );
     } catch (updateError) {
       setError(updateError.message);
+    }
+  }
+
+  async function publishNews(event) {
+    event.preventDefault();
+    setNewsStatus('Публікуємо...');
+
+    try {
+      const response = await fetch('/api/admin/news', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newsForm),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'News publish failed');
+
+      setNewsStatus(`Новину опубліковано. ID: ${data.id}`);
+      setNewsForm({ title: '', tag: 'Grizzly Bulletin', text: '' });
+    } catch (publishError) {
+      setNewsStatus(`Помилка: ${publishError.message}`);
     }
   }
 
@@ -125,7 +149,31 @@ export default function Admin() {
 
   return (
     <>
-      <PageHero eyebrow="Admin" title="Заявки" text="Закрита панель Grizzly Family для перегляду та обробки заявок." />
+      <PageHero eyebrow="Admin" title="Панель керування" text="Закрита панель Grizzly Family для заявок, статусів і новин сайту." />
+
+      <Section title="Публікація новин" eyebrow="News">
+        <form className="form admin-news-form" onSubmit={publishNews}>
+          <div className="form-grid">
+            <label>
+              Заголовок
+              <input value={newsForm.title} onChange={(event) => setNewsForm((current) => ({ ...current, title: event.target.value }))} placeholder="Наприклад: Відкрито новий набір" />
+            </label>
+            <label>
+              Тег
+              <input value={newsForm.tag} onChange={(event) => setNewsForm((current) => ({ ...current, tag: event.target.value }))} placeholder="Grizzly Bulletin" />
+            </label>
+          </div>
+          <label>
+            Текст новини
+            <textarea value={newsForm.text} onChange={(event) => setNewsForm((current) => ({ ...current, text: event.target.value }))} placeholder="Коротко опиши новину для сайту" />
+          </label>
+          <button className="button primary" type="submit">
+            <Newspaper size={18} /> Опублікувати
+          </button>
+          {newsStatus && <p className="form-status">{newsStatus}</p>}
+        </form>
+      </Section>
+
       <Section title="Панель заявок" eyebrow="Private">
         <div className="admin-stats">
           {[
