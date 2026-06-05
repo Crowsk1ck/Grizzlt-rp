@@ -107,6 +107,15 @@ export function readSession(req) {
   return session.user;
 }
 
+export function isAdminUser(user) {
+  if (!user?.id) return false;
+  return String(process.env.ADMIN_DISCORD_IDS || '')
+    .split(',')
+    .map((id) => id.trim())
+    .filter(Boolean)
+    .includes(user.id);
+}
+
 export function serializeCookie(name, value, options = {}) {
   const parts = [`${name}=${encodeURIComponent(value)}`];
 

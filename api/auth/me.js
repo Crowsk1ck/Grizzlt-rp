@@ -1,6 +1,6 @@
-import { readSession } from '../_auth.js';
+import { isAdminUser, readSession } from '../_auth.js';
 
 export default function handler(req, res) {
   const user = readSession(req);
-  res.status(200).json({ user });
+  res.status(200).json({ user, isAdmin: isAdminUser(user) });
 }

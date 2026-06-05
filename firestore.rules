@@ -1,0 +1,50 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function validText(value, max) {
+      return value is string && value.size() > 0 && value.size() <= max;
+    }
+
+    function validDiscordUser(document) {
+      return request.resource.data.discordUser is map
+        && request.resource.data.discordUser.id is string
+        && request.resource.data.discordUser.id == document;
+    }
+
+    match /applications/{document} {
+      allow create: if validText(request.resource.data.nickname, 64)
+        && validText(request.resource.data.discord, 120)
+        && validText(request.resource.data.age, 20)
+        && validText(request.resource.data.online, 80)
+        && validText(request.resource.data.message, 2000)
+        && validDiscordUser(document)
+        && request.resource.data.source == 'grizzly-family-site';
+      allow read, update, delete: if false;
+    }
+
+    match /messages/{document} {
+      allow create: if validText(request.resource.data.nickname, 64)
+        && validText(request.resource.data.discord, 120)
+        && validText(request.resource.data.age, 20)
+        && validText(request.resource.data.online, 80)
+        && validText(request.resource.data.message, 2000)
+        && request.resource.data.source == 'grizzly-family-site';
+      allow read, update, delete: if false;
+    }
+
+    match /discord_members/{document} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    match /stats/{document} {
+      allow read: if document == 'discord_members';
+      allow write: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

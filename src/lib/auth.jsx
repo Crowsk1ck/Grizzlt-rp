@@ -2,12 +2,14 @@ import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 
 const AuthContext = createContext({
   user: null,
+  isAdmin: false,
   loading: true,
   refreshUser: () => {},
 });
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
 
   async function refreshUser() {
@@ -16,8 +18,10 @@ export function AuthProvider({ children }) {
       if (!response.ok) throw new Error('Auth API unavailable');
       const data = await response.json();
       setUser(data.user || null);
+      setIsAdmin(Boolean(data.isAdmin));
     } catch {
       setUser(null);
+      setIsAdmin(false);
     } finally {
       setLoading(false);
     }
@@ -27,7 +31,7 @@ export function AuthProvider({ children }) {
     refreshUser();
   }, []);
 
-  const value = useMemo(() => ({ user, loading, refreshUser }), [user, loading]);
+  const value = useMemo(() => ({ user, isAdmin, loading, refreshUser }), [user, isAdmin, loading]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

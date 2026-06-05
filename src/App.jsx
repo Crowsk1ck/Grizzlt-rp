@@ -15,6 +15,7 @@ import News from './pages/News.jsx';
 import Contact from './pages/Contact.jsx';
 import Profile from './pages/Profile.jsx';
 import DatabasePage from './pages/Database.jsx';
+import Admin from './pages/Admin.jsx';
 import NotFound from './pages/NotFound.jsx';
 
 export default function App() {
@@ -36,6 +37,7 @@ export default function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/database" element={<DatabasePage />} />
+        <Route path="/admin" element={<Admin />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Layout>

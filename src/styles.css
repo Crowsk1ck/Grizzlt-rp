@@ -672,6 +672,118 @@ p {
   background: rgba(255, 255, 255, 0.05);
 }
 
+.status.new {
+  border-color: rgba(92, 198, 255, 0.5);
+  color: var(--blue-soft);
+  background: rgba(22, 139, 255, 0.1);
+}
+
+.status.interview {
+  border-color: rgba(139, 60, 255, 0.5);
+  color: #c7a8ff;
+  background: rgba(139, 60, 255, 0.1);
+}
+
+.status.accepted {
+  border-color: rgba(92, 255, 180, 0.5);
+  color: #8affca;
+  background: rgba(92, 255, 180, 0.1);
+}
+
+.status.rejected {
+  border-color: rgba(255, 22, 120, 0.5);
+  color: #ff9ac8;
+  background: rgba(255, 22, 120, 0.1);
+}
+
+.admin-stats {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.admin-stats article {
+  border: 1px solid var(--line);
+  background: var(--panel);
+  padding: 18px;
+}
+
+.admin-stats strong {
+  display: block;
+  font-size: 30px;
+  line-height: 1;
+}
+
+.admin-stats span {
+  color: var(--muted);
+  font-weight: 900;
+}
+
+.application-list {
+  display: grid;
+  gap: 14px;
+}
+
+.application-card {
+  border: 1px solid var(--line);
+  background: var(--panel);
+  padding: 20px;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.32);
+}
+
+.application-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: start;
+}
+
+.application-head h3 {
+  margin: 8px 0 4px;
+}
+
+.application-id {
+  color: var(--muted);
+  font-size: 12px;
+  overflow-wrap: anywhere;
+  text-align: right;
+}
+
+.application-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 16px 0;
+}
+
+.application-meta span {
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--muted);
+  padding: 7px 10px;
+  font-weight: 800;
+}
+
+.application-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.application-actions button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  padding: 9px 12px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
 .rank-list,
 .news-list,
 .event-grid,
@@ -895,6 +1007,7 @@ textarea:focus {
 
   .grid.four,
   .grid.two,
+  .admin-stats,
   .member-grid,
   .event-grid,
   .diplomacy-grid,
@@ -920,6 +1033,7 @@ textarea:focus {
 
   .stat-strip,
   .grid.four,
+  .admin-stats,
   .roster-stats,
   .member-grid,
   .event-grid,

@@ -58,6 +58,7 @@ export default function Layout({ children }) {
         <div className="footer-links">
           <Link to="/recruitment">Заявка</Link>
           <Link to="/rules">Устав</Link>
+          <Link to="/admin">Адмінка</Link>
           <Link to="/contact">Зв’язок</Link>
         </div>
       </footer>
