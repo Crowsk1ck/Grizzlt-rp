@@ -52,6 +52,14 @@ service cloud.firestore {
       allow read, write: if false;
     }
 
+    match /calculator_contracts/{document} {
+      allow read, write: if false;
+    }
+
+    match /calculator_settings/{document} {
+      allow read, write: if false;
+    }
+
     match /{document=**} {
       allow read, write: if false;
     }
