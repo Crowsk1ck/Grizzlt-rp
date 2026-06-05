@@ -15,6 +15,7 @@ import {
   ShieldAlert,
   ShieldCheck,
   Sparkles,
+  Trophy,
   UserCheck,
   Users,
   X,
@@ -154,17 +155,29 @@ export default function Profile() {
           primary: !application,
         },
         (hasFamilyRole || isAdmin) && {
+          title: 'Мій прогрес',
+          text: 'Контракти, ранг, попередження та персональна активність.',
+          to: '/progress',
+          icon: Trophy,
+          primary: true,
+        },
+        (hasFamilyRole || isAdmin) && {
           title: 'Калькулятор',
           text: 'Контракти, фонд родини, звіти та історія.',
           to: '/calculator',
           icon: Activity,
-          primary: true,
         },
         {
           title: 'Склад',
           text: 'Живий Discord список родини.',
           to: '/roster',
           icon: Users,
+        },
+        {
+          title: 'Ранги',
+          text: 'Зарплати, бонуси та структура родини.',
+          to: '/ranks',
+          icon: BadgeCheck,
         },
         isAdmin && {
           title: 'Адмінка',

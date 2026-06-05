@@ -18,6 +18,8 @@ export const navItems = [
   ['Про родину', '/about'],
   ['Склад', '/roster'],
   ['Калькулятор', '/calculator'],
+  ['Прогрес', '/progress'],
+  ['Ранги', '/ranks'],
   ['Вступ', '/recruitment'],
   ['Правила', '/rules'],
   ['Події', '/events'],

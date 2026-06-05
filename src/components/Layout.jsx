@@ -54,7 +54,7 @@ export default function Layout({ children }) {
       <footer className="footer">
         <div>
           <strong>{familyName}</strong>
-          <p>© 2026 Grizzly Family | NG </p>
+          <p>© 2026 Grizzly Family | NG</p>
         </div>
         <div className="footer-links">
           {!hasFamilyRole && <Link to="/recruitment">Заявка</Link>}

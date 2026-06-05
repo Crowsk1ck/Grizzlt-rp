@@ -36,6 +36,20 @@ function requireAdmin(req, res) {
   return user;
 }
 
+async function writeAdminLog(db, user, action, targetId, details = {}) {
+  await db.collection('admin_logs').add({
+    action,
+    targetId,
+    details,
+    admin: {
+      id: user.id,
+      username: user.username,
+      globalName: user.globalName,
+    },
+    createdAt: serverTimestamp(),
+  });
+}
+
 export default async function handler(req, res) {
   const user = requireAdmin(req, res);
   if (!user) return;
@@ -74,6 +88,21 @@ export default async function handler(req, res) {
       },
       createdAt: serverTimestamp(),
     });
+
+    await db.collection('discord_news_notifications').doc(ref.id).set({
+      newsId: ref.id,
+      title,
+      text,
+      tag: tag || 'Grizzly Bulletin',
+      requestedBy: {
+        id: user.id,
+        username: user.username,
+        globalName: user.globalName,
+      },
+      createdAt: serverTimestamp(),
+    });
+
+    await writeAdminLog(db, user, 'news_published', ref.id, { title, tag: tag || 'Grizzly Bulletin' });
 
     res.status(200).json({ id: ref.id });
   } catch (error) {

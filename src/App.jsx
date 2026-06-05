@@ -9,6 +9,8 @@ const Roster = lazy(() => import('./pages/Roster.jsx'));
 const Hierarchy = lazy(() => import('./pages/Hierarchy.jsx'));
 const Recruitment = lazy(() => import('./pages/Recruitment.jsx'));
 const Calculator = lazy(() => import('./pages/Calculator.jsx'));
+const Progress = lazy(() => import('./pages/Progress.jsx'));
+const Ranks = lazy(() => import('./pages/Ranks.jsx'));
 const Rules = lazy(() => import('./pages/Rules.jsx'));
 const Events = lazy(() => import('./pages/Events.jsx'));
 const Gallery = lazy(() => import('./pages/Gallery.jsx'));
@@ -20,6 +22,7 @@ const Contact = lazy(() => import('./pages/Contact.jsx'));
 const Profile = lazy(() => import('./pages/Profile.jsx'));
 const DatabasePage = lazy(() => import('./pages/Database.jsx'));
 const Admin = lazy(() => import('./pages/Admin.jsx'));
+const AdminMembers = lazy(() => import('./pages/AdminMembers.jsx'));
 const NotFound = lazy(() => import('./pages/NotFound.jsx'));
 
 export default function App() {
@@ -33,6 +36,8 @@ export default function App() {
           <Route path="/hierarchy" element={<Hierarchy />} />
           <Route path="/recruitment" element={<Recruitment />} />
           <Route path="/calculator" element={<Calculator />} />
+          <Route path="/progress" element={<Progress />} />
+          <Route path="/ranks" element={<Ranks />} />
           <Route path="/rules" element={<Rules />} />
           <Route path="/events" element={<Events />} />
           <Route path="/gallery" element={<Gallery />} />
@@ -44,6 +49,7 @@ export default function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/database" element={<DatabasePage />} />
           <Route path="/admin" element={<Admin />} />
+          <Route path="/admin/members" element={<AdminMembers />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>

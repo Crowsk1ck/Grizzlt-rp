@@ -1,5 +1,6 @@
-import { Check, Clock, Newspaper, Search, ShieldAlert, UserCheck, X } from 'lucide-react';
+import { Check, Clock, Newspaper, Search, ShieldAlert, UserCheck, UserCog, X } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 import PageHero from '../components/PageHero.jsx';
 import Section from '../components/Section.jsx';
 import { useAuth } from '../lib/auth.jsx';
@@ -150,6 +151,16 @@ export default function Admin() {
   return (
     <>
       <PageHero eyebrow="Admin" title="Панель керування" text="Закрита панель Grizzly Family для заявок, статусів і новин сайту." />
+
+      <Section title="Інструменти адміністрації" eyebrow="Control">
+        <div className="profile-quick-actions">
+          <Link className="profile-action-card primary" to="/admin/members">
+            <UserCog size={24} />
+            <strong>Керування складом</strong>
+            <span>Профілі учасників, ранги, зарплати, попередження та логи.</span>
+          </Link>
+        </div>
+      </Section>
 
       <Section title="Публікація новин" eyebrow="News">
         <form className="form admin-news-form" onSubmit={publishNews}>

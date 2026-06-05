@@ -54,6 +54,20 @@ function requireAdmin(req, res) {
   return user;
 }
 
+async function writeAdminLog(db, user, action, targetId, details = {}) {
+  await db.collection('admin_logs').add({
+    action,
+    targetId,
+    details,
+    admin: {
+      id: user.id,
+      username: user.username,
+      globalName: user.globalName,
+    },
+    createdAt: serverTimestamp(),
+  });
+}
+
 export default async function handler(req, res) {
   const user = requireAdmin(req, res);
   if (!user) return;
@@ -91,6 +105,8 @@ export default async function handler(req, res) {
         },
         { merge: true },
       );
+
+      await writeAdminLog(db, user, 'application_status_updated', id, { status });
 
       const updated = await ref.get();
       res.status(200).json({ application: serializeApplication(updated) });

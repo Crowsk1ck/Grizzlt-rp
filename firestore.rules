@@ -64,6 +64,22 @@ service cloud.firestore {
       allow read, write: if false;
     }
 
+    match /member_profiles/{document} {
+      allow read, write: if false;
+    }
+
+    match /member_warnings/{document} {
+      allow read, write: if false;
+    }
+
+    match /admin_logs/{document} {
+      allow read, write: if false;
+    }
+
+    match /discord_news_notifications/{document} {
+      allow read, write: if false;
+    }
+
     match /{document=**} {
       allow read, write: if false;
     }

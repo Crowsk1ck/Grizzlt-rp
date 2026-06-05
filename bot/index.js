@@ -35,10 +35,16 @@ const SERVER_ID =
 const APPLICATION_CHANNEL_ID =
   process.env.DISCORD_APPLICATION_CHANNEL_ID
 
+const DM_FALLBACK_CHANNEL_ID =
+  process.env.DISCORD_DM_FALLBACK_CHANNEL_ID
+
 const REPORT_CHANNEL_ID =
   process.env.DISCORD_REPORT_CHANNEL_ID ||
   process.env.DISCORD_CALCULATOR_REPORT_CHANNEL_ID ||
   APPLICATION_CHANNEL_ID
+
+const NEWS_CHANNEL_ID =
+  process.env.DISCORD_NEWS_CHANNEL_ID
 
 const ACCEPTED_ROLE_ID =
   process.env.DISCORD_ACCEPTED_ROLE_ID
@@ -52,6 +58,52 @@ function clean(value, fallback = '-'){
 
 function cleanLong(value, fallback = '-'){
   return String(value || fallback).slice(0, 1800)
+}
+
+function isDiscordId(value){
+  return /^\d{17,22}$/.test(String(value || ''))
+}
+
+function applicationDiscordId(data, applicationId){
+  if(data.discordUser?.id){
+    return data.discordUser.id
+  }
+
+  if(isDiscordId(applicationId)){
+    return applicationId
+  }
+
+  return null
+}
+
+function dmFailureText(result){
+  if(result.code === 50007 || String(result.reason).includes('Cannot send messages to this user')){
+    return 'У користувача закриті особисті повідомлення від учасників сервера або він заблокував DM.'
+  }
+
+  if(result.code === 10013){
+    return 'Discord не знайшов цього користувача. Можливо, ID неправильний або акаунт недоступний.'
+  }
+
+  if(result.reason === 'missing_discord_user'){
+    return 'У заявці немає Discord ID. Старі заявки без входу через Discord треба обробити вручну.'
+  }
+
+  if(result.reason === 'user_not_found'){
+    return 'Бот не зміг знайти користувача Discord за ID.'
+  }
+
+  return result.reason || 'Discord не дозволив відправити DM.'
+}
+
+function decisionLabel(status){
+  const labels = {
+    accepted: 'прийнято',
+    rejected: 'відхилено',
+    interview: 'відправлено на співбесіду'
+  }
+
+  return labels[status] || status
 }
 
 function splitReport(text){
@@ -177,38 +229,103 @@ function decisionDmEmbed(status, data){
     })
 }
 
-async function sendDecisionDm(status, data){
-  if(!data.discordUser?.id){
+async function sendDecisionDm(status, data, applicationId){
+  const userId =
+    applicationDiscordId(
+      data,
+      applicationId
+    )
+
+  if(!userId){
     return {
       ok: false,
-      reason: 'missing_discord_user'
+      reason: 'missing_discord_user',
+      userId: null
     }
   }
 
   const user =
     await client.users
-      .fetch(data.discordUser.id)
+      .fetch(
+        userId,
+        {
+          force: true
+        }
+      )
       .catch(() => null)
 
   if(!user){
     return {
       ok: false,
-      reason: 'user_not_found'
+      reason: 'user_not_found',
+      userId
     }
   }
 
-  await user.send({
+  try {
+    await user.send({
+      embeds: [
+        decisionDmEmbed(
+          status,
+          data
+        )
+      ]
+    })
+  } catch(error) {
+    return {
+      ok: false,
+      reason: error.message,
+      code: error.code,
+      userId
+    }
+  }
+
+  return {
+    ok: true,
+    userId
+  }
+}
+
+async function sendDmFallbackNotice(status, data, applicationId, dmResult){
+  if(dmResult.ok || !DM_FALLBACK_CHANNEL_ID){
+    return null
+  }
+
+  const channel =
+    await client.channels
+      .fetch(DM_FALLBACK_CHANNEL_ID)
+      .catch(() => null)
+
+  if(!channel?.send){
+    return null
+  }
+
+  const userId =
+    dmResult.userId ||
+    applicationDiscordId(
+      data,
+      applicationId
+    )
+
+  const mention =
+    userId ? `<@${userId}>` : clean(data.discord)
+
+  return channel.send({
+    content: [
+      `${mention}, статус твоєї заявки: **${decisionLabel(status)}**.`,
+      'Бот не зміг написати тобі в особисті.',
+      dmFailureText(dmResult)
+    ].join('\n'),
     embeds: [
       decisionDmEmbed(
         status,
         data
       )
-    ]
+    ],
+    allowedMentions: {
+      users: userId ? [userId] : []
+    }
   })
-
-  return {
-    ok: true
-  }
 }
 
 async function startApplicationListener(){
@@ -406,6 +523,114 @@ async function startCalculatorReportListener(){
     })
 }
 
+function newsEmbed(id, data){
+  return new EmbedBuilder()
+    .setTitle(clean(data.title, 'Новина Grizzly Family'))
+    .setDescription(cleanLong(data.text))
+    .setColor(0xff1678)
+    .setTimestamp(new Date())
+    .addFields(
+      {
+        name: 'Тег',
+        value: clean(data.tag || 'Grizzly Bulletin'),
+        inline: true
+      },
+      {
+        name: 'Адмін',
+        value: clean(data.requestedBy?.username || data.requestedBy?.globalName),
+        inline: true
+      },
+      {
+        name: 'Firestore ID',
+        value: id,
+        inline: true
+      }
+    )
+    .setFooter({
+      text: 'grizzly-family.online'
+    })
+}
+
+async function startNewsListener(){
+  if(!NEWS_CHANNEL_ID){
+    console.log(
+      'News listener skipped | DISCORD_NEWS_CHANNEL_ID is missing'
+    )
+    return
+  }
+
+  const channel =
+    await client.channels.fetch(
+      NEWS_CHANNEL_ID
+    )
+
+  db.collection('discord_news_notifications')
+    .onSnapshot(snapshot => {
+
+      snapshot.docChanges()
+        .forEach(async change => {
+
+          if(change.type !== 'added'){
+            return
+          }
+
+          const doc = change.doc
+          const data = doc.data()
+
+          if(data.botNotified){
+            return
+          }
+
+          try {
+            const message =
+              await channel.send({
+                embeds: [
+                  newsEmbed(
+                    doc.id,
+                    data
+                  )
+                ]
+              })
+
+            await doc.ref.set(
+              {
+                botNotified: true,
+                discordMessageId: message.id,
+                status: 'sent',
+                sentAt: admin.firestore.FieldValue.serverTimestamp()
+              },
+              { merge: true }
+            )
+
+            console.log(
+              `News sent to Discord | ${doc.id}`
+            )
+          } catch(error) {
+            await doc.ref.set(
+              {
+                status: 'error',
+                botError: error.message,
+                botErrorAt: admin.firestore.FieldValue.serverTimestamp()
+              },
+              { merge: true }
+            )
+
+            console.error(
+              `News notification failed | ${doc.id}`,
+              error
+            )
+          }
+
+        })
+
+    }, error => {
+      console.error(
+        'News listener error',
+        error
+      )
+    })
+}
+
 client.on(
   Events.InteractionCreate,
   async interaction => {
@@ -424,6 +649,10 @@ client.on(
       return
     }
 
+    await interaction
+      .deferUpdate()
+      .catch(() => null)
+
     const ref = db
       .collection('applications')
       .doc(applicationId)
@@ -432,7 +661,7 @@ client.on(
       await ref.get()
 
     if(!snapshot.exists){
-      await interaction.reply({
+      await interaction.followUp({
         content: 'Заявку не знайдено у Firestore.',
         ephemeral: true
       })
@@ -445,17 +674,38 @@ client.on(
     const dmResult =
       await sendDecisionDm(
         status,
-        data
+        data,
+        applicationId
       ).catch(error => ({
         ok: false,
-        reason: error.message
+        reason: error.message,
+        code: error.code,
+        userId: applicationDiscordId(
+          data,
+          applicationId
+        )
       }))
+
+    await sendDmFallbackNotice(
+      status,
+      data,
+      applicationId,
+      dmResult
+    ).catch(error => {
+      console.error(
+        'DM fallback notice failed',
+        error
+      )
+    })
 
     await ref.set(
       {
         status,
         dmSent: dmResult.ok,
         dmError: dmResult.ok ? null : dmResult.reason,
+        dmErrorCode: dmResult.ok ? null : dmResult.code || null,
+        dmErrorText: dmResult.ok ? null : dmFailureText(dmResult),
+        dmUserId: dmResult.userId || null,
         reviewedBy: {
           id: interaction.user.id,
           username: interaction.user.username
@@ -487,14 +737,13 @@ client.on(
       }
     }
 
-    const labels = {
-      accepted: 'прийнято',
-      rejected: 'відхилено',
-      interview: 'відправлено на співбесіду'
-    }
+    const dmStatusText =
+      dmResult.ok
+        ? 'DM відправлено.'
+        : `DM не вдалося відправити. Причина: ${dmFailureText(dmResult)}`
 
-    await interaction.update({
-      content: `Заявку **${clean(data.nickname)}** ${labels[status] || status}. Рішення: ${interaction.user}.${dmResult.ok ? ' DM відправлено.' : ' DM не вдалося відправити.'}`,
+    await interaction.editReply({
+      content: `Заявку **${clean(data.nickname)}** ${decisionLabel(status)}. Рішення: ${interaction.user}. ${dmStatusText}`,
       embeds: [
         applicationEmbed(
           applicationId,
@@ -613,6 +862,8 @@ client.once('ready', async () => {
   await startApplicationListener()
 
   await startCalculatorReportListener()
+
+  await startNewsListener()
 
   setInterval(
     syncMembers,
