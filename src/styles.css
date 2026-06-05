@@ -1549,16 +1549,9 @@ select:focus {
   color: var(--muted);
 }
 
-.profile-panel {
+.profile-page {
   display: grid;
-  grid-template-columns: 120px 1fr;
-  gap: 24px;
-  align-items: center;
-  max-width: 840px;
-  border: 1px solid var(--line);
-  background: var(--panel);
-  padding: 28px;
-  box-shadow: var(--shadow-pink), var(--shadow-blue);
+  gap: 22px;
 }
 
 .auth-alert {
@@ -1571,7 +1564,6 @@ select:focus {
   box-shadow: 0 0 18px rgba(255, 22, 120, 0.18);
 }
 
-.profile-panel img,
 .profile-icon {
   width: 112px;
   height: 112px;
@@ -1580,30 +1572,352 @@ select:focus {
   box-shadow: var(--shadow-pink), var(--shadow-blue);
 }
 
-.profile-panel img {
-  object-fit: cover;
-}
-
 .profile-icon {
   display: grid;
   place-items: center;
   color: var(--blue-soft);
 }
 
-.candidate-status {
-  display: grid;
-  grid-template-columns: 54px minmax(0, 1fr);
-  gap: 18px;
-  align-items: start;
-  max-width: 900px;
+.profile-icon.large {
+  width: 82px;
+  height: 82px;
+  margin-bottom: 20px;
+}
+
+.profile-guest,
+.profile-hero-card,
+.profile-status-panel,
+.profile-side-panel,
+.profile-action-card,
+.profile-access-card,
+.profile-guest-grid article {
   border: 1px solid var(--line);
   background: var(--panel);
-  padding: 24px;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.4);
+}
+
+.profile-guest,
+.profile-hero-card,
+.profile-access-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.profile-guest::before,
+.profile-hero-card::before,
+.profile-access-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 2px;
+  background: linear-gradient(90deg, var(--pink), var(--blue));
+}
+
+.profile-guest {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(280px, 0.74fr);
+  gap: clamp(18px, 4vw, 44px);
+  align-items: center;
+  padding: clamp(24px, 5vw, 52px);
+  background:
+    linear-gradient(135deg, rgba(255, 22, 120, 0.12), rgba(22, 139, 255, 0.08)),
+    var(--panel);
+}
+
+.profile-guest-copy,
+.profile-guest-grid,
+.profile-main-info,
+.profile-status-panel,
+.profile-side-panel,
+.profile-action-card,
+.profile-access-card {
+  min-width: 0;
+}
+
+.profile-guest-copy h2 {
+  max-width: 760px;
+  margin-bottom: 14px;
+  font-size: clamp(34px, 5vw, 64px);
+}
+
+.profile-guest-copy p:not(.eyebrow) {
+  max-width: 720px;
+}
+
+.profile-guest-copy .button {
+  margin-top: 8px;
+}
+
+.profile-guest-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.profile-guest-grid article {
+  display: grid;
+  gap: 8px;
+  min-height: 138px;
+  padding: 18px;
+}
+
+.profile-guest-grid svg {
+  color: var(--blue-soft);
+}
+
+.profile-guest-grid strong,
+.profile-guest-grid span {
+  display: block;
+}
+
+.profile-guest-grid span {
+  color: var(--muted);
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
+.profile-hero-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: clamp(18px, 4vw, 34px);
+  align-items: center;
+  padding: clamp(22px, 4vw, 38px);
+  background:
+    linear-gradient(120deg, rgba(255, 22, 120, 0.13), rgba(22, 139, 255, 0.1)),
+    rgba(8, 11, 22, 0.82);
+}
+
+.profile-avatar-wrap {
+  display: grid;
+  gap: 10px;
+  justify-items: center;
+}
+
+.profile-avatar-wrap img {
+  width: clamp(112px, 14vw, 154px);
+  aspect-ratio: 1;
+  object-fit: cover;
+  border: 1px solid rgba(255, 22, 120, 0.5);
+  background: rgba(255, 255, 255, 0.06);
   box-shadow: var(--shadow-pink), var(--shadow-blue);
 }
 
-.candidate-status > svg {
+.profile-main-info h2 {
+  margin: 0 0 6px;
+  font-size: clamp(36px, 5vw, 68px);
+  line-height: 0.96;
+  overflow-wrap: anywhere;
+}
+
+.profile-main-info p:not(.eyebrow) {
+  margin-bottom: 14px;
+  font-size: 17px;
+  overflow-wrap: anywhere;
+}
+
+.profile-badges,
+.profile-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.profile-actions {
+  justify-content: flex-end;
+}
+
+.profile-access-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.profile-access-card {
+  display: grid;
+  gap: 9px;
+  min-height: 122px;
+  padding: 18px;
+}
+
+.profile-access-card svg {
   color: var(--blue-soft);
+}
+
+.profile-access-card span,
+.profile-access-card strong {
+  display: block;
+}
+
+.profile-access-card span {
+  color: var(--muted);
+  font-weight: 900;
+}
+
+.profile-access-card strong {
+  font-size: 20px;
+  overflow-wrap: anywhere;
+}
+
+.profile-access-card.good::before {
+  background: linear-gradient(90deg, #5cffb4, var(--blue));
+}
+
+.profile-access-card.good svg {
+  color: #8affca;
+}
+
+.profile-access-card.admin::before,
+.profile-access-card.interview::before {
+  background: linear-gradient(90deg, var(--violet), var(--pink));
+}
+
+.profile-access-card.admin svg,
+.profile-access-card.interview svg {
+  color: #c7a8ff;
+}
+
+.profile-access-card.rejected::before,
+.profile-access-card.warn::before {
+  background: linear-gradient(90deg, #ff4d9c, var(--pink));
+}
+
+.profile-access-card.rejected svg,
+.profile-access-card.warn svg {
+  color: #ff9ac8;
+}
+
+.profile-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.18fr) minmax(320px, 0.82fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.profile-status-panel,
+.profile-side-panel {
+  padding: 24px;
+}
+
+.profile-panel-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: start;
+  margin-bottom: 18px;
+}
+
+.profile-panel-head h2 {
+  margin: 0;
+  font-size: clamp(28px, 3.5vw, 44px);
+}
+
+.profile-panel-head svg {
+  color: var(--blue-soft);
+  flex: 0 0 auto;
+}
+
+.profile-empty-state {
+  display: grid;
+  gap: 10px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.045);
+  padding: 20px;
+}
+
+.profile-empty-state svg {
+  color: var(--blue-soft);
+}
+
+.profile-empty-state h3,
+.profile-application h3 {
+  margin: 4px 0 8px;
+}
+
+.profile-info-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.profile-info-list div {
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.045);
+  padding: 12px 14px;
+}
+
+.profile-info-list span,
+.profile-info-list strong {
+  display: block;
+}
+
+.profile-info-list span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.profile-info-list strong {
+  margin-top: 4px;
+  overflow-wrap: anywhere;
+}
+
+.profile-note {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr);
+  gap: 12px;
+  margin-top: 16px;
+  border: 1px solid rgba(255, 22, 120, 0.34);
+  background: rgba(255, 22, 120, 0.1);
+  padding: 14px;
+}
+
+.profile-note svg {
+  color: var(--pink-soft);
+}
+
+.profile-note p {
+  margin: 0;
+  line-height: 1.55;
+}
+
+.profile-quick-actions {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.profile-action-card {
+  display: grid;
+  gap: 9px;
+  min-height: 144px;
+  padding: 18px;
+  transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.profile-action-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(92, 198, 255, 0.42);
+  box-shadow: var(--shadow-blue);
+}
+
+.profile-action-card.primary {
+  border-color: rgba(255, 22, 120, 0.48);
+  background: linear-gradient(135deg, rgba(255, 22, 120, 0.14), rgba(22, 139, 255, 0.08)), var(--panel);
+}
+
+.profile-action-card svg {
+  color: var(--blue-soft);
+}
+
+.profile-action-card strong,
+.profile-action-card span {
+  display: block;
+}
+
+.profile-action-card span {
+  color: var(--muted);
+  line-height: 1.55;
+  overflow-wrap: anywhere;
 }
 
 .mini-logo {
@@ -1611,10 +1925,6 @@ select:focus {
   height: 54px;
   object-fit: contain;
   filter: drop-shadow(0 0 18px rgba(255, 22, 120, 0.42));
-}
-
-.candidate-status h3 {
-  margin-top: 8px;
 }
 
 .news-list small {
@@ -1655,7 +1965,10 @@ select:focus {
   .calculator-controls,
   .calculator-layout,
   .contract-calculator-grid,
-  .contract-filter-panel {
+  .contract-filter-panel,
+  .profile-guest,
+  .profile-layout,
+  .profile-hero-card {
     grid-template-columns: 1fr;
   }
 
@@ -1670,11 +1983,17 @@ select:focus {
   .calculator-stats,
   .contract-summary-grid,
   .contract-history-grid,
+  .profile-access-grid,
+  .profile-quick-actions,
   .member-grid,
   .event-grid,
   .diplomacy-grid,
   .gallery-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .profile-actions {
+    justify-content: flex-start;
   }
 
   .split {
@@ -1689,6 +2008,15 @@ select:focus {
     background-position: center top;
   }
 
+  .auth-button {
+    width: 42px;
+    padding: 0;
+  }
+
+  .auth-button span {
+    display: none;
+  }
+
   .hero-content > p:not(.eyebrow) {
     font-size: 17px;
   }
@@ -1700,6 +2028,8 @@ select:focus {
   .calculator-stats,
   .contract-summary-grid,
   .contract-history-grid,
+  .profile-access-grid,
+  .profile-quick-actions,
   .member-grid,
   .event-grid,
   .diplomacy-grid,
@@ -1716,6 +2046,11 @@ select:focus {
     min-height: 360px;
   }
 
+  .page-hero p {
+    font-size: 17px;
+    overflow-wrap: anywhere;
+  }
+
   .table-row {
     grid-template-columns: 1fr;
     gap: 8px;
@@ -1729,12 +2064,34 @@ select:focus {
     display: grid;
   }
 
-  .profile-panel {
-    grid-template-columns: 1fr;
+  .profile-guest,
+  .profile-hero-card,
+  .profile-status-panel,
+  .profile-side-panel {
+    padding: 20px;
   }
 
-  .candidate-status {
-    grid-template-columns: 1fr;
+  .profile-avatar-wrap {
+    justify-items: start;
+  }
+
+  .profile-actions,
+  .profile-actions .button,
+  .profile-guest-copy .button,
+  .profile-empty-state .button {
+    width: 100%;
+  }
+
+  .profile-main-info h2 {
+    font-size: clamp(32px, 11vw, 48px);
+  }
+
+  .profile-panel-head {
+    display: grid;
+  }
+
+  .profile-panel-head svg {
+    order: -1;
   }
 
   .application-head {
