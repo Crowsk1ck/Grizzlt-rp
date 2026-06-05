@@ -107,3 +107,15 @@ The public website can read `news`, but only Firebase Admin/server tools should 
 ```
 
 This endpoint requires Discord Login and `FIREBASE_SERVICE_ACCOUNT` on Vercel.
+
+## 10. Hide recruitment after accepted role
+
+If a logged-in user already has the accepted family role, the website hides the `Вступ` navigation item and shows a completed message on `/recruitment`.
+
+Add to Vercel:
+
+```env
+VITE_ACCEPTED_ROLE_ID=1390073033687044236
+```
+
+The role list comes from `discord_members/{discordUserId}`, which is synced by the Railway bot.

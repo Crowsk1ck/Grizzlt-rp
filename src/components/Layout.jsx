@@ -6,7 +6,8 @@ import { useAuth } from '../lib/auth.jsx';
 
 export default function Layout({ children }) {
   const [open, setOpen] = useState(false);
-  const { user, loading } = useAuth();
+  const { user, loading, hasFamilyRole } = useAuth();
+  const visibleNavItems = navItems.filter(([, href]) => !(hasFamilyRole && href === '/recruitment'));
 
   return (
     <div className="app-shell">
@@ -24,7 +25,7 @@ export default function Layout({ children }) {
           {open ? <X size={22} /> : <Menu size={22} />}
         </button>
         <nav className={open ? 'nav is-open' : 'nav'}>
-          {navItems.map(([label, href]) => (
+          {visibleNavItems.map(([label, href]) => (
             <NavLink key={href} to={href} onClick={() => setOpen(false)}>
               {label}
             </NavLink>
@@ -53,10 +54,10 @@ export default function Layout({ children }) {
       <footer className="footer">
         <div>
           <strong>{familyName}</strong>
-          <p>Преміальна GTA 5 RP родина з Firestore-заявками та Vercel-ready маршрутизацією.</p>
+          <p>Преміальна GTA 5 RP родина з Firestore-заявками, Discord-ботом та Vercel-ready маршрутизацією.</p>
         </div>
         <div className="footer-links">
-          <Link to="/recruitment">Заявка</Link>
+          {!hasFamilyRole && <Link to="/recruitment">Заявка</Link>}
           <Link to="/rules">Устав</Link>
           <Link to="/admin">Адмінка</Link>
           <Link to="/contact">Зв’язок</Link>
