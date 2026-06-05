@@ -35,6 +35,11 @@ const SERVER_ID =
 const APPLICATION_CHANNEL_ID =
   process.env.DISCORD_APPLICATION_CHANNEL_ID
 
+const REPORT_CHANNEL_ID =
+  process.env.DISCORD_REPORT_CHANNEL_ID ||
+  process.env.DISCORD_CALCULATOR_REPORT_CHANNEL_ID ||
+  APPLICATION_CHANNEL_ID
+
 const ACCEPTED_ROLE_ID =
   process.env.DISCORD_ACCEPTED_ROLE_ID
 
@@ -43,6 +48,21 @@ const INTERVIEW_CHANNEL_URL =
 
 function clean(value, fallback = '-'){
   return String(value || fallback).slice(0, 1024)
+}
+
+function cleanLong(value, fallback = '-'){
+  return String(value || fallback).slice(0, 1800)
+}
+
+function splitReport(text){
+  const source = String(text || '')
+  const chunks = []
+
+  for(let index = 0; index < source.length; index += 1800){
+    chunks.push(source.slice(index, index + 1800))
+  }
+
+  return chunks.length ? chunks : ['-']
 }
 
 function applicationEmbed(id, data){
@@ -259,6 +279,133 @@ async function startApplicationListener(){
     })
 }
 
+function reportEmbed(id, data){
+  const range = data.range || {}
+  const period = [
+    range.from ? `від ${range.from}` : '',
+    range.to ? `до ${range.to}` : '',
+    range.query ? `пошук: ${range.query}` : ''
+  ].filter(Boolean).join(' | ') || 'без фільтра'
+
+  return new EmbedBuilder()
+    .setTitle('Звіт калькулятора Grizzly Family')
+    .setColor(0x168bff)
+    .setDescription(`\`\`\`\n${cleanLong(data.reportTextSnippet || data.reportText)}\n\`\`\``)
+    .setTimestamp(new Date())
+    .addFields(
+      {
+        name: 'Період',
+        value: clean(period),
+        inline: true
+      },
+      {
+        name: 'Адмін',
+        value: clean(data.requestedBy?.username || data.requestedBy?.globalName),
+        inline: true
+      },
+      {
+        name: 'Firestore ID',
+        value: id,
+        inline: true
+      }
+    )
+    .setFooter({
+      text: 'grizzly-family.online'
+    })
+}
+
+async function startCalculatorReportListener(){
+  if(!REPORT_CHANNEL_ID){
+    console.log(
+      'Calculator reports listener skipped | DISCORD_REPORT_CHANNEL_ID is missing'
+    )
+    return
+  }
+
+  const channel =
+    await client.channels.fetch(
+      REPORT_CHANNEL_ID
+    )
+
+  db.collection('calculator_reports')
+    .onSnapshot(snapshot => {
+
+      snapshot.docChanges()
+        .forEach(async change => {
+
+          if(change.type !== 'added'){
+            return
+          }
+
+          const doc = change.doc
+          const data = doc.data()
+
+          if(data.botNotified){
+            return
+          }
+
+          try {
+            const chunks =
+              splitReport(data.reportText)
+
+            const message =
+              await channel.send({
+                embeds: [
+                  reportEmbed(
+                    doc.id,
+                    {
+                      ...data,
+                      reportTextSnippet: chunks[0]
+                    }
+                  )
+                ]
+              })
+
+            for(const chunk of chunks.slice(1)){
+              await channel.send({
+                content: `\`\`\`\n${chunk}\n\`\`\``
+              })
+            }
+
+            await doc.ref.set(
+              {
+                botNotified: true,
+                discordMessageId: message.id,
+                status: 'sent',
+                sentAt: admin.firestore.FieldValue.serverTimestamp()
+              },
+              { merge: true }
+            )
+
+            console.log(
+              `Calculator report sent to Discord | ${doc.id}`
+            )
+          } catch(error) {
+            await doc.ref.set(
+              {
+                status: 'error',
+                botError: error.message,
+                botErrorAt: admin.firestore.FieldValue.serverTimestamp()
+              },
+              { merge: true }
+            )
+
+            console.error(
+              `Calculator report failed | ${doc.id}`,
+              error
+            )
+          }
+
+        })
+
+    }, error => {
+      console.error(
+        'Calculator reports listener error',
+        error
+      )
+    })
+}
+
 client.on(
   Events.InteractionCreate,
   async interaction => {
@@ -464,6 +611,8 @@ client.once('ready', async () => {
   await syncMembers()
 
   await startApplicationListener()
+
+  await startCalculatorReportListener()
 
   setInterval(
     syncMembers,

@@ -311,6 +311,36 @@ export default async function handler(req, res) {
         return;
       }
 
+      if (action === 'sendReport') {
+        if (!(await ensureAdmin(user, res))) return;
+        const reportText = cleanText(body.reportText, 12000);
+
+        if (reportText.length < 20) {
+          res.status(400).json({ error: 'Report text is too short' });
+          return;
+        }
+
+        const ref = await db.collection('calculator_reports').add({
+          reportText,
+          range: {
+            from: cleanText(body.range?.from, 10),
+            to: cleanText(body.range?.to, 10),
+            query: cleanText(body.range?.query, 120),
+          },
+          source: 'grizzly-calculator',
+          status: 'pending',
+          createdAt: serverTimestamp(),
+          requestedBy: {
+            id: user.id,
+            username: user.username,
+            globalName: user.globalName,
+          },
+        });
+
+        res.status(201).json({ ok: true, reportId: ref.id });
+        return;
+      }
+
       if (action === 'addContractType') {
         if (!(await ensureAdmin(user, res))) return;
         const settings = await getSettings(db);

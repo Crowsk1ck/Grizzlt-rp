@@ -395,7 +395,12 @@ export default function Calculator() {
   const chartRows = useMemo(() => buildChartRows(filteredContracts, model), [filteredContracts, model]);
   const topPlayer = playerStats[0]?.[0] || 'Немає даних';
 
-  function copyReport() {
+  async function copyReport() {
+    if (!isAdmin) {
+      setError('Звіт може робити тільки адмін.');
+      return;
+    }
+
     const lines = [
       'Калькулятор Grizzly Family',
       '',
@@ -411,8 +416,21 @@ export default function Calculator() {
       ...playerStats.map(([player, value], index) => `${index + 1}. ${player} - ${value.count} контр. - ${formatMoney(value.income)}`),
     ];
 
-    navigator.clipboard?.writeText(lines.join('\n'));
-    setStatus('Звіт скопійовано.');
+    const reportText = lines.join('\n');
+
+    try {
+      const data = await requestCalculator('POST', {
+        action: 'sendReport',
+        reportText,
+        range: filters,
+      });
+
+      await navigator.clipboard?.writeText(reportText);
+      setStatus(`Звіт відправлено боту в Discord. ID: ${data.reportId}`);
+      setError('');
+    } catch (reportError) {
+      setError(reportError.message);
+    }
   }
 
   if (authLoading) {
@@ -572,9 +590,11 @@ export default function Calculator() {
               <button className="button primary" type="submit" disabled={saving}>
                 <FilePenLine size={18} /> {saving ? 'Зберігаємо...' : editingId ? 'Оновити' : 'Додати'}
               </button>
-              <button className="button secondary" type="button" onClick={copyReport}>
-                <Clipboard size={18} /> Звіт
-              </button>
+              {isAdmin && (
+                <button className="button secondary" type="button" onClick={copyReport}>
+                  <Clipboard size={18} /> Звіт
+                </button>
+              )}
               {isAdmin && (
                 <button className="button secondary danger-button" type="button" onClick={clearContracts}>
                   <Trash2 size={18} /> Очистити
