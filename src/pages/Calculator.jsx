@@ -18,9 +18,11 @@ import PageHero from '../components/PageHero.jsx';
 import Section from '../components/Section.jsx';
 import { useAuth } from '../lib/auth.jsx';
 
-const familyFundRate = 0.1;
-const officeDailyCost = 10000;
-const estateDailyCost = 100000;
+const defaultCalculatorConfig = {
+  familyFundPercent: 10,
+  officeDailyCost: 10000,
+  estateDailyCost: 100000,
+};
 
 const emptyContractForm = {
   date: new Date().toISOString().slice(0, 10),
@@ -82,21 +84,33 @@ function getPeriodDays(contracts, from, to) {
   return Math.max(1, uniqueDays.size || 1);
 }
 
-function calculateMoneyModel(contracts, from, to) {
+function normalizeCalculatorConfig(config) {
+  return {
+    familyFundPercent: Number(config?.familyFundPercent ?? defaultCalculatorConfig.familyFundPercent),
+    officeDailyCost: Number(config?.officeDailyCost ?? defaultCalculatorConfig.officeDailyCost),
+    estateDailyCost: Number(config?.estateDailyCost ?? defaultCalculatorConfig.estateDailyCost),
+  };
+}
+
+function calculateMoneyModel(contracts, from, to, config) {
+  const calculatorConfig = normalizeCalculatorConfig(config);
+  const familyFundRate = calculatorConfig.familyFundPercent / 100;
   const total = contracts.reduce((sum, contract) => sum + Number(contract.amount || 0), 0);
   const playerContracts = contracts.reduce((sum, contract) => sum + parsePlayers(contract.players).length, 0);
   const days = getPeriodDays(contracts, from, to);
   const familyFund = total * familyFundRate;
-  const officeCost = days * officeDailyCost;
-  const estateCost = days * estateDailyCost;
+  const officeCost = days * calculatorConfig.officeDailyCost;
+  const estateCost = days * calculatorConfig.estateDailyCost;
   const deductions = familyFund + officeCost + estateCost;
   const net = total - deductions;
 
   return { total, playerContracts, days, familyFund, officeCost, estateCost, deductions, net };
 }
 
-function calculatePlayerStats(contracts, knownPlayers, from, to) {
-  const model = calculateMoneyModel(contracts, from, to);
+function calculatePlayerStats(contracts, knownPlayers, from, to, config) {
+  const calculatorConfig = normalizeCalculatorConfig(config);
+  const familyFundRate = calculatorConfig.familyFundPercent / 100;
+  const model = calculateMoneyModel(contracts, from, to, calculatorConfig);
   const stats = {};
 
   knownPlayers.forEach((player) => {
@@ -152,6 +166,8 @@ export default function Calculator() {
   const { user, isAdmin, hasFamilyRole, loading: authLoading } = useAuth();
   const [contracts, setContracts] = useState([]);
   const [contractTypes, setContractTypes] = useState({});
+  const [calculatorConfig, setCalculatorConfig] = useState(defaultCalculatorConfig);
+  const [calculatorConfigForm, setCalculatorConfigForm] = useState(defaultCalculatorConfig);
   const [players, setPlayers] = useState([]);
   const [savedPlayers, setSavedPlayers] = useState([]);
   const [contractForm, setContractForm] = useState(emptyContractForm);
@@ -170,8 +186,11 @@ export default function Calculator() {
   const canUseCalculator = Boolean(user && (isAdmin || hasFamilyRole));
 
   function applyData(data) {
+    const nextCalculatorConfig = normalizeCalculatorConfig(data.calculatorConfig);
     setContracts(data.contracts || []);
     setContractTypes(data.contractTypes || {});
+    setCalculatorConfig(nextCalculatorConfig);
+    setCalculatorConfigForm(nextCalculatorConfig);
     setPlayers(sortNames(data.players || []));
     setSavedPlayers(sortNames(data.savedPlayers || []));
     setContractTypesText(contractTypesToText(data.contractTypes || {}));
@@ -323,6 +342,21 @@ export default function Calculator() {
     }
   }
 
+  async function saveCalculatorConfig() {
+    setError('');
+    setStatus('');
+
+    try {
+      applyData(await requestCalculator('POST', {
+        action: 'saveCalculatorConfig',
+        calculatorConfig: calculatorConfigForm,
+      }));
+      setStatus('Налаштування розрахунку збережено.');
+    } catch (configError) {
+      setError(configError.message);
+    }
+  }
+
   async function deleteContractType(name) {
     setError('');
     setStatus('');
@@ -388,8 +422,8 @@ export default function Calculator() {
   }, [contracts, filters]);
 
   const { rows: playerStats, model } = useMemo(
-    () => calculatePlayerStats(filteredContracts, players, filters.from, filters.to),
-    [filteredContracts, filters.from, filters.to, players],
+    () => calculatePlayerStats(filteredContracts, players, filters.from, filters.to, calculatorConfig),
+    [calculatorConfig, filteredContracts, filters.from, filters.to, players],
   );
 
   const chartRows = useMemo(() => buildChartRows(filteredContracts, model), [filteredContracts, model]);
@@ -407,7 +441,7 @@ export default function Calculator() {
       `Контрактів: ${filteredContracts.length}`,
       `Участей: ${model.playerContracts}`,
       `Загальна сума: ${formatMoney(model.total)}`,
-      `Фонд родини 10%: -${formatMoney(model.familyFund)}`,
+      `Фонд родини ${calculatorConfig.familyFundPercent}%: -${formatMoney(model.familyFund)}`,
       `Офіс (${model.days} дн.): -${formatMoney(model.officeCost)}`,
       `Маєток (${model.days} дн.): -${formatMoney(model.estateCost)}`,
       `Чистий дохід: ${formatMoney(model.net)}`,
@@ -714,11 +748,58 @@ export default function Calculator() {
         <div className="contract-summary-grid">
           <article><CalendarDays size={20} /><span>Період</span><strong>{model.days} дн.</strong></article>
           <article><Banknote size={20} /><span>Загальна сума</span><strong>{formatMoney(model.total)}</strong></article>
-          <article><span>10%</span><span>Фонд родини</span><strong>-{formatMoney(model.familyFund)}</strong></article>
+          <article><span>{calculatorConfig.familyFundPercent}%</span><span>Фонд родини</span><strong>-{formatMoney(model.familyFund)}</strong></article>
           <article><span>Офіс</span><span>{model.days} дн.</span><strong>-{formatMoney(model.officeCost)}</strong></article>
           <article><span>Маєток</span><span>{model.days} дн.</span><strong>-{formatMoney(model.estateCost)}</strong></article>
           <article><Banknote size={20} /><span>Дохід</span><strong>{formatMoney(model.net)}</strong></article>
         </div>
+
+        {isAdmin && (
+          <div className="contract-config-panel">
+            <div className="contract-panel-title">
+              <div>
+                <p className="eyebrow">Admin</p>
+                <h2>Налаштування розрахунку</h2>
+              </div>
+            </div>
+            <div className="form-grid three">
+              <label>
+                Фонд родини, %
+                <input
+                  min="0"
+                  max="100"
+                  step="0.1"
+                  type="number"
+                  value={calculatorConfigForm.familyFundPercent}
+                  onChange={(event) => setCalculatorConfigForm((current) => ({ ...current, familyFundPercent: event.target.value }))}
+                />
+              </label>
+              <label>
+                Офіс / день
+                <input
+                  min="0"
+                  step="1"
+                  type="number"
+                  value={calculatorConfigForm.officeDailyCost}
+                  onChange={(event) => setCalculatorConfigForm((current) => ({ ...current, officeDailyCost: event.target.value }))}
+                />
+              </label>
+              <label>
+                Маєток / день
+                <input
+                  min="0"
+                  step="1"
+                  type="number"
+                  value={calculatorConfigForm.estateDailyCost}
+                  onChange={(event) => setCalculatorConfigForm((current) => ({ ...current, estateDailyCost: event.target.value }))}
+                />
+              </label>
+            </div>
+            <button className="button secondary" type="button" onClick={saveCalculatorConfig}>
+              Зберегти налаштування
+            </button>
+          </div>
+        )}
 
         <div className="contract-chart-panel">
           <div className="contract-panel-title">

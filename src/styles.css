@@ -1090,6 +1090,7 @@ p {
 .contract-panel,
 .contract-filter-panel,
 .contract-summary-grid article,
+.contract-config-panel,
 .contract-chart-panel,
 .contract-table-panel,
 .contract-history-card {
@@ -1099,6 +1100,7 @@ p {
 }
 
 .contract-panel,
+.contract-config-panel,
 .contract-chart-panel,
 .contract-table-panel {
   padding: 24px;
@@ -1254,6 +1256,15 @@ p {
   margin-top: 8px;
   font-size: clamp(19px, 2vw, 27px);
   overflow-wrap: anywhere;
+}
+
+.contract-config-panel {
+  display: grid;
+  gap: 14px;
+}
+
+.form-grid.three {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .contract-chart {
@@ -1777,6 +1788,7 @@ select:focus {
   }
 
   .directory-columns,
+  .form-grid.three,
   .contract-player-picker {
     grid-template-columns: 1fr;
   }

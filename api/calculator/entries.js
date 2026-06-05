@@ -13,6 +13,12 @@ const defaultContractTypes = {
   'Поставка': 250000,
 };
 
+const defaultCalculatorConfig = {
+  familyFundPercent: 10,
+  officeDailyCost: 10000,
+  estateDailyCost: 100000,
+};
+
 function toJsonDate(value) {
   if (!value) return null;
   if (typeof value.toDate === 'function') return value.toDate().toISOString();
@@ -62,6 +68,24 @@ function normalizeContractTypes(value) {
   );
 }
 
+function normalizeCalculatorConfig(value) {
+  const familyFundPercent = Number(value?.familyFundPercent);
+  const officeDailyCost = Number(value?.officeDailyCost);
+  const estateDailyCost = Number(value?.estateDailyCost);
+
+  return {
+    familyFundPercent: Number.isFinite(familyFundPercent)
+      ? Math.min(100, Math.max(0, Math.round(familyFundPercent * 100) / 100))
+      : defaultCalculatorConfig.familyFundPercent,
+    officeDailyCost: Number.isFinite(officeDailyCost)
+      ? Math.min(1000000000, Math.max(0, Math.round(officeDailyCost)))
+      : defaultCalculatorConfig.officeDailyCost,
+    estateDailyCost: Number.isFinite(estateDailyCost)
+      ? Math.min(1000000000, Math.max(0, Math.round(estateDailyCost)))
+      : defaultCalculatorConfig.estateDailyCost,
+  };
+}
+
 function serializeContract(doc) {
   const data = doc.data();
   return {
@@ -107,6 +131,7 @@ async function getSettings(db) {
   if (!doc.exists) {
     return {
       contractTypes: defaultContractTypes,
+      calculatorConfig: defaultCalculatorConfig,
       players: [],
     };
   }
@@ -114,6 +139,7 @@ async function getSettings(db) {
   const data = doc.data();
   return {
     contractTypes: Object.keys(data.contractTypes || {}).length ? normalizeContractTypes(data.contractTypes) : defaultContractTypes,
+    calculatorConfig: normalizeCalculatorConfig(data.calculatorConfig),
     players: sortNames(data.players || []),
   };
 }
@@ -147,6 +173,7 @@ async function readCalculatorData(db) {
 
   return {
     contractTypes: settings.contractTypes,
+    calculatorConfig: settings.calculatorConfig,
     players: sortNames([...settings.players, ...discordPlayers]),
     savedPlayers: settings.players,
     contracts: contractsSnapshot.docs.map(serializeContract),
@@ -359,6 +386,13 @@ export default async function handler(req, res) {
         if (!(await ensureAdmin(user, res))) return;
         const contractTypes = normalizeContractTypes(body.contractTypes || body.settingsText);
         await writeSettings(db, { contractTypes: Object.keys(contractTypes).length ? contractTypes : defaultContractTypes });
+        res.status(200).json(await readCalculatorData(db));
+        return;
+      }
+
+      if (action === 'saveCalculatorConfig') {
+        if (!(await ensureAdmin(user, res))) return;
+        await writeSettings(db, { calculatorConfig: normalizeCalculatorConfig(body.calculatorConfig || body) });
         res.status(200).json(await readCalculatorData(db));
         return;
       }
