@@ -975,6 +975,31 @@ textarea:focus {
   color: var(--blue-soft);
 }
 
+.candidate-status {
+  display: grid;
+  grid-template-columns: 54px minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+  max-width: 900px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  padding: 24px;
+  box-shadow: var(--shadow-pink), var(--shadow-blue);
+}
+
+.candidate-status > svg {
+  color: var(--blue-soft);
+}
+
+.candidate-status h3 {
+  margin-top: 8px;
+}
+
+.news-list small {
+  color: var(--blue-soft);
+  font-weight: 900;
+}
+
 @media (max-width: 1120px) {
   .nav-toggle {
     display: inline-grid;
@@ -1066,6 +1091,27 @@ textarea:focus {
 
   .profile-panel {
     grid-template-columns: 1fr;
+  }
+
+  .candidate-status {
+    grid-template-columns: 1fr;
+  }
+
+  .application-head {
+    display: grid;
+  }
+
+  .application-id {
+    text-align: left;
+  }
+
+  .application-actions {
+    display: grid;
+  }
+
+  .application-actions button {
+    width: 100%;
+    justify-content: center;
   }
 }
 

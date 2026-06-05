@@ -76,3 +76,34 @@ FIREBASE_SERVICE_ACCOUNT={"type":"service_account",...}
 `FIREBASE_SERVICE_ACCOUNT` must be the full Firebase service account JSON, the same format used by the Railway bot.
 
 The admin panel uses Discord Login session and Firebase Admin SDK. Browser Firestore rules still keep `applications` private.
+
+## 8. Live news
+
+Optional Firestore collection:
+
+```text
+news/{document}
+```
+
+Fields:
+
+```js
+{
+  title: "Заголовок",
+  text: "Текст новини",
+  tag: "Grizzly Bulletin",
+  createdAt: Timestamp
+}
+```
+
+The public website can read `news`, but only Firebase Admin/server tools should write it.
+
+## 9. Candidate cabinet
+
+`/profile` now shows the logged-in user's application status. It reads the private application document through:
+
+```text
+/api/applications/me
+```
+
+This endpoint requires Discord Login and `FIREBASE_SERVICE_ACCOUNT` on Vercel.
