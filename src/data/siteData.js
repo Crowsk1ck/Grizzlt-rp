@@ -17,6 +17,7 @@ export const navItems = [
   ['Головна', '/'],
   ['Про родину', '/about'],
   ['Склад', '/roster'],
+  ['Калькулятор', '/calculator'],
   ['Вступ', '/recruitment'],
   ['Правила', '/rules'],
   ['Події', '/events'],

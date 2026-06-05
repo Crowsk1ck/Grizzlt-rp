@@ -8,6 +8,7 @@ const About = lazy(() => import('./pages/About.jsx'));
 const Roster = lazy(() => import('./pages/Roster.jsx'));
 const Hierarchy = lazy(() => import('./pages/Hierarchy.jsx'));
 const Recruitment = lazy(() => import('./pages/Recruitment.jsx'));
+const Calculator = lazy(() => import('./pages/Calculator.jsx'));
 const Rules = lazy(() => import('./pages/Rules.jsx'));
 const Events = lazy(() => import('./pages/Events.jsx'));
 const Gallery = lazy(() => import('./pages/Gallery.jsx'));
@@ -31,6 +32,7 @@ export default function App() {
           <Route path="/roster" element={<Roster />} />
           <Route path="/hierarchy" element={<Hierarchy />} />
           <Route path="/recruitment" element={<Recruitment />} />
+          <Route path="/calculator" element={<Calculator />} />
           <Route path="/rules" element={<Rules />} />
           <Route path="/events" element={<Events />} />
           <Route path="/gallery" element={<Gallery />} />

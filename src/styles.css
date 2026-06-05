@@ -42,7 +42,8 @@ a {
 
 button,
 input,
-textarea {
+textarea,
+select {
   font: inherit;
 }
 
@@ -377,6 +378,11 @@ p {
   background: rgba(255, 255, 255, 0.07);
   color: var(--text);
   box-shadow: 0 0 20px rgba(22, 139, 255, 0.18);
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.62;
 }
 
 .stat-strip {
@@ -848,6 +854,232 @@ p {
   max-width: 920px;
 }
 
+.calculator-section {
+  display: grid;
+  gap: 24px;
+}
+
+.calculator-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.calculator-stats article {
+  position: relative;
+  min-height: 148px;
+  border: 1px solid var(--line);
+  background:
+    linear-gradient(135deg, rgba(255, 22, 120, 0.1), rgba(22, 139, 255, 0.07)),
+    var(--panel);
+  padding: 20px;
+  overflow: hidden;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.34);
+}
+
+.calculator-stats article::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 2px;
+  background: linear-gradient(90deg, var(--pink), var(--blue));
+}
+
+.calculator-stats svg {
+  color: var(--blue-soft);
+  margin-bottom: 18px;
+}
+
+.calculator-stats strong,
+.calculator-stats span {
+  display: block;
+}
+
+.calculator-stats strong {
+  font-size: clamp(24px, 2.4vw, 34px);
+  line-height: 1.05;
+  overflow-wrap: anywhere;
+}
+
+.calculator-stats span {
+  margin-top: 8px;
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.calculator-controls {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) auto minmax(150px, max-content);
+  gap: 12px;
+  align-items: center;
+}
+
+.calculator-filter {
+  grid-template-columns: repeat(4, minmax(86px, 1fr));
+}
+
+.calculator-layout {
+  display: grid;
+  grid-template-columns: minmax(320px, 0.88fr) minmax(0, 1.22fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.calculator-form {
+  position: sticky;
+  top: 102px;
+}
+
+.calculator-form h2,
+.calculator-panel h2,
+.calculator-history h2 {
+  margin: 0;
+  font-size: clamp(28px, 3vw, 42px);
+}
+
+.calculator-form p:not(.eyebrow) {
+  margin-top: 6px;
+}
+
+.calculator-panel,
+.calculator-history {
+  border: 1px solid var(--line);
+  background: var(--panel);
+  padding: 24px;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.42);
+}
+
+.calculator-panel-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: start;
+  margin-bottom: 18px;
+}
+
+.calculator-panel-head span {
+  width: max-content;
+  max-width: 220px;
+  border: 1px solid rgba(92, 198, 255, 0.26);
+  background: rgba(22, 139, 255, 0.1);
+  color: var(--blue-soft);
+  padding: 8px 10px;
+  font-size: 12px;
+  font-weight: 900;
+  text-align: right;
+  text-transform: uppercase;
+}
+
+.calculator-ranking,
+.calculator-history-list {
+  display: grid;
+  gap: 12px;
+}
+
+.calculator-rank-row,
+.calculator-history-row {
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.calculator-rank-row {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr) minmax(130px, auto);
+  gap: 16px;
+  align-items: center;
+  min-height: 72px;
+  padding: 14px 16px;
+}
+
+.calculator-rank-row > strong {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  color: var(--pink-soft);
+  font-size: 22px;
+  text-shadow: 0 0 18px rgba(255, 22, 120, 0.52);
+}
+
+.calculator-rank-row h3,
+.calculator-history-row h3 {
+  margin: 0 0 3px;
+  overflow-wrap: anywhere;
+}
+
+.calculator-rank-row p,
+.calculator-history-row p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.calculator-rank-row > span {
+  color: #8affca;
+  font-weight: 950;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.calculator-history {
+  margin-top: 2px;
+}
+
+.calculator-history-row {
+  display: grid;
+  grid-template-columns: 118px minmax(0, 1fr) minmax(110px, auto) 42px;
+  gap: 14px;
+  align-items: center;
+  min-height: 76px;
+  padding: 14px;
+}
+
+.calculator-history-row > strong {
+  color: #8affca;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.calculator-history-row button {
+  display: inline-grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border: 1px solid rgba(255, 22, 120, 0.42);
+  background: rgba(255, 22, 120, 0.1);
+  color: var(--pink-soft);
+  cursor: pointer;
+}
+
+.calc-kind {
+  width: max-content;
+  max-width: 100%;
+  border: 1px solid var(--line);
+  padding: 6px 8px;
+  font-size: 11px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.calc-kind.contracts {
+  border-color: rgba(92, 198, 255, 0.46);
+  color: var(--blue-soft);
+  background: rgba(22, 139, 255, 0.12);
+}
+
+.calc-kind.money {
+  border-color: rgba(92, 255, 180, 0.45);
+  color: #8affca;
+  background: rgba(92, 255, 180, 0.1);
+}
+
+.calc-kind.bonus {
+  border-color: rgba(255, 22, 120, 0.48);
+  color: var(--pink-soft);
+  background: rgba(255, 22, 120, 0.12);
+}
+
 .rank-list,
 .news-list,
 .event-grid,
@@ -956,7 +1188,8 @@ label {
 }
 
 input,
-textarea {
+textarea,
+select {
   width: 100%;
   border: 1px solid var(--line);
   background: rgba(255, 255, 255, 0.06);
@@ -965,13 +1198,19 @@ textarea {
   outline: none;
 }
 
+select option {
+  background: var(--panel-solid);
+  color: var(--text);
+}
+
 textarea {
   min-height: 150px;
   resize: vertical;
 }
 
 input:focus,
-textarea:focus {
+textarea:focus,
+select:focus {
   border-color: rgba(255, 22, 120, 0.7);
   box-shadow: 0 0 18px rgba(255, 22, 120, 0.18);
 }
@@ -1101,9 +1340,19 @@ textarea:focus {
     grid-template-columns: 1fr;
   }
 
+  .calculator-controls,
+  .calculator-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .calculator-form {
+    position: static;
+  }
+
   .grid.four,
   .grid.two,
   .admin-stats,
+  .calculator-stats,
   .member-grid,
   .event-grid,
   .diplomacy-grid,
@@ -1131,6 +1380,7 @@ textarea:focus {
   .grid.four,
   .admin-stats,
   .roster-stats,
+  .calculator-stats,
   .member-grid,
   .event-grid,
   .diplomacy-grid,
@@ -1183,6 +1433,39 @@ textarea:focus {
   .application-actions button {
     width: 100%;
     justify-content: center;
+  }
+
+  .calculator-filter {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .calculator-panel-head {
+    display: grid;
+  }
+
+  .calculator-panel-head span {
+    width: 100%;
+    max-width: none;
+    text-align: left;
+  }
+
+  .calculator-rank-row,
+  .calculator-history-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .calculator-rank-row > strong {
+    justify-content: start;
+  }
+
+  .calculator-rank-row > span,
+  .calculator-history-row > strong {
+    text-align: left;
+  }
+
+  .calculator-history-row button {
+    width: 100%;
   }
 }
 
