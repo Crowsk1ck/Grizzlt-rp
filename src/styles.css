@@ -186,6 +186,66 @@ textarea {
   display: none;
 }
 
+.route-loading,
+.error-boundary {
+  min-height: calc(100vh - 78px);
+  display: grid;
+  place-items: center;
+  padding: clamp(34px, 7vw, 80px);
+  text-align: center;
+  background:
+    linear-gradient(180deg, rgba(2, 2, 7, 0.35), rgba(2, 2, 7, 0.92)),
+    url('/assets/grizzly-home-banner.png') center / cover no-repeat;
+}
+
+.route-loading img {
+  width: min(180px, 46vw);
+  filter: drop-shadow(0 0 24px rgba(255, 22, 120, 0.5)) drop-shadow(0 0 24px rgba(22, 139, 255, 0.45));
+}
+
+.route-loading strong {
+  display: block;
+  margin-top: 14px;
+  font-size: 20px;
+}
+
+.route-loading span {
+  width: min(260px, 70vw);
+  height: 3px;
+  margin-top: 18px;
+  background: linear-gradient(90deg, transparent, var(--pink), var(--blue), transparent);
+  animation: loading-pulse 1.2s ease-in-out infinite;
+}
+
+.error-boundary > div {
+  max-width: 760px;
+  border: 1px solid var(--line);
+  background: rgba(2, 2, 7, 0.78);
+  padding: clamp(24px, 5vw, 46px);
+  box-shadow: var(--shadow-pink), var(--shadow-blue);
+}
+
+.error-boundary svg {
+  color: var(--pink-soft);
+}
+
+.error-boundary h1 {
+  font-size: clamp(38px, 8vw, 88px);
+}
+
+@keyframes loading-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scaleX(0.72);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
 .hero {
   position: relative;
   min-height: calc(100vh - 78px);
@@ -993,6 +1053,13 @@ textarea:focus {
 
 .candidate-status > svg {
   color: var(--blue-soft);
+}
+
+.mini-logo {
+  width: 54px;
+  height: 54px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 18px rgba(255, 22, 120, 0.42));
 }
 
 .candidate-status h3 {
