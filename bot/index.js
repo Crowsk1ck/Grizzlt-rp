@@ -94,7 +94,7 @@ function baseEmbed({ title, description, color = colors.pink, image = false }) {
   const embed = new EmbedBuilder()
     .setColor(color)
     .setAuthor({
-      name: 'Grizzly Family | GTA 5 RP',
+      name: 'Grizzly Family | NG ',
       iconURL: LOGO_URL,
       url: SITE_URL,
     })
