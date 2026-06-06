@@ -4,10 +4,15 @@ import { Link, NavLink } from 'react-router-dom';
 import { familyName, navItems } from '../data/siteData.js';
 import { useAuth } from '../lib/auth.jsx';
 
+const publicNavOrder = ['/', '/about', '/rules', '/recruitment'];
+
 export default function Layout({ children }) {
   const [open, setOpen] = useState(false);
-  const { user, loading, hasFamilyRole } = useAuth();
-  const visibleNavItems = navItems.filter(([, href]) => !(hasFamilyRole && href === '/recruitment'));
+  const { user, loading, hasFamilyRole, isAdmin } = useAuth();
+  const hasFullMenu = hasFamilyRole || isAdmin;
+  const visibleNavItems = hasFullMenu
+    ? navItems.filter(([, href]) => href !== '/recruitment')
+    : publicNavOrder.map((href) => navItems.find(([, navHref]) => navHref === href)).filter(Boolean);
 
   return (
     <div className="app-shell">
@@ -57,9 +62,9 @@ export default function Layout({ children }) {
           <p>© 2026 Grizzly Family | NG</p>
         </div>
         <div className="footer-links">
-          {!hasFamilyRole && <Link to="/recruitment">Заявка</Link>}
+          {!hasFullMenu && <Link to="/recruitment">Заявка</Link>}
           <Link to="/rules">Устав</Link>
-          <Link to="/admin">Адмінка</Link>
+          {isAdmin && <Link to="/admin">Адмінка</Link>}
         </div>
       </footer>
     </div>
