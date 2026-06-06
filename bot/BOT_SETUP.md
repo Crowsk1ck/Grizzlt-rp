@@ -1,6 +1,6 @@
 # Grizzly Discord Bot setup
 
-Required environment variables:
+Required environment variables for Railway:
 
 ```env
 DISCORD_BOT_TOKEN=...
@@ -13,10 +13,12 @@ DISCORD_REPORT_CHANNEL_ID=...
 Optional:
 
 ```env
-DISCORD_ACCEPTED_ROLE_ID=...
+DISCORD_ACCEPTED_ROLE_ID=1390073033687044236
 DISCORD_INTERVIEW_CHANNEL_URL=https://discord.com/channels/...
 DISCORD_DM_FALLBACK_CHANNEL_ID=...
 DISCORD_NEWS_CHANNEL_ID=...
+DISCORD_EMBED_LOGO_URL=https://www.grizzly-family.online/assets/grizzly-logo.png
+DISCORD_EMBED_BANNER_URL=https://www.grizzly-family.online/assets/grizzly-banner.png
 ```
 
 ## What it does
@@ -26,23 +28,17 @@ DISCORD_NEWS_CHANNEL_ID=...
   - `discord_members/{memberId}`
 - Watches Firestore collection `applications`.
 - Sends every new application to `DISCORD_APPLICATION_CHANNEL_ID`.
+- Adds decision buttons:
+  - `Прийняти`
+  - `Співбесіда`
+  - `Відхилити`
+- Sends the applicant a styled DM when a decision button is pressed.
+- Optionally gives `DISCORD_ACCEPTED_ROLE_ID` when accepted.
 - Watches Firestore collection `calculator_reports`.
 - Sends every admin calculator report to `DISCORD_REPORT_CHANNEL_ID`.
 - Watches Firestore collection `discord_news_notifications`.
 - Sends every admin website news post to `DISCORD_NEWS_CHANNEL_ID`.
-- Adds buttons:
-  - `Прийняти`
-  - `Співбесіда`
-  - `Відхилити`
-- Updates application status in Firestore:
-  - `accepted`
-  - `interview`
-  - `rejected`
-- Sends the applicant a DM when a decision button is pressed.
-- Saves `dmSent` and `dmError` in Firestore.
-- Saves `dmErrorCode`, `dmErrorText` and `dmUserId` when Discord blocks DM.
-- If `DISCORD_DM_FALLBACK_CHANNEL_ID` is set, sends a fallback message with mention to that channel when DM is blocked.
-- Optionally gives `DISCORD_ACCEPTED_ROLE_ID` when accepted.
+- Uses premium Grizzly embeds with logo, banner, colors and clean Ukrainian text.
 
 ## Discord bot settings
 
@@ -60,13 +56,28 @@ The bot needs permissions:
 
 ## DM note
 
-DM works only when the applicant logged in through Discord on the website and Discord allows the bot to message them. If user DMs are closed, the bot records `dmSent: false` and `dmError` in Firestore.
+DM works only when the applicant logged in through Discord on the website and Discord allows the bot to message them.
 
-Common Discord DM block reasons:
+If user DMs are closed, the bot records:
 
-- User has disabled direct messages from server members.
-- User left the Discord server.
-- User blocked the bot.
-- Old Firestore application has no Discord ID.
+- `dmSent: false`
+- `dmError`
+- `dmErrorCode`
+- `dmErrorText`
+- `dmUserId`
 
-The bot cannot bypass Discord privacy settings. Use `DISCORD_DM_FALLBACK_CHANNEL_ID` if you want the bot to ping the user in a public or ticket channel when DM fails.
+Use `DISCORD_DM_FALLBACK_CHANNEL_ID` if you want the bot to ping the user in a public or ticket channel when DM fails.
+
+## Embed branding
+
+Default branding:
+
+- Logo: `https://www.grizzly-family.online/assets/grizzly-logo.png`
+- Banner: `https://www.grizzly-family.online/assets/grizzly-banner.png`
+
+To use another image, set:
+
+```env
+DISCORD_EMBED_LOGO_URL=https://...
+DISCORD_EMBED_BANNER_URL=https://...
+```
