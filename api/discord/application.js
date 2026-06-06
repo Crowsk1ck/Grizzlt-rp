@@ -18,11 +18,73 @@ function readJsonBody(req) {
   });
 }
 
+function clean(value, fallback = '-') {
+  const text = String(value || fallback).trim();
+  return (text || fallback).slice(0, 1024);
+}
+
+function cleanLong(value, fallback = '-') {
+  const text = String(value || fallback).trim();
+  return (text || fallback).slice(0, 1800);
+}
+
 function field(name, value, inline = true) {
   return {
     name,
-    value: value ? String(value).slice(0, 1024) : '-',
+    value: clean(value),
     inline,
+  };
+}
+
+function appUrl() {
+  return (process.env.APP_URL || 'https://www.grizzly-family.online').replace(/\/$/, '');
+}
+
+function assetUrl(path) {
+  return `${appUrl()}${path}`;
+}
+
+function buildEmbed({ type, form, documentId, discordUser }) {
+  const isApplication = type === 'applications';
+  const title = isApplication ? 'Нова заявка в Grizzly Family' : 'Нове повідомлення з сайту';
+  const color = isApplication ? 0xff005c : 0x00c8ff;
+  const userMention = discordUser?.id ? `<@${discordUser.id}>` : form.discord;
+
+  return {
+    author: {
+      name: 'Grizzly Family | GTA 5 RP',
+      icon_url: process.env.DISCORD_EMBED_LOGO_URL || assetUrl('/assets/grizzly-logo.png'),
+      url: appUrl(),
+    },
+    title,
+    description: isApplication
+      ? `Кандидат **${clean(form.nickname, 'Без ніку')}** подав заявку на вступ до родини.`
+      : cleanLong(form.message),
+    color,
+    timestamp: new Date().toISOString(),
+    thumbnail: {
+      url: process.env.DISCORD_EMBED_LOGO_URL || assetUrl('/assets/grizzly-logo.png'),
+    },
+    image: {
+      url: process.env.DISCORD_EMBED_BANNER_URL || assetUrl('/assets/grizzly-banner.png'),
+    },
+    fields: [
+      field('Кандидат', form.nickname),
+      field('Discord', userMention),
+      field('Вік', form.age),
+      field('Онлайн', form.online),
+      field('Firestore ID', documentId),
+      field('Discord ID', discordUser?.id),
+      {
+        name: 'Про себе / досвід',
+        value: cleanLong(form.message),
+        inline: false,
+      },
+    ],
+    footer: {
+      text: 'grizzly-family.online',
+      icon_url: process.env.DISCORD_EMBED_LOGO_URL || assetUrl('/assets/grizzly-logo.png'),
+    },
   };
 }
 
@@ -43,9 +105,6 @@ export default async function handler(req, res) {
     const body = await readJsonBody(req);
     const form = body.form || {};
     const discordUser = body.discordUser || null;
-    const isApplication = body.type === 'applications';
-    const title = isApplication ? 'Нова заявка в Grizzly Family' : 'Нове повідомлення з сайту';
-    const color = isApplication ? 0xff1678 : 0x168bff;
 
     const response = await fetch(webhookUrl, {
       method: 'POST',
@@ -53,27 +112,19 @@ export default async function handler(req, res) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        username: 'Grizzly Family Site',
-        avatar_url: `${process.env.APP_URL || 'https://www.grizzly-family.online'}/assets/grizzly-logo.png`,
+        username: 'Grizzly Family',
+        avatar_url: process.env.DISCORD_EMBED_LOGO_URL || assetUrl('/assets/grizzly-logo.png'),
         embeds: [
-          {
-            title,
-            color,
-            timestamp: new Date().toISOString(),
-            fields: [
-              field('Нікнейм', form.nickname),
-              field('Discord', form.discord),
-              field('Вік', form.age),
-              field('Онлайн', form.online),
-              field('Firestore ID', body.documentId),
-              field('Discord ID', discordUser?.id),
-              field('Повідомлення', form.message, false),
-            ],
-            footer: {
-              text: 'grizzly-family.online',
-            },
-          },
+          buildEmbed({
+            type: body.type,
+            form,
+            documentId: body.documentId,
+            discordUser,
+          }),
         ],
+        allowed_mentions: {
+          users: discordUser?.id ? [discordUser.id] : [],
+        },
       }),
     });
 
