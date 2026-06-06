@@ -34,6 +34,7 @@ const REPORT_CHANNEL_ID =
   APPLICATION_CHANNEL_ID;
 const NEWS_CHANNEL_ID = process.env.DISCORD_NEWS_CHANNEL_ID;
 const ACCEPTED_ROLE_ID = process.env.DISCORD_ACCEPTED_ROLE_ID;
+const NEWS_MENTION_ROLE_ID = process.env.DISCORD_NEWS_MENTION_ROLE_ID || ACCEPTED_ROLE_ID;
 const INTERVIEW_CHANNEL_URL = process.env.DISCORD_INTERVIEW_CHANNEL_URL;
 
 const SITE_URL = (process.env.APP_URL || 'https://www.grizzly-family.online').replace(/\/$/, '');
@@ -469,11 +470,7 @@ function newsEmbed(id, data) {
     description: cleanLong(data.text),
     color: colors.pink,
     image: data.imageUrl || true,
-  }).addFields(
-    field('Тег', data.tag || 'Grizzly Bulletin'),
-    field('Адмін', data.requestedBy?.globalName || data.requestedBy?.username),
-    field('Firestore ID', id),
-  );
+  });
 }
 
 async function startNewsListener() {
@@ -495,7 +492,11 @@ async function startNewsListener() {
 
       try {
         const message = await channel.send({
+          content: NEWS_MENTION_ROLE_ID ? `<@&${NEWS_MENTION_ROLE_ID}>` : undefined,
           embeds: [newsEmbed(doc.id, data)],
+          allowedMentions: {
+            roles: NEWS_MENTION_ROLE_ID ? [NEWS_MENTION_ROLE_ID] : [],
+          },
         });
 
         await doc.ref.set(
