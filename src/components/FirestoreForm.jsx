@@ -89,7 +89,7 @@ export default function FirestoreForm({ type = 'applications' }) {
       });
 
       let discordResult = { ok: false, skipped: true };
-      if (!result.offline) {
+      if (!result.offline && isApplication) {
         discordResult = await notifyDiscord(type, form, result.id, user);
       }
 
@@ -100,7 +100,7 @@ export default function FirestoreForm({ type = 'applications' }) {
       } else if (isApplication) {
         setStatus(`Заявку відправлено у Firestore. Бот у Discord побачить її автоматично. ID: ${result.id}`);
       } else {
-        setStatus(`Повідомлення відправлено у Firestore. ID: ${result.id}`);
+        setStatus(`Повідомлення відправлено у Firestore. Бот на Railway відправить його в Discord. ID: ${result.id}`);
       }
 
       setForm({

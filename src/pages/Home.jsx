@@ -40,7 +40,7 @@ export default function Home() {
     <>
       <section className="hero home-premium-hero">
         <div className="hero-content">
-          <p className="eyebrow"></p>
+          <p className="eyebrow">Преміальна GTA 5 RP родина</p>
           <h1>{familyName}</h1>
           <p>
             Неонова атмосфера, сильний Discord-склад, дисципліна, контракти та RP-сцени,
