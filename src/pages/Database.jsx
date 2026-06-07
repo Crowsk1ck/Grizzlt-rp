@@ -22,7 +22,7 @@ export default function DatabasePage() {
             <h3>{firebaseStatus.connected ? 'Firestore підключено' : 'Firestore ще не підключено'}</h3>
             <p>
               {firebaseStatus.connected
-                ? `Проект: ${firebaseStatus.projectId}`
+                ? `Проєкт: ${firebaseStatus.projectId}`
                 : 'Додай VITE_FIREBASE_* змінні у Vercel і зроби redeploy.'}
             </p>
           </article>
