@@ -6,6 +6,8 @@ import {
   EmbedBuilder,
   Events,
   GatewayIntentBits,
+  PermissionFlagsBits,
+  SlashCommandBuilder,
 } from 'discord.js';
 import admin from 'firebase-admin';
 
@@ -35,6 +37,12 @@ const REPORT_CHANNEL_ID =
 const NEWS_CHANNEL_ID = process.env.DISCORD_NEWS_CHANNEL_ID;
 const ACCEPTED_ROLE_ID = process.env.DISCORD_ACCEPTED_ROLE_ID;
 const NEWS_MENTION_ROLE_ID = process.env.DISCORD_NEWS_MENTION_ROLE_ID || ACCEPTED_ROLE_ID;
+const CANDIDATE_ROLE_ID = process.env.DISCORD_CANDIDATE_ROLE_ID;
+const LOG_CHANNEL_ID = process.env.DISCORD_LOG_CHANNEL_ID;
+const WELCOME_CHANNEL_ID = process.env.DISCORD_WELCOME_CHANNEL_ID;
+const ADMIN_MENTION_ROLE_ID = process.env.DISCORD_ADMIN_MENTION_ROLE_ID;
+const APPLICATION_THREAD_ENABLED = process.env.DISCORD_APPLICATION_THREAD_ENABLED !== 'false';
+const INTERVIEW_REMINDER_HOURS = Number(process.env.DISCORD_INTERVIEW_REMINDER_HOURS || 24);
 const INTERVIEW_CHANNEL_URL = process.env.DISCORD_INTERVIEW_CHANNEL_URL;
 
 const SITE_URL = (process.env.APP_URL || 'https://www.grizzly-family.online').replace(/\/$/, '');
@@ -48,6 +56,10 @@ const colors = {
   red: 0xff2d55,
   amber: 0xffb020,
   violet: 0x8f2cff,
+};
+
+let syncMembersHandler = async () => {
+  throw new Error('Sync is not ready yet');
 };
 
 function clean(value, fallback = '-') {
@@ -90,11 +102,24 @@ function field(name, value, inline = true) {
   };
 }
 
+function isStaffInteraction(interaction) {
+  if (interaction.memberPermissions?.has(PermissionFlagsBits.ManageGuild)) return true;
+  if (!ADMIN_MENTION_ROLE_ID) return false;
+  return Boolean(interaction.member?.roles?.cache?.has(ADMIN_MENTION_ROLE_ID));
+}
+
+function toDate(value) {
+  if (!value) return null;
+  if (typeof value.toDate === 'function') return value.toDate();
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? null : date;
+}
+
 function baseEmbed({ title, description, color = colors.pink, image = false }) {
   const embed = new EmbedBuilder()
     .setColor(color)
     .setAuthor({
-      name: 'Grizzly Family | NG ',
+      name: 'Grizzly Family | GTA 5 RP',
       iconURL: LOGO_URL,
       url: SITE_URL,
     })
@@ -115,6 +140,145 @@ function baseEmbed({ title, description, color = colors.pink, image = false }) {
   }
 
   return embed;
+}
+
+async function fetchSendableChannel(channelId) {
+  if (!channelId) return null;
+  const channel = await client.channels.fetch(channelId).catch(() => null);
+  return channel?.send ? channel : null;
+}
+
+async function sendLogEmbed(title, description, fields = [], color = colors.violet) {
+  const channel = await fetchSendableChannel(LOG_CHANNEL_ID);
+  if (!channel) return null;
+
+  return channel.send({
+    embeds: [
+      baseEmbed({
+        title,
+        description,
+        color,
+      }).addFields(fields.filter(Boolean)),
+    ],
+  }).catch((error) => {
+    console.error('Log embed failed', error);
+    return null;
+  });
+}
+
+function retryDmButton(id) {
+  return new ActionRowBuilder().addComponents(
+    new ButtonBuilder()
+      .setCustomId(`application:retrydm:${id}`)
+      .setLabel('Повторити DM')
+      .setStyle(ButtonStyle.Secondary),
+  );
+}
+
+function welcomeEmbed(data, userId) {
+  return baseEmbed({
+    title: 'Новий учасник Grizzly Family',
+    description: [
+      `<@${userId}> тепер у родині.`,
+      'Вітаємо в Grizzly Family. Тримай стиль, поважай правила і будь активним у Discord.',
+    ].join('\n'),
+    color: colors.green,
+    image: true,
+  }).addFields(
+    field('Нік', data.nickname),
+    field('Статус', 'Прийнято'),
+  );
+}
+
+async function sendWelcomeMessage(data, applicationId) {
+  const userId = applicationDiscordId(data, applicationId);
+  const channel = await fetchSendableChannel(WELCOME_CHANNEL_ID);
+
+  if (!channel || !userId) return null;
+
+  return channel.send({
+    content: `<@${userId}>`,
+    embeds: [welcomeEmbed(data, userId)],
+    allowedMentions: {
+      users: [userId],
+    },
+  }).catch((error) => {
+    console.error('Welcome message failed', error);
+    return null;
+  });
+}
+
+async function updateApplicantRoles(status, data, applicationId) {
+  const userId = applicationDiscordId(data, applicationId);
+  if (!userId || !SERVER_ID) {
+    return {
+      roleAdded: false,
+      candidateRemoved: false,
+      reason: 'missing_user_or_server',
+    };
+  }
+
+  const guild = await client.guilds.fetch(SERVER_ID);
+  const member = await guild.members.fetch(userId).catch(() => null);
+
+  if (!member) {
+    return {
+      roleAdded: false,
+      candidateRemoved: false,
+      reason: 'member_not_found',
+    };
+  }
+
+  let roleAdded = false;
+  let candidateAdded = false;
+  let candidateRemoved = false;
+
+  if (status === 'new' && CANDIDATE_ROLE_ID) {
+    try {
+      await member.roles.add(CANDIDATE_ROLE_ID);
+      candidateAdded = true;
+    } catch (error) {
+      console.error('Candidate role add failed', error);
+    }
+  }
+
+  if (['accepted', 'rejected'].includes(status) && CANDIDATE_ROLE_ID) {
+    try {
+      await member.roles.remove(CANDIDATE_ROLE_ID);
+      candidateRemoved = true;
+    } catch (error) {
+      console.error('Candidate role remove failed', error);
+    }
+  }
+
+  if (status === 'accepted' && ACCEPTED_ROLE_ID) {
+    try {
+      await member.roles.add(ACCEPTED_ROLE_ID);
+      roleAdded = true;
+    } catch (error) {
+      console.error('Accepted role add failed', error);
+    }
+  }
+
+  return {
+    roleAdded,
+    candidateAdded,
+    candidateRemoved,
+    reason: null,
+  };
+}
+
+async function createApplicationThread(message, id, data) {
+  if (!APPLICATION_THREAD_ENABLED || !message?.startThread) return null;
+
+  return message.startThread({
+    name: `Заявка ${clean(data.nickname, id).slice(0, 70)}`,
+    autoArchiveDuration: 1440,
+    reason: `Application ${id}`,
+  }).catch((error) => {
+    console.error('Application thread failed', error);
+    return null;
+  });
 }
 
 function statusConfig(status) {
@@ -362,13 +526,34 @@ async function startApplicationListener() {
         components: [applicationButtons(doc.id)],
       });
 
+      const roleResult = await updateApplicantRoles('new', data, doc.id).catch((error) => {
+        console.error('Candidate role update failed', error);
+        return null;
+      });
+
+      const thread = await createApplicationThread(message, doc.id, data);
+
       await doc.ref.set(
         {
           botNotified: true,
           discordMessageId: message.id,
+          discordThreadId: thread?.id || null,
           status: data.status || 'new',
+          candidateRoleGiven: Boolean(roleResult?.candidateAdded),
         },
         { merge: true },
+      );
+
+      await sendLogEmbed(
+        'Нова заявка',
+        `${userLine(data, doc.id)} подав заявку в Grizzly Family.`,
+        [
+          field('Кандидат', data.nickname),
+          field('Discord ID', applicationDiscordId(data, doc.id) || '-'),
+          field('Thread', thread ? `<#${thread.id}>` : '-'),
+          field('Роль кандидата', roleResult?.candidateAdded ? 'Видано' : 'Не видано'),
+        ],
+        colors.pink,
       );
 
       console.log(`Application sent to Discord | ${doc.id}`);
@@ -528,10 +713,197 @@ async function startNewsListener() {
   });
 }
 
+async function registerSlashCommands(guild) {
+  const commands = [
+    new SlashCommandBuilder()
+      .setName('sync')
+      .setDescription('Синхронізувати Discord склад з Firestore')
+      .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
+    new SlashCommandBuilder()
+      .setName('status')
+      .setDescription('Показати статус учасника')
+      .addUserOption((option) => option
+        .setName('user')
+        .setDescription('Discord користувач')
+        .setRequired(true))
+      .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
+    new SlashCommandBuilder()
+      .setName('warning')
+      .setDescription('Видати попередження учаснику')
+      .addUserOption((option) => option
+        .setName('user')
+        .setDescription('Discord користувач')
+        .setRequired(true))
+      .addStringOption((option) => option
+        .setName('reason')
+        .setDescription('Причина попередження')
+        .setRequired(true))
+      .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
+  ];
+
+  await guild.commands.set(commands.map((command) => command.toJSON()));
+  console.log('Slash commands registered');
+}
+
+async function handleChatInput(interaction, syncMembers) {
+  if (!interaction.isChatInputCommand()) return false;
+
+  if (!isStaffInteraction(interaction)) {
+    await interaction.reply({
+      content: 'Ця команда доступна тільки старшому складу.',
+      ephemeral: true,
+    });
+    return true;
+  }
+
+  if (interaction.commandName === 'sync') {
+    await interaction.deferReply({ ephemeral: true });
+    await syncMembers();
+    await interaction.editReply('Discord склад синхронізовано з Firestore.');
+    await sendLogEmbed('Slash command', `${interaction.user} виконав /sync.`, [], colors.blue);
+    return true;
+  }
+
+  if (interaction.commandName === 'status') {
+    const user = interaction.options.getUser('user', true);
+    const [memberDoc, profileDoc, applicationDoc] = await Promise.all([
+      db.collection('discord_members').doc(user.id).get(),
+      db.collection('member_profiles').doc(user.id).get(),
+      db.collection('applications').doc(user.id).get(),
+    ]);
+
+    const member = memberDoc.exists ? memberDoc.data() : {};
+    const profile = profileDoc.exists ? profileDoc.data() : {};
+    const application = applicationDoc.exists ? applicationDoc.data() : {};
+
+    await interaction.reply({
+      embeds: [
+        baseEmbed({
+          title: 'Статус учасника',
+          description: `<@${user.id}>`,
+          color: colors.blue,
+        }).addFields(
+          field('Discord', member.nickname || user.username),
+          field('Онлайн', member.online ? 'Online' : 'Offline'),
+          field('Ранг', profile.rank || '-'),
+          field('Статус заявки', application.status || '-'),
+        ),
+      ],
+      ephemeral: true,
+    });
+    return true;
+  }
+
+  if (interaction.commandName === 'warning') {
+    const user = interaction.options.getUser('user', true);
+    const reason = cleanLong(interaction.options.getString('reason', true), 'Без причини');
+
+    const ref = await db.collection('member_warnings').add({
+      userId: user.id,
+      reason,
+      createdBy: {
+        id: interaction.user.id,
+        username: interaction.user.username,
+      },
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+    });
+
+    await interaction.reply({
+      content: `Попередження для <@${user.id}> збережено. ID: ${ref.id}`,
+      ephemeral: true,
+    });
+
+    await sendLogEmbed(
+      'Попередження учаснику',
+      `${interaction.user} видав попередження для <@${user.id}>.`,
+      [
+        field('Причина', reason, false),
+        field('Firestore ID', ref.id),
+      ],
+      colors.amber,
+    );
+
+    return true;
+  }
+
+  return false;
+}
+
+async function sendInterviewReminders() {
+  if (!APPLICATION_CHANNEL_ID || !Number.isFinite(INTERVIEW_REMINDER_HOURS) || INTERVIEW_REMINDER_HOURS <= 0) {
+    return;
+  }
+
+  const channel = await fetchSendableChannel(APPLICATION_CHANNEL_ID);
+  if (!channel) return;
+
+  const snapshot = await db
+    .collection('applications')
+    .where('status', '==', 'interview')
+    .limit(50)
+    .get()
+    .catch((error) => {
+      console.error('Interview reminder query failed', error);
+      return null;
+    });
+
+  if (!snapshot) return;
+
+  const now = Date.now();
+  const thresholdMs = INTERVIEW_REMINDER_HOURS * 60 * 60 * 1000;
+
+  for (const doc of snapshot.docs) {
+    const data = doc.data();
+    if (data.interviewReminderSent) continue;
+
+    const startDate = toDate(data.reviewedAt) || toDate(data.createdAt);
+    if (!startDate || now - startDate.getTime() < thresholdMs) continue;
+
+    const content = [
+      ADMIN_MENTION_ROLE_ID ? `<@&${ADMIN_MENTION_ROLE_ID}>` : '',
+      `Заявка ${userLine(data, doc.id)} очікує співбесіду вже ${INTERVIEW_REMINDER_HOURS}+ год.`,
+    ].filter(Boolean).join('\n');
+
+    await channel.send({
+      content,
+      embeds: [
+        applicationEmbed(doc.id, data).setTitle('Нагадування про співбесіду'),
+      ],
+      allowedMentions: {
+        roles: ADMIN_MENTION_ROLE_ID ? [ADMIN_MENTION_ROLE_ID] : [],
+      },
+    });
+
+    await doc.ref.set(
+      {
+        interviewReminderSent: true,
+        interviewReminderAt: admin.firestore.FieldValue.serverTimestamp(),
+      },
+      { merge: true },
+    );
+  }
+}
+
 client.on(Events.InteractionCreate, async (interaction) => {
+  if (interaction.isChatInputCommand()) {
+    await handleChatInput(interaction, syncMembersHandler).catch(async (error) => {
+      console.error('Slash command failed', error);
+      const payload = {
+        content: `Помилка команди: ${error.message}`,
+        ephemeral: true,
+      };
+      if (interaction.deferred || interaction.replied) {
+        await interaction.followUp(payload).catch(() => null);
+      } else {
+        await interaction.reply(payload).catch(() => null);
+      }
+    });
+    return;
+  }
+
   if (!interaction.isButton()) return;
 
-  const [namespace, status, applicationId] = interaction.customId.split(':');
+  const [namespace, action, applicationId] = interaction.customId.split(':');
 
   if (namespace !== 'application') return;
 
@@ -549,6 +921,54 @@ client.on(Events.InteractionCreate, async (interaction) => {
   }
 
   const data = snapshot.data();
+
+  if (action === 'retrydm') {
+    const status = data.status || 'interview';
+    const dmResult = await sendDecisionDm(status, data, applicationId).catch((error) => ({
+      ok: false,
+      reason: error.message,
+      code: error.code,
+      userId: applicationDiscordId(data, applicationId),
+    }));
+
+    await ref.set(
+      {
+        dmSent: dmResult.ok,
+        dmRetryAt: admin.firestore.FieldValue.serverTimestamp(),
+        dmRetryBy: {
+          id: interaction.user.id,
+          username: interaction.user.username,
+        },
+        dmError: dmResult.ok ? null : dmResult.reason,
+        dmErrorCode: dmResult.ok ? null : dmResult.code || null,
+        dmErrorText: dmResult.ok ? null : dmFailureText(dmResult),
+        dmUserId: dmResult.userId || null,
+      },
+      { merge: true },
+    );
+
+    await sendLogEmbed(
+      'Повтор DM',
+      `${interaction.user} повторно відправив DM для ${userLine(data, applicationId)}.`,
+      [
+        field('Кандидат', data.nickname),
+        field('Статус заявки', decisionLabel(status)),
+        field('DM', dmResult.ok ? 'Відправлено' : dmFailureText(dmResult), false),
+      ],
+      dmResult.ok ? colors.green : colors.red,
+    );
+
+    await interaction.followUp({
+      content: dmResult.ok
+        ? `DM для **${clean(data.nickname)}** повторно відправлено.`
+        : `DM не вдалося відправити: ${dmFailureText(dmResult)}`,
+      ephemeral: true,
+    });
+
+    return;
+  }
+
+  const status = action;
   const dmResult = await sendDecisionDm(status, data, applicationId).catch((error) => ({
     ok: false,
     reason: error.message,
@@ -577,14 +997,30 @@ client.on(Events.InteractionCreate, async (interaction) => {
     { merge: true },
   );
 
-  if (status === 'accepted' && ACCEPTED_ROLE_ID && data.discordUser?.id) {
-    const guild = await client.guilds.fetch(SERVER_ID);
-    const member = await guild.members.fetch(data.discordUser.id).catch(() => null);
+  const roleResult = await updateApplicantRoles(status, data, applicationId).catch((error) => {
+    console.error('Decision role update failed', error);
+    return {
+      roleAdded: false,
+      candidateRemoved: false,
+      reason: error.message,
+    };
+  });
 
-    if (member) {
-      await member.roles.add(ACCEPTED_ROLE_ID);
-    }
+  if (status === 'accepted') {
+    await sendWelcomeMessage(data, applicationId);
   }
+
+  await sendLogEmbed(
+    'Рішення по заявці',
+    `${interaction.user} встановив статус **${decisionLabel(status)}** для ${userLine(data, applicationId)}.`,
+    [
+      field('Кандидат', data.nickname),
+      field('DM', dmResult.ok ? 'Відправлено' : dmFailureText(dmResult), false),
+      field('Основна роль', roleResult.roleAdded ? 'Видано' : 'Не видано'),
+      field('Роль кандидата', roleResult.candidateRemoved ? 'Знято' : '-'),
+    ],
+    statusConfig(status).color,
+  );
 
   const dmStatusText = dmResult.ok
     ? 'DM відправлено.'
@@ -598,7 +1034,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
         status,
       }),
     ],
-    components: [],
+    components: dmResult.ok ? [] : [retryDmButton(applicationId)],
   });
 });
 
@@ -651,12 +1087,20 @@ client.once('ready', async () => {
     console.log(`Discord synced | Members: ${members.size} | Online: ${online}`);
   }
 
+  syncMembersHandler = syncMembers;
+
+  await registerSlashCommands(guild).catch((error) => {
+    console.error('Slash command registration failed', error);
+  });
+
   await syncMembers();
   await startApplicationListener();
   await startCalculatorReportListener();
   await startNewsListener();
+  await sendInterviewReminders();
 
   setInterval(syncMembers, 300000);
+  setInterval(sendInterviewReminders, 60 * 60 * 1000);
 });
 
 client.login(process.env.DISCORD_BOT_TOKEN);
