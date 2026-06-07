@@ -126,6 +126,8 @@ export default function AdminBot() {
 
   const stats = data?.stats || {};
   const config = data?.botConfig || {};
+  const botStatus = data?.botStatus || null;
+  const botConfigSource = data?.botConfigSource || 'vercel-fallback';
 
   return (
     <>
@@ -176,6 +178,17 @@ export default function AdminBot() {
                 <h2>Конфіг бота</h2>
               </div>
               <Bot size={28} />
+            </div>
+            <div className="compact-list">
+              <article>
+                <span>{botConfigSource === 'railway' ? 'Railway status' : 'Vercel fallback'}</span>
+                <strong>{botStatus?.online ? 'Bot online' : 'Status pending'}</strong>
+                <p>{botStatus?.botTag || 'Bot has not written status to Firestore yet'}</p>
+                <p>
+                  Last sync: {formatDate(botStatus?.lastSyncAt || botStatus?.updatedAt)}
+                  {botStatus?.discordMembers ? ` · ${botStatus.discordMembers} members` : ''}
+                </p>
+              </article>
             </div>
             <div className="bot-config-grid">
               {Object.entries(configLabels).map(([key, label]) => (

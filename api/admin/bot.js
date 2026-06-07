@@ -18,6 +18,8 @@ function serializeDoc(doc) {
     sentAt: toJsonDate(data.sentAt),
     dmRetryAt: toJsonDate(data.dmRetryAt),
     interviewReminderAt: toJsonDate(data.interviewReminderAt),
+    startedAt: toJsonDate(data.startedAt),
+    lastSyncAt: toJsonDate(data.lastSyncAt),
   };
 }
 
@@ -52,13 +54,22 @@ export default async function handler(req, res) {
 
   try {
     const db = getAdminDb();
-    const [applicationsSnapshot, warningsSnapshot, logsSnapshot, discordStatsDoc, reportsSnapshot, newsSnapshot] = await Promise.all([
+    const [
+      applicationsSnapshot,
+      warningsSnapshot,
+      logsSnapshot,
+      discordStatsDoc,
+      reportsSnapshot,
+      newsSnapshot,
+      botStatusDoc,
+    ] = await Promise.all([
       db.collection('applications').orderBy('createdAt', 'desc').limit(250).get().catch(() => ({ docs: [] })),
       db.collection('member_warnings').orderBy('createdAt', 'desc').limit(100).get().catch(() => ({ docs: [] })),
       db.collection('admin_logs').orderBy('createdAt', 'desc').limit(120).get().catch(() => ({ docs: [] })),
       db.collection('stats').doc('discord_members').get().catch(() => null),
       db.collection('calculator_reports').orderBy('createdAt', 'desc').limit(50).get().catch(() => ({ docs: [] })),
       db.collection('discord_news_notifications').orderBy('createdAt', 'desc').limit(50).get().catch(() => ({ docs: [] })),
+      db.collection('bot_status').doc('main').get().catch(() => null),
     ]);
 
     const applications = applicationsSnapshot.docs.map(serializeDoc);
@@ -66,6 +77,21 @@ export default async function handler(req, res) {
     const logs = logsSnapshot.docs.map(serializeDoc);
     const reports = reportsSnapshot.docs.map(serializeDoc);
     const news = newsSnapshot.docs.map(serializeDoc);
+    const botStatus = botStatusDoc?.exists ? serializeDoc(botStatusDoc) : null;
+    const fallbackConfig = {
+      applicationChannel: envState('DISCORD_APPLICATION_CHANNEL_ID'),
+      reportChannel: envState('DISCORD_REPORT_CHANNEL_ID') || envState('DISCORD_CALCULATOR_REPORT_CHANNEL_ID'),
+      newsChannel: envState('DISCORD_NEWS_CHANNEL_ID'),
+      logChannel: envState('DISCORD_LOG_CHANNEL_ID'),
+      welcomeChannel: envState('DISCORD_WELCOME_CHANNEL_ID'),
+      dmFallbackChannel: envState('DISCORD_DM_FALLBACK_CHANNEL_ID'),
+      acceptedRole: envState('DISCORD_ACCEPTED_ROLE_ID'),
+      candidateRole: envState('DISCORD_CANDIDATE_ROLE_ID'),
+      adminMentionRole: envState('DISCORD_ADMIN_MENTION_ROLE_ID'),
+      newsMentionRole: envState('DISCORD_NEWS_MENTION_ROLE_ID'),
+      threads: process.env.DISCORD_APPLICATION_THREAD_ENABLED !== 'false',
+      interviewReminderHours: Number(process.env.DISCORD_INTERVIEW_REMINDER_HOURS || 24),
+    };
 
     const byStatus = applications.reduce((acc, item) => {
       const status = item.status || 'new';
@@ -97,20 +123,9 @@ export default async function handler(req, res) {
       logs,
       reports,
       news,
-      botConfig: {
-        applicationChannel: envState('DISCORD_APPLICATION_CHANNEL_ID'),
-        reportChannel: envState('DISCORD_REPORT_CHANNEL_ID') || envState('DISCORD_CALCULATOR_REPORT_CHANNEL_ID'),
-        newsChannel: envState('DISCORD_NEWS_CHANNEL_ID'),
-        logChannel: envState('DISCORD_LOG_CHANNEL_ID'),
-        welcomeChannel: envState('DISCORD_WELCOME_CHANNEL_ID'),
-        dmFallbackChannel: envState('DISCORD_DM_FALLBACK_CHANNEL_ID'),
-        acceptedRole: envState('DISCORD_ACCEPTED_ROLE_ID'),
-        candidateRole: envState('DISCORD_CANDIDATE_ROLE_ID'),
-        adminMentionRole: envState('DISCORD_ADMIN_MENTION_ROLE_ID'),
-        newsMentionRole: envState('DISCORD_NEWS_MENTION_ROLE_ID'),
-        threads: process.env.DISCORD_APPLICATION_THREAD_ENABLED !== 'false',
-        interviewReminderHours: Number(process.env.DISCORD_INTERVIEW_REMINDER_HOURS || 24),
-      },
+      botStatus,
+      botConfigSource: botStatus?.config ? 'railway' : 'vercel-fallback',
+      botConfig: botStatus?.config || fallbackConfig,
     });
   } catch (error) {
     res.status(500).json({ error: error.message });

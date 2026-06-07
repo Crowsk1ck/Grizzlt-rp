@@ -115,6 +115,39 @@ function toDate(value) {
   return Number.isNaN(date.getTime()) ? null : date;
 }
 
+function botConfigSnapshot() {
+  return {
+    applicationChannel: Boolean(APPLICATION_CHANNEL_ID),
+    reportChannel: Boolean(REPORT_CHANNEL_ID),
+    newsChannel: Boolean(NEWS_CHANNEL_ID),
+    logChannel: Boolean(LOG_CHANNEL_ID),
+    welcomeChannel: Boolean(WELCOME_CHANNEL_ID),
+    dmFallbackChannel: Boolean(DM_FALLBACK_CHANNEL_ID),
+    acceptedRole: Boolean(ACCEPTED_ROLE_ID),
+    candidateRole: Boolean(CANDIDATE_ROLE_ID),
+    adminMentionRole: Boolean(ADMIN_MENTION_ROLE_ID),
+    newsMentionRole: Boolean(NEWS_MENTION_ROLE_ID),
+    threads: APPLICATION_THREAD_ENABLED,
+    interviewReminderHours: Number.isFinite(INTERVIEW_REMINDER_HOURS) ? INTERVIEW_REMINDER_HOURS : 24,
+  };
+}
+
+async function writeBotStatus(extra = {}) {
+  await db.collection('bot_status').doc('main').set(
+    {
+      online: true,
+      botId: client.user?.id || null,
+      botTag: client.user?.tag || null,
+      config: botConfigSnapshot(),
+      updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+      ...extra,
+    },
+    { merge: true },
+  ).catch((error) => {
+    console.error('Bot status write failed', error);
+  });
+}
+
 function baseEmbed({ title, description, color = colors.pink, image = false }) {
   const embed = new EmbedBuilder()
     .setColor(color)
@@ -1040,6 +1073,9 @@ client.on(Events.InteractionCreate, async (interaction) => {
 
 client.once('ready', async () => {
   console.log(`Logged as ${client.user.tag}`);
+  await writeBotStatus({
+    startedAt: admin.firestore.FieldValue.serverTimestamp(),
+  });
 
   const guild = await client.guilds.fetch(SERVER_ID);
   await guild.members.fetch();
@@ -1083,6 +1119,11 @@ client.once('ready', async () => {
     }
 
     await batch.commit();
+    await writeBotStatus({
+      lastSyncAt: admin.firestore.FieldValue.serverTimestamp(),
+      discordMembers: members.size,
+      discordOnline: online,
+    });
 
     console.log(`Discord synced | Members: ${members.size} | Online: ${online}`);
   }
@@ -1100,6 +1141,7 @@ client.once('ready', async () => {
   await sendInterviewReminders();
 
   setInterval(syncMembers, 300000);
+  setInterval(writeBotStatus, 300000);
   setInterval(sendInterviewReminders, 60 * 60 * 1000);
 });
 
