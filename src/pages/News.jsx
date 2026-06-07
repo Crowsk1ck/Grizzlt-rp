@@ -35,16 +35,14 @@ export default function News() {
       .finally(() => setLoading(false));
   }, []);
 
-  const visibleNews = items.length > 0
-    ? items
-    : fallbackNews.map(([title, text]) => ({ id: title, title, text, tag: 'Grizzly Bulletin' }));
+  const visibleNews = items.length > 0 ? items : fallbackNews.map(([title, text]) => ({ id: title, title, text, tag: 'Grizzly Bulletin' }));
 
   return (
     <>
-      <PageHero eyebrow="News" title="Новини" text="Оголошення родини, оновлення правил, сезонні плани та важливі повідомлення." />
+      <PageHero eyebrow="News" title="Новини" text="Оголошення родини, оновлення уставу, сезонні плани та важливі повідомлення." />
       <Section>
         {loading && <p>Завантажуємо новини...</p>}
-        {error && <p className="auth-alert">Новини Firestore недоступні, показуємо резервний список: {error}</p>}
+        {error && <p className="auth-alert">Новини Firestore недоступні, показуємо fallback: {error}</p>}
         <div className="news-list">
           {visibleNews.map((item) => (
             <article key={item.id}>

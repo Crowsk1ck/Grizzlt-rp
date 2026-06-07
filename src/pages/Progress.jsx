@@ -91,7 +91,7 @@ export default function Progress() {
         {!loading && !waitingForData && !error && !data && (
           <div className="auth-alert">
             <ShieldAlert size={18} /> Персональний профіль ще не створено. Адмін може додати ранг і нотатки в
-            {' '}<Link to="/admin/members">адмінці складу</Link>.
+            `/admin/members`.
           </div>
         )}
 
@@ -183,7 +183,7 @@ export default function Progress() {
                     <article key={warning.id}>
                       <span className={`status ${warning.level === 'critical' ? 'rejected' : 'new'}`}>{warning.level || 'warning'}</span>
                       <strong>{warning.reason}</strong>
-                      <p>{formatDate(warning.createdAt)} | @{warning.createdBy?.username || 'admin'}</p>
+                      <p>{formatDate(warning.createdAt)} · @{warning.createdBy?.username || 'admin'}</p>
                     </article>
                   ))}
                 </div>

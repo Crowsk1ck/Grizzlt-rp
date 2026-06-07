@@ -1,6 +1,6 @@
 # Grizzly Discord Bot setup
 
-Required Railway variables:
+Required environment variables:
 
 ```env
 DISCORD_BOT_TOKEN=...
@@ -10,78 +10,63 @@ DISCORD_APPLICATION_CHANNEL_ID=...
 DISCORD_REPORT_CHANNEL_ID=...
 ```
 
-Recommended optional variables:
+Optional:
 
 ```env
-DISCORD_ACCEPTED_ROLE_ID=1390073033687044236
-DISCORD_CANDIDATE_ROLE_ID=...
+DISCORD_ACCEPTED_ROLE_ID=...
 DISCORD_INTERVIEW_CHANNEL_URL=https://discord.com/channels/...
 DISCORD_DM_FALLBACK_CHANNEL_ID=...
-DISCORD_LOG_CHANNEL_ID=...
-DISCORD_WELCOME_CHANNEL_ID=...
-DISCORD_ADMIN_MENTION_ROLE_ID=...
 DISCORD_NEWS_CHANNEL_ID=...
-DISCORD_NEWS_MENTION_ROLE_ID=1390073033687044236
-DISCORD_APPLICATION_THREAD_ENABLED=true
-DISCORD_INTERVIEW_REMINDER_HOURS=24
-DISCORD_EMBED_LOGO_URL=https://www.grizzly-family.online/assets/grizzly-logo.png
-DISCORD_EMBED_BANNER_URL=https://www.grizzly-family.online/assets/grizzly-banner.png
 ```
 
-## Features
+## What it does
 
 - Syncs Discord members to Firestore:
   - `stats/discord_members`
   - `discord_members/{memberId}`
-- Sends new applications to `DISCORD_APPLICATION_CHANNEL_ID`.
-- Creates a thread under every application message.
-- Gives `DISCORD_CANDIDATE_ROLE_ID` on new application if configured.
+- Watches Firestore collection `applications`.
+- Sends every new application to `DISCORD_APPLICATION_CHANNEL_ID`.
+- Watches Firestore collection `calculator_reports`.
+- Sends every admin calculator report to `DISCORD_REPORT_CHANNEL_ID`.
+- Watches Firestore collection `discord_news_notifications`.
+- Sends every admin website news post to `DISCORD_NEWS_CHANNEL_ID`.
 - Adds buttons:
   - `Прийняти`
   - `Співбесіда`
   - `Відхилити`
-  - `Повторити DM` when DM fails
-- Sends styled DMs to applicants.
-- Gives `DISCORD_ACCEPTED_ROLE_ID` after accept.
-- Removes candidate role after accept/reject.
-- Sends welcome embeds to `DISCORD_WELCOME_CHANNEL_ID`.
-- Sends action logs to `DISCORD_LOG_CHANNEL_ID`.
-- Sends calculator reports to `DISCORD_REPORT_CHANNEL_ID`.
-- Sends news embeds to `DISCORD_NEWS_CHANNEL_ID`.
-- Mentions `DISCORD_NEWS_MENTION_ROLE_ID` on news posts.
-- Reminds staff about interview applications after `DISCORD_INTERVIEW_REMINDER_HOURS`.
-- Registers slash commands:
-  - `/sync`
-  - `/status`
-  - `/warning`
+- Updates application status in Firestore:
+  - `accepted`
+  - `interview`
+  - `rejected`
+- Sends the applicant a DM when a decision button is pressed.
+- Saves `dmSent` and `dmError` in Firestore.
+- Saves `dmErrorCode`, `dmErrorText` and `dmUserId` when Discord blocks DM.
+- If `DISCORD_DM_FALLBACK_CHANNEL_ID` is set, sends a fallback message with mention to that channel when DM is blocked.
+- Optionally gives `DISCORD_ACCEPTED_ROLE_ID` when accepted.
 
-## Discord permissions
+## Discord bot settings
 
-Enable privileged intents in Discord Developer Portal:
+In Discord Developer Portal enable privileged intents:
 
 - Server Members Intent
 - Presence Intent
 
-Bot permissions:
+The bot needs permissions:
 
 - View Channel
 - Send Messages
 - Embed Links
-- Create Public Threads
-- Send Messages in Threads
-- Use Slash Commands
-- Manage Roles if role automation is used
+- Manage Roles only if `DISCORD_ACCEPTED_ROLE_ID` is used
 
 ## DM note
 
-Discord may block DMs if the user disabled messages from server members, left the server, or blocked the bot.
+DM works only when the applicant logged in through Discord on the website and Discord allows the bot to message them. If user DMs are closed, the bot records `dmSent: false` and `dmError` in Firestore.
 
-If DM fails, the bot stores:
+Common Discord DM block reasons:
 
-- `dmSent: false`
-- `dmError`
-- `dmErrorCode`
-- `dmErrorText`
-- `dmUserId`
+- User has disabled direct messages from server members.
+- User left the Discord server.
+- User blocked the bot.
+- Old Firestore application has no Discord ID.
 
-Set `DISCORD_DM_FALLBACK_CHANNEL_ID` to ping users in a public or ticket channel when DM fails.
+The bot cannot bypass Discord privacy settings. Use `DISCORD_DM_FALLBACK_CHANNEL_ID` if you want the bot to ping the user in a public or ticket channel when DM fails.

@@ -23,7 +23,6 @@ const Profile = lazy(() => import('./pages/Profile.jsx'));
 const DatabasePage = lazy(() => import('./pages/Database.jsx'));
 const Admin = lazy(() => import('./pages/Admin.jsx'));
 const AdminMembers = lazy(() => import('./pages/AdminMembers.jsx'));
-const AdminBot = lazy(() => import('./pages/AdminBot.jsx'));
 const NotFound = lazy(() => import('./pages/NotFound.jsx'));
 
 export default function App() {
@@ -51,7 +50,6 @@ export default function App() {
           <Route path="/database" element={<DatabasePage />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/admin/members" element={<AdminMembers />} />
-          <Route path="/admin/bot" element={<AdminBot />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>

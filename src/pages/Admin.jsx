@@ -1,4 +1,4 @@
-import { Bot, Check, Clock, Newspaper, Search, ShieldAlert, UserCheck, UserCog, X } from 'lucide-react';
+import { Check, Clock, Newspaper, Search, ShieldAlert, UserCheck, UserCog, X } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import PageHero from '../components/PageHero.jsx';
@@ -158,11 +158,6 @@ export default function Admin() {
             <UserCog size={24} />
             <strong>Керування складом</strong>
             <span>Профілі учасників, ранги, зарплати, попередження та логи.</span>
-          </Link>
-          <Link className="profile-action-card" to="/admin/bot">
-            <Bot size={24} />
-            <strong>Discord Bot Center</strong>
-            <span>DM, welcome, threads, нагадування, логи, slash-команди та Railway env.</span>
           </Link>
         </div>
       </Section>
