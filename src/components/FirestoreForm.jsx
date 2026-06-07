@@ -1,7 +1,7 @@
 import { LogIn, Send } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { addFirestoreRecord } from '../lib/firebase.js';
 import { useAuth } from '../lib/auth.jsx';
+import { addFirestoreRecord } from '../lib/firebase.js';
 
 async function notifyDiscord(type, form, documentId, user) {
   const response = await fetch('/api/discord/application', {
@@ -27,18 +27,21 @@ async function notifyDiscord(type, form, documentId, user) {
   return response.json();
 }
 
+const emptyForm = {
+  nickname: '',
+  discord: '',
+  age: '',
+  online: '',
+  message: '',
+};
+
 export default function FirestoreForm({ type = 'applications' }) {
   const { user, loading: authLoading } = useAuth();
   const isApplication = type === 'applications';
+  const isMessage = type === 'messages';
   const [status, setStatus] = useState('');
   const [loading, setLoading] = useState(false);
-  const [form, setForm] = useState({
-    nickname: '',
-    discord: '',
-    age: '',
-    online: '',
-    message: '',
-  });
+  const [form, setForm] = useState(emptyForm);
 
   useEffect(() => {
     if (!user) return;
@@ -81,30 +84,29 @@ export default function FirestoreForm({ type = 'applications' }) {
         payload.status = 'new';
       }
 
-      const result = await addFirestoreRecord(
-        type,
-        payload,
-        {
-          documentId: isApplication ? user.id : undefined,
-        },
-      );
+      const result = await addFirestoreRecord(type, payload, {
+        documentId: isApplication ? user.id : undefined,
+      });
 
       let discordResult = { ok: false, skipped: true };
-      if (!result.offline) {
+      if (!result.offline && isApplication) {
         discordResult = await notifyDiscord(type, form, result.id, user);
       }
 
       if (result.offline) {
         setStatus('Firebase env не заповнено, запис збережено локально.');
       } else if (discordResult.ok) {
-        setStatus(`Заявку відправлено у Firestore і Discord. ID: ${result.id}`);
+        setStatus(isApplication ? `Заявку відправлено у Firestore і Discord. ID: ${result.id}` : `Повідомлення відправлено у Firestore і Discord. ID: ${result.id}`);
       } else if (isApplication) {
         setStatus(`Заявку відправлено у Firestore. Бот у Discord побачить її автоматично. ID: ${result.id}`);
       } else {
-        setStatus(`Повідомлення відправлено у Firestore. ID: ${result.id}`);
+        setStatus(`Повідомлення відправлено у Firestore. Бот на Railway відправить його в Discord. ID: ${result.id}`);
       }
 
-      setForm({ nickname: '', discord: user?.globalName || user?.username || '', age: '', online: '', message: '' });
+      setForm({
+        ...emptyForm,
+        discord: user?.globalName || user?.username || '',
+      });
     } catch (error) {
       if (isApplication && error.code === 'permission-denied') {
         setStatus('Ти вже подавав заявку з цього Discord акаунта. Повторна заявка недоступна.');
@@ -132,29 +134,50 @@ export default function FirestoreForm({ type = 'applications' }) {
     <form className="form" onSubmit={submit}>
       <div className="form-grid">
         <label>
-          Нікнейм
-          <input required name="nickname" value={form.nickname} onChange={updateField} placeholder="Dominic_Crown" />
+          {isApplication ? 'Нікнейм' : 'Ім’я або організація'}
+          <input required name="nickname" value={form.nickname} onChange={updateField} placeholder={isApplication ? 'Dominic_Crown' : 'Grizzly Partner'} />
         </label>
         <label>
-          Discord
+          {isApplication ? 'Discord' : 'Контакт'}
           <input required name="discord" value={form.discord} onChange={updateField} placeholder="Discord username" />
         </label>
-        <label>
-          Вік
-          <input required name="age" value={form.age} onChange={updateField} placeholder="16+" />
-        </label>
-        <label>
-          Онлайн
-          <input required name="online" value={form.online} onChange={updateField} placeholder="19:00-00:00" />
-        </label>
+        {isApplication ? (
+          <>
+            <label>
+              Вік
+              <input required name="age" value={form.age} onChange={updateField} placeholder="16+" />
+            </label>
+            <label>
+              Онлайн
+              <input required name="online" value={form.online} onChange={updateField} placeholder="19:00-00:00" />
+            </label>
+          </>
+        ) : (
+          <>
+            <label>
+              Тема
+              <input required name="age" value={form.age} onChange={updateField} placeholder="Союз / подія / питання" />
+            </label>
+            <label>
+              Зручний час
+              <input name="online" value={form.online} onChange={updateField} placeholder="Наприклад: після 20:00" />
+            </label>
+          </>
+        )}
       </div>
       <label>
-        Про себе
-        <textarea required name="message" value={form.message} onChange={updateField} placeholder="Досвід RP, сильні сторони, чому хочеш до нас" />
+        {isApplication ? 'Про себе' : 'Повідомлення'}
+        <textarea
+          required
+          name="message"
+          value={form.message}
+          onChange={updateField}
+          placeholder={isApplication ? 'Досвід RP, сильні сторони, чому хочеш до нас' : 'Коротко опиши, з чим звертаєшся і який результат потрібен'}
+        />
       </label>
       <button className="button primary" disabled={loading} type="submit">
         <Send size={18} />
-        {loading ? 'Відправка...' : 'Відправити'}
+        {loading ? 'Відправка...' : isMessage ? 'Надіслати повідомлення' : 'Відправити заявку'}
       </button>
       {status && <p className="form-status">{status}</p>}
     </form>

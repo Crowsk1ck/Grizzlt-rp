@@ -1,4 +1,4 @@
-import { Activity, Search, Users } from 'lucide-react';
+import { Activity, Crown, Radio, Search, ShieldCheck, Users } from 'lucide-react';
 import { collection, doc, getDocs, onSnapshot } from 'firebase/firestore';
 import { useEffect, useMemo, useState } from 'react';
 import PageHero from '../components/PageHero.jsx';
@@ -8,10 +8,14 @@ import { db } from '../lib/firebase.js';
 
 function sortMembers(a, b, sortMode) {
   if (sortMode === 'name') {
-    return (a.nickname || a.username).localeCompare(b.nickname || b.username);
+    return (a.nickname || a.username || '').localeCompare(b.nickname || b.username || '');
   }
 
-  return Number(b.online) - Number(a.online) || (a.nickname || a.username).localeCompare(b.nickname || b.username);
+  return Number(b.online) - Number(a.online) || (a.nickname || a.username || '').localeCompare(b.nickname || b.username || '');
+}
+
+function memberName(member) {
+  return member.nickname || member.username || 'Учасник Grizzly';
 }
 
 export default function Roster() {
@@ -80,9 +84,12 @@ export default function Roster() {
 
   const visibleStats = useMemo(() => {
     const online = members.filter((member) => member.online).length;
+    const total = stats?.members || members.length;
+
     return {
-      total: stats?.members || members.length,
+      total,
       online: stats?.online || online,
+      offline: Math.max(total - (stats?.online || online), 0),
     };
   }, [members, stats]);
 
@@ -103,15 +110,35 @@ export default function Roster() {
       .sort((a, b) => sortMembers(a, b, sortMode));
   }, [members, query, filter, sortMode]);
 
+  const featuredMembers = filteredMembers.slice(0, 3);
+
   return (
     <>
       <PageHero
         eyebrow="Roster"
         title="Склад родини"
-        text="Живий склад Grizzly Family синхронізується з Discord через бота та Firestore."
+        text="Живий Discord-склад Grizzly Family синхронізується через бота та Firestore: онлайн, аватари, нікнейми і статуси учасників."
       />
-      <Section title="Discord склад" eyebrow="Live">
-        <div className="roster-stats">
+
+      <Section className="roster-page">
+        <div className="roster-command">
+          <div>
+            <p className="eyebrow">Live Discord</p>
+            <h2>Склад, який видно в реальному часі</h2>
+            <p>
+              Бот оновлює список учасників, онлайн-статус і аватари. Це допомагає швидко бачити,
+              хто зараз на зв’язку, кого можна покликати на збір і як виглядає активність родини.
+            </p>
+          </div>
+          <aside>
+            <Radio size={34} />
+            <span>Family signal</span>
+            <strong>{visibleStats.online} online</strong>
+            <p>Discord показує живий пульс родини, а сайт збирає його в одну преміум-панель.</p>
+          </aside>
+        </div>
+
+        <div className="roster-stats premium">
           <article>
             <Users size={24} />
             <strong>{visibleStats.total}</strong>
@@ -122,9 +149,14 @@ export default function Roster() {
             <strong>{visibleStats.online}</strong>
             <span>онлайн зараз</span>
           </article>
+          <article>
+            <ShieldCheck size={24} />
+            <strong>{visibleStats.offline}</strong>
+            <span>offline / away</span>
+          </article>
         </div>
 
-        <div className="roster-controls">
+        <div className="roster-controls premium">
           <label className="search-field">
             <Search size={18} />
             <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Пошук по ніку або Discord" />
@@ -147,23 +179,40 @@ export default function Roster() {
         </div>
 
         {!loading && members.length > 0 && (
-          <p className="roster-count">
-            Показано {filteredMembers.length} з {members.length}
-          </p>
+          <div className="roster-result-line">
+            <span>Показано {filteredMembers.length} з {members.length}</span>
+            <strong>{filter === 'all' ? 'Увесь склад' : filter === 'online' ? 'Зараз online' : 'Зараз offline'}</strong>
+          </div>
         )}
 
-        {loading && <p>Завантажуємо склад із Firestore...</p>}
+        {featuredMembers.length > 0 && (
+          <div className="roster-featured-grid">
+            {featuredMembers.map((member, index) => (
+              <article className={member.online ? 'online' : 'offline'} key={member.id}>
+                <span>#{index + 1}</span>
+                <img src={member.avatar || '/assets/grizzly-logo.png'} alt={memberName(member)} />
+                <div>
+                  <strong>{memberName(member)}</strong>
+                  <p>@{member.username || member.id}</p>
+                </div>
+                <small>{member.online ? 'Online' : 'Offline'}</small>
+              </article>
+            ))}
+          </div>
+        )}
+
+        {loading && <p className="auth-alert">Завантажуємо склад із Firestore...</p>}
         {error && <p className="auth-alert">Не вдалося прочитати discord_members: {error}</p>}
 
         {!loading && filteredMembers.length > 0 && (
-          <div className="member-grid">
+          <div className="member-grid premium">
             {filteredMembers.map((member) => (
-              <article className="member-card" key={member.id}>
-                <img src={member.avatar || '/assets/grizzly-logo.png'} alt={member.nickname || member.username} />
+              <article className={`member-card ${member.online ? 'is-online' : 'is-offline'}`} key={member.id}>
+                <img src={member.avatar || '/assets/grizzly-logo.png'} alt={memberName(member)} />
                 <div>
                   <span className={member.online ? 'status online' : 'status offline'}>{member.online ? 'Online' : 'Offline'}</span>
-                  <h3>{member.nickname || member.username}</h3>
-                  <p>@{member.username}</p>
+                  <h3>{memberName(member)}</h3>
+                  <p>@{member.username || member.id}</p>
                 </div>
               </article>
             ))}
@@ -175,15 +224,24 @@ export default function Roster() {
         )}
 
         {!loading && members.length === 0 && !error && (
-          <div className="table fallback-roster">
-            {roster.map(([name, rank, duty]) => (
-              <div className="table-row" key={name}>
-                <strong>{name}</strong>
-                <span>{rank}</span>
-                <p>{duty}</p>
+          <section className="contract-panel fallback-roster">
+            <div className="contract-panel-title">
+              <div>
+                <p className="eyebrow">Fallback</p>
+                <h2>Базова структура родини</h2>
               </div>
-            ))}
-          </div>
+              <Crown size={28} />
+            </div>
+            <div className="roster-fallback-list">
+              {roster.map(([name, rank, duty]) => (
+                <article key={name}>
+                  <strong>{name}</strong>
+                  <span>{rank}</span>
+                  <p>{duty}</p>
+                </article>
+              ))}
+            </div>
+          </section>
         )}
       </Section>
     </>
