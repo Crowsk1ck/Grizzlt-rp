@@ -63,7 +63,7 @@ export default function Layout({ children }) {
         </div>
         <div className="footer-links">
           {!hasFullMenu && <Link to="/recruitment">Заявка</Link>}
-          <Link to="/rules">Устав</Link>
+          <Link to="/rules"></Link>
           {isAdmin && <Link to="/admin">Адмінка</Link>}
         </div>
       </footer>
