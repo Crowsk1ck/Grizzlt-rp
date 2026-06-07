@@ -3167,3 +3167,128 @@ label {
     height: 62px;
   }
 }
+
+.admin-bot-page {
+  display: grid;
+  gap: 18px;
+}
+
+.bot-stats-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.bot-stats-grid article {
+  display: grid;
+  gap: 8px;
+}
+
+.bot-stats-grid svg {
+  color: var(--pink);
+}
+
+.bot-dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  align-items: start;
+}
+
+.bot-config-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.bot-config-grid article {
+  border: 1px solid rgba(255, 0, 92, 0.2);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.035);
+  padding: 12px;
+}
+
+.bot-config-grid article.good {
+  border-color: rgba(34, 255, 166, 0.28);
+  background: rgba(34, 255, 166, 0.055);
+}
+
+.bot-config-grid article.warn {
+  border-color: rgba(255, 176, 32, 0.32);
+  background: rgba(255, 176, 32, 0.065);
+}
+
+.bot-config-grid span,
+.bot-config-grid strong {
+  display: block;
+}
+
+.bot-config-grid span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.bot-config-grid strong {
+  margin-top: 5px;
+  overflow-wrap: anywhere;
+}
+
+.bot-config-grid .good strong {
+  color: var(--green);
+}
+
+.bot-config-grid .warn strong {
+  color: #ffcf70;
+}
+
+.bot-timeline {
+  display: grid;
+  gap: 1px;
+  border: 1px solid rgba(255, 0, 92, 0.18);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.bot-timeline article {
+  display: grid;
+  grid-template-columns: minmax(130px, 0.35fr) minmax(160px, 0.45fr) minmax(0, 1fr);
+  gap: 14px;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.035);
+  padding: 12px 14px;
+}
+
+.bot-timeline span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.bot-timeline strong,
+.bot-timeline p {
+  overflow-wrap: anywhere;
+}
+
+.bot-timeline p {
+  margin: 0;
+}
+
+@media (max-width: 1120px) {
+  .bot-stats-grid,
+  .bot-dashboard-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .bot-config-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .bot-stats-grid,
+  .bot-dashboard-grid,
+  .bot-config-grid,
+  .bot-timeline article {
+    grid-template-columns: 1fr;
+  }
+}
