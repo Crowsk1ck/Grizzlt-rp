@@ -717,6 +717,267 @@ p {
   overflow-wrap: anywhere;
 }
 
+.roster-page {
+  display: grid;
+  gap: 18px;
+}
+
+.roster-command {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(290px, 420px);
+  gap: 18px;
+}
+
+.roster-command > div,
+.roster-command aside,
+.roster-featured-grid article {
+  border: 1px solid rgba(255, 0, 92, 0.22);
+  background:
+    linear-gradient(135deg, rgba(255, 0, 92, 0.08), transparent 38%),
+    rgba(7, 8, 14, 0.82);
+}
+
+.roster-command > div {
+  padding: clamp(22px, 4vw, 40px);
+}
+
+.roster-command h2 {
+  max-width: 850px;
+  margin-bottom: 14px;
+  text-transform: uppercase;
+}
+
+.roster-command p,
+.roster-command aside p,
+.roster-featured-grid p,
+.roster-fallback-list p {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.roster-command aside {
+  display: grid;
+  align-content: end;
+  gap: 12px;
+  min-height: 270px;
+  padding: 24px;
+  border-color: rgba(34, 255, 166, 0.26);
+  background:
+    linear-gradient(180deg, rgba(3, 3, 6, 0.22), rgba(3, 3, 6, 0.9)),
+    url('/assets/grizzly-banner.png') center / cover no-repeat;
+  box-shadow: 0 0 30px rgba(34, 255, 166, 0.08), var(--shadow-blue);
+}
+
+.roster-command aside svg {
+  color: var(--green);
+}
+
+.roster-command aside span {
+  color: var(--pink-soft);
+  font-size: 12px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.roster-command aside strong {
+  color: var(--green);
+  font-size: clamp(30px, 5vw, 54px);
+  font-weight: 950;
+  line-height: 0.95;
+  text-transform: uppercase;
+  text-shadow: 0 0 22px rgba(34, 255, 166, 0.22);
+}
+
+.roster-stats.premium {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-bottom: 0;
+}
+
+.roster-stats.premium article {
+  min-height: 136px;
+  border-color: rgba(255, 0, 92, 0.22);
+  border-radius: 6px;
+  background:
+    linear-gradient(180deg, rgba(255, 0, 92, 0.07), rgba(3, 3, 6, 0.04)),
+    rgba(7, 8, 14, 0.82);
+}
+
+.roster-stats.premium svg {
+  color: var(--pink);
+}
+
+.roster-stats.premium strong {
+  color: var(--pink);
+  text-shadow: 0 0 16px rgba(255, 0, 92, 0.28);
+}
+
+.roster-controls.premium {
+  margin: 0;
+  border: 1px solid rgba(255, 0, 92, 0.2);
+  border-radius: 6px;
+  background: rgba(7, 8, 14, 0.72);
+  padding: 12px;
+}
+
+.roster-result-line {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: center;
+  border: 1px solid rgba(255, 0, 92, 0.18);
+  background: rgba(255, 255, 255, 0.035);
+  padding: 12px 14px;
+}
+
+.roster-result-line span,
+.roster-result-line strong {
+  font-size: 12px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.roster-result-line span {
+  color: var(--muted);
+}
+
+.roster-result-line strong {
+  color: var(--blue-soft);
+}
+
+.roster-featured-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.roster-featured-grid article {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: center;
+  min-height: 154px;
+  padding: 18px;
+  position: relative;
+  overflow: hidden;
+}
+
+.roster-featured-grid article::before,
+.member-grid.premium .member-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 2px;
+  background: linear-gradient(90deg, var(--pink), var(--blue));
+}
+
+.roster-featured-grid article.online::before,
+.member-grid.premium .member-card.is-online::before {
+  background: linear-gradient(90deg, var(--green), var(--blue));
+}
+
+.roster-featured-grid article > span {
+  color: var(--pink-soft);
+  font-size: 13px;
+  font-weight: 950;
+}
+
+.roster-featured-grid img {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  border: 1px solid rgba(255, 0, 92, 0.42);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.roster-featured-grid article.online img {
+  border-color: rgba(34, 255, 166, 0.48);
+  box-shadow: 0 0 22px rgba(34, 255, 166, 0.12);
+}
+
+.roster-featured-grid strong {
+  display: block;
+  color: var(--text);
+  font-size: 20px;
+  font-weight: 950;
+}
+
+.roster-featured-grid p {
+  margin: 4px 0 0;
+}
+
+.roster-featured-grid small {
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 3px;
+  padding: 4px 8px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.roster-featured-grid .online small {
+  border-color: rgba(34, 255, 166, 0.48);
+  color: var(--green);
+  background: rgba(34, 255, 166, 0.08);
+}
+
+.member-grid.premium {
+  gap: 14px;
+}
+
+.member-grid.premium .member-card {
+  position: relative;
+  border-color: rgba(255, 0, 92, 0.2);
+  border-radius: 6px;
+  background:
+    linear-gradient(145deg, rgba(255, 0, 92, 0.075), rgba(3, 3, 6, 0.03)),
+    rgba(7, 8, 14, 0.82);
+  transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.member-grid.premium .member-card.is-online {
+  border-color: rgba(34, 255, 166, 0.24);
+}
+
+.member-grid.premium .member-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(92, 198, 255, 0.36);
+  box-shadow: var(--shadow-blue);
+}
+
+.member-grid.premium .member-card img {
+  border-radius: 4px;
+}
+
+.member-grid.premium .member-card.is-online img {
+  border-color: rgba(34, 255, 166, 0.45);
+}
+
+.roster-fallback-list {
+  display: grid;
+  gap: 10px;
+}
+
+.roster-fallback-list article {
+  display: grid;
+  grid-template-columns: minmax(160px, 0.8fr) minmax(120px, 0.5fr) minmax(0, 1.4fr);
+  gap: 14px;
+  align-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+  padding: 14px;
+}
+
+.roster-fallback-list strong,
+.roster-fallback-list span {
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.roster-fallback-list span {
+  color: var(--pink-soft);
+}
+
 .status {
   display: inline-flex;
   width: max-content;
@@ -4222,6 +4483,7 @@ th {
   .recruit-layout,
   .events-command,
   .contact-command,
+  .roster-command,
   .events-layout,
   .contact-layout,
   .directory-layout {
@@ -4243,6 +4505,7 @@ th {
   .recruit-requirements,
   .events-type-grid,
   .contact-card-grid,
+  .roster-featured-grid,
   .rank-grid,
   .member-grid,
   .event-grid,
@@ -4368,6 +4631,7 @@ th {
   .rules-overview aside,
   .events-command aside,
   .contact-command aside,
+  .roster-command aside,
   .recruit-status-card {
     min-height: 220px;
     padding: 18px;
@@ -4433,6 +4697,7 @@ th {
   .recruit-requirements,
   .events-type-grid,
   .contact-card-grid,
+  .roster-featured-grid,
   .rank-grid,
   .member-grid,
   .event-grid,
@@ -4454,6 +4719,8 @@ th {
   .recruit-status-card,
   .events-command > div,
   .contact-command > div,
+  .roster-command > div,
+  .roster-command aside,
   .contract-panel,
   .form,
   .card,
@@ -4474,7 +4741,8 @@ th {
   .home-activity-grid article,
   .recruit-requirements article,
   .events-type-grid article,
-  .contact-card-grid article {
+  .contact-card-grid article,
+  .roster-featured-grid article {
     padding: 16px;
   }
 
@@ -4483,6 +4751,7 @@ th {
   .recruit-requirements article,
   .events-type-grid article,
   .contact-card-grid article,
+  .roster-featured-grid article,
   .rule-card,
   .card {
     min-height: auto;
@@ -4494,6 +4763,8 @@ th {
   .recruit-stage-list article,
   .events-rules-list article,
   .events-cta,
+  .roster-featured-grid article,
+  .roster-fallback-list article,
   .profile-note,
   .timeline-item,
   .member-card,
@@ -4529,6 +4800,19 @@ th {
 
   .calculator-filter {
     grid-template-columns: 1fr;
+  }
+
+  .roster-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .roster-result-line {
+    display: grid;
+  }
+
+  .roster-featured-grid img {
+    width: 68px;
+    height: 68px;
   }
 
   .calculator-rank-row,
