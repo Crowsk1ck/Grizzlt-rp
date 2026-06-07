@@ -44,12 +44,7 @@ function assetUrl(path) {
   return `${appUrl()}${path}`;
 }
 
-function buildEmbed({ type, form, documentId, discordUser }) {
-  const isApplication = type === 'applications';
-  const title = isApplication ? 'Нова заявка в Grizzly Family' : 'Нове повідомлення з сайту';
-  const color = isApplication ? 0xff005c : 0x00c8ff;
-  const userMention = discordUser?.id ? `<@${discordUser.id}>` : form.discord;
-
+function baseEmbed({ title, description, color }) {
   return {
     author: {
       name: 'Grizzly Family | GTA 5 RP',
@@ -57,9 +52,7 @@ function buildEmbed({ type, form, documentId, discordUser }) {
       url: appUrl(),
     },
     title,
-    description: isApplication
-      ? `Кандидат **${clean(form.nickname, 'Без ніку')}** подав заявку на вступ до родини.`
-      : cleanLong(form.message),
+    description,
     color,
     timestamp: new Date().toISOString(),
     thumbnail: {
@@ -68,6 +61,22 @@ function buildEmbed({ type, form, documentId, discordUser }) {
     image: {
       url: process.env.DISCORD_EMBED_BANNER_URL || assetUrl('/assets/grizzly-banner.png'),
     },
+    footer: {
+      text: 'grizzly-family.online',
+      icon_url: process.env.DISCORD_EMBED_LOGO_URL || assetUrl('/assets/grizzly-logo.png'),
+    },
+  };
+}
+
+function buildApplicationEmbed({ form, documentId, discordUser }) {
+  const userMention = discordUser?.id ? `<@${discordUser.id}>` : form.discord;
+
+  return {
+    ...baseEmbed({
+      title: 'Нова заявка в Grizzly Family',
+      description: `Кандидат **${clean(form.nickname, 'Без ніку')}** подав заявку на вступ до родини.`,
+      color: 0xff005c,
+    }),
     fields: [
       field('Кандидат', form.nickname),
       field('Discord', userMention),
@@ -81,11 +90,35 @@ function buildEmbed({ type, form, documentId, discordUser }) {
         inline: false,
       },
     ],
-    footer: {
-      text: 'grizzly-family.online',
-      icon_url: process.env.DISCORD_EMBED_LOGO_URL || assetUrl('/assets/grizzly-logo.png'),
-    },
   };
+}
+
+function buildMessageEmbed({ form, documentId, discordUser }) {
+  const userMention = discordUser?.id ? `<@${discordUser.id}>` : form.discord;
+
+  return {
+    ...baseEmbed({
+      title: 'Нове повідомлення зі сайту',
+      description: cleanLong(form.message),
+      color: 0x00c8ff,
+    }),
+    fields: [
+      field('Ім’я / організація', form.nickname),
+      field('Контакт', userMention),
+      field('Тема', form.age),
+      field('Зручний час', form.online || '-'),
+      field('Firestore ID', documentId),
+      field('Discord ID', discordUser?.id),
+    ],
+  };
+}
+
+function buildEmbed({ type, form, documentId, discordUser }) {
+  if (type === 'applications') {
+    return buildApplicationEmbed({ form, documentId, discordUser });
+  }
+
+  return buildMessageEmbed({ form, documentId, discordUser });
 }
 
 export default async function handler(req, res) {
