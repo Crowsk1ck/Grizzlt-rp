@@ -30,6 +30,10 @@ const db = admin.firestore();
 const SERVER_ID = process.env.DISCORD_SERVER_ID;
 const APPLICATION_CHANNEL_ID = process.env.DISCORD_APPLICATION_CHANNEL_ID;
 const DM_FALLBACK_CHANNEL_ID = process.env.DISCORD_DM_FALLBACK_CHANNEL_ID;
+const CONTACT_CHANNEL_ID =
+  process.env.DISCORD_CONTACT_CHANNEL_ID ||
+  process.env.DISCORD_MESSAGES_CHANNEL_ID ||
+  APPLICATION_CHANNEL_ID;
 const REPORT_CHANNEL_ID =
   process.env.DISCORD_REPORT_CHANNEL_ID ||
   process.env.DISCORD_CALCULATOR_REPORT_CHANNEL_ID ||
@@ -118,6 +122,7 @@ function toDate(value) {
 function botConfigSnapshot() {
   return {
     applicationChannel: Boolean(APPLICATION_CHANNEL_ID),
+    contactChannel: Boolean(CONTACT_CHANNEL_ID),
     reportChannel: Boolean(REPORT_CHANNEL_ID),
     newsChannel: Boolean(NEWS_CHANNEL_ID),
     logChannel: Boolean(LOG_CHANNEL_ID),
@@ -537,6 +542,58 @@ async function sendDmFallbackNotice(status, data, applicationId, dmResult) {
   });
 }
 
+async function sendDmFallbackNoticeSafe(status, data, applicationId, dmResult) {
+  if (dmResult.ok) {
+    return {
+      ok: false,
+      skipped: true,
+      reason: 'dm_sent',
+    };
+  }
+
+  if (!DM_FALLBACK_CHANNEL_ID) {
+    console.warn('DM fallback skipped | DISCORD_DM_FALLBACK_CHANNEL_ID is missing');
+    return {
+      ok: false,
+      skipped: true,
+      reason: 'missing_fallback_channel',
+    };
+  }
+
+  const channel = await fetchSendableChannel(DM_FALLBACK_CHANNEL_ID);
+
+  if (!channel) {
+    console.warn(`DM fallback skipped | Channel ${DM_FALLBACK_CHANNEL_ID} not found or not sendable`);
+    return {
+      ok: false,
+      skipped: true,
+      reason: 'fallback_channel_not_sendable',
+    };
+  }
+
+  const userId = dmResult.userId || applicationDiscordId(data, applicationId);
+  const mention = userId ? `<@${userId}>` : clean(data.discord);
+  const message = await channel.send({
+    content: [
+      `${mention}, статус твоєї заявки: **${decisionLabel(status)}**.`,
+      'Бот не зміг написати тобі в особисті повідомлення, тому дублюю рішення тут.',
+      dmFailureText(dmResult),
+    ].join('\n'),
+    embeds: [decisionDmEmbed(status, data)],
+    allowedMentions: {
+      users: userId ? [userId] : [],
+    },
+  });
+
+  console.log(`DM fallback sent | Channel: ${DM_FALLBACK_CHANNEL_ID} | Application: ${applicationId}`);
+
+  return {
+    ok: true,
+    channelId: channel.id,
+    messageId: message.id,
+  };
+}
+
 async function startApplicationListener() {
   if (!APPLICATION_CHANNEL_ID) {
     console.log('Applications listener skipped | DISCORD_APPLICATION_CHANNEL_ID is missing');
@@ -593,6 +650,83 @@ async function startApplicationListener() {
     });
   }, (error) => {
     console.error('Applications listener error', error);
+  });
+}
+
+function contactMessageEmbed(id, data) {
+  return baseEmbed({
+    title: 'Нове повідомлення зі сайту',
+    description: cleanLong(data.message),
+    color: colors.blue,
+    image: true,
+  }).addFields(
+    field('Імʼя / організація', data.nickname),
+    field('Контакт', data.discord),
+    field('Тема', data.age),
+    field('Зручний час', data.online || '-'),
+    field('Firestore ID', id),
+    field('Discord ID', data.discordUser?.id || '-'),
+  );
+}
+
+async function startContactMessageListener() {
+  if (!CONTACT_CHANNEL_ID) {
+    console.log('Contact messages listener skipped | DISCORD_CONTACT_CHANNEL_ID and DISCORD_APPLICATION_CHANNEL_ID are missing');
+    return;
+  }
+
+  const channel = await fetchSendableChannel(CONTACT_CHANNEL_ID);
+
+  if (!channel) {
+    console.log(`Contact messages listener skipped | Channel ${CONTACT_CHANNEL_ID} not found or not sendable`);
+    return;
+  }
+
+  db.collection('messages').onSnapshot((snapshot) => {
+    snapshot.docChanges().forEach(async (change) => {
+      if (change.type !== 'added') return;
+
+      const doc = change.doc;
+      const data = doc.data();
+
+      if (data.botNotified) return;
+
+      try {
+        const message = await channel.send({
+          content: ADMIN_MENTION_ROLE_ID ? `<@&${ADMIN_MENTION_ROLE_ID}>` : undefined,
+          embeds: [contactMessageEmbed(doc.id, data)],
+          allowedMentions: {
+            roles: ADMIN_MENTION_ROLE_ID ? [ADMIN_MENTION_ROLE_ID] : [],
+          },
+        });
+
+        await doc.ref.set(
+          {
+            botNotified: true,
+            discordMessageId: message.id,
+            discordChannelId: channel.id,
+            status: 'sent',
+            sentAt: admin.firestore.FieldValue.serverTimestamp(),
+          },
+          { merge: true },
+        );
+
+        console.log(`Contact message sent to Discord | ${doc.id}`);
+      } catch (error) {
+        await doc.ref.set(
+          {
+            status: 'error',
+            botError: error.message,
+            botErrorAt: admin.firestore.FieldValue.serverTimestamp(),
+          },
+          { merge: true },
+        );
+
+        console.error(`Contact message failed | ${doc.id}`, error);
+      }
+    });
+  }, (error) => {
+    console.error('Contact messages listener error', error);
   });
 }
 
@@ -1136,6 +1270,7 @@ client.once('ready', async () => {
 
   await syncMembers();
   await startApplicationListener();
+  await startContactMessageListener();
   await startCalculatorReportListener();
   await startNewsListener();
   await sendInterviewReminders();
