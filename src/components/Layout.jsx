@@ -2,7 +2,6 @@ import {
   BarChart3,
   Calculator,
   CalendarDays,
-  CalendarRange,
   Contact,
   Home,
   LogIn,
@@ -36,7 +35,6 @@ const familyNavItems = [
   ['Ранги', '/ranks', Medal],
   ['Правила', '/rules', ScrollText],
   ['Події', '/events', CalendarDays],
-  ['Календар подій', '/calendar', CalendarRange],
   ['Контакти', '/contact', Contact],
 ];
 
