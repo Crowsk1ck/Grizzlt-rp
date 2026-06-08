@@ -1,0 +1,510 @@
+.calendar-page {
+  position: relative;
+}
+
+.calendar-toolbar,
+.calendar-board,
+.event-details-panel,
+.upcoming-events-panel,
+.calendar-form {
+  border: 1px solid rgba(255, 22, 120, 0.24);
+  background:
+    linear-gradient(145deg, rgba(255, 22, 120, 0.08), rgba(10, 10, 18, 0.88) 38%, rgba(5, 5, 10, 0.96)),
+    rgba(5, 5, 10, 0.82);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.36), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(18px);
+}
+
+.calendar-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 18px;
+  margin-bottom: 16px;
+}
+
+.calendar-titlebox,
+.calendar-actions,
+.event-details-head,
+.calendar-form-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.calendar-titlebox svg {
+  color: var(--pink);
+  filter: drop-shadow(0 0 12px rgba(255, 22, 120, 0.45));
+}
+
+.calendar-titlebox h2,
+.calendar-form-head h2,
+.event-details-panel h2 {
+  margin: 0;
+}
+
+.calendar-actions {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.calendar-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.calendar-filters button,
+.rsvp-actions button,
+.upcoming-events-grid button {
+  border: 1px solid rgba(255, 22, 120, 0.24);
+  background: rgba(8, 8, 14, 0.78);
+  color: var(--muted);
+  cursor: pointer;
+  transition: border-color 0.18s ease, color 0.18s ease, transform 0.18s ease, background 0.18s ease;
+}
+
+.calendar-filters button {
+  min-height: 38px;
+  padding: 0 15px;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.calendar-filters button:hover,
+.calendar-filters button.active {
+  border-color: rgba(255, 22, 120, 0.82);
+  background: linear-gradient(180deg, rgba(255, 22, 120, 0.24), rgba(255, 22, 120, 0.06));
+  color: #fff;
+  box-shadow: 0 0 24px rgba(255, 22, 120, 0.18);
+}
+
+.calendar-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.65fr) minmax(330px, 0.85fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.calendar-board {
+  padding: 16px;
+  min-width: 0;
+}
+
+.calendar-weekdays,
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.calendar-weekdays {
+  margin-bottom: 8px;
+}
+
+.calendar-weekdays span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 900;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.calendar-day {
+  min-height: 118px;
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.26);
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.calendar-day:hover,
+.calendar-day.selected {
+  border-color: rgba(255, 22, 120, 0.7);
+  background: rgba(255, 22, 120, 0.08);
+}
+
+.calendar-day.muted {
+  opacity: 0.42;
+}
+
+.calendar-day.today .day-number {
+  color: #fff;
+  background: linear-gradient(180deg, var(--pink), #b90045);
+  box-shadow: 0 0 18px rgba(255, 22, 120, 0.38);
+}
+
+.day-number {
+  width: 30px;
+  height: 30px;
+  display: inline-grid;
+  place-items: center;
+  color: #fff;
+  font-weight: 900;
+}
+
+.day-events {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+}
+
+.day-event,
+.day-more,
+.event-type {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 5px 7px;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1.1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.day-event.meeting,
+.event-type.meeting {
+  border-color: rgba(255, 22, 120, 0.62);
+  background: rgba(255, 22, 120, 0.18);
+}
+
+.day-event.war,
+.event-type.war {
+  border-color: rgba(255, 64, 64, 0.72);
+  background: rgba(255, 64, 64, 0.16);
+}
+
+.day-event.training,
+.event-type.training {
+  border-color: rgba(110, 86, 255, 0.66);
+  background: rgba(110, 86, 255, 0.16);
+}
+
+.day-event.convoy,
+.event-type.convoy {
+  border-color: rgba(22, 139, 255, 0.7);
+  background: rgba(22, 139, 255, 0.16);
+}
+
+.day-event.other,
+.event-type.other,
+.day-more {
+  border-color: rgba(255, 209, 102, 0.6);
+  background: rgba(255, 209, 102, 0.12);
+}
+
+.event-details-panel {
+  position: sticky;
+  top: 96px;
+  padding: 20px;
+  min-width: 0;
+}
+
+.event-details-head {
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.event-meta-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 18px 0;
+}
+
+.event-meta-list span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.24);
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.event-meta-list svg,
+.rsvp-actions svg {
+  color: var(--pink);
+  flex: 0 0 auto;
+}
+
+.event-description {
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.rsvp-box {
+  margin-top: 18px;
+  padding: 14px;
+  border: 1px solid rgba(255, 22, 120, 0.22);
+  background: rgba(255, 22, 120, 0.06);
+}
+
+.rsvp-box p {
+  margin: 0 0 12px;
+  color: var(--muted);
+}
+
+.rsvp-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.rsvp-actions button {
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 8px;
+  font-weight: 900;
+}
+
+.rsvp-actions button.active,
+.rsvp-actions button:hover {
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.rsvp-actions .going {
+  border-color: rgba(48, 255, 155, 0.62);
+  background: rgba(48, 255, 155, 0.12);
+}
+
+.rsvp-actions .maybe {
+  border-color: rgba(255, 209, 102, 0.62);
+  background: rgba(255, 209, 102, 0.12);
+}
+
+.rsvp-actions .declined {
+  border-color: rgba(255, 64, 91, 0.62);
+  background: rgba(255, 64, 91, 0.12);
+}
+
+.participants-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.participants-summary div {
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.participants-summary strong {
+  display: block;
+  color: var(--pink);
+  font-size: 24px;
+}
+
+.participants-summary span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.admin-event-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.going-list {
+  margin-top: 18px;
+}
+
+.going-list h3 {
+  margin-bottom: 10px;
+}
+
+.going-list div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.going-list img {
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+  border: 1px solid rgba(255, 22, 120, 0.45);
+}
+
+.calendar-empty {
+  min-height: 280px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 10px;
+  text-align: center;
+  color: var(--muted);
+}
+
+.calendar-empty svg {
+  color: var(--pink);
+}
+
+.upcoming-events-panel {
+  margin-top: 18px;
+  padding: 18px;
+}
+
+.upcoming-events-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.upcoming-events-grid button {
+  min-height: 150px;
+  padding: 14px;
+  text-align: left;
+}
+
+.upcoming-events-grid button:hover {
+  border-color: rgba(255, 22, 120, 0.72);
+  background: rgba(255, 22, 120, 0.08);
+  transform: translateY(-2px);
+}
+
+.upcoming-events-grid strong,
+.upcoming-events-grid small,
+.upcoming-events-grid p {
+  display: block;
+  margin-top: 9px;
+}
+
+.upcoming-events-grid p,
+.upcoming-events-grid small,
+.calendar-empty-line,
+.calendar-loading {
+  color: var(--muted);
+}
+
+.calendar-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  padding: 22px;
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(14px);
+}
+
+.calendar-form {
+  width: min(760px, 100%);
+  max-height: calc(100vh - 44px);
+  overflow: auto;
+  padding: 20px;
+}
+
+.calendar-form-head {
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.calendar-form label {
+  display: grid;
+  gap: 8px;
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.calendar-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin: 14px 0;
+}
+
+.calendar-form textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.calendar-form .button {
+  margin-top: 16px;
+  width: 100%;
+}
+
+@media (max-width: 1180px) {
+  .calendar-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .event-details-panel {
+    position: static;
+  }
+
+  .upcoming-events-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .calendar-toolbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .calendar-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .calendar-actions .button.primary {
+    width: 100%;
+  }
+
+  .calendar-board {
+    padding: 10px;
+    overflow-x: auto;
+  }
+
+  .calendar-weekdays,
+  .calendar-grid {
+    min-width: 650px;
+  }
+
+  .calendar-day {
+    min-height: 104px;
+  }
+
+  .event-meta-list,
+  .participants-summary,
+  .rsvp-actions,
+  .calendar-form-grid,
+  .upcoming-events-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .calendar-modal {
+    padding: 10px;
+  }
+}

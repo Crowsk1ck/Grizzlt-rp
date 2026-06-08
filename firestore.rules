@@ -48,6 +48,29 @@ service cloud.firestore {
       allow write: if false;
     }
 
+    match /events/{document} {
+      allow read: if true;
+      allow create: if validText(request.resource.data.title, 120)
+        && request.resource.data.type in ['meeting', 'war', 'training', 'convoy', 'other']
+        && request.resource.data.date is string
+        && request.resource.data.date.matches('^\\d{4}-\\d{2}-\\d{2}$')
+        && request.resource.data.time is string
+        && request.resource.data.time.matches('^\\d{2}:\\d{2}$')
+        && validText(request.resource.data.location, 160)
+        && validText(request.resource.data.description, 2000)
+        && request.resource.data.rewardMoney is number
+        && request.resource.data.rewardXp is number
+        && request.resource.data.participants is list
+        && request.resource.data.createdBy is map
+        && request.resource.data.createdBy.id is string
+        && request.resource.data.createdBy.username is string;
+      allow update: if request.resource.data.type in ['meeting', 'war', 'training', 'convoy', 'other']
+        && request.resource.data.date is string
+        && request.resource.data.time is string
+        && request.resource.data.participants is list;
+      allow delete: if true;
+    }
+
     match /calculator_entries/{document} {
       allow read, write: if false;
     }

@@ -2,8 +2,8 @@ import {
   BarChart3,
   Calculator,
   CalendarDays,
+  CalendarRange,
   Contact,
-  FileText,
   Home,
   LogIn,
   LogOut,
@@ -17,31 +17,34 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { familyName, navItems } from '../data/siteData.js';
+import { familyName } from '../data/siteData.js';
 import { useAuth } from '../lib/auth.jsx';
 
-const publicNavOrder = ['/', '/about', '/rules', '/recruitment'];
+const publicNavItems = [
+  ['Головна', '/', Home],
+  ['Про родину', '/about', ShieldCheck],
+  ['Правила', '/rules', ScrollText],
+  ['Вступ', '/recruitment', Trophy],
+];
 
-const navMeta = {
-  '/': ['Головна', Home],
-  '/about': ['Про родину', ShieldCheck],
-  '/roster': ['Склад родини', Users],
-  '/calculator': ['Калькулятор', Calculator],
-  '/progress': ['Прогрес', BarChart3],
-  '/ranks': ['Ранги', Medal],
-  '/recruitment': ['Вступ', Trophy],
-  '/rules': ['Правила', ScrollText],
-  '/events': ['Події', CalendarDays],
-  '/contact': ['Контакти', Contact],
-};
+const familyNavItems = [
+  ['Головна', '/', Home],
+  ['Про родину', '/about', ShieldCheck],
+  ['Склад родини', '/roster', Users],
+  ['Калькулятор', '/calculator', Calculator],
+  ['Прогрес', '/progress', BarChart3],
+  ['Ранги', '/ranks', Medal],
+  ['Правила', '/rules', ScrollText],
+  ['Події', '/events', CalendarDays],
+  ['Календар подій', '/calendar', CalendarRange],
+  ['Контакти', '/contact', Contact],
+];
 
 export default function Layout({ children }) {
   const [open, setOpen] = useState(false);
   const { user, loading, hasFamilyRole, isAdmin } = useAuth();
   const hasFullMenu = hasFamilyRole || isAdmin;
-  const visibleNavItems = hasFullMenu
-    ? navItems.filter(([, href]) => href !== '/recruitment')
-    : publicNavOrder.map((href) => navItems.find(([, navHref]) => navHref === href)).filter(Boolean);
+  const visibleNavItems = hasFullMenu ? familyNavItems : publicNavItems;
 
   return (
     <div className="app-shell">
@@ -52,7 +55,7 @@ export default function Layout({ children }) {
           </span>
           <span>
             <strong>{familyName}</strong>
-            <small></small>
+            <small>GTA 5 RP Family</small>
           </span>
         </Link>
 
@@ -61,15 +64,12 @@ export default function Layout({ children }) {
         </button>
 
         <nav className={open ? 'nav is-open' : 'nav'}>
-          {visibleNavItems.map(([label, href]) => {
-            const [cleanLabel, Icon] = navMeta[href] || [label, FileText];
-            return (
-              <NavLink key={href} to={href} onClick={() => setOpen(false)}>
-                <Icon size={16} />
-                <span>{cleanLabel}</span>
-              </NavLink>
-            );
-          })}
+          {visibleNavItems.map(([label, href, Icon]) => (
+            <NavLink key={href} to={href} onClick={() => setOpen(false)}>
+              <Icon size={16} />
+              <span>{label}</span>
+            </NavLink>
+          ))}
         </nav>
 
         <div className="auth-actions">

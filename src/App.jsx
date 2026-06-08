@@ -13,6 +13,7 @@ const Progress = lazy(() => import('./pages/Progress.jsx'));
 const Ranks = lazy(() => import('./pages/Ranks.jsx'));
 const Rules = lazy(() => import('./pages/Rules.jsx'));
 const Events = lazy(() => import('./pages/Events.jsx'));
+const Calendar = lazy(() => import('./pages/Calendar.jsx'));
 const Gallery = lazy(() => import('./pages/Gallery.jsx'));
 const Achievements = lazy(() => import('./pages/Achievements.jsx'));
 const Diplomacy = lazy(() => import('./pages/Diplomacy.jsx'));
@@ -41,6 +42,7 @@ export default function App() {
           <Route path="/ranks" element={<Ranks />} />
           <Route path="/rules" element={<Rules />} />
           <Route path="/events" element={<Events />} />
+          <Route path="/calendar" element={<Calendar />} />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/achievements" element={<Achievements />} />
           <Route path="/diplomacy" element={<Diplomacy />} />
