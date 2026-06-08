@@ -33,7 +33,6 @@ const navMeta = {
   '/rules': ['Правила', ScrollText],
   '/events': ['Події', CalendarDays],
   '/contact': ['Контакти', Contact],
-   '/Gallery': ['Галерея', Gallery],
 };
 
 export default function Layout({ children }) {
