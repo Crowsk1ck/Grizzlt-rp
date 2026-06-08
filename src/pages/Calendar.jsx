@@ -270,8 +270,8 @@ export default function Calendar() {
     <>
       <PageHero
         eyebrow="Family schedule"
-        title="Календар подій"
-        text="Плануй збори, війни, тренування, конвої та сімейні RP-активності Grizzly Family."
+        title="Події родини"
+        text="Календар зборів, війн, тренувань, конвоїв та сімейних RP-активностей Grizzly Family."
       />
 
       <Section className="calendar-page">
