@@ -33,6 +33,7 @@ const navMeta = {
   '/rules': ['Правила', ScrollText],
   '/events': ['Події', CalendarDays],
   '/contact': ['Контакти', Contact],
+   '/Gallery': ['Галерея', Gallery],
 };
 
 export default function Layout({ children }) {
@@ -52,7 +53,7 @@ export default function Layout({ children }) {
           </span>
           <span>
             <strong>{familyName}</strong>
-            <small>GTA 5 RP Family</small>
+            <small></small>
           </span>
         </Link>
 
