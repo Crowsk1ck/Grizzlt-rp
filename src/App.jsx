@@ -33,7 +33,8 @@ export default function App() {
     <Layout>
       <Suspense fallback={<LoadingScreen />}>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<GrizzlyOS />} />
+          <Route path="/home" element={<Home />} />
           <Route path="/grizzly-os" element={<GrizzlyOS />} />
           <Route path="/about" element={<About />} />
           <Route path="/roster" element={<Roster />} />

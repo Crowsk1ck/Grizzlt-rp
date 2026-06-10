@@ -3,6 +3,7 @@ import {
   Calculator,
   CalendarDays,
   Contact,
+  GalleryHorizontalEnd,
   Home,
   LogIn,
   LogOut,
@@ -19,26 +20,37 @@ import { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { familyName } from '../data/siteData.js';
 import { useAuth } from '../lib/auth.jsx';
+import '../styles/grizzly-os.css';
 
 const publicNavItems = [
-  ['Головна', '/', Home],
-  ['Grizzly OS', '/grizzly-os', MonitorDot],
+  ['Grizzly OS', '/', MonitorDot],
+  ['Головна', '/home', Home],
   ['Про родину', '/about', ShieldCheck],
   ['Правила', '/rules', ScrollText],
   ['Вступ', '/recruitment', Trophy],
 ];
 
 const familyNavItems = [
-  ['Головна', '/', Home],
-  ['Grizzly OS', '/grizzly-os', MonitorDot],
+  ['Grizzly OS', '/', MonitorDot],
+  ['Головна', '/home', Home],
   ['Про родину', '/about', ShieldCheck],
-  ['Склад родини', '/roster', Users],
-  ['Калькулятор', '/calculator', Calculator],
+  ['Склад', '/roster', Users],
+  ['Контракти', '/calculator', Calculator],
   ['Прогрес', '/progress', BarChart3],
   ['Ранги', '/ranks', Medal],
   ['Правила', '/rules', ScrollText],
   ['Події', '/events', CalendarDays],
+  ['Галерея', '/gallery', GalleryHorizontalEnd],
   ['Контакти', '/contact', Contact],
+];
+
+const dockItems = [
+  ['OS', '/', MonitorDot],
+  ['Members', '/roster', Users],
+  ['Contracts', '/calculator', Calculator],
+  ['Calendar', '/events', CalendarDays],
+  ['Ranks', '/ranks', Medal],
+  ['Admin', '/admin', ShieldCheck],
 ];
 
 export default function Layout({ children }) {
@@ -46,17 +58,20 @@ export default function Layout({ children }) {
   const { user, loading, hasFamilyRole, isAdmin } = useAuth();
   const hasFullMenu = hasFamilyRole || isAdmin;
   const visibleNavItems = hasFullMenu ? familyNavItems : publicNavItems;
+  const roleLabel = isAdmin ? 'ADMIN' : hasFamilyRole ? 'FAMILY' : 'GUEST';
 
   return (
-    <div className="app-shell">
-      <header className="site-header">
-        <Link className="brand" to="/" onClick={() => setOpen(false)}>
+    <div className="app-shell grizzly-site-os">
+      <div className="site-os-bg" />
+
+      <header className="site-header os-site-sidebar">
+        <Link className="brand os-brand" to="/grizzly-os" onClick={() => setOpen(false)}>
           <span className="brand-mark">
             <img src="/assets/grizzly-logo.png" alt="Grizzly Family" />
           </span>
           <span>
             <strong>{familyName}</strong>
-            <small>GTA 5 RP Family</small>
+            <small>GRIZZLY OS</small>
           </span>
         </Link>
 
@@ -64,7 +79,7 @@ export default function Layout({ children }) {
           {open ? <X size={22} /> : <Menu size={22} />}
         </button>
 
-        <nav className={open ? 'nav is-open' : 'nav'}>
+        <nav className={open ? 'nav os-nav is-open' : 'nav os-nav'}>
           {visibleNavItems.map(([label, href, Icon]) => (
             <NavLink key={href} to={href} onClick={() => setOpen(false)}>
               <Icon size={16} />
@@ -73,7 +88,13 @@ export default function Layout({ children }) {
           ))}
         </nav>
 
-        <div className="auth-actions">
+        <div className="os-sidebar-status">
+          <span>System Online</span>
+          <span>Discord Sync Active</span>
+          <span>Bot Online</span>
+        </div>
+
+        <div className="auth-actions os-auth-actions">
           {!loading && !user && (
             <a className="auth-button" href="/api/auth/discord/login" title="Увійти через Discord">
               <LogIn size={17} />
@@ -93,19 +114,31 @@ export default function Layout({ children }) {
         </div>
       </header>
 
-      <main>{children}</main>
+      <div className="os-route-shell">
+        <div className="os-route-topbar">
+          <div>
+            <span>GRIZZLY OS</span>
+            <strong>Family Command Center</strong>
+          </div>
+          <div>
+            <span>{user?.globalName || user?.username || 'Guest'}</span>
+            <span>{roleLabel}</span>
+            <span>{new Date().toLocaleDateString('uk-UA')}</span>
+            <strong>ONLINE</strong>
+          </div>
+        </div>
 
-      <footer className="footer">
-        <div>
-          <strong>{familyName}</strong>
-          <p>© 2026 Grizzly Family | NG</p>
-        </div>
-        <div className="footer-links">
-          {!hasFullMenu && <Link to="/recruitment">Заявка</Link>}
-          <Link to="/rules">Правила</Link>
-          {isAdmin && <Link to="/admin">Адмінка</Link>}
-        </div>
-      </footer>
+        <main className="os-route-main">{children}</main>
+      </div>
+
+      <nav className="os-global-dock">
+        {dockItems.map(([label, href, Icon]) => (
+          <Link key={label} to={href} title={label}>
+            <Icon size={19} />
+            <span>{label}</span>
+          </Link>
+        ))}
+      </nav>
     </div>
   );
 }
