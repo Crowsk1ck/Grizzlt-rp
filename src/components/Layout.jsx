@@ -8,6 +8,7 @@ import {
   LogOut,
   Medal,
   Menu,
+  MonitorDot,
   ScrollText,
   ShieldCheck,
   Trophy,
@@ -21,6 +22,7 @@ import { useAuth } from '../lib/auth.jsx';
 
 const publicNavItems = [
   ['Головна', '/', Home],
+  ['Grizzly OS', '/grizzly-os', MonitorDot],
   ['Про родину', '/about', ShieldCheck],
   ['Правила', '/rules', ScrollText],
   ['Вступ', '/recruitment', Trophy],
@@ -28,6 +30,7 @@ const publicNavItems = [
 
 const familyNavItems = [
   ['Головна', '/', Home],
+  ['Grizzly OS', '/grizzly-os', MonitorDot],
   ['Про родину', '/about', ShieldCheck],
   ['Склад родини', '/roster', Users],
   ['Калькулятор', '/calculator', Calculator],
