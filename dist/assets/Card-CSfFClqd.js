@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-bzQ4Vb5N.js";var t=e();function n({icon:e,title:n,text:r,children:i}){return(0,t.jsxs)(`article`,{className:`card`,children:[e&&(0,t.jsx)(`span`,{className:`card-icon`,children:(0,t.jsx)(e,{size:22})}),(0,t.jsx)(`h3`,{children:n}),r&&(0,t.jsx)(`p`,{children:r}),i]})}export{n as t};
