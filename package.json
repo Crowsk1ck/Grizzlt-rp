@@ -1,12 +1,15 @@
+```json
 {
   "name": "grizzly-os-desktop",
   "private": true,
   "version": "1.0.2",
   "type": "module",
-    "engines": {
+  "engines": {
     "node": "22.x",
-      "npm": "10.x"
-      }
+    "npm": "10.x"
+  },
+  "productName": "Grizzly OS",
+  "main": "electron/main.js",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
     "build": "vite build",
@@ -21,26 +24,25 @@
   },
   "dependencies": {
     "@vitejs/plugin-react": "latest",
+    "electron-updater": "^6.3.9",
     "firebase": "latest",
     "firebase-admin": "^13.10.0",
     "lucide-react": "latest",
     "react": "latest",
     "react-dom": "latest",
     "react-router-dom": "latest",
-    "vite": "latest",
-    "electron-updater": "^6.3.9"
+    "vite": "latest"
   },
-  "productName": "Grizzly OS",
-  "main": "electron/main.js",
   "devDependencies": {
     "concurrently": "^9.1.2",
-    "electron": "^33.2.1",
+    "electron": "^33.4.11",
     "electron-builder": "^25.1.8",
     "wait-on": "^8.0.1"
   },
   "build": {
     "appId": "online.grizzly.family.os",
     "productName": "Grizzly OS",
+    "executableName": "Grizzly OS",
     "artifactName": "Grizzly-OS-Setup.${ext}",
     "directories": {
       "output": "release",
@@ -51,6 +53,9 @@
       "electron/**/*",
       "package.json"
     ],
+    "extraMetadata": {
+      "main": "electron/main.js"
+    },
     "asar": true,
     "win": {
       "target": [
@@ -83,3 +88,4 @@
     "generateUpdatesFilesForAllChannels": true
   }
 }
+```
