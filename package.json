@@ -16,7 +16,7 @@
     "publish:desktop": "npm run build && electron-builder --win --publish always"
   },
   "engines": {
-  "node": "22.x",
+  "node": "24.x",
   "npm": "10.x"
 }
   "dependencies": {
