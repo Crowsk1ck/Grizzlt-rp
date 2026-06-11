@@ -31,31 +31,56 @@ import { familyName } from '../data/siteData.js';
 import { firebaseStatus } from '../lib/firebase.js';
 import { useAuth } from '../lib/auth.jsx';
 
-const publicNavItems = [
-  ['Command Center', '/', Home],
-  ['Про родину', '/about', ShieldCheck],
-  ['Правила', '/rules', ScrollText],
-  ['Вступ', '/recruitment', Trophy],
-  ['Контакти', '/contact', Contact],
+const publicNavGroups = [
+  {
+    label: 'Public',
+    items: [
+      ['Command Center', '/', Home],
+      ['Про родину', '/about', ShieldCheck],
+      ['Правила', '/rules', ScrollText],
+      ['Вступ', '/recruitment', Trophy],
+      ['Контакти', '/contact', Contact],
+    ],
+  },
 ];
 
-const familyNavItems = [
-  ['Grizzly OS', '/', TerminalSquare],
-  ['Про родину', '/about', ShieldCheck],
-  ['Склад', '/roster', Users],
-  ['Калькулятор', '/calculator', Calculator],
-  ['Прогрес', '/progress', BarChart3],
-  ['Ранги', '/ranks', Medal],
-  ['Правила', '/rules', ScrollText],
-  ['Події', '/events', CalendarDays],
-  ['Календар', '/calendar', CalendarDays],
-  ['Галерея', '/gallery', GalleryHorizontalEnd],
-  ['Досягнення', '/achievements', Crown],
-  ['Дипломатія', '/diplomacy', Radio],
-  ['Бізнес', '/business', Database],
-  ['Новини', '/news', Newspaper],
-  ['Контакти', '/contact', Contact],
+const familyNavGroups = [
+  {
+    label: 'Core',
+    items: [
+      ['Grizzly OS', '/', TerminalSquare],
+      ['Про родину', '/about', ShieldCheck],
+      ['Склад', '/roster', Users],
+      ['Калькулятор', '/calculator', Calculator],
+      ['Прогрес', '/progress', BarChart3],
+      ['Ранги', '/ranks', Medal],
+      ['Правила', '/rules', ScrollText],
+    ],
+  },
+  {
+    label: 'RP System',
+    items: [
+      ['Події', '/events', CalendarDays],
+      ['Календар', '/calendar', CalendarDays],
+      ['Галерея', '/gallery', GalleryHorizontalEnd],
+      ['Досягнення', '/achievements', Crown],
+      ['Дипломатія', '/diplomacy', Radio],
+      ['Бізнес', '/business', Database],
+      ['Новини', '/news', Newspaper],
+      ['Контакти', '/contact', Contact],
+    ],
+  },
 ];
+
+const adminGroup = {
+  label: 'Admin',
+  items: [
+    ['Database', '/database', Database],
+    ['Admin', '/admin', ShieldCheck],
+    ['Members Admin', '/admin/members', Users],
+    ['Bot Control', '/admin/bot', Bot],
+  ],
+};
 
 const dockItems = [
   ['OS', '/', TerminalSquare],
@@ -77,23 +102,19 @@ export default function Layout({ children }) {
   const location = useLocation();
   const { user, loading, hasFamilyRole, isAdmin } = useAuth();
   const hasFullMenu = hasFamilyRole || isAdmin;
+  const showDock = location.pathname === '/' || location.pathname === '/grizzly-os';
 
-  const visibleNavItems = useMemo(() => {
-    const items = hasFullMenu ? familyNavItems : publicNavItems;
-    if (!isAdmin) return items;
-    return [
-      ...items,
-      ['Database', '/database', Database],
-      ['Admin', '/admin', ShieldCheck],
-      ['Members Admin', '/admin/members', Users],
-      ['Bot Control', '/admin/bot', Bot],
-    ];
+  const navGroups = useMemo(() => {
+    const groups = hasFullMenu ? familyNavGroups : publicNavGroups;
+    if (!isAdmin) return groups;
+    return [...groups, adminGroup];
   }, [hasFullMenu, isAdmin]);
 
-  const pageLabel = visibleNavItems.find(([, href]) => href === location.pathname)?.[0] || 'Workspace';
+  const flatNavItems = useMemo(() => navGroups.flatMap((group) => group.items), [navGroups]);
+  const pageLabel = flatNavItems.find(([, href]) => href === location.pathname)?.[0] || 'Workspace';
 
   return (
-    <div className="os-layout">
+    <div className={showDock ? 'os-layout has-dock' : 'os-layout'}>
       <aside className={open ? 'os-sidebar is-open' : 'os-sidebar'}>
         <Link className="os-brand" to="/" onClick={() => setOpen(false)}>
           <span className="os-brand-logo">
@@ -106,13 +127,17 @@ export default function Layout({ children }) {
         </Link>
 
         <div className="os-sidebar-section">
-          <span className="os-sidebar-label">Navigation</span>
           <nav className="os-nav">
-            {visibleNavItems.map(([label, href, Icon]) => (
-              <NavLink key={`${href}-${label}`} to={href} onClick={() => setOpen(false)} end={href === '/'}>
-                <Icon size={17} />
-                <span>{label}</span>
-              </NavLink>
+            {navGroups.map((group) => (
+              <div className="os-nav-group" key={group.label}>
+                <span className="os-sidebar-label">{group.label}</span>
+                {group.items.map(([label, href, Icon]) => (
+                  <NavLink key={`${href}-${label}`} to={href} onClick={() => setOpen(false)} end={href === '/'}>
+                    <Icon size={16} />
+                    <span>{label}</span>
+                  </NavLink>
+                ))}
+              </div>
             ))}
           </nav>
         </div>
@@ -213,20 +238,22 @@ export default function Layout({ children }) {
           </aside>
         </div>
 
-        <nav className="os-dock" aria-label="Grizzly OS Dock">
-          {dockItems.map(([label, href, Icon]) => (
-            <NavLink key={href} to={href} end={href === '/'}>
-              <Icon size={20} />
-              <span>{label}</span>
-            </NavLink>
-          ))}
-          {isAdmin && (
-            <NavLink to="/admin">
-              <ShieldCheck size={20} />
-              <span>Admin</span>
-            </NavLink>
-          )}
-        </nav>
+        {showDock && (
+          <nav className="os-dock" aria-label="Grizzly OS Dock">
+            {dockItems.map(([label, href, Icon]) => (
+              <NavLink key={href} to={href} end={href === '/'}>
+                <Icon size={20} />
+                <span>{label}</span>
+              </NavLink>
+            ))}
+            {isAdmin && (
+              <NavLink to="/admin">
+                <ShieldCheck size={20} />
+                <span>Admin</span>
+              </NavLink>
+            )}
+          </nav>
+        )}
       </div>
     </div>
   );
