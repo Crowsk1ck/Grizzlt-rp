@@ -25,7 +25,7 @@ import {
   Users,
   X,
 } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { familyName } from '../data/siteData.js';
 import { firebaseStatus } from '../lib/firebase.js';
@@ -99,6 +99,10 @@ const activityItems = [
 
 export default function Layout({ children }) {
   const [open, setOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return window.localStorage.getItem('grizzly-sidebar-collapsed') === 'true';
+  });
   const location = useLocation();
   const { user, loading, hasFamilyRole, isAdmin } = useAuth();
   const hasFullMenu = hasFamilyRole || isAdmin;
@@ -113,9 +117,43 @@ export default function Layout({ children }) {
   const flatNavItems = useMemo(() => navGroups.flatMap((group) => group.items), [navGroups]);
   const pageLabel = flatNavItems.find(([, href]) => href === location.pathname)?.[0] || 'Workspace';
 
+  const toggleSidebar = () => {
+    setSidebarCollapsed((value) => {
+      const next = !value;
+      if (typeof window !== 'undefined') {
+        window.localStorage.setItem('grizzly-sidebar-collapsed', String(next));
+      }
+      return next;
+    });
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.ctrlKey && event.key.toLowerCase() === 'b') {
+        event.preventDefault();
+        toggleSidebar();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  const layoutClassName = [
+    'os-layout',
+    showDock ? 'has-dock' : '',
+    sidebarCollapsed ? 'sidebar-collapsed' : '',
+  ].filter(Boolean).join(' ');
+
+  const sidebarClassName = [
+    'os-sidebar',
+    open ? 'is-open' : '',
+    sidebarCollapsed ? 'is-collapsed' : '',
+  ].filter(Boolean).join(' ');
+
   return (
-    <div className={showDock ? 'os-layout has-dock' : 'os-layout'}>
-      <aside className={open ? 'os-sidebar is-open' : 'os-sidebar'}>
+    <div className={layoutClassName}>
+      <aside className={sidebarClassName}>
         <Link className="os-brand" to="/" onClick={() => setOpen(false)}>
           <span className="os-brand-logo">
             <img src="/assets/grizzly-logo.png" alt="Grizzly Family" />
@@ -132,7 +170,7 @@ export default function Layout({ children }) {
               <div className="os-nav-group" key={group.label}>
                 <span className="os-sidebar-label">{group.label}</span>
                 {group.items.map(([label, href, Icon]) => (
-                  <NavLink key={`${href}-${label}`} to={href} onClick={() => setOpen(false)} end={href === '/'}>
+                  <NavLink key={`${href}-${label}`} to={href} onClick={() => setOpen(false)} end={href === '/'} title={label}>
                     <Icon size={16} />
                     <span>{label}</span>
                   </NavLink>
@@ -157,6 +195,17 @@ export default function Layout({ children }) {
         <header className="os-topbar">
           <button className="os-mobile-toggle" type="button" onClick={() => setOpen((value) => !value)} aria-label="Відкрити меню">
             {open ? <X size={20} /> : <Menu size={20} />}
+          </button>
+
+          <button
+            className="os-sidebar-toggle"
+            type="button"
+            onClick={toggleSidebar}
+            aria-label={sidebarCollapsed ? 'Показати ліву панель' : 'Сховати ліву панель'}
+            title="Ctrl + B — сховати/показати меню"
+          >
+            <Menu size={18} />
+            <span>Ctrl+B</span>
           </button>
 
           <div className="os-breadcrumb">
