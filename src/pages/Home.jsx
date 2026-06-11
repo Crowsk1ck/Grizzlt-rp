@@ -71,6 +71,9 @@ export default function Home() {
             <Link className="button secondary" to="/recruitment">
               Подати заявку
             </Link>
+            <Link className="button secondary" to="/download">
+              Скачать Windows App
+            </Link>
           </div>
         </div>
 

@@ -8,6 +8,7 @@ import {
   Contact,
   Crown,
   Database,
+  Download,
   FileText,
   GalleryHorizontalEnd,
   Home,
@@ -40,6 +41,7 @@ const publicNavGroups = [
       ['Правила', '/rules', ScrollText],
       ['Вступ', '/recruitment', Trophy],
       ['Контакти', '/contact', Contact],
+      ['Desktop App', '/download', Download],
     ],
   },
 ];
@@ -68,6 +70,7 @@ const familyNavGroups = [
       ['Бізнес', '/business', Database],
       ['Новини', '/news', Newspaper],
       ['Контакти', '/contact', Contact],
+      ['Desktop App', '/download', Download],
     ],
   },
 ];
@@ -88,6 +91,7 @@ const dockItems = [
   ['Contracts', '/calculator', Calculator],
   ['Calendar', '/calendar', CalendarDays],
   ['News', '/news', Newspaper],
+  ['App', '/download', Download],
 ];
 
 const activityItems = [
@@ -107,6 +111,11 @@ export default function Layout({ children }) {
   const { user, loading, hasFamilyRole, isAdmin } = useAuth();
   const hasFullMenu = hasFamilyRole || isAdmin;
   const showDock = location.pathname === '/' || location.pathname === '/grizzly-os';
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    document.body.classList.toggle('electron-app', Boolean(window.grizzlyDesktop?.isDesktop));
+  }, []);
 
   const navGroups = useMemo(() => {
     const groups = hasFullMenu ? familyNavGroups : publicNavGroups;
@@ -282,6 +291,7 @@ export default function Layout({ children }) {
               <Link to="/calculator">+ Контракт</Link>
               <Link to="/calendar">+ Подія</Link>
               <Link to="/news">Новини</Link>
+              <Link to="/download">Скачати App</Link>
               {isAdmin && <Link to="/admin">Адмінка</Link>}
             </section>
           </aside>

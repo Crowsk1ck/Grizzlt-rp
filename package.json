@@ -1,12 +1,19 @@
 {
-  "name": "gta-5-rp-family-premium",
+  "name": "grizzly-os-desktop",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.0.2",
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
     "build": "vite build",
-    "preview": "vite preview --host 0.0.0.0"
+    "preview": "vite preview --host 0.0.0.0",
+    "dev:react": "vite --host 0.0.0.0",
+    "dev:electron": "wait-on http://localhost:5173 && electron .",
+    "desktop": "concurrently -k \"npm run dev:react\" \"npm run dev:electron\"",
+    "pack:desktop": "npm run build && electron-builder --dir",
+    "build:desktop": "npm run build && electron-builder --win",
+    "build:desktop:portable": "npm run build && electron-builder --win portable",
+    "publish:desktop": "npm run build && electron-builder --win --publish always"
   },
   "dependencies": {
     "@vitejs/plugin-react": "latest",
@@ -16,6 +23,59 @@
     "react": "latest",
     "react-dom": "latest",
     "react-router-dom": "latest",
-    "vite": "latest"
+    "vite": "latest",
+    "electron-updater": "^6.3.9"
+  },
+  "productName": "Grizzly OS",
+  "main": "electron/main.js",
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "electron": "^33.2.1",
+    "electron-builder": "^25.1.8",
+    "wait-on": "^8.0.1"
+  },
+  "build": {
+    "appId": "online.grizzly.family.os",
+    "productName": "Grizzly OS",
+    "artifactName": "Grizzly-OS-Setup.${ext}",
+    "directories": {
+      "output": "release",
+      "buildResources": "public"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "package.json"
+    ],
+    "asar": true,
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "public/icon.ico",
+      "requestedExecutionLevel": "asInvoker",
+      "artifactName": "Grizzly-OS-Setup.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Grizzly OS",
+      "uninstallDisplayName": "Grizzly OS"
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "Crowsk1ck",
+        "repo": "Grizzly_OS"
+      }
+    ],
+    "generateUpdatesFilesForAllChannels": true
   }
 }

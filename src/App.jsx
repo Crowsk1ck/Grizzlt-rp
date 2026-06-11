@@ -20,6 +20,7 @@ const Diplomacy = lazy(() => import('./pages/Diplomacy.jsx'));
 const Business = lazy(() => import('./pages/Business.jsx'));
 const News = lazy(() => import('./pages/News.jsx'));
 const Contact = lazy(() => import('./pages/Contact.jsx'));
+const Download = lazy(() => import('./pages/Download.jsx'));
 const Profile = lazy(() => import('./pages/Profile.jsx'));
 const DatabasePage = lazy(() => import('./pages/Database.jsx'));
 const Admin = lazy(() => import('./pages/Admin.jsx'));
@@ -50,6 +51,7 @@ export default function App() {
           <Route path="/business" element={<Business />} />
           <Route path="/news" element={<News />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/download" element={<Download />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/database" element={<DatabasePage />} />
           <Route path="/admin" element={<Admin />} />
