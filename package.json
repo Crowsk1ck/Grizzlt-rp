@@ -1,4 +1,4 @@
-```json
+
 {
   "name": "grizzly-os-desktop",
   "private": true,
@@ -88,4 +88,4 @@
     "generateUpdatesFilesForAllChannels": true
   }
 }
-```
+
