@@ -10,12 +10,13 @@ import {
   Menu,
   ScrollText,
   ShieldCheck,
+  MonitorCog,
   Trophy,
   Users,
   X,
 } from 'lucide-react';
 import { useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import { familyName } from '../data/siteData.js';
 import { useAuth } from '../lib/auth.jsx';
 
@@ -29,6 +30,7 @@ const publicNavItems = [
 const familyNavItems = [
   ['Головна', '/', Home],
   ['Про родину', '/about', ShieldCheck],
+  ['Grizzly OS', '/grizzly-os', MonitorCog],
   ['Склад родини', '/roster', Users],
   ['Калькулятор', '/calculator', Calculator],
   ['Прогрес', '/progress', BarChart3],
@@ -40,9 +42,14 @@ const familyNavItems = [
 
 export default function Layout({ children }) {
   const [open, setOpen] = useState(false);
+  const location = useLocation();
   const { user, loading, hasFamilyRole, isAdmin } = useAuth();
   const hasFullMenu = hasFamilyRole || isAdmin;
   const visibleNavItems = hasFullMenu ? familyNavItems : publicNavItems;
+
+  if (location.pathname === '/grizzly-os') {
+    return children;
+  }
 
   return (
     <div className="app-shell">
