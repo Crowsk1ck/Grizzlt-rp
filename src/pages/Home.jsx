@@ -1,154 +1,169 @@
-import { ArrowRight, BadgeCheck, CalendarDays, Crown, Radio, ScrollText, ShieldCheck, Sparkles, Swords, UsersRound } from 'lucide-react';
+import {
+  ArrowRight,
+  BadgeCheck,
+  BarChart3,
+  Bot,
+  Calculator,
+  CalendarDays,
+  Car,
+  Crown,
+  Database,
+  GalleryHorizontalEnd,
+  Medal,
+  Newspaper,
+  Radio,
+  ScrollText,
+  ShieldCheck,
+  Sparkles,
+  Swords,
+  Trophy,
+  UsersRound,
+} from 'lucide-react';
 import { Link } from 'react-router-dom';
-import Section from '../components/Section.jsx';
-import { events, familyName, stats } from '../data/siteData.js';
+import { familyName, stats } from '../data/siteData.js';
+import { useAuth } from '../lib/auth.jsx';
+import { firebaseStatus } from '../lib/firebase.js';
 
-const heroSignals = ['Discord-заявки', 'Живий склад', 'Контракти', 'RP-події'];
-
-const homeValues = [
-  {
-    icon: UsersRound,
-    title: 'Єдність',
-    text: 'Учасник Grizzly не грає сам по собі. Ми тримаємо зв’язок, прикриваємо своїх і діємо як один склад.',
-  },
-  {
-    icon: Swords,
-    title: 'Сила',
-    text: 'Контракти, виїзди, перемовини і конфлікти проходять організовано, з ролями та чіткою задачею.',
-  },
-  {
-    icon: ShieldCheck,
-    title: 'Повага',
-    text: 'Повага до RP, правил сервера і людей навколо - це те, що робить родину стабільною.',
-  },
-  {
-    icon: Crown,
-    title: 'Статус',
-    text: 'Grizzly Family має впізнаваний стиль: нічне місто, дисципліна, медіа, сильна подача і чиста репутація.',
-  },
+const osStats = [
+  ['👥', 'Members', stats[0]?.[0] || '120+', 'Склад родини'],
+  ['🟢', 'Discord', 'LIVE', 'Статус синхронізації'],
+  ['💰', 'Finance', '$0', 'Банк / контракти'],
+  ['📅', 'Events', '3', 'Активності'],
+  ['⚔️', 'Wars', 'READY', 'War room'],
+  ['🏆', 'Rank', 'VIP', 'Рівень сімʼї'],
 ];
 
-const pathSteps = [
-  ['01', 'Discord вхід', 'Авторизуйся через Discord, щоб заявка була прив’язана до твого акаунта.'],
-  ['02', 'Заявка', 'Заповни нік, вік, онлайн і коротко розкажи про свій RP-досвід.'],
-  ['03', 'Співбесіда', 'Адміни переглянуть анкету і, якщо все добре, покличуть у Discord.'],
-  ['04', 'Роль родини', 'Після прийняття бот видасть роль, а вкладка вступу зникне з меню.'],
+const modules = [
+  { icon: UsersRound, title: 'Members Center', text: 'Склад, ролі, онлайн, профілі учасників.', href: '/roster' },
+  { icon: Calculator, title: 'Contracts Hub', text: 'Контракти, прибуток, статистика і топи.', href: '/calculator' },
+  { icon: CalendarDays, title: 'Event Calendar', text: 'Збори, тренування, війни, конвої та нагадування.', href: '/calendar' },
+  { icon: Swords, title: 'War Room', text: 'Плани, противники, результати та архів конфліктів.', href: '/events' },
+  { icon: Database, title: 'Finance Vault', text: 'Банк сімʼї, витрати, премії і звіти.', href: '/business' },
+  { icon: GalleryHorizontalEnd, title: 'Media Archive', text: 'Галерея, банери, скріни і моменти сімʼї.', href: '/gallery' },
+  { icon: Trophy, title: 'Achievements', text: 'Досягнення, нагороди, XP і прогрес.', href: '/achievements' },
+  { icon: ScrollText, title: 'Rules Terminal', text: 'Правила, дисципліна, внутрішній кодекс.', href: '/rules' },
+];
+
+const signals = [
+  ['BOT', 'Discord bot online'],
+  ['SYNC', firebaseStatus.connected ? 'Firebase connected' : 'Firebase fallback mode'],
+  ['AUTH', 'Discord OAuth ready'],
+  ['NG', 'Server family portal'],
 ];
 
 export default function Home() {
+  const { user, isAdmin } = useAuth();
+
   return (
-    <>
-      <section className="hero home-premium-hero">
-        <div className="hero-content">
-          <p className="eyebrow">Преміальна GTA 5 RP родина</p>
-          <h1>{familyName}</h1>
+    <div className="os-home">
+      <section className="os-hero-card">
+        <div className="os-hero-copy">
+          <p className="eyebrow">Ultimate Feature</p>
+          <h1>Grizzly OS</h1>
           <p>
-            Тепла orange-атмосфера, сильний Discord-склад, дисципліна, контракти та RP-сцени,
-            які видно здалеку. Grizzly Family - це місце для тих, хто хоче грати красиво і командно.
+            Внутрішня операційна система {familyName}: склад, контракти, фінанси, події,
+            Discord-статус і керування родиною в одному premium GTA RP command center.
           </p>
-          <div className="hero-actions">
-            <Link className="button primary" to="/recruitment">
-              Подати заявку <ArrowRight size={18} />
+          <div className="os-hero-actions">
+            <Link className="button primary" to="/roster">
+              Відкрити систему <ArrowRight size={18} />
             </Link>
-            <Link className="button secondary" to="/rules">
-              <ScrollText size={18} /> Правила
+            <Link className="button secondary" to="/recruitment">
+              Подати заявку
             </Link>
           </div>
-          <div className="home-signal-row">
-            {heroSignals.map((signal) => (
-              <span key={signal}>
-                <BadgeCheck size={15} /> {signal}
-              </span>
+        </div>
+
+        <div className="os-identity-card">
+          <img src="/assets/grizzly-logo.png" alt="Grizzly Family" />
+          <span>COMMAND CENTER</span>
+          <strong>{user ? user.globalName || user.username : 'Guest Access'}</strong>
+          <p>{isAdmin ? 'ADMIN CONTROL ENABLED' : 'FAMILY OS MODE'}</p>
+        </div>
+      </section>
+
+      <section className="os-stat-grid">
+        {osStats.map(([icon, label, value, sub]) => (
+          <article key={label}>
+            <span>{icon}</span>
+            <small>{label}</small>
+            <strong>{value}</strong>
+            <p>{sub}</p>
+          </article>
+        ))}
+      </section>
+
+      <section className="os-command-grid">
+        <div className="os-module-area">
+          <div className="os-section-title">
+            <div>
+              <p className="eyebrow">OS Modules</p>
+              <h2>Системні модулі</h2>
+            </div>
+            <Link to="/database">Database</Link>
+          </div>
+
+          <div className="os-module-grid">
+            {modules.map(({ icon: Icon, title, text, href }) => (
+              <Link className="os-module-tile" to={href} key={title}>
+                <span><Icon size={24} /></span>
+                <strong>{title}</strong>
+                <p>{text}</p>
+                <em>OPEN</em>
+              </Link>
             ))}
           </div>
         </div>
 
-        <aside className="home-hero-panel">
-          <img src="/assets/grizzly-logo.png" alt={familyName} />
-          <span>Сигнал родини</span>
-          <strong>Вірність. Сила. Повага. Родина.</strong>
-          <p>Наш стиль - нічне місто, чіткі рішення і команда, яка не губиться у важливий момент.</p>
-        </aside>
-
-        <div className="stat-strip">
-          {stats.map(([value, label]) => (
-            <div key={label}>
-              <strong>{value}</strong>
-              <span>{label}</span>
+        <aside className="os-command-panel">
+          <div className="os-section-title compact">
+            <div>
+              <p className="eyebrow">Signal</p>
+              <h2>Live system</h2>
             </div>
-          ))}
-        </div>
-      </section>
-
-      <Section eyebrow="Характер" title="Grizzly Family тримається на системі">
-        <div className="home-values-grid">
-          {homeValues.map(({ icon: Icon, title, text }) => (
-            <article key={title}>
-              <Icon size={24} />
-              <strong>{title}</strong>
-              <p>{text}</p>
-            </article>
-          ))}
-        </div>
-      </Section>
-
-      <Section className="home-path-section">
-        <div className="home-path-panel">
-          <div>
-            <p className="eyebrow">Вступ</p>
-            <h2>Шлях від кандидата до учасника</h2>
-            <p>
-              Ми не набираємо випадкових людей. Кандидат проходить Discord-заявку,
-              коротку перевірку, співбесіду і тільки після цього отримує роль родини.
-            </p>
-            <Link className="button primary" to="/recruitment">
-              Почати вступ <ArrowRight size={18} />
-            </Link>
           </div>
-          <div className="home-path-list">
-            {pathSteps.map(([number, title, text]) => (
-              <article key={number}>
-                <span>{number}</span>
+          <div className="os-signal-list">
+            {signals.map(([label, text]) => (
+              <article key={label}>
+                <BadgeCheck size={18} />
                 <div>
-                  <strong>{title}</strong>
+                  <strong>{label}</strong>
                   <p>{text}</p>
                 </div>
               </article>
             ))}
           </div>
-        </div>
-      </Section>
+          <div className="os-quick-actions-home">
+            <Link to="/calculator"><Calculator size={18} /> Add Contract</Link>
+            <Link to="/calendar"><CalendarDays size={18} /> Create Event</Link>
+            <Link to="/news"><Newspaper size={18} /> Add News</Link>
+            <Link to="/profile"><Crown size={18} /> Profile</Link>
+          </div>
+        </aside>
+      </section>
 
-      <Section eyebrow="Активності" title="Що відбувається всередині родини" className="band">
-        <div className="home-activity-grid">
-          {events.map(([title, date, text]) => (
-            <article key={title}>
-              <CalendarDays size={22} />
-              <span>{date}</span>
-              <strong>{title}</strong>
-              <p>{text}</p>
-            </article>
-          ))}
-          <article className="home-activity-special">
-            <Radio size={22} />
-            <span>Discord</span>
-            <strong>Живе керування</strong>
-            <p>Заявки, новини, звіти, склад, ролі та адмін-дії підключені до Discord і Firestore.</p>
-          </article>
-        </div>
-      </Section>
-
-      <Section className="home-final-cta">
-        <div>
-          <Sparkles size={28} />
-          <p className="eyebrow">Grizzly Family</p>
-          <h2>Готовий зайти в родину?</h2>
-          <p>Прочитай правила, авторизуйся через Discord і залиш заявку. Далі тебе побачить старший склад.</p>
-        </div>
-        <Link className="button primary" to="/recruitment">
-          Подати заявку <ArrowRight size={18} />
-        </Link>
-      </Section>
-    </>
+      <section className="os-bottom-widgets">
+        <article>
+          <BarChart3 size={24} />
+          <strong>Analytics Core</strong>
+          <p>Підготовлено під live-графіки активності, доходів, контрактів і Discord online.</p>
+        </article>
+        <article>
+          <Bot size={24} />
+          <strong>Discord Bot Layer</strong>
+          <p>Заявки, welcome, новини, ролі, звіти і майбутні push-повідомлення.</p>
+        </article>
+        <article>
+          <Car size={24} />
+          <strong>Future Fleet Garage</strong>
+          <p>Місце під автопарк родини, номери, власників і статус машин.</p>
+        </article>
+        <article>
+          <Medal size={24} />
+          <strong>Rank Protocol</strong>
+          <p>XP, ранги, досягнення і сезонна система Grizzly Family.</p>
+        </article>
+      </section>
+    </div>
   );
 }

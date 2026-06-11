@@ -25,7 +25,6 @@ const DatabasePage = lazy(() => import('./pages/Database.jsx'));
 const Admin = lazy(() => import('./pages/Admin.jsx'));
 const AdminMembers = lazy(() => import('./pages/AdminMembers.jsx'));
 const AdminBot = lazy(() => import('./pages/AdminBot.jsx'));
-const GrizzlyOS = lazy(() => import('./pages/GrizzlyOS.jsx'));
 const NotFound = lazy(() => import('./pages/NotFound.jsx'));
 
 export default function App() {
@@ -34,6 +33,7 @@ export default function App() {
       <Suspense fallback={<LoadingScreen />}>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/grizzly-os" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/roster" element={<Roster />} />
           <Route path="/hierarchy" element={<Hierarchy />} />
@@ -55,7 +55,6 @@ export default function App() {
           <Route path="/admin" element={<Admin />} />
           <Route path="/admin/members" element={<AdminMembers />} />
           <Route path="/admin/bot" element={<AdminBot />} />
-          <Route path="/grizzly-os" element={<GrizzlyOS />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
