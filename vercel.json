@@ -2,12 +2,10 @@
   "rewrites": [
     {
       "source": "/(.*)",
-      "destination": "/index.html"
-    }
-  ]
-}
-{
-  "installCommand": "npm install --omit=dev --ignore-scripts --no-audit --no-fund",
+      "destination": "/index.html",
+        "installCommand": "npm install --omit=dev --ignore-scripts --no-audit --no-fund",
   "buildCommand": "npm run build",
   "outputDirectory": "dist"
+    }
+  ]
 }
