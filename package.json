@@ -3,6 +3,10 @@
   "private": true,
   "version": "1.0.2",
   "type": "module",
+    "engines": {
+    "node": "22.x",
+      "npm": "10.x"
+      }
   "scripts": {
     "dev": "vite --host 0.0.0.0",
     "build": "vite build",
@@ -15,10 +19,6 @@
     "build:desktop:portable": "npm run build && electron-builder --win portable",
     "publish:desktop": "npm run build && electron-builder --win --publish always"
   },
-  "engines": {
-  "node": "24.x",
-  "npm": "10.x"
-}
   "dependencies": {
     "@vitejs/plugin-react": "latest",
     "firebase": "latest",
