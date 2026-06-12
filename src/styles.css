@@ -7339,3 +7339,107 @@ body.electron-app .os-right-panel {
     top: 84px;
   }
 }
+
+/* =========================
+   OS CENTER LAUNCHER ALIGN FIX
+   Clean centered launcher without sidebar/dock
+   ========================= */
+.os-layout-center-nav .os-center-launcher {
+  position: sticky;
+  top: 72px;
+  z-index: 28;
+  width: min(1680px, calc(100vw - 48px));
+  margin: 14px auto 0;
+  padding: 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(126px, 1fr));
+  align-items: stretch;
+  justify-content: center;
+  gap: 8px;
+  overflow: visible;
+  border: 1px solid rgba(255, 0, 92, 0.28);
+  background:
+    radial-gradient(circle at 16% 0%, rgba(255, 0, 92, 0.16), transparent 18rem),
+    linear-gradient(135deg, rgba(255, 0, 92, 0.075), rgba(0, 200, 255, 0.03)),
+    rgba(7, 7, 12, 0.86);
+  backdrop-filter: blur(22px);
+  box-shadow:
+    0 22px 70px rgba(0, 0, 0, 0.24),
+    0 0 42px rgba(255, 0, 92, 0.12);
+}
+
+.os-layout-center-nav .os-center-launcher::-webkit-scrollbar {
+  display: none;
+}
+
+.os-layout-center-nav .os-launcher-link {
+  min-height: 50px;
+  height: 50px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 12px;
+  border: 1px solid rgba(255, 255, 255, 0.065);
+  background: rgba(255, 255, 255, 0.028);
+  color: rgba(255, 255, 255, 0.74);
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: 0.035em;
+  line-height: 1;
+  text-align: center;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: transform 160ms ease, border-color 160ms ease, background 160ms ease, color 160ms ease, box-shadow 160ms ease;
+}
+
+.os-layout-center-nav .os-launcher-link svg {
+  flex: 0 0 auto;
+  color: rgba(255, 122, 0, 0.82);
+}
+
+.os-layout-center-nav .os-launcher-link:hover,
+.os-layout-center-nav .os-launcher-link.active {
+  transform: translateY(-1px);
+  border-color: rgba(255, 0, 92, 0.46);
+  color: #fff;
+  background:
+    linear-gradient(90deg, rgba(255, 0, 92, 0.18), rgba(255, 122, 0, 0.08)),
+    rgba(255, 255, 255, 0.05);
+  box-shadow: 0 0 24px rgba(255, 0, 92, 0.16);
+}
+
+.os-layout-center-nav .os-desktop-grid {
+  padding-top: 18px;
+}
+
+@media (max-width: 1180px) {
+  .os-layout-center-nav .os-center-launcher {
+    width: calc(100vw - 28px);
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  }
+
+  .os-layout-center-nav .os-launcher-link {
+    min-height: 46px;
+    height: 46px;
+    font-size: 10px;
+    padding: 0 10px;
+  }
+}
+
+@media (max-width: 720px) {
+  .os-layout-center-nav .os-center-launcher {
+    top: 92px;
+    display: flex;
+    justify-content: flex-start;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 8px;
+    width: calc(100vw - 18px);
+  }
+
+  .os-layout-center-nav .os-launcher-link {
+    flex: 0 0 auto;
+    min-width: 104px;
+  }
+}

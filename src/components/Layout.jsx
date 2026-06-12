@@ -155,18 +155,17 @@ export default function Layout({ children }) {
         </header>
 
         <nav className="os-center-launcher" aria-label="Grizzly OS Launcher">
-          {navGroups.map((group) => (
-            <div className="os-launcher-group" key={group.label}>
-              <span className="os-launcher-label">{group.label}</span>
-              <div className="os-launcher-links">
-                {group.items.map(([label, href, Icon]) => (
-                  <NavLink key={`${href}-${label}`} to={href} end={href === '/'} title={label}>
-                    <Icon size={17} />
-                    <span>{label}</span>
-                  </NavLink>
-                ))}
-              </div>
-            </div>
+          {flatNavItems.map(([label, href, Icon]) => (
+            <NavLink
+              className="os-launcher-link"
+              key={`${href}-${label}`}
+              to={href}
+              end={href === '/'}
+              title={label}
+            >
+              <Icon size={17} />
+              <span>{label}</span>
+            </NavLink>
           ))}
         </nav>
 
