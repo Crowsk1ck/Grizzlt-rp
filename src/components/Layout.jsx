@@ -15,7 +15,6 @@ import {
   LogIn,
   LogOut,
   Medal,
-  Menu,
   Newspaper,
   Radio,
   ScrollText,
@@ -24,9 +23,8 @@ import {
   TerminalSquare,
   Trophy,
   Users,
-  X,
 } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { familyName } from '../data/siteData.js';
 import { firebaseStatus } from '../lib/firebase.js';
@@ -85,15 +83,6 @@ const adminGroup = {
   ],
 };
 
-const dockItems = [
-  ['OS', '/', TerminalSquare],
-  ['Members', '/roster', Users],
-  ['Contracts', '/calculator', Calculator],
-  ['Calendar', '/calendar', CalendarDays],
-  ['News', '/news', Newspaper],
-  ['App', '/download', Download],
-];
-
 const activityItems = [
   ['SYSTEM', 'Grizzly OS запущено'],
   ['DISCORD', 'Синхронізація складу активна'],
@@ -102,15 +91,9 @@ const activityItems = [
 ];
 
 export default function Layout({ children }) {
-  const [open, setOpen] = useState(false);
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
-    if (typeof window === 'undefined') return false;
-    return window.localStorage.getItem('grizzly-sidebar-collapsed') === 'true';
-  });
   const location = useLocation();
   const { user, loading, hasFamilyRole, isAdmin } = useAuth();
   const hasFullMenu = hasFamilyRole || isAdmin;
-  const showDock = location.pathname === '/' || location.pathname === '/grizzly-os';
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -126,96 +109,19 @@ export default function Layout({ children }) {
   const flatNavItems = useMemo(() => navGroups.flatMap((group) => group.items), [navGroups]);
   const pageLabel = flatNavItems.find(([, href]) => href === location.pathname)?.[0] || 'Workspace';
 
-  const toggleSidebar = () => {
-    setSidebarCollapsed((value) => {
-      const next = !value;
-      if (typeof window !== 'undefined') {
-        window.localStorage.setItem('grizzly-sidebar-collapsed', String(next));
-      }
-      return next;
-    });
-  };
-
-  useEffect(() => {
-    const handleKeyDown = (event) => {
-      if (event.ctrlKey && event.key.toLowerCase() === 'b') {
-        event.preventDefault();
-        toggleSidebar();
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
-
-  const layoutClassName = [
-    'os-layout',
-    showDock ? 'has-dock' : '',
-    sidebarCollapsed ? 'sidebar-collapsed' : '',
-  ].filter(Boolean).join(' ');
-
-  const sidebarClassName = [
-    'os-sidebar',
-    open ? 'is-open' : '',
-    sidebarCollapsed ? 'is-collapsed' : '',
-  ].filter(Boolean).join(' ');
-
   return (
-    <div className={layoutClassName}>
-      <aside className={sidebarClassName}>
-        <Link className="os-brand" to="/" onClick={() => setOpen(false)}>
-          <span className="os-brand-logo">
-            <img src="/assets/grizzly-logo.png" alt="Grizzly Family" />
-          </span>
-          <span>
-            <strong>Grizzly OS</strong>
-            <small>{familyName} / NG</small>
-          </span>
-        </Link>
-
-        <div className="os-sidebar-section">
-          <nav className="os-nav">
-            {navGroups.map((group) => (
-              <div className="os-nav-group" key={group.label}>
-                <span className="os-sidebar-label">{group.label}</span>
-                {group.items.map(([label, href, Icon]) => (
-                  <NavLink key={`${href}-${label}`} to={href} onClick={() => setOpen(false)} end={href === '/'} title={label}>
-                    <Icon size={16} />
-                    <span>{label}</span>
-                  </NavLink>
-                ))}
-              </div>
-            ))}
-          </nav>
-        </div>
-
-        <div className="os-system-card">
-          <span className="os-pulse" />
-          <div>
-            <strong>SYSTEM ONLINE</strong>
-            <small>Firebase: {firebaseStatus.connected ? 'CONNECTED' : 'FALLBACK'}</small>
-          </div>
-        </div>
-      </aside>
-
-      {open && <button className="os-backdrop" type="button" aria-label="Закрити меню" onClick={() => setOpen(false)} />}
-
+    <div className="os-layout os-layout-center-nav">
       <div className="os-main">
-        <header className="os-topbar">
-          <button className="os-mobile-toggle" type="button" onClick={() => setOpen((value) => !value)} aria-label="Відкрити меню">
-            {open ? <X size={20} /> : <Menu size={20} />}
-          </button>
-
-          <button
-            className="os-sidebar-toggle"
-            type="button"
-            onClick={toggleSidebar}
-            aria-label={sidebarCollapsed ? 'Показати ліву панель' : 'Сховати ліву панель'}
-            title="Ctrl + B — сховати/показати меню"
-          >
-            <Menu size={18} />
-            <span>Ctrl+B</span>
-          </button>
+        <header className="os-topbar os-topbar-center-nav">
+          <Link className="os-topbar-brand" to="/" aria-label="Grizzly OS home">
+            <span className="os-topbar-logo">
+              <img src="/assets/grizzly-logo.png" alt="Grizzly Family" />
+            </span>
+            <span>
+              <strong>Grizzly OS</strong>
+              <small>{familyName} / NG</small>
+            </span>
+          </Link>
 
           <div className="os-breadcrumb">
             <span>GRIZZLY FAMILY COMMAND CENTER</span>
@@ -247,6 +153,22 @@ export default function Layout({ children }) {
             )}
           </div>
         </header>
+
+        <nav className="os-center-launcher" aria-label="Grizzly OS Launcher">
+          {navGroups.map((group) => (
+            <div className="os-launcher-group" key={group.label}>
+              <span className="os-launcher-label">{group.label}</span>
+              <div className="os-launcher-links">
+                {group.items.map(([label, href, Icon]) => (
+                  <NavLink key={`${href}-${label}`} to={href} end={href === '/'} title={label}>
+                    <Icon size={17} />
+                    <span>{label}</span>
+                  </NavLink>
+                ))}
+              </div>
+            </div>
+          ))}
+        </nav>
 
         <div className="os-desktop-grid">
           <main className="os-page-frame">
@@ -296,23 +218,6 @@ export default function Layout({ children }) {
             </section>
           </aside>
         </div>
-
-        {showDock && (
-          <nav className="os-dock" aria-label="Grizzly OS Dock">
-            {dockItems.map(([label, href, Icon]) => (
-              <NavLink key={href} to={href} end={href === '/'}>
-                <Icon size={20} />
-                <span>{label}</span>
-              </NavLink>
-            ))}
-            {isAdmin && (
-              <NavLink to="/admin">
-                <ShieldCheck size={20} />
-                <span>Admin</span>
-              </NavLink>
-            )}
-          </nav>
-        )}
       </div>
     </div>
   );
