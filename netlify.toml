@@ -1,0 +1,79 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
+
+# API routes must stay ABOVE the SPA fallback.
+[[redirects]]
+  from = "/api/auth/discord/login"
+  to = "/.netlify/functions/auth-discord-login"
+  status = 200
+
+[[redirects]]
+  from = "/api/auth/discord/callback"
+  to = "/.netlify/functions/auth-discord-callback"
+  status = 200
+
+[[redirects]]
+  from = "/api/auth/me"
+  to = "/.netlify/functions/auth-me"
+  status = 200
+
+[[redirects]]
+  from = "/api/auth/logout"
+  to = "/.netlify/functions/auth-logout"
+  status = 200
+
+[[redirects]]
+  from = "/api/admin/applications"
+  to = "/.netlify/functions/admin-applications"
+  status = 200
+
+[[redirects]]
+  from = "/api/admin/bot"
+  to = "/.netlify/functions/admin-bot"
+  status = 200
+
+[[redirects]]
+  from = "/api/admin/members"
+  to = "/.netlify/functions/admin-members"
+  status = 200
+
+[[redirects]]
+  from = "/api/admin/news"
+  to = "/.netlify/functions/admin-news"
+  status = 200
+
+[[redirects]]
+  from = "/api/applications/me"
+  to = "/.netlify/functions/applications-me"
+  status = 200
+
+[[redirects]]
+  from = "/api/calculator/entries"
+  to = "/.netlify/functions/calculator-entries"
+  status = 200
+
+[[redirects]]
+  from = "/api/discord/application"
+  to = "/.netlify/functions/discord-application"
+  status = 200
+
+[[redirects]]
+  from = "/api/members/me"
+  to = "/.netlify/functions/members-me"
+  status = 200
+
+[[redirects]]
+  from = "/api/members/profile"
+  to = "/.netlify/functions/members-profile"
+  status = 200
+
+# React Router / Vite SPA fallback.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
