@@ -37,6 +37,14 @@ export default async function handler(req, res) {
   });
 
   if (!tokenResponse.ok) {
+    const errorText = await tokenResponse.text();
+    console.error('Discord OAuth token error:', {
+      status: tokenResponse.status,
+      statusText: tokenResponse.statusText,
+      body: errorText,
+      redirectUri: getRedirectUri(req),
+      clientId,
+    });
     res.redirect(`${getOrigin(req)}/profile?authError=discord_token`);
     return;
   }
@@ -49,6 +57,12 @@ export default async function handler(req, res) {
   });
 
   if (!userResponse.ok) {
+    const errorText = await userResponse.text();
+    console.error('Discord OAuth user error:', {
+      status: userResponse.status,
+      statusText: userResponse.statusText,
+      body: errorText,
+    });
     res.redirect(`${getOrigin(req)}/profile?authError=discord_user`);
     return;
   }
